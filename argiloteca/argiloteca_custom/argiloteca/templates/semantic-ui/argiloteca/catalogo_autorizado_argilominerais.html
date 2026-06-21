@@ -1,0 +1,569 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+{% endblock css %}
+
+{% block page_body %}
+<style>
+  .argilo-catalog-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .argilo-catalog-hero {
+    background:
+      radial-gradient(circle at top right, rgba(193, 162, 109, 0.22), transparent 34%),
+      linear-gradient(135deg, #f7f2e6 0%, #fbfbf7 48%, #edf3f2 100%);
+    border: 1px solid rgba(123, 102, 67, 0.18);
+    border-radius: 1.2rem;
+    padding: 1.6rem;
+    box-shadow: 0 18px 40px rgba(64, 53, 35, 0.08);
+    margin-bottom: 1.2rem;
+  }
+
+  .argilo-catalog-kicker {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #6f5433;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .argilo-catalog-title {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: #2d3d3b;
+  }
+
+  .argilo-catalog-subtitle {
+    margin-top: 0.7rem;
+    color: #516462;
+    font-size: 1rem;
+    max-width: 60rem;
+    line-height: 1.6;
+  }
+
+  .argilo-catalog-intro-block {
+    margin-top: 1rem;
+    max-width: none;
+    padding: 1.1rem 1.15rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(123, 102, 67, 0.14);
+    color: #435554;
+    line-height: 1.75;
+  }
+
+  .argilo-catalog-intro-block p {
+    margin: 0;
+  }
+
+  .argilo-catalog-intro-block p + p {
+    margin-top: 0.95rem;
+  }
+
+  .argilo-catalog-sources-title {
+    margin: 1.15rem 0 0;
+    font-size: 1rem;
+    color: #6f5433;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .argilo-catalog-sources-details {
+    margin-top: 1rem;
+  }
+
+  .argilo-catalog-sources-details > summary {
+    cursor: pointer;
+    color: #6f5433;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .argilo-catalog-meta {
+    margin-top: 0.9rem;
+    color: #6a7a79;
+    font-size: 0.95rem;
+  }
+
+  .argilo-catalog-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  .argilo-catalog-nav .button {
+    margin: 0;
+  }
+
+  .argilo-catalog-toolbar {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .argilo-catalog-topics {
+    align-items: stretch;
+    display: grid;
+    gap: 0;
+    grid-template-columns: minmax(170px, 220px) minmax(0, 1fr) auto;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .argilo-catalog-topics label {
+    align-items: center;
+    background: #8e6d45;
+    color: #fff;
+    display: flex;
+    font-size: 0.95rem;
+    font-weight: 700;
+    justify-content: space-between;
+    letter-spacing: 0.02em;
+    padding: 0 0.9rem;
+    text-transform: uppercase;
+  }
+
+  .argilo-catalog-topics select {
+    appearance: none;
+    background: #fff;
+    border: 1px solid rgba(142, 109, 69, 0.3);
+    border-left: none;
+    color: #4b3b27;
+    font-size: 0.97rem;
+    min-height: 48px;
+    padding: 0 0.9rem;
+  }
+
+  .argilo-catalog-topics button {
+    background: #8e6d45;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    min-height: 48px;
+    padding: 0 1rem;
+    text-transform: uppercase;
+  }
+
+  .argilo-catalog-topics button:hover,
+  .argilo-catalog-topics button:focus {
+    background: #7a5d39;
+  }
+
+  .argilo-catalog-sources {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .argilo-catalog-source {
+    padding: 1rem 1.05rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(123, 102, 67, 0.14);
+    color: #435554;
+    line-height: 1.65;
+    box-shadow: 0 10px 24px rgba(64, 53, 35, 0.05);
+  }
+
+  .argilo-catalog-source-head {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .argilo-catalog-source-mark {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #fff;
+    font-size: 0.88rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  .argilo-catalog-source-mark.is-aipea { background: linear-gradient(135deg, #6e5532, #9d7b45); }
+  .argilo-catalog-source-mark.is-cms { background: linear-gradient(135deg, #406b67, #5d8f89); }
+  .argilo-catalog-source-mark.is-britannica { background: linear-gradient(135deg, #234a82, #3563a5); }
+  .argilo-catalog-source-mark.is-usgs { background: linear-gradient(135deg, #2c6b48, #4b8c64); }
+  .argilo-catalog-source-mark.is-mindat { background: linear-gradient(135deg, #6b3f2c, #9b5e43); }
+  .argilo-catalog-source-mark.is-handbook { background: linear-gradient(135deg, #4f4b6f, #716b97); }
+  .argilo-catalog-source-mark.is-sourceclays { background: linear-gradient(135deg, #7a5d39, #b08a57); }
+  .argilo-catalog-source-mark.is-earthchem { background: linear-gradient(135deg, #355b71, #4d809d); }
+
+  .argilo-catalog-source-title {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: #2d3d3b;
+  }
+
+  .argilo-catalog-source strong {
+    color: #2d3d3b;
+  }
+
+  .argilo-catalog-source a {
+    color: #24524c;
+  }
+
+  .argilo-catalog-source p {
+    margin: 0;
+  }
+
+  .argilo-catalog-list {
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .argilo-catalog-item {
+    background: #fff;
+    border: 1px solid rgba(89, 99, 101, 0.12);
+    border-radius: 1rem;
+    padding: 1.15rem 1.2rem;
+    box-shadow: 0 10px 26px rgba(33, 42, 51, 0.05);
+  }
+
+  .argilo-catalog-item-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 180px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .argilo-catalog-item-media {
+    display: block;
+    text-decoration: none;
+  }
+
+  .argilo-catalog-item-media img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border-radius: 0.9rem;
+    background: #f2efe8;
+    border: 1px solid rgba(123, 102, 67, 0.12);
+  }
+
+  .argilo-catalog-item-media-note {
+    margin-top: 0.55rem;
+    color: #6c5a42;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .argilo-catalog-item-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+  }
+
+  .argilo-catalog-item-head h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .argilo-catalog-item-head h2 a {
+    color: #24403c;
+  }
+
+  .argilo-catalog-item-meta {
+    color: #5f706f;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .argilo-catalog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.8rem 0;
+  }
+
+  .argilo-catalog-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.3rem 0.78rem;
+    background: rgba(250, 248, 242, 0.95);
+    border: 1px solid rgba(136, 108, 69, 0.14);
+    color: #6f5433;
+    font-size: 0.9rem;
+  }
+
+  .argilo-catalog-summary {
+    color: #435554;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .argilo-catalog-actions {
+    margin-top: 0.9rem;
+  }
+
+  .argilo-catalog-list-title {
+    margin: 1.35rem 0 0.95rem;
+    font-size: 1.3rem;
+    color: #2d3d3b;
+  }
+
+  @media (max-width: 720px) {
+    .argilo-catalog-sources {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .argilo-catalog-topics {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .argilo-catalog-topics select {
+      border-left: 1px solid rgba(142, 109, 69, 0.3);
+      border-top: none;
+    }
+
+    .argilo-catalog-item-head {
+      flex-direction: column;
+    }
+
+    .argilo-catalog-item-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+{{ render_scientific_header(
+  section=_("Vocabulário"),
+  title=_("Catálogo autorizado de nomes para argilominerais"),
+  subtitle=_("Consulte a nomenclatura autorizada e use os termos como referência para mapa, geoquímica e análises."),
+  breadcrumbs=[
+    {"label": _("Início"), "href": "/"},
+    {"label": _("Vocabulário"), "href": None},
+    {"label": _("Catálogo de nomes"), "href": None}
+  ],
+  active_module="catalog",
+  actions=[
+    {"label": _("Ver no mapa"), "href": url_for("argiloteca.mapa_argilominerais")},
+    {"label": _("Ver análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
+  ]
+) }}
+
+<div class="argilo-catalog-page">
+  <section class="argilo-catalog-hero">
+    <div class="argilo-catalog-kicker">NOMECLATURA DE ARGILOMINERAIS USADOS NA ARGILOTECA</div>
+    <div class="argilo-catalog-intro-block">
+      <p>
+        Este catálogo reúne os nomes autorizados de argilominerais da Argiloteca em consonância com princípios de nomenclatura e classificação adotados na mineralogia de argilas, especialmente aqueles consolidados pela AIPEA. Seu objetivo é oferecer uma referência terminológica estável para a identificação de grupos, espécies e fases interestratificadas, preservando relações entre nomenclatura, estrutura e contexto mineralógico.
+      </p>
+      <p>
+        A estrutura do catálogo considera critérios como tipo de camada, arranjos 1:1 e 2:1, caráter di- ou trioctaédrico, grupos de filossilicatos hidratados, cloritas, esmectitas, micas argilosas e materiais interestratificados. Dessa forma, a página funciona como base de consulta para descrição expandida, rastreabilidade de fontes e interpretação científica coerente no ambiente da própria Argiloteca.
+      </p>
+    </div>
+    <div class="argilo-catalog-meta">Total de termos listados: {{ minerais|length }}</div>
+    <div class="argilo-catalog-toolbar">
+      <form class="argilo-catalog-topics" action="/argilominerais" method="get">
+        <label for="argilo-catalog-topic-select">Argilomineral</label>
+        <select id="argilo-catalog-topic-select" name="term">
+          <option value="">{{ _("Selecione um argilomineral") }}</option>
+          {% for option in argilo_frontpage_mineral_options %}
+            <option value="{{ option.term }}">{{ option.label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">{{ _("Abrir") }}</button>
+      </form>
+    </div>
+    <details class="argilo-catalog-sources-details">
+      <summary>Fontes de Referência</summary>
+    <div class="argilo-catalog-sources">
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-aipea">AI</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://cnmnc.units.it/ima_reports/claynomenclature.pdf" target="_blank" rel="noopener noreferrer">AIPEA Nomenclature Committee (2006)</a>
+          </h3>
+        </div>
+        <p>
+          A introdução desta página dialoga com o artigo <em>Summary of Recommendations of Nomenclature Committees Relevant to Clay Mineralogy: Report of the Association Internationale pour l’Etude des Argiles (AIPEA) Nomenclature Committee for 2006</em>, de Guggenheim, Adams, Bain, Bergaya, Brigatti, Drits, Formoso, Galán, Kogure e Stanjek, publicado em <em>Clays and Clay Minerals</em>, 54(6), 761-772. <a href="https://cnmnc.units.it/ima_reports/claynomenclature.pdf" target="_blank" rel="noopener noreferrer">Abrir artigo na web</a>.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-cms">CMS</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://www.clays.org/" target="_blank" rel="noopener noreferrer">Clay Minerals Society</a>
+          </h3>
+        </div>
+        <p>
+          Usamos a <a href="https://www.clays.org/" target="_blank" rel="noopener noreferrer">Clay Minerals Society</a> como base para o vocabulário controlado de argilominerais e para orientar famílias, materiais de referência e nomenclatura especializada.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-britannica">EB</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://www.britannica.com/science/clay-mineral" target="_blank" rel="noopener noreferrer">Britannica</a>
+          </h3>
+        </div>
+        <p>
+          A <a href="https://www.britannica.com/science/clay-mineral" target="_blank" rel="noopener noreferrer">Encyclopaedia Britannica - Clay mineral</a> é usada como fonte-base de apoio para definição geral, enquadramento conceitual e validação de descrições introdutórias em linguagem mais ampla.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-usgs">USGS</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://pubs.usgs.gov/of/2001/of01-041/htmldocs/clays/minerals.htm" target="_blank" rel="noopener noreferrer">USGS - Individual Clay Minerals</a>
+          </h3>
+        </div>
+        <p>
+          A <a href="https://pubs.usgs.gov/of/2001/of01-041/htmldocs/clays/minerals.htm" target="_blank" rel="noopener noreferrer">página de minerais individuais da USGS</a> é usada como fonte-base complementar para sínteses sobre classes de argilas, propriedades gerais e enquadramento técnico inicial.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-mindat">MD</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://www.mindat.org/" target="_blank" rel="noopener noreferrer">Mindat</a>
+          </h3>
+        </div>
+        <p>
+          O <a href="https://www.mindat.org/" target="_blank" rel="noopener noreferrer">Mindat</a> é usado para enriquecer as páginas locais com identificação externa, fórmula ideal, aliases, classificação IMA, química, difração de raios X, petrologia e referências bibliográficas quando houver curadoria técnica correspondente.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-handbook">HM</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://www.handbookofmineralogy.org/" target="_blank" rel="noopener noreferrer">Handbook of Mineralogy</a>
+          </h3>
+        </div>
+        <p>
+          O <a href="https://www.handbookofmineralogy.org/" target="_blank" rel="noopener noreferrer">Handbook of Mineralogy</a> é usado para complementar ocorrência, associações, distribuição, origem do nome, química e dados cristalográficos ou descritivos por mineral e por família mineralógica.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-sourceclays">SC</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://www.clays.org/source-clays/" target="_blank" rel="noopener noreferrer">Clay Minerals Society - Source Clays</a>
+          </h3>
+        </div>
+        <p>
+          Usamos o <a href="https://www.clays.org/source-clays/" target="_blank" rel="noopener noreferrer">Source Clays Repository</a> e os <a href="https://www.clays.org/sourceclays_data/" target="_blank" rel="noopener noreferrer">dados físico-químicos dos Source Clays</a> para ligar os argilominerais a materiais de referência diretos ou comparativos, com códigos como KGa-1b, SWy-2, PFl-1, CCa-2 e VTx-1.
+        </p>
+      </div>
+      <div class="argilo-catalog-source">
+        <div class="argilo-catalog-source-head">
+          <span class="argilo-catalog-source-mark is-earthchem">EC</span>
+          <h3 class="argilo-catalog-source-title">
+            <a href="https://earthchem.org/" target="_blank" rel="noopener noreferrer">EarthChem</a>
+          </h3>
+        </div>
+        <p>
+          O <a href="https://earthchem.org/" target="_blank" rel="noopener noreferrer">EarthChem</a> e seus serviços oficiais, <a href="https://portal.earthchem.org/" target="_blank" rel="noopener noreferrer">EarthChem Portal</a>, <a href="https://earthchem.org/petdb" target="_blank" rel="noopener noreferrer">PetDB 2.0</a>, <a href="https://lepr.earthchem.org/" target="_blank" rel="noopener noreferrer">LEPR / TraceDs</a>, <a href="https://earthchem.org/communities/experimental-petrology" target="_blank" rel="noopener noreferrer">Experimental Petrology</a> e <a href="https://earthchem.org/ecl/submission-overview" target="_blank" rel="noopener noreferrer">EarthChem Library</a>, são usados para orientar a descoberta de datasets geoquímicos, amostras, metadados analíticos e rotas curatoriais por mineral e por família.
+        </p>
+      </div>
+    </div>
+    </details>
+  </section>
+
+  <h2 class="argilo-catalog-list-title">Lista de Argilominerais</h2>
+  <section class="argilo-catalog-list">
+    {% for mineral in minerais %}
+      <article class="argilo-catalog-item" id="argilomineral-{{ mineral.get('slug') }}">
+        <div class="argilo-catalog-item-grid">
+          <div>
+            {% if mineral.get("reusable_image", {}).get("image_url") %}
+              <a class="argilo-catalog-item-media" href="{{ url_for('argiloteca.argilomineral_detail', term=mineral.get('slug')) }}">
+                <img
+                  src="{{ mineral.get('reusable_image', {}).get('image_url') }}"
+                  alt="{{ mineral.get('nome_pt') or mineral.get('nome') or mineral.get('nome_cientifico_padronizado') }}"
+                  loading="lazy">
+              </a>
+              {% if mineral.get("reusable_image", {}).get("scope_label") %}
+                <div class="argilo-catalog-item-media-note">
+                  {{ mineral.get("reusable_image", {}).get("scope_label") }}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+
+          <div>
+            <div class="argilo-catalog-item-head">
+              <div>
+                <h2>
+                  <a href="{{ url_for('argiloteca.argilomineral_detail', term=mineral.get('slug')) }}">
+                    {{ mineral.get("nome_pt") or mineral.get("nome") or mineral.get("nome_cientifico_padronizado") }}
+                  </a>
+                </h2>
+                <p class="argilo-catalog-item-meta">
+                  {% if mineral.get("nome_cientifico_padronizado") %}
+                    Nome científico padronizado: {{ mineral.get("nome_cientifico_padronizado") }}
+                  {% endif %}
+                  {% if mineral.get("nome_en") and mineral.get("nome_en") != mineral.get("nome_cientifico_padronizado") %}
+                    <br>Nome em inglês: {{ mineral.get("nome_en") }}
+                  {% endif %}
+                </p>
+              </div>
+              <div class="argilo-catalog-actions">
+                <a class="ui basic button" href="{{ url_for('argiloteca.argilomineral_detail', term=mineral.get('slug')) }}">
+                  Abrir descrição
+                </a>
+                <a class="ui basic button" href="{{ url_for('argiloteca.mapa_argilominerais', mineral_term=mineral.get('slug')) }}">
+                  Ver no mapa
+                </a>
+                <a class="ui basic button" href="{{ url_for('argiloteca.geoquimica_agregada') }}?argilomineral={{ mineral.get('slug') }}">
+                  Explorar no atlas químico
+                </a>
+                <a class="ui basic button" href="{{ url_for('argiloteca.drx_comparacao') }}?argilomineral={{ mineral.get('slug') }}">
+                  Abrir comparação DRX N/G/C
+                </a>
+              </div>
+            </div>
+
+            <div class="argilo-catalog-tags">
+              {% if mineral.get("grupo_mineralogico") %}
+                <span class="argilo-catalog-tag">{{ mineral.get("grupo_mineralogico") }}</span>
+              {% endif %}
+              {% if mineral.get("classe_estrutural") %}
+                <span class="argilo-catalog-tag">{{ mineral.get("classe_estrutural") }}</span>
+              {% endif %}
+              {% if mineral.get("community_slug") %}
+                <span class="argilo-catalog-tag">Comunidade: {{ mineral.get("community_slug") }}</span>
+              {% endif %}
+            </div>
+
+            {% if mineral.get("descricao_curta") %}
+              <p class="argilo-catalog-summary">{{ mineral.get("descricao_curta") }}</p>
+            {% else %}
+              <p class="argilo-catalog-summary">Descrição curta ainda não consolidada para este termo no catálogo local.</p>
+            {% endif %}
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+</div>
+{% endblock page_body %}

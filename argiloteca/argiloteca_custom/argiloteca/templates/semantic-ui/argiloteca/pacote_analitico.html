@@ -1,0 +1,174 @@
+{%- extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{%- block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/pacote-analitico.css') }}?v=20260604-record-links">
+{%- endblock css %}
+
+{%- block page_body %}
+{{ render_scientific_header(
+  section=_("Análises"),
+  title=_("Pacote analítico"),
+  subtitle=_("Acesse pacotes analíticos e módulos de interpretação científica vinculados aos registros."),
+  breadcrumbs=[
+    {"label": _("Início"), "href": "/"},
+    {"label": _("Registro"), "href": "/records/" ~ record_id},
+    {"label": _("Análises"), "href": url_for("argiloteca.analises_index")},
+    {"label": _("Pacote analítico"), "href": None}
+  ],
+  active_module="analyses",
+  actions=[
+    {"label": _("Voltar para análises"), "href": url_for("argiloteca.analises_index")},
+    {"label": _("Comparar DRX"), "href": url_for("argiloteca.drx_comparacao", record_id=record_id, source="package"), "primary": True}
+  ]
+) }}
+<section
+  class="argilo-package argilo-package--record"
+  data-api-url="{{ url_for('argiloteca.api_pacote_analitico', record_id=record_id) }}"
+  data-curve-url="{{ url_for('argiloteca.api_pacote_analitico_drx_curva', record_id=record_id) }}"
+  data-record-id="{{ record_id }}"
+  data-record-title="{{ record_title }}"
+  data-authorized-mineral-slugs="{{ (authorized_mineral_slugs or [])|tojson|forceescape }}"
+  data-authorized-mineral-aliases="{{ (authorized_mineral_aliases or {})|tojson|forceescape }}"
+>
+  <header class="argilo-package__header">
+    <div>
+      <p class="argilo-package__eyebrow">{{ _("Argiloteca") }}</p>
+      <h2>{{ _("Pacote analítico") }}</h2>
+      <p class="argilo-package__record-id">{{ _("Registro") }}: {{ record_title }}</p>
+      <p class="argilo-package__record-id argilo-package__record-id--secondary">{{ _("Identificador") }}: {{ record_id }}</p>
+      <p>{{ _("Arquivos brutos e resultados associados são expostos por manifesto rastreável, com carregamento paginado.") }}</p>
+    </div>
+    <nav class="argilo-package__actions" aria-label="{{ _('Navegação científica') }}">
+      <a class="ui primary button" href="{{ url_for('argiloteca.analises_index') }}">{{ _("Análises") }}</a>
+      {% if record_href %}
+        <a class="ui button" href="{{ record_href }}">{{ _("Registro") }}</a>
+      {% endif %}
+      <a class="ui button" href="{{ url_for('argiloteca.drx_comparacao', record_id=record_id, source='package') }}">{{ _("Comparar DRX") }}</a>
+      <button class="ui button" type="button" data-role="package-fullscreen">{{ _("Tela cheia") }}</button>
+    </nav>
+  </header>
+
+  <section class="argilo-package__workflow" aria-label="{{ _('Fluxo de navegação analítica') }}">
+    {% if record_href %}
+    <a class="argilo-package__step" href="{{ record_href }}">
+      <span>{{ _("1") }}</span>
+      <strong>{{ _("Registro") }}</strong>
+      <small>{{ record_title }}</small>
+    </a>
+    {% else %}
+    <span class="argilo-package__step">
+      <span>{{ _("1") }}</span>
+      <strong>{{ _("Registro") }}</strong>
+      <small>{{ record_title }}</small>
+    </span>
+    {% endif %}
+    <a class="argilo-package__step argilo-package__step--active" href="{{ url_for('argiloteca.pacote_analitico', record_id=record_id) }}" aria-current="page">
+      <span>{{ _("2") }}</span>
+      <strong>{{ _("Análises") }}</strong>
+      <small>{{ _("Pacote DRX") }}</small>
+    </a>
+    <a class="argilo-package__step" href="{{ url_for('argiloteca.drx_comparacao', record_id=record_id, source='package') }}">
+      <span>{{ _("3") }}</span>
+      <strong>{{ _("Comparação") }}</strong>
+      <small>{{ _("Difratogramas 1D") }}</small>
+    </a>
+  </section>
+
+  <section class="argilo-package__methods" aria-label="{{ _('Métodos analíticos disponíveis') }}">
+    <article class="argilo-package__method argilo-package__method--active">
+      <div>
+        <h2>{{ _("DRX - Difração de raios X") }}</h2>
+        <p>{{ _("Primeiro método incorporado para esta tese: arquivos .RAW, picos, candidatos mineralógicos e difratogramas por amostra.") }}</p>
+      </div>
+      <div class="argilo-package__method-actions">
+        <a class="ui primary button" href="{{ url_for('argiloteca.drx_comparacao', record_id=record_id, source='package') }}">{{ _("Comparar difratogramas") }}</a>
+      </div>
+    </article>
+    <article class="argilo-package__method">
+      <div>
+        <h2>{{ _("Próximos métodos") }}</h2>
+        <p>{{ _("FRX, MEV/EDS, FTIR, granulometria ou outras análises podem usar o mesmo padrão de pacote analítico.") }}</p>
+      </div>
+      <span class="ui basic label">{{ _("Estrutura preparada") }}</span>
+    </article>
+  </section>
+
+  <div class="argilo-package__summary" data-role="summary">
+    <div class="argilo-package__empty" aria-live="polite">{{ _("Carregando manifesto analítico...") }}</div>
+  </div>
+
+  <form class="argilo-package__filters" data-role="filters">
+    <div class="field">
+      <label for="argilo-package-q">{{ _("Busca") }}</label>
+      <input id="argilo-package-q" type="search" name="q" placeholder="{{ _('amostra, arquivo ou mineral') }}">
+    </div>
+    <div class="field">
+      <label for="argilo-package-preparation">{{ _("Preparação") }}</label>
+      <select id="argilo-package-preparation" name="preparation">
+        <option value="">{{ _("Todas") }}</option>
+        <option value="natural">{{ _("Natural") }}</option>
+        <option value="glicolado">{{ _("Glicolado") }}</option>
+        <option value="calcinado">{{ _("Calcinado") }}</option>
+        <option value="indeterminado">{{ _("Indeterminada") }}</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="argilo-package-mineral">{{ _("Mineral candidato") }}</label>
+      <input id="argilo-package-mineral" type="search" name="mineral" placeholder="{{ _('ex.: Kaolinite') }}">
+    </div>
+    <button class="ui primary button" type="submit">{{ _("Atualizar dados") }}</button>
+    <div class="argilo-package__export-actions" aria-label="{{ _('Exportar dados analíticos') }}">
+      <button class="ui primary button" type="button" data-role="compare-selected" disabled>{{ _("Comparar selecionados") }}</button>
+      <button class="ui button" type="button" data-role="export-csv">{{ _("Exportar CSV") }}</button>
+      <button class="ui button" type="button" data-role="export-pdf">{{ _("Exportar PDF") }}</button>
+    </div>
+  </form>
+
+  <section class="argilo-package__table-wrap">
+    <div class="argilo-package__table-status" data-role="status" aria-live="polite"></div>
+    <table class="ui celled table argilo-package__table">
+      <thead>
+        <tr>
+          <th>{{ _("Selecionar") }}</th>
+          <th>{{ _("Amostra") }}</th>
+          <th>{{ _("Arquivo bruto") }}</th>
+          <th>{{ _("Preparação") }}</th>
+          <th>{{ _("Picos 2θ") }}</th>
+          <th>{{ _("Espaçamentos d") }}</th>
+          <th>{{ _("Minerais candidatos e evidências") }}</th>
+          <th>{{ _("Ações") }}</th>
+        </tr>
+      </thead>
+      <tbody data-role="items">
+        <tr><td colspan="8">{{ _("Carregando...") }}</td></tr>
+      </tbody>
+    </table>
+    <div class="argilo-package__pager">
+      <button class="ui button" type="button" data-role="prev">{{ _("Anterior") }}</button>
+      <span data-role="page-info"></span>
+      <button class="ui button" type="button" data-role="next">{{ _("Próxima") }}</button>
+    </div>
+  </section>
+
+  <section class="argilo-package__viewer" data-role="viewer" hidden>
+    <div class="argilo-package__viewer-header">
+      <div>
+        <h2 data-role="viewer-title">{{ _("Difratograma") }}</h2>
+        <p data-role="viewer-meta"></p>
+      </div>
+      <button class="ui button" type="button" data-role="viewer-close">{{ _("Fechar") }}</button>
+    </div>
+    <div class="argilo-package__chart-wrap">
+      <svg class="argilo-package__chart" data-role="chart" viewBox="0 0 920 420" role="img" aria-label="{{ _('Difratograma do arquivo selecionado') }}"></svg>
+    </div>
+  </section>
+</section>
+{%- endblock page_body %}
+
+{%- block javascript %}
+  {{ super() }}
+  <script src="{{ url_for('argiloteca.static', filename='js/pacote-analitico.js') }}?v=20260604-valid-record-links"></script>
+{%- endblock javascript %}

@@ -1,0 +1,604 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header, render_empty_state with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/pacote-analitico.css') }}?v=20260604-record-links">
+{% endblock css %}
+
+{% block page_body %}
+  {{ render_scientific_header(
+    section=_("Análises"),
+    title=_("Análises e pacotes analíticos"),
+    subtitle=_("Acesse pacotes analíticos, compare difratogramas DRX e explore módulos analíticos vinculados aos registros da Argiloteca."),
+    breadcrumbs=[
+      {"label": _("Início"), "href": "/"},
+      {"label": _("Análises"), "href": None}
+    ],
+    active_module="analyses",
+    actions=[
+      {"label": _("Abrir comparação DRX"), "href": url_for("argiloteca.drx_comparacao"), "primary": True}
+    ]
+  ) }}
+
+  <main
+      class="argilo-package argilo-package--global"
+      data-records-url="{{ url_for('argiloteca.api_drx_registros') }}"
+      data-raw-snapshot-url="{{ url_for('argiloteca.api_drx_raw_snapshot') }}"
+      data-mineral-profile-base="{{ url_for('argiloteca.argilomineral_detail', term='__TERM__') }}"
+      data-mineral-lookup-url="{{ url_for('argiloteca.argilomineral_lookup') }}"
+      data-authorized-mineral-slugs="{{ (authorized_mineral_slugs or [])|tojson|forceescape }}"
+      data-authorized-mineral-aliases="{{ (authorized_mineral_aliases or {})|tojson|forceescape }}"
+      data-role="analysis-fullscreen-section"
+      aria-labelledby="argilo-analysis-records-title"
+    >
+    <header class="argilo-package__header">
+      <div>
+        <p class="argilo-package__eyebrow">{{ _("Argiloteca") }}</p>
+        <h2 id="argilo-analysis-records-title">{{ _("Pacote analítico") }}</h2>
+        <p class="argilo-package__record-id">{{ _("Fonte") }}: {{ _("snapshot geral do módulo DRX") }}</p>
+        <p class="argilo-package__record-id argilo-package__record-id--secondary">{{ _("Escopo") }}: {{ _("todos os arquivos RAW processados") }}</p>
+        <p>{{ _("Arquivos RAW processados são expostos em uma visão rastreável, com filtros, métricas e acesso à comparação de difratogramas.") }}</p>
+      </div>
+      <nav class="argilo-package__actions" aria-label="{{ _('Navegação científica') }}">
+        <a class="ui primary button" href="{{ url_for('argiloteca.analises_index') }}">{{ _("Análises") }}</a>
+        <a class="ui button" href="{{ url_for('argiloteca.drx_comparacao') }}">{{ _("Comparar DRX") }}</a>
+        <button class="ui button" type="button" data-role="analysis-fullscreen">{{ _("Tela cheia") }}</button>
+      </nav>
+    </header>
+
+    <section class="argilo-package__workflow" aria-label="{{ _('Fluxo de navegação analítica') }}">
+      <span class="argilo-package__step argilo-package__step--active">
+        <span>{{ _("1") }}</span>
+        <strong>{{ _("Análises") }}</strong>
+        <small>{{ _("Todos os RAW processados") }}</small>
+      </span>
+      <a class="argilo-package__step" href="{{ url_for('argiloteca.drx_comparacao') }}">
+        <span>{{ _("2") }}</span>
+        <strong>{{ _("Comparação") }}</strong>
+        <small>{{ _("Difratogramas 1D") }}</small>
+      </a>
+      <span class="argilo-package__step">
+        <span>{{ _("3") }}</span>
+        <strong>{{ _("Curadoria") }}</strong>
+        <small>{{ _("Vincular RAW a registros") }}</small>
+      </span>
+    </section>
+
+    <section class="argilo-package__methods" aria-label="{{ _('Métodos analíticos disponíveis') }}">
+      <article class="argilo-package__method argilo-package__method--active">
+        <div>
+          <h2>{{ _("DRX - Difração de raios X") }}</h2>
+          <p>{{ _("Arquivos .RAW, picos, candidatos mineralógicos e difratogramas organizados a partir do snapshot geral do módulo.") }}</p>
+        </div>
+        <div class="argilo-package__method-actions">
+          <a class="ui primary button" href="{{ url_for('argiloteca.drx_comparacao') }}">{{ _("Comparar difratogramas") }}</a>
+        </div>
+      </article>
+      <article class="argilo-package__method">
+        <div>
+          <h2>{{ _("Próximos métodos") }}</h2>
+          <p>{{ _("FRX, MEV/EDS, FTIR, granulometria ou outras análises podem usar o mesmo padrão de pacote analítico.") }}</p>
+        </div>
+        <span class="ui basic label">{{ _("Estrutura preparada") }}</span>
+      </article>
+    </section>
+
+    <div class="argilo-package__summary" data-role="snapshot-stats" aria-live="polite">
+      <div class="argilo-package__empty">{{ _("Carregando métricas do snapshot...") }}</div>
+    </div>
+
+    <form class="argilo-package__filters" data-role="snapshot-filters">
+      <div class="field">
+        <label for="argilo-analysis-q">{{ _("Busca") }}</label>
+        <input id="argilo-analysis-q" type="search" name="q" placeholder="{{ _('amostra, arquivo ou mineral') }}">
+      </div>
+      <div class="field">
+        <label for="argilo-analysis-preparation">{{ _("Preparação") }}</label>
+        <select id="argilo-analysis-preparation" name="preparation">
+            <option value="">{{ _("Todos") }}</option>
+            <option value="natural">{{ _("Natural") }}</option>
+            <option value="glicolado">{{ _("Glicolado") }}</option>
+            <option value="calcinado">{{ _("Calcinado") }}</option>
+            <option value="indeterminado">{{ _("Indeterminado") }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="argilo-analysis-mineral">{{ _("Mineral candidato") }}</label>
+        <input id="argilo-analysis-mineral" type="search" name="argilomineral" placeholder="{{ _('ex.: Kaolinite') }}">
+      </div>
+      <div class="field">
+        <label for="argilo-analysis-page-size">{{ _("Registros por página") }}</label>
+        <select id="argilo-analysis-page-size" name="limit" data-role="page-size">
+            <option value="10" selected>{{ _("10 registros") }}</option>
+            <option value="20">{{ _("20 registros") }}</option>
+            <option value="50">{{ _("50 registros") }}</option>
+            <option value="100">{{ _("100 registros") }}</option>
+        </select>
+      </div>
+      <button class="ui primary button" type="submit">{{ _("Atualizar dados") }}</button>
+      <div class="argilo-package__export-actions" aria-label="{{ _('Exportar dados analíticos') }}">
+        <button class="ui primary button" type="button" data-role="compare-selected" disabled>{{ _("Comparar selecionados") }}</button>
+        <button class="ui button" type="button" data-role="export-csv">{{ _("Exportar CSV") }}</button>
+        <button class="ui button" type="button" data-role="export-pdf">{{ _("Exportar PDF") }}</button>
+      </div>
+    </form>
+
+    <section class="argilo-package__table-wrap">
+      <div class="argilo-package__table-status" data-role="records-status" aria-live="polite">
+        {{ _("Carregando dados...") }}
+      </div>
+      <table class="ui celled table argilo-package__table">
+        <thead>
+          <tr>
+            <th>{{ _("Selecionar") }}</th>
+            <th>{{ _("Amostra") }}</th>
+            <th>{{ _("Arquivo bruto") }}</th>
+            <th>{{ _("Preparação") }}</th>
+            <th>{{ _("Picos 2θ") }}</th>
+            <th>{{ _("Espaçamentos d") }}</th>
+            <th>{{ _("Minerais candidatos e evidências") }}</th>
+            <th>{{ _("Ações") }}</th>
+          </tr>
+        </thead>
+        <tbody data-role="records-list">
+          <tr><td colspan="8">{{ _("Carregando...") }}</td></tr>
+        </tbody>
+      </table>
+      <div class="argilo-package__pager" data-role="records-pager" aria-live="polite">
+        <button class="ui button" type="button" data-page-action="previous">{{ _("Anterior") }}</button>
+        <span class="argilo-package__pager-label" data-role="page-info"></span>
+        <button class="ui button" type="button" data-page-action="next">{{ _("Próxima") }}</button>
+      </div>
+    </section>
+      <noscript>
+        {{ render_empty_state(_("Nenhum RAW analítico foi carregado neste momento. Acesse a comparação DRX ou regenere os snapshots do módulo."), _("Abrir comparação DRX"), url_for("argiloteca.drx_comparacao")) }}
+      </noscript>
+  </main>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  <script>
+    (function () {
+      const root = document.querySelector(".argilo-package--global");
+      if (!root || !root.dataset.rawSnapshotUrl) {
+        return;
+      }
+      const status = root.querySelector('[data-role="records-status"]');
+      const list = root.querySelector('[data-role="records-list"]');
+      const stats = root.querySelector('[data-role="snapshot-stats"]');
+      const filters = root.querySelector('[data-role="snapshot-filters"]');
+      const pager = root.querySelector('[data-role="records-pager"]');
+      const pageInfo = root.querySelector('[data-role="page-info"]');
+      const pageSizeSelect = root.querySelector('[data-role="page-size"]');
+      const compareSelectedBtn = root.querySelector('[data-role="compare-selected"]');
+      const exportCsvBtn = root.querySelector('[data-role="export-csv"]');
+      const exportPdfBtn = root.querySelector('[data-role="export-pdf"]');
+      const fullscreenBtn = root.querySelector('[data-role="analysis-fullscreen"]');
+      const emptyMessage = "{{ _('Nenhum RAW analítico foi carregado neste momento. Acesse a comparação DRX ou regenere os snapshots do módulo.') }}";
+      const mineralProfileBase = root.dataset.mineralProfileBase || "/argilominerais/__TERM__";
+      const mineralLookupUrl = root.dataset.mineralLookupUrl || "/argilominerais";
+      let currentOffset = 0;
+      let currentItems = [];
+      const compareSelection = new Map();
+
+      function parseJsonData(value, fallback) {
+        try {
+          const parsed = JSON.parse(value || "");
+          return parsed || fallback;
+        } catch (error) {
+          return fallback;
+        }
+      }
+
+      const authorizedMineralSlugs = new Set(parseJsonData(root.dataset.authorizedMineralSlugs, []));
+      const authorizedMineralAliases = parseJsonData(root.dataset.authorizedMineralAliases, {});
+
+      function setStatus(message, state) {
+        if (!status) {
+          return;
+        }
+        status.className = state === "error" ? "argilo-error-state" : (state === "empty" ? "argilo-empty-state" : "argilo-loading-state");
+        status.textContent = message;
+      }
+
+      function isFullscreen() {
+        return Boolean(
+          (document.fullscreenElement && document.fullscreenElement === root)
+          || root.classList.contains("argilo-package--fullscreen")
+        );
+      }
+
+      function syncFullscreenButton() {
+        if (!fullscreenBtn) {
+          return;
+        }
+        fullscreenBtn.textContent = isFullscreen() ? "{{ _('Sair da tela cheia') }}" : "{{ _('Tela cheia') }}";
+        fullscreenBtn.setAttribute("aria-pressed", isFullscreen() ? "true" : "false");
+      }
+
+      function toggleFullscreen() {
+        if (document.fullscreenElement === root && document.exitFullscreen) {
+          document.exitFullscreen().catch(function () {
+            root.classList.remove("argilo-package--fullscreen");
+            syncFullscreenButton();
+          });
+          return;
+        }
+        if (root.classList.contains("argilo-package--fullscreen")) {
+          root.classList.remove("argilo-package--fullscreen");
+          syncFullscreenButton();
+          return;
+        }
+        if (root.requestFullscreen) {
+          root.requestFullscreen().then(syncFullscreenButton).catch(function () {
+            root.classList.add("argilo-package--fullscreen");
+            syncFullscreenButton();
+          });
+          return;
+        }
+        root.classList.add("argilo-package--fullscreen");
+        syncFullscreenButton();
+      }
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function normalizeMineralKey(value) {
+        return String(value || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function mineralUrl(name) {
+        const rawName = String(name || "").trim();
+        const key = normalizeMineralKey(rawName);
+        const slug = authorizedMineralAliases[key] || key;
+        if (slug && (!authorizedMineralSlugs.size || authorizedMineralSlugs.has(slug))) {
+          return mineralProfileBase.replace("__TERM__", encodeURIComponent(slug));
+        }
+        return mineralLookupUrl + "?term=" + encodeURIComponent(rawName);
+      }
+
+      function renderCandidate(candidate) {
+        const mineralName = candidate.mineral || candidate.name || candidate.nome || candidate.label || "";
+        if (!mineralName) {
+          return "";
+        }
+        const score = candidate.score || candidate.confidence || "";
+        const scoreText = score ? " (" + score + ")" : "";
+        return [
+          '<span class="argilo-package__candidate">',
+          '<a href="', escapeHtml(mineralUrl(mineralName)), '">', escapeHtml(mineralName), '</a>',
+          scoreText ? '<small>' + escapeHtml(scoreText) + '</small>' : '',
+          '</span>'
+        ].join("");
+      }
+
+      function normalizeListValues(values) {
+        return values.reduce(function (accumulator, value) {
+          String(value || "")
+            .split(/<br\s*\/?>/i)
+            .map(function (entry) { return entry.trim(); })
+            .filter(Boolean)
+            .forEach(function (entry) { accumulator.push(entry); });
+          return accumulator;
+        }, []);
+      }
+
+      function renderValueList(values, fallback) {
+        const normalized = normalizeListValues(values);
+        if (!normalized.length) {
+          return escapeHtml(fallback);
+        }
+        return normalized.map(function (value) {
+          return '<span class="argilo-package__value">' + escapeHtml(value) + '</span>';
+        }).join("");
+      }
+
+      function itemKey(item) {
+        return item.id || item.diffractogram_id || item.snapshot_id || item.raw_sha256 || [item.sample_code, item.filename || item.original_filename].join(":");
+      }
+
+      function updateCompareButton() {
+        if (!compareSelectedBtn) {
+          return;
+        }
+        const count = compareSelection.size;
+        compareSelectedBtn.disabled = count < 1;
+        compareSelectedBtn.textContent = count ? "{{ _('Comparar selecionados') }} (" + count + ")" : "{{ _('Comparar selecionados') }}";
+      }
+
+      function comparisonUrl(item) {
+        const params = new URLSearchParams();
+        params.set("source", "snapshot");
+        const key = item ? itemKey(item) : "";
+        if (key) {
+          params.set("snapshot_id", key);
+        }
+        return "{{ url_for('argiloteca.drx_comparacao') }}" + "?" + params.toString();
+      }
+
+      function recordUrl(item) {
+        const id = String((item && item.record_id) || "").trim();
+        return /^[a-z0-9]{5}-[a-z0-9]{5}$/i.test(id) ? "/records/" + encodeURIComponent(id) : "";
+      }
+
+      function recordButton(item) {
+        const url = recordUrl(item);
+        return url ? '<a class="ui tiny button" href="' + escapeHtml(url) + '">{{ _("Registro") }}</a>' : "";
+      }
+
+      function selectedComparisonUrl() {
+        const params = new URLSearchParams();
+        const ids = Array.from(compareSelection.keys()).filter(Boolean);
+        params.set("source", "snapshot");
+        params.set("snapshot_ids", JSON.stringify(ids));
+        return "{{ url_for('argiloteca.drx_comparacao') }}" + "?" + params.toString();
+      }
+
+      function exportCurrentCsv() {
+        if (!currentItems.length) {
+          return;
+        }
+        const rows = [["sample_code", "filename", "preparation", "peaks_two_theta", "peaks_d", "mineral_candidates"]];
+        currentItems.forEach(function (item) {
+          const peaks = item.detected_peaks || item.peaks || [];
+          rows.push([
+            item.sample_code || "",
+            item.filename || item.original_filename || "",
+            treatmentLabel(item.preparation),
+            peaks.map(function (peak) { return peak.two_theta || ""; }).filter(Boolean).join(" | "),
+            peaks.map(function (peak) { return peak.d || ""; }).filter(Boolean).join(" | "),
+            (item.mineral_candidates || []).map(function (candidate) { return candidate.mineral || ""; }).filter(Boolean).join(" | ")
+          ]);
+        });
+        const csv = rows.map(function (row) {
+          return row.map(function (value) {
+            return '"' + String(value || "").replace(/"/g, '""') + '"';
+          }).join(",");
+        }).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "argiloteca-raw-snapshot.csv";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(link.href);
+      }
+
+      function exportCurrentPdf() {
+        window.print();
+      }
+
+      function treatmentLabel(value) {
+        const labels = {
+          natural: "{{ _('Natural') }}",
+          glicolado: "{{ _('Glicolado') }}",
+          calcinado: "{{ _('Calcinado') }}",
+          indeterminado: "{{ _('Indeterminado') }}"
+        };
+        return labels[value] || value || "{{ _('Não informado') }}";
+      }
+
+      function renderStats(payload) {
+        if (!stats) {
+          return;
+        }
+        const pagination = payload.pagination || {};
+        const filtersPayload = payload.filters || {};
+        const treatments = Array.isArray(filtersPayload.treatment) ? filtersPayload.treatment : [];
+        stats.innerHTML = [
+          '<article class="argilo-package__metric"><strong>', escapeHtml(pagination.total || 0), '</strong><span>{{ _('RAW processados') }}</span></article>',
+          '<article class="argilo-package__metric"><strong>', escapeHtml((payload.meta && payload.meta.raw_files_total) || pagination.total || 0), '</strong><span>{{ _('Arquivos no snapshot') }}</span></article>',
+          '<article class="argilo-package__metric"><strong>', escapeHtml(treatments.map(treatmentLabel).join(", ") || "{{ _('Não informado') }}"), '</strong><span>{{ _('Preparos disponíveis') }}</span></article>',
+          '<article class="argilo-package__metric"><strong>', escapeHtml((filtersPayload.argilomineral || []).length || 0), '</strong><span>{{ _('Candidatos mineralógicos') }}</span></article>'
+        ].join("");
+      }
+
+      function currentLimit() {
+        const selected = parseInt(pageSizeSelect && pageSizeSelect.value ? pageSizeSelect.value : "10", 10);
+        return [10, 20, 50, 100].indexOf(selected) >= 0 ? selected : 10;
+      }
+
+      function renderPager(pagination) {
+        if (!pager) {
+          return;
+        }
+        const previousButton = pager.querySelector('[data-page-action="previous"]');
+        const nextButton = pager.querySelector('[data-page-action="next"]');
+        const total = Number(pagination.total || 0);
+        const limit = Number(pagination.limit || currentLimit());
+        const offset = Number(pagination.offset || currentOffset || 0);
+        const returned = Number(pagination.returned || 0);
+        if (!total || total <= limit) {
+          if (pageInfo) {
+            pageInfo.textContent = total ? "1-" + String(total) + " {{ _('de') }} " + String(total) : "";
+          }
+          if (previousButton) {
+            previousButton.disabled = true;
+          }
+          if (nextButton) {
+            nextButton.disabled = true;
+          }
+          return;
+        }
+        const start = offset + 1;
+        const end = Math.min(offset + returned, total);
+        const currentPage = Math.floor(offset / limit) + 1;
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        if (pageInfo) {
+          pageInfo.textContent = String(start) + "-" + String(end) + " {{ _('de') }} " + String(total) + " · {{ _('Página') }} " + String(currentPage) + "/" + String(totalPages);
+        }
+        if (previousButton) {
+          previousButton.disabled = offset <= 0;
+        }
+        if (nextButton) {
+          nextButton.disabled = offset + limit >= total;
+        }
+      }
+
+      function queryUrl() {
+        const params = new URLSearchParams();
+        params.set("limit", String(currentLimit()));
+        params.set("offset", String(currentOffset));
+        params.set("status", "all");
+        if (filters) {
+          new FormData(filters).forEach(function (value, key) {
+            if (key !== "limit" && String(value || "").trim()) {
+              params.set(key, value);
+            }
+          });
+        }
+        return root.dataset.rawSnapshotUrl + "?" + params.toString();
+      }
+
+      function loadSnapshotOverview() {
+        setStatus("{{ _('Carregando snapshot geral de RAW...') }}", "loading");
+        if (list) {
+          list.innerHTML = "";
+        }
+        currentItems = [];
+        fetch(queryUrl(), { credentials: "same-origin" })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          return response.json();
+        })
+        .then(function (payload) {
+          renderStats(payload);
+          const items = Array.isArray(payload.items) ? payload.items : [];
+          if (!items.length) {
+            setStatus(emptyMessage, "empty");
+            renderPager(payload.pagination || {});
+            if (list) {
+              list.innerHTML = '<tr><td colspan="8">' + escapeHtml(emptyMessage) + '</td></tr>';
+            }
+            return;
+          }
+          currentItems = items;
+          const pagination = payload.pagination || {};
+          setStatus(String(pagination.returned || items.length) + " {{ _('RAW exibidos de') }} " + String(pagination.total || items.length) + ".", "loaded");
+          renderPager(pagination);
+          list.innerHTML = items.map(function (item) {
+            const candidates = (item.mineral_candidates || []).slice(0, 3).map(renderCandidate).filter(Boolean).join("");
+            const peaks = (item.detected_peaks || item.peaks || []).slice(0, 4);
+            const peakThetaValues = peaks.map(function (peak) {
+              return peak.two_theta;
+            }).filter(Boolean);
+            const peakDValues = peaks.map(function (peak) {
+              return peak.d;
+            }).filter(Boolean);
+            const filename = item.filename || item.original_filename || item.sample_code || "{{ _('Arquivo RAW') }}";
+            const key = itemKey(item);
+            const canCompare = item.status === "ok" || item.status === "importado";
+            const checked = compareSelection.has(key) ? " checked" : "";
+            const errorMessage = item.error_message || (item.metadata && item.metadata.error_message) || "";
+            const curveAction = canCompare
+              ? '<a class="ui tiny primary button" href="' + escapeHtml(comparisonUrl(item)) + '">{{ _('Comparar DRX') }}</a>'
+              : '<span class="ui tiny basic label">{{ _('Erro de leitura') }}</span>';
+            const actions = '<div class="argilo-package__row-actions">' + curveAction + recordButton(item) + '</div>';
+            return [
+              '<tr>',
+              '<td><input type="checkbox" data-role="compare-check" data-key="', escapeHtml(key), '" data-sample-code="', escapeHtml(item.sample_code || ""), '" data-filename="', escapeHtml(filename), '"', checked, canCompare ? '' : ' disabled', ' aria-label="{{ _("Selecionar") }} ', escapeHtml(item.sample_code || filename), '"></td>',
+              '<td><strong>', escapeHtml(item.sample_code || "{{ _('Não informado') }}"), '</strong><div class="argilo-package__trace">', escapeHtml(item.sample_base || ""), '</div></td>',
+              '<td>', escapeHtml(filename), '<div class="argilo-package__trace">', escapeHtml((item.metadata && item.metadata.points) ? String(item.metadata.points) + " {{ _('pontos') }}" : "{{ _('Pontos não informados') }}"), '</div></td>',
+              '<td>', escapeHtml(treatmentLabel(item.preparation)), '<div class="argilo-package__trace">', escapeHtml(errorMessage || item.preparation_evidence || item.preparation_confidence || ""), '</div></td>',
+              '<td><div class="argilo-package__peaks">', renderValueList(peakThetaValues, "{{ _('Não informado') }}"), '</div></td>',
+              '<td><div class="argilo-package__peaks">', renderValueList(peakDValues, "{{ _('Não informado') }}"), '</div></td>',
+              '<td>', candidates || escapeHtml("{{ _('Sem candidato mineralógico') }}"), '</td>',
+              '<td>', actions, '</td>',
+              '</tr>'
+            ].join("");
+          }).join("");
+        })
+        .catch(function () {
+          setStatus("{{ _('Não foi possível carregar os dados deste módulo. Tente atualizar a visualização ou verifique se os snapshots foram regenerados.') }}", "error");
+          if (list) {
+            list.innerHTML = '<tr><td colspan="8">{{ _('Não foi possível carregar os dados deste módulo.') }}</td></tr>';
+          }
+        });
+      }
+
+      if (filters) {
+        filters.addEventListener("submit", function (event) {
+          event.preventDefault();
+          currentOffset = 0;
+          loadSnapshotOverview();
+        });
+      }
+      if (pageSizeSelect) {
+        pageSizeSelect.addEventListener("change", function () {
+          currentOffset = 0;
+          loadSnapshotOverview();
+        });
+      }
+      if (pager) {
+        pager.addEventListener("click", function (event) {
+          const button = event.target.closest("[data-page-action]");
+          if (!button || button.disabled) {
+            return;
+          }
+          const limit = currentLimit();
+          if (button.dataset.pageAction === "previous") {
+            currentOffset = Math.max(0, currentOffset - limit);
+          } else {
+            currentOffset += limit;
+          }
+          loadSnapshotOverview();
+        });
+      }
+      if (list) {
+        list.addEventListener("change", function (event) {
+          const input = event.target.closest('[data-role="compare-check"]');
+          if (!input) {
+            return;
+          }
+          if (input.checked) {
+            compareSelection.set(input.dataset.key, {
+              sample_code: input.dataset.sampleCode,
+              filename: input.dataset.filename
+            });
+          } else {
+            compareSelection.delete(input.dataset.key);
+          }
+          updateCompareButton();
+        });
+      }
+      if (compareSelectedBtn) {
+        compareSelectedBtn.addEventListener("click", function () {
+          if (!compareSelection.size) {
+            return;
+          }
+          window.location.href = selectedComparisonUrl();
+        });
+      }
+      if (exportCsvBtn) {
+        exportCsvBtn.addEventListener("click", exportCurrentCsv);
+      }
+      if (exportPdfBtn) {
+        exportPdfBtn.addEventListener("click", exportCurrentPdf);
+      }
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+        document.addEventListener("fullscreenchange", syncFullscreenButton);
+        syncFullscreenButton();
+      }
+      updateCompareButton();
+      loadSnapshotOverview();
+    }());
+  </script>
+{% endblock javascript %}

@@ -1,0 +1,254 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/drx-comparacao.css') }}?v=20260620-core-runs-v2">
+{% endblock css %}
+
+{% block page_body %}
+  {{ render_scientific_header(
+    section=_("Análises"),
+    title=_("Comparação de difratogramas"),
+    subtitle=_("Compare difratogramas, arquivos RAW e picos associados aos registros da Argiloteca."),
+    breadcrumbs=[
+      {"label": _("Início"), "href": "/"},
+      {"label": _("Análises"), "href": url_for("argiloteca.analises_index")},
+      {"label": _("Comparação DRX"), "href": None}
+    ],
+    active_module="drx",
+    actions=[
+      {"label": _("Voltar para análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
+    ]
+  ) }}
+  <div
+    class="argilo-drx"
+    data-records-url="{{ url_for('argiloteca.api_drx_registros') }}"
+    data-raw-snapshot-url="{{ url_for('argiloteca.api_drx_raw_snapshot') }}"
+    data-raw-snapshot-suggestions-url="{{ url_for('argiloteca.api_drx_raw_snapshot_sugestoes') }}"
+    data-diffractogram-url-template="/api/argiloteca/drx/difratogramas/__id__"
+    data-neural-evidence-url-template="/api/argiloteca/drx/neural-evidence/__id__"
+    data-technical-report-url-template="/argiloteca/drx/reports/technical/__id__"
+    data-reference-compare-url-template="/api/argiloteca/drx/references/compare/__id__"
+    data-ngc-workflow-url="{{ url_for('argiloteca.api_drx_ngc_workflow') }}"
+    data-selection-report-url="{{ url_for('argiloteca.api_drx_selection_report') }}"
+    data-package-url-template="{{ url_for('argiloteca.api_pacote_analitico', record_id='__record_id__') }}"
+    data-package-curve-url-template="{{ url_for('argiloteca.api_pacote_analitico_drx_curva', record_id='__record_id__') }}"
+    data-external-raw-url="{{ url_for('argiloteca.api_drx_externo_curva') }}"
+    data-xrdnet-summary-url="{{ url_for('argiloteca.static', filename='data/xrdnet_argilominerais_v1/panel_summary.json') }}"
+    data-xrdnet-policy="legacy_auxiliary_backend_neural_preferred"
+    data-geologist-triage-url="{{ url_for('argiloteca.static', filename='data/drx_geologist_review_20260616/triage_queues.json') }}"
+    data-geologist-similarity-review-url="{{ url_for('argiloteca.static', filename='data/drx_geologist_review_20260616/similarity_suggestions_review.json') }}"
+    data-rruff-odr-curves-url="{{ url_for('argiloteca.static', filename='data/rruff_odr_argilominerais_20260619/rruff_odr_curves_manifest.json') }}"
+    data-mineral-detail-url-base="/argilominerais/"
+    data-authorized-mineral-slugs="{{ (authorized_mineral_slugs or [])|tojson|forceescape }}"
+    data-authorized-mineral-aliases="{{ (authorized_mineral_aliases or {})|tojson|forceescape }}"
+    data-context-record-id="{{ context_record_id or '' }}"
+    data-context-record-title="{{ context_record_title or '' }}"
+    data-context-source="{{ context_source or '' }}"
+  >
+    <header class="argilo-drx__header argilo-legacy-module-header">
+      <div>
+        <p class="argilo-drx__eyebrow">{{ _("Argiloteca") }}</p>
+        <h2>{{ _("Comparação DRX") }}</h2>
+        <p class="argilo-drx__record-id">{{ _("Fonte") }}: {{ _("snapshot geral do módulo DRX") }}</p>
+        <p class="argilo-drx__record-id argilo-drx__record-id--secondary">{{ _("Escopo") }}: {{ _("difratogramas RAW processados e arquivos temporários") }}</p>
+        <p>
+          {{ _("Difratogramas são expostos em uma visão rastreável, com seleção de amostras, leitura mineralógica preliminar e exportação de resultados.") }}
+        </p>
+      </div>
+      <div class="argilo-drx__actions">
+        <a class="ui button" href="{{ url_for('argiloteca.analises_index') }}">{{ _("Análises") }}</a>
+        <a class="ui primary button" href="{{ url_for('argiloteca.drx_comparacao') }}">{{ _("Comparar DRX") }}</a>
+        <button class="ui button" type="button" data-role="drx-header-fullscreen">{{ _("Tela cheia") }}</button>
+      </div>
+    </header>
+
+    <div class="argilo-drx__layout">
+      <main class="argilo-drx__main" data-role="drx-fullscreen-section">
+        {% if context_record_id %}
+        <section class="argilo-drx__context" data-role="comparison-context">
+          <div>
+            <p class="argilo-drx__context-eyebrow">
+              {% if context_source == "package" %}
+                {{ _("Pacote analítico em comparação") }}
+              {% else %}
+                {{ _("Registro em comparação") }}
+              {% endif %}
+            </p>
+            <h2>{{ context_record_title }}</h2>
+            <p class="argilo-drx__context-id">{{ _("Identificador") }}: {{ context_record_id }}</p>
+          </div>
+          <nav class="argilo-drx__context-actions" aria-label="{{ _('Navegação do contexto DRX') }}">
+            <a class="ui primary button" href="/analises/{{ context_record_id }}">{{ _("Voltar ao pacote analítico") }}</a>
+            <a class="ui button" href="/records/{{ context_record_id }}">{{ _("Abrir registro") }}</a>
+            <button class="ui button" type="button" data-role="mineral-panel-fullscreen">{{ _("Tela cheia") }}</button>
+          </nav>
+        </section>
+        {% endif %}
+        {% if not context_record_id %}
+        <section class="argilo-drx__context argilo-drx__context--empty">
+          <div>
+            <p class="argilo-drx__context-eyebrow">{{ _("Como começar") }}</p>
+            <h2>{{ _("Selecione RAW do snapshot geral ou compare um RAW temporário") }}</h2>
+            <p>{{ _("Esta visão não depende de um registro específico: use o snapshot geral do módulo DRX para carregar arquivos RAW já processados, ou compare arquivos temporários apenas nesta sessão.") }}</p>
+          </div>
+          <nav class="argilo-drx__context-actions" aria-label="{{ _('Atalhos de análise DRX') }}">
+            <a class="ui primary button" href="{{ url_for('argiloteca.analises_index') }}">{{ _("Análises") }}</a>
+            <button class="ui button" type="button" data-role="mineral-panel-fullscreen">{{ _("Tela cheia") }}</button>
+          </nav>
+        </section>
+        {% endif %}
+        <section class="argilo-drx__toolbar">
+          <div data-role="status" aria-live="polite">{{ _("Selecione pelo menos dois difratogramas para comparar.") }}</div>
+          <div class="argilo-drx__toolbar-controls">
+            <div class="argilo-drx__toolbar-group" aria-label="{{ _('Seleção') }}">
+              <strong>{{ _("Seleção") }}</strong>
+              <button class="ui primary button" type="button" data-role="open-raw-picker">{{ _("Adicionar amostras RAW") }}</button>
+              <button class="ui button" type="button" data-role="open-suggestions">{{ _("Amostras Comparadas (N/C/G)") }}</button>
+              <button class="ui button" type="button" data-role="open-triage-queue">{{ _("Fila do geólogo") }}</button>
+              <button class="ui button" type="button" data-role="toggle-rruff-odr" aria-pressed="false">{{ _("RRUFF ODR") }}</button>
+              <button class="ui button" type="button" data-role="external-raw-button">{{ _("Comparar arquivo temporário") }}</button>
+              <input type="file" accept=".raw,.RAW,.csv,.CSV,.txt,.TXT,.xy,.XY,.dat,.DAT" data-role="external-raw-file" multiple hidden>
+              <button class="ui button" type="button" data-role="reference-compare-button">{{ _("Comparar referência") }}</button>
+              <input type="file" accept=".json,.JSON,.csv,.CSV,.txt,.TXT,.xy,.XY,.dat,.DAT,.cif,.CIF" data-role="reference-compare-file" hidden>
+            </div>
+            <div class="argilo-drx__toolbar-group" aria-label="{{ _('Visualização') }}">
+              <label for="argilo-drx-mode">{{ _("Visualização") }}</label>
+              <select id="argilo-drx-mode" class="ui dropdown" data-role="view-mode">
+                <option value="absolute">{{ _("Absoluto") }}</option>
+                <option value="normalized">{{ _("Normalizado") }}</option>
+                <option value="area">{{ _("Área") }}</option>
+                <option value="stacked">{{ _("Empilhado") }}</option>
+              </select>
+              <button class="ui button" type="button" data-role="toggle-peaks" aria-pressed="false">{{ _("Mostrar picos") }}</button>
+              <button class="ui button" type="button" data-role="reset-zoom">{{ _("Reiniciar zoom") }}</button>
+            </div>
+            <div class="argilo-drx__toolbar-group" aria-label="{{ _('Exportação') }}">
+              <strong>{{ _("Exportação") }}</strong>
+              <button class="ui button" type="button" data-role="export-csv">{{ _("Exportar CSV") }}</button>
+              <button class="ui button" type="button" data-role="export-json">{{ _("Exportar JSON") }}</button>
+              <button class="ui button" type="button" data-role="export-pdf">{{ _("Exportar PDF") }}</button>
+            </div>
+          </div>
+        </section>
+
+        <p class="argilo-drx__note">{{ _("Arquivos temporários RAW, CSV, TXT, XY ou DAT são usados apenas para comparação local nesta sessão e não são salvos como registros.") }}</p>
+
+        <section class="argilo-drx__raw-picker" data-role="raw-picker" hidden>
+          <div class="argilo-drx__selected-header">
+            <div>
+              <h2>{{ _("Adicionar amostras RAW") }}</h2>
+              <p>{{ _("Selecione outros arquivos do pacote analítico para incluir no gráfico de comparação.") }}</p>
+            </div>
+            <div class="argilo-drx__header-actions">
+              <button class="ui primary button" type="button" data-role="open-suggestions-from-raw">{{ _("Buscar conjuntos") }}</button>
+              <button class="ui button" type="button" data-role="close-raw-picker">{{ _("Fechar") }}</button>
+            </div>
+          </div>
+          <form class="argilo-drx__raw-picker-form" data-role="raw-picker-form">
+            <input type="search" name="q" placeholder="{{ _('Buscar por amostra, arquivo ou mineral') }}">
+            <select name="preparation">
+              <option value="">{{ _("Todas as preparações") }}</option>
+              <option value="natural">{{ _("Natural") }}</option>
+              <option value="glicolado">{{ _("Glicolado") }}</option>
+              <option value="calcinado">{{ _("Calcinado") }}</option>
+              <option value="indeterminado">{{ _("Indeterminada") }}</option>
+            </select>
+            <button class="ui primary button" type="submit">{{ _("Buscar") }}</button>
+          </form>
+          <div class="argilo-drx__raw-picker-status" data-role="raw-picker-status"></div>
+          <div class="argilo-drx__raw-picker-list" data-role="raw-picker-list"></div>
+        </section>
+
+        <section class="argilo-drx__raw-picker" data-role="suggestions-panel" hidden>
+          <div class="argilo-drx__selected-header">
+            <div>
+              <h2>{{ _("Visualizar Argilominerais") }}</h2>
+              <p>{{ _("Grupos calculados a partir dos nomes, preparações, minerais candidatos e repetição de amostras no pacote RAW.") }}</p>
+            </div>
+            <div class="argilo-drx__header-actions">
+              <button class="ui button" type="button" data-role="load-ngc-suggestions">{{ _("Conjuntos N/G/C") }}</button>
+              <button class="ui button" type="button" data-role="load-triage-queue">{{ _("Fila do geólogo") }}</button>
+              <button class="ui button" type="button" data-role="close-suggestions">{{ _("Fechar") }}</button>
+            </div>
+          </div>
+          <div class="argilo-drx__raw-picker-status" data-role="suggestions-status"></div>
+          <div class="argilo-drx__suggestion-list" data-role="suggestions-list"></div>
+        </section>
+
+        <section class="argilo-drx__chart-wrap">
+          <div class="argilo-drx__tooltip" data-role="tooltip" hidden></div>
+          <div class="argilo-drx__plotly-chart" data-role="plotly-chart" hidden></div>
+          <svg class="argilo-drx__chart" data-role="chart" viewBox="0 0 960 520" role="img" aria-label="{{ _('Difratogramas comparados') }}"></svg>
+          <div class="argilo-drx__note" aria-live="polite">
+            {{ _("Resumo textual: as curvas selecionadas, picos e candidatos mineralógicos aparecem nos painéis abaixo após a seleção.") }}
+          </div>
+        </section>
+
+        <section class="argilo-drx__rruff-panel" data-role="rruff-odr-panel" hidden>
+          <div class="argilo-drx__selected-header">
+            <div>
+              <h2>{{ _("Referências RRUFF ODR") }}</h2>
+              <p>{{ _("Camada opcional de revisão com curvas públicas RRUFF/ODR confirmadas; WebMineral permanece como fallback/comparação.") }}</p>
+            </div>
+            <div class="argilo-drx__header-actions">
+              <button class="ui button" type="button" data-role="close-rruff-odr">{{ _("Fechar") }}</button>
+            </div>
+          </div>
+          <div class="argilo-drx__rruff-controls">
+            <label>
+              <span>{{ _("Curva") }}</span>
+              <select class="ui dropdown" data-role="rruff-odr-curve"></select>
+            </label>
+            <label>
+              <span>{{ _("Tipo") }}</span>
+              <select class="ui dropdown" data-role="rruff-odr-type">
+                <option value="raw_xy">{{ _("RAW") }}</option>
+                <option value="processed_xy">{{ _("Processado") }}</option>
+                <option value="all">{{ _("Todos") }}</option>
+              </select>
+            </label>
+            <label class="argilo-drx__rruff-check">
+              <input type="checkbox" data-role="rruff-odr-normalize" checked>
+              <span>{{ _("Normalizar") }}</span>
+            </label>
+            <label class="argilo-drx__rruff-check">
+              <input type="checkbox" data-role="rruff-odr-peaks" checked>
+              <span>{{ _("Picos") }}</span>
+            </label>
+          </div>
+          <div class="argilo-drx__rruff-status" data-role="rruff-odr-status" aria-live="polite"></div>
+          <div class="argilo-drx__rruff-chart" data-role="rruff-odr-chart"></div>
+          <div class="argilo-drx__rruff-meta" data-role="rruff-odr-meta"></div>
+        </section>
+
+        <section class="argilo-drx__selected">
+          <div class="argilo-drx__selected-header">
+            <h2>{{ _("Amostras Selecionadas") }}</h2>
+            <button class="ui button" type="button" data-role="clear-selection">{{ _("Remover todas") }}</button>
+          </div>
+          <div class="argilo-drx__selected-grid" data-role="selected-summary">
+            <p>{{ _("A descrição dos registros aparecerá aqui junto com a seleção.") }}</p>
+          </div>
+        </section>
+
+        <section class="argilo-drx__mineral-panel" data-role="mineral-panel-section">
+          <div class="argilo-drx__selected-header">
+            <h2>{{ _("Painel mineralógico") }}</h2>
+          </div>
+          <div data-role="mineral-panel">
+            <p>{{ _("Selecione difratogramas para ver minerais candidatos e evidências de picos.") }}</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+  <script src="{{ url_for('argiloteca.static', filename='js/drx-comparacao.js') }}?v=20260620-core-runs-v2"></script>
+{% endblock javascript %}

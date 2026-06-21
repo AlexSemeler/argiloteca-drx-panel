@@ -1,0 +1,1328 @@
+{% macro render_argilo_map_css() -%}
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+    crossorigin=""
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+    crossorigin=""
+  />
+  <style>
+    .argilo-map-panel,
+    .argilo-map-atlas {
+      font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+      color: var(--arg-color-text);
+    }
+
+    .argilo-map-panel .argilo-map-canvas {
+      width: 100%;
+      min-height: 320px;
+      border-radius: 0.5rem;
+      border: 1px solid var(--arg-color-border-soft);
+      background: linear-gradient(180deg, #f7faf8 0%, var(--arg-color-surface-analytic) 100%);
+    }
+
+    .argilo-map-panel .argilo-map-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .argilo-map-panel .argilo-map-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      color: var(--arg-color-text-muted);
+      font-size: 0.95rem;
+    }
+
+    .argilo-map-panel .argilo-map-status {
+      color: var(--arg-color-text-muted);
+      font-size: 0.95rem;
+    }
+
+    .argilo-map-marker {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      background: var(--arg-color-sample);
+      box-shadow: 0 0 0 1px rgba(34, 48, 57, 0.2);
+    }
+
+    .argilo-map-marker.is-highlighted {
+      width: 20px;
+      height: 20px;
+      background: var(--arg-color-chemistry);
+      box-shadow: 0 0 0 3px rgba(182, 95, 58, 0.22);
+    }
+
+    .argilo-map-marker.is-dataset {
+      background: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28);
+    }
+
+    .argilo-map-marker.is-grouped {
+      width: 20px;
+      height: 20px;
+      background: #7c3f12;
+      box-shadow: 0 0 0 3px rgba(124, 63, 18, 0.22);
+    }
+
+    .argilo-map-dataset-badge {
+      display: inline-block;
+      margin: 0.45rem 0 0.15rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e3a8a;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .argilo-map-popup dl {
+      margin: 0.75rem 0 0;
+    }
+
+    .argilo-map-popup dt {
+      font-weight: 700;
+      margin-top: 0.35rem;
+    }
+
+    .argilo-map-popup dd {
+      margin: 0.15rem 0 0;
+    }
+
+    .argilo-map-atlas {
+      border: 1px solid var(--arg-color-border-soft);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(94, 74, 47, 0.08);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      background: #fffdf8;
+      border-bottom: 1px solid rgba(122, 93, 57, 0.16);
+      color: var(--arg-color-text);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #6f4f34;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-subtitle {
+      margin: 0.2rem 0 0;
+      color: var(--arg-color-text-muted);
+      font-size: 0.92rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-actions,
+    .argilo-map-atlas .argilo-map-atlas-base-switcher,
+    .argilo-map-atlas .argilo-map-atlas-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.8rem 1rem;
+      background: #fbf7f0;
+      border-bottom: 1px solid rgba(122, 93, 57, 0.16);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0;
+      border: 1px solid rgba(122, 93, 57, 0.16);
+      background: #f4eadc;
+      color: var(--arg-color-primary-strong);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-button {
+      border: 1px solid rgba(122, 93, 57, 0.16);
+      background: #f4eadc;
+      color: var(--arg-color-primary-strong);
+      border-radius: 0;
+      padding: 0.48rem 0.75rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-button:hover,
+    .argilo-map-atlas .argilo-map-atlas-button.is-active,
+    .argilo-map-atlas .argilo-map-atlas-button.is-loading {
+      background: #7a5d39;
+      border-color: #7a5d39;
+      color: #ffffff;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-body {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      min-height: 72vh;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-sidebar {
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(250, 252, 251, 0.98) 0%, rgba(238, 245, 242, 0.98) 100%);
+      border-right: 1px solid var(--arg-color-border-soft);
+      overflow-y: auto;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-sidebar h4 {
+      margin: 0 0 0.5rem;
+      color: var(--arg-color-text);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-sidebar p {
+      color: var(--arg-color-text-muted);
+      line-height: 1.45;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-section + .argilo-map-atlas-section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--arg-color-border-soft);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-statgrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-stat {
+      padding: 0.85rem;
+      border-radius: 0.7rem;
+      background: linear-gradient(180deg, #fdfefe 0%, #f4f8f7 100%);
+      border: 1px solid var(--arg-color-border-soft);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-stat-label {
+      display: block;
+      color: var(--arg-color-text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-stat-value {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--arg-color-text);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-filters {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-filter label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--arg-color-text);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-select {
+      width: 100%;
+      min-height: 2.45rem;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--arg-color-border-soft);
+      border-radius: 0.35rem;
+      background: #ffffff;
+      color: var(--arg-color-text);
+      font-size: 0.92rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-filter-note {
+      margin: 0.45rem 0 0;
+      color: var(--arg-color-text-muted);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-filters [data-role="update-map-filters"] {
+      width: 100%;
+      margin-top: 0.15rem;
+      border-color: var(--arg-color-primary-strong);
+      background: var(--arg-color-primary-strong);
+      color: #ffffff;
+      border-radius: 0.35rem;
+      text-align: center;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-filters [data-role="update-map-filters"]:hover,
+    .argilo-map-atlas .argilo-map-atlas-filters [data-role="update-map-filters"]:focus {
+      border-color: var(--arg-color-primary);
+      background: var(--arg-color-primary);
+      color: #ffffff;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--arg-color-text);
+      font-size: 0.92rem;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px rgba(20, 30, 44, 0.18);
+      background: var(--arg-color-sample);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend-dot.is-highlight {
+      width: 18px;
+      height: 18px;
+      background: var(--arg-color-chemistry);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend-dot.is-dataset {
+      background: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-legend-area {
+      width: 24px;
+      height: 14px;
+      border-radius: 3px;
+      border: 2px solid #bd5f24;
+      background: rgba(221, 119, 45, 0.24);
+      box-shadow: 0 0 0 1px rgba(20, 30, 44, 0.12);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-mapwrap {
+      position: relative;
+      min-height: 72vh;
+      background: #e3ebe6;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-mapwrap .argilo-map-canvas {
+      height: 100%;
+      min-height: 72vh;
+      border: 0;
+      border-radius: 0;
+      background: #e3ebe6;
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-overlay {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 500;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: calc(100% - 2rem);
+    }
+
+    .argilo-map-atlas .argilo-map-atlas-overlay-card {
+      padding: 0.6rem 0.75rem;
+      border-radius: 0.6rem;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--arg-color-text);
+      border: 1px solid var(--arg-color-border-soft);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(8px);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .argilo-map-atlas .argilo-map-atlas-body {
+        grid-template-columns: 1fr;
+      }
+
+      .argilo-map-atlas .argilo-map-atlas-sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--arg-color-border-soft);
+      }
+    }
+  </style>
+{%- endmacro %}
+
+{% macro render_argilo_map_panel(
+  map_id,
+  api_url,
+  title="Mapa",
+  subtitle="",
+  record_id="",
+  highlight_record_id="",
+  lazy=true,
+  map_height="420px",
+  empty_message="Nenhum ponto geográfico disponível para exibição.",
+  global_map_url=""
+) -%}
+  <div
+    class="ui stacked segment argilo-map-panel"
+    data-argilo-map-root="true"
+    data-map-id="{{ map_id }}"
+    data-api-url="{{ api_url }}"
+    data-record-id="{{ record_id }}"
+    data-highlight-record-id="{{ highlight_record_id }}"
+    data-map-lazy="{{ 'true' if lazy else 'false' }}"
+    data-empty-message="{{ empty_message }}"
+  >
+    <div class="argilo-map-toolbar">
+      <div>
+        <h3 class="ui dividing header">{{ title }}</h3>
+        {% if subtitle %}
+          <p class="argilo-map-status">{{ subtitle }}</p>
+        {% endif %}
+      </div>
+
+      {% if global_map_url %}
+        <a class="ui tiny basic button" href="{{ global_map_url }}">
+          {{ _("Abrir mapa global") }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="argilo-map-meta" aria-live="polite">
+      <span><strong>{{ _("Status") }}:</strong> <span data-role="map-status">{{ _("Aguardando") }}</span></span>
+      <span><strong>{{ _("Registros") }}:</strong> <span data-role="map-record-count">0</span></span>
+      <span><strong>{{ _("Pontos") }}:</strong> <span data-role="map-point-count">0</span></span>
+    </div>
+
+    <div
+      id="{{ map_id }}"
+      class="argilo-map-canvas rel-mt-1"
+      style="height: {{ map_height }};"
+      role="region"
+      aria-label="{{ title }}"
+    ></div>
+  </div>
+{%- endmacro %}
+
+{% macro render_argilo_atlas_panel(
+  map_id,
+  api_url,
+  title="Mapa",
+  subtitle="",
+  highlight_record_id="",
+  empty_message="Nenhum ponto geográfico disponível para exibição.",
+  active_panel="mapa"
+) -%}
+  <div
+    class="argilo-map-atlas argilo-map-panel"
+    data-argilo-map-root="true"
+    data-map-id="{{ map_id }}"
+    data-api-url="{{ api_url }}"
+    data-record-id=""
+    data-highlight-record-id="{{ highlight_record_id }}"
+    data-mineral-term="{{ request.args.get('mineral_term', '') }}"
+    data-global-composition="{{ request.args.get('has_global_composition', '') }}"
+    data-mining-layer="{{ request.args.get('mining_layer', '') }}"
+    data-mining-api-url="{{ url_for('argiloteca.api_areas_mineracao_argilominerais') }}"
+    data-map-lazy="false"
+    data-empty-message="{{ empty_message }}"
+    data-map-variant="atlas"
+  >
+    <div class="argilo-map-atlas-header">
+      <div>
+        <h2 class="argilo-map-atlas-title">{{ title }}</h2>
+        {% if subtitle %}
+          <p class="argilo-map-atlas-subtitle">{{ subtitle }}</p>
+        {% endif %}
+      </div>
+      <div class="argilo-map-atlas-actions">
+        <button type="button" class="argilo-map-atlas-button" data-role="fullscreen-map">
+          {{ _("Mapa em tela cheia") }}
+        </button>
+      </div>
+    </div>
+
+    <div class="argilo-map-atlas-toolbar">
+      <div class="argilo-map-atlas-base-switcher">
+        <button type="button" class="argilo-map-atlas-button is-active" data-role="basemap-switch" data-basemap="osm">
+          {{ _("Base OSM") }}
+        </button>
+        <button type="button" class="argilo-map-atlas-button" data-role="basemap-switch" data-basemap="imagery">
+          {{ _("Imagem") }}
+        </button>
+        <button type="button" class="argilo-map-atlas-button" data-role="basemap-switch" data-basemap="light">
+          {{ _("Clara") }}
+        </button>
+      </div>
+
+      <div class="argilo-map-atlas-meta">
+        <span class="argilo-map-atlas-chip">{{ _("Status") }}: <span data-role="map-status">{{ _("Aguardando") }}</span></span>
+        <button type="button" class="argilo-map-atlas-button" data-role="zoom-all">
+          {{ _("Zoom para todos") }}
+        </button>
+        <button type="button" class="argilo-map-atlas-button" data-role="toggle-mining-layer" aria-pressed="false">
+          {{ _("Áreas mineração ANM") }}
+        </button>
+      </div>
+    </div>
+
+    <div class="argilo-map-atlas-body">
+      <aside class="argilo-map-atlas-sidebar" aria-label="{{ _('Painel cartográfico') }}">
+        <div class="argilo-map-atlas-section">
+          <h4>{{ _("Panorama") }}</h4>
+          <div class="argilo-map-atlas-statgrid">
+            <div class="argilo-map-atlas-stat">
+              <span class="argilo-map-atlas-stat-label">{{ _("Registros") }}</span>
+              <span class="argilo-map-atlas-stat-value" data-role="map-record-count">0</span>
+            </div>
+            <div class="argilo-map-atlas-stat">
+              <span class="argilo-map-atlas-stat-label">{{ _("Pontos") }}</span>
+              <span class="argilo-map-atlas-stat-value" data-role="map-point-count">0</span>
+            </div>
+            <div class="argilo-map-atlas-stat">
+              <span class="argilo-map-atlas-stat-label">{{ _("Amostras") }}</span>
+              <span class="argilo-map-atlas-stat-value" data-role="map-sample-count">0</span>
+            </div>
+            <div class="argilo-map-atlas-stat">
+              <span class="argilo-map-atlas-stat-label">{{ _("Argilominerais") }}</span>
+              <span class="argilo-map-atlas-stat-value" data-role="map-mineral-count">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="argilo-map-atlas-section">
+          <h4>{{ _("Filtros") }}</h4>
+          <div class="argilo-map-atlas-filters">
+            <div class="argilo-map-atlas-filter">
+              <label for="{{ map_id }}-mineral-filter">{{ _("Argilomineral") }}</label>
+              <select
+                id="{{ map_id }}-mineral-filter"
+                class="argilo-map-atlas-select"
+                data-role="mineral-filter"
+              >
+                <option value="">{{ _("Todos os argilominerais") }}</option>
+                {% for mineral in argilo_frontpage_mineral_options %}
+                  <option value="{{ mineral.term }}" {% if request.args.get('mineral_term', '') == mineral.term %}selected{% endif %}>
+                    {{ mineral.label }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="argilo-map-atlas-filter">
+              <label for="{{ map_id }}-composition-filter">{{ _("Composição química global") }}</label>
+              <select
+                id="{{ map_id }}-composition-filter"
+                class="argilo-map-atlas-select"
+                data-role="global-composition-filter"
+              >
+                <option value="">{{ _("Todos") }}</option>
+                <option value="sim" {% if request.args.get('has_global_composition', '') == 'sim' %}selected{% endif %}>
+                  {{ _("Com composição") }}
+                </option>
+                <option value="nao" {% if request.args.get('has_global_composition', '') in ['nao', 'não'] %}selected{% endif %}>
+                  {{ _("Sem composição") }}
+                </option>
+              </select>
+              <p class="argilo-map-atlas-filter-note">
+                {{ _("Use este select para separar registros georreferenciados simples daqueles que também possuem composição química global.") }}
+              </p>
+            </div>
+
+            <div class="argilo-map-atlas-filter">
+              <label for="{{ map_id }}-mining-filter">{{ _("Áreas minerárias ANM/SIGMINE") }}</label>
+              <select
+                id="{{ map_id }}-mining-filter"
+                class="argilo-map-atlas-select"
+                data-role="mining-layer-filter"
+              >
+                <option value="">{{ _("Não mostrar áreas minerárias") }}</option>
+                <option value="sim" {% if request.args.get('mining_layer', '') == 'sim' %}selected{% endif %}>
+                  {{ _("Mostrar áreas minerárias relacionadas") }}
+                </option>
+              </select>
+              <p class="argilo-map-atlas-filter-note">
+                {{ _("Carrega a camada ANM sobre os pontos atuais; com argilomineral selecionado, mostra somente áreas relacionadas a ele.") }}
+              </p>
+            </div>
+
+            <button type="button" class="argilo-map-atlas-button" data-role="update-map-filters">
+              {{ _("Atualizar dados") }}
+            </button>
+          </div>
+        </div>
+
+        <div class="argilo-map-atlas-section">
+          <h4>{{ _("Legenda") }}</h4>
+          <div class="argilo-map-atlas-legend">
+            <div class="argilo-map-atlas-legend-item">
+              <span class="argilo-map-atlas-legend-dot"></span>
+              <span>{{ _("Ponto do acervo") }}</span>
+            </div>
+            <div class="argilo-map-atlas-legend-item">
+              <span class="argilo-map-atlas-legend-dot is-highlight"></span>
+              <span>{{ _("Registro destacado") }}</span>
+            </div>
+            <div class="argilo-map-atlas-legend-item">
+              <span class="argilo-map-atlas-legend-dot is-dataset"></span>
+              <span>{{ _("Registro derivado de dataset") }}</span>
+            </div>
+            <div class="argilo-map-atlas-legend-item">
+              <span class="argilo-map-atlas-legend-area"></span>
+              <span>{{ _("Áreas minerárias ANM/SIGMINE") }}</span>
+            </div>
+          </div>
+          <p class="argilo-map-atlas-filter-note">
+            {{ _("Clique nos pontos para abrir registros, amostras agrupadas e vínculos com catálogo ou geoquímica.") }}
+          </p>
+        </div>
+
+        <div class="argilo-map-atlas-section">
+          <h4>{{ _("Camada ANM/SIGMINE") }}</h4>
+          <div class="argilo-map-atlas-legend">
+            <div class="argilo-map-atlas-legend-item">
+              <strong>{{ _("Áreas carregadas:") }}</strong>
+              <span data-role="mining-area-count">0</span>
+            </div>
+            <div class="argilo-map-atlas-legend-item">
+              <strong>{{ _("Fonte:") }}</strong>
+              <span>{{ _("SIGMINE / Geoinformação Mineral") }}</span>
+            </div>
+          </div>
+          <p class="argilo-map-atlas-filter-note">
+            {{ _("A camada sobrepõe áreas minerárias relacionadas ao argilomineral filtrado ou ao conjunto atual do mapa.") }}
+          </p>
+        </div>
+
+        <div class="argilo-map-atlas-section">
+          <h4>{{ _("Leitura espacial") }}</h4>
+          <p>
+            {{ _("A visualização enfatiza distribuição territorial das ocorrências de argilominerais brasileiros.") }}
+          </p>
+          <div class="argilo-map-atlas-legend">
+            <div class="argilo-map-atlas-legend-item">
+              <strong>{{ _("Mapa base atual:") }}</strong>
+              <span data-role="map-basemap-label">{{ _("OpenStreetMap") }}</span>
+            </div>
+            <div class="argilo-map-atlas-legend-item">
+              <strong>{{ _("Cursor:") }}</strong>
+              <span data-role="cursor-position">{{ _("mova o cursor sobre o mapa") }}</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="argilo-map-atlas-mapwrap">
+        <div
+          id="{{ map_id }}"
+          class="argilo-map-canvas"
+          role="region"
+          aria-label="{{ title }}"
+        ></div>
+        <div class="argilo-map-atlas-overlay">
+          <div class="argilo-map-atlas-overlay-card">
+            {{ _("Escala visual baseada em clusterização automática") }}
+          </div>
+          <div class="argilo-map-atlas-overlay-card">
+            {{ _("Clique em um ponto para abrir o resumo científico") }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro render_argilo_map_js() -%}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin=""></script>
+  <script>
+    window.ArgilotecaMapUI = window.ArgilotecaMapUI || (function () {
+      const initialized = new Set();
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function renderCompactList(values, limit) {
+        const items = Array.isArray(values) ? values.filter(Boolean) : [];
+        if (!items.length) {
+          return "";
+        }
+        const shown = items.slice(0, limit || 8).map(escapeHtml).join(", ");
+        const remaining = items.length - (limit || 8);
+        return shown + (remaining > 0 ? " +" + remaining : "");
+      }
+
+      function isVisible(element) {
+        return !!(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+      }
+
+      function asNumber(value) {
+        if (value === null || value === undefined || value === "") {
+          return null;
+        }
+
+        const normalized = String(value).replace(",", ".").trim();
+        const parsed = Number(normalized);
+        return Number.isFinite(parsed) ? parsed : null;
+      }
+
+      function buildPopup(point) {
+        const sampleCode = escapeHtml(point.sample_code || point.codigo_amostra || "");
+        const sampleLocation = escapeHtml(point.sample_location || point.local_coleta || "");
+        const sampleContext = escapeHtml(point.sample_context || point.contexto_geologico || "");
+        const title = escapeHtml(
+          (point.kind === "amostra" && (point.sample_code || point.codigo_amostra)) ||
+          point.nome ||
+          point.label ||
+          point.title ||
+          "Registro"
+        );
+        const recordTitle = escapeHtml(point.title || "");
+        const kind = escapeHtml(point.kind || "");
+        const grupo = escapeHtml(point.grupo || point.group || "");
+        const descricao = escapeHtml(point.descricao || "");
+        const altitude = point.altitude ?? point.alt;
+        const link = point.link || point.url;
+        const datasetBadge = escapeHtml(point.dataset_badge || point.dataset_source || "");
+        const datasetDoi = escapeHtml(point.dataset_doi || "");
+        const groupedCount = Number(point.grouped_points_count || 0);
+        const sampleCodes = renderCompactList(point.sample_codes, 8);
+        const argilominerais = renderCompactList(point.argilominerais, 10);
+        const mineralGroups = renderCompactList(point.mineral_groups, 8);
+        const sampleLocations = renderCompactList(point.sample_locations, 4);
+        const sampleContexts = renderCompactList(point.sample_contexts, 3);
+
+        let html = '<div class="argilo-map-popup">';
+        html += "<strong>" + title + "</strong>";
+        if (datasetBadge) {
+          html += '<div class="argilo-map-dataset-badge">' + datasetBadge + '</div>';
+        }
+
+        if (recordTitle && recordTitle !== title) {
+          html += "<div>" + recordTitle + "</div>";
+        }
+
+        html += "<dl>";
+
+        if (groupedCount > 1) {
+          html += "<dt>Ocorrências agrupadas</dt><dd>" + escapeHtml(groupedCount) + " pontos neste mesmo registro e coordenada</dd>";
+        }
+
+        if (kind === "amostra") {
+          if (sampleLocation) {
+            html += "<dt>Localização</dt><dd>" + sampleLocation + "</dd>";
+          }
+
+          if (sampleContext) {
+            html += "<dt>Contexto geológico</dt><dd>" + sampleContext + "</dd>";
+          }
+
+          if (datasetDoi) {
+            html += "<dt>DOI do dataset</dt><dd>" + datasetDoi + "</dd>";
+          }
+
+          html += "<dt>Coordenadas</dt><dd>" + escapeHtml(point.latitude ?? point.lat) + ", " + escapeHtml(point.longitude ?? point.lon) + "</dd>";
+        } else {
+          if (kind) {
+          html += "<dt>Tipo</dt><dd>" + kind + "</dd>";
+          }
+
+          if (grupo) {
+            html += "<dt>Grupo</dt><dd>" + grupo + "</dd>";
+          }
+
+          if (descricao) {
+            html += "<dt>Descrição</dt><dd>" + descricao + "</dd>";
+          }
+
+          if (altitude !== null && altitude !== undefined && altitude !== "") {
+            html += "<dt>Altitude</dt><dd>" + escapeHtml(altitude) + " m</dd>";
+          }
+
+          if (datasetDoi) {
+            html += "<dt>DOI do dataset</dt><dd>" + datasetDoi + "</dd>";
+          }
+
+          html += "<dt>Coordenadas</dt><dd>" + escapeHtml(point.latitude ?? point.lat) + ", " + escapeHtml(point.longitude ?? point.lon) + "</dd>";
+        }
+
+        if (sampleCodes) {
+          html += "<dt>Amostras</dt><dd>" + sampleCodes + "</dd>";
+        }
+        if (argilominerais) {
+          html += "<dt>Argilominerais</dt><dd>" + argilominerais + "</dd>";
+        }
+        if (mineralGroups) {
+          html += "<dt>Grupos minerais</dt><dd>" + mineralGroups + "</dd>";
+        }
+        if (sampleLocations) {
+          html += "<dt>Locais associados</dt><dd>" + sampleLocations + "</dd>";
+        }
+        if (sampleContexts) {
+          html += "<dt>Contextos associados</dt><dd>" + sampleContexts + "</dd>";
+        }
+
+        if (typeof point.has_global_composition === "boolean") {
+          html += "<dt>Perfil do registro</dt><dd>" + (point.has_global_composition ? "Coordenadas e dados geoquímicos" : "Somente coordenadas") + "</dd>";
+        }
+
+        html += "</dl>";
+
+        if (link) {
+          html += '<div class="argilo-map-popup-action"><a class="ui tiny primary button" href="' + escapeHtml(link) + '">Abrir registro</a></div>';
+        }
+
+        html += "</div>";
+        return html;
+      }
+
+      function buildMiningPopup(feature) {
+        const props = feature.properties || {};
+        let html = '<div class="argilo-map-popup">';
+        html += "<strong>" + escapeHtml(props.argilomineral_relacionado || props.substancia_sigmine || "Área minerária ANM") + "</strong>";
+        html += "<dl>";
+        [
+          ["Substância", props.substancia_sigmine || props.SUBS],
+          ["Processo", props.processo || props.PROCESSO || props.DSProcesso],
+          ["Fase", props.fase || props.FASE],
+          ["Titular / explorador", props.titular_explorador || props.NOME],
+          ["Nome da mina", props.nome_mina],
+          ["Uso SIGMINE", props.uso_sigmine || props.USO],
+          ["Área (ha)", props.area_ha || props.AREA_HA],
+          ["UF", props.uf || props.UF],
+          ["Último evento", props.ultimo_evento || props.ULT_EVENTO]
+        ].forEach(function (item) {
+          if (item[1] !== null && item[1] !== undefined && item[1] !== "") {
+            html += "<dt>" + escapeHtml(item[0]) + "</dt><dd>" + escapeHtml(item[1]) + "</dd>";
+          }
+        });
+        html += "</dl>";
+        if (props.arquivo_kml) {
+          html += '<div class="argilo-map-popup-action"><small>KML local: ' + escapeHtml(props.arquivo_kml.split("/").pop()) + "</small></div>";
+        }
+        html += "</div>";
+        return html;
+      }
+
+      function setStatus(root, text) {
+        const target = root.querySelector('[data-role="map-status"]');
+        if (target) {
+          target.textContent = text;
+        }
+      }
+
+      function setCounts(root, points) {
+        const pointTarget = root.querySelector('[data-role="map-point-count"]');
+        const recordTarget = root.querySelector('[data-role="map-record-count"]');
+        const sampleTarget = root.querySelector('[data-role="map-sample-count"]');
+        const mineralTarget = root.querySelector('[data-role="map-mineral-count"]');
+        const validPoints = Array.isArray(points) ? points : [];
+        const distinctRecords = new Set(validPoints.map((item) => item.record_id || item.id).filter(Boolean));
+        const visibleMarkers = validPoints.length;
+        const samples = validPoints.reduce((total, item) => total + (Number(item.sample_count) || (item.kind === "amostra" ? 1 : 0)), 0);
+        const minerals = validPoints.reduce((total, item) => total + (Number(item.mineral_count) || (item.kind === "argilomineral" ? 1 : 0)), 0);
+
+        if (pointTarget) {
+          pointTarget.textContent = String(visibleMarkers);
+        }
+
+        if (recordTarget) {
+          recordTarget.textContent = String(distinctRecords.size);
+        }
+
+        if (sampleTarget) {
+          sampleTarget.textContent = String(samples);
+        }
+
+        if (mineralTarget) {
+          mineralTarget.textContent = String(minerals);
+        }
+      }
+
+      function setMiningCount(root, total) {
+        const target = root.querySelector('[data-role="mining-area-count"]');
+        if (target) {
+          target.textContent = String(total || 0);
+        }
+      }
+
+      function buildBaseLayers() {
+        return {
+          osm: {
+            label: "OpenStreetMap",
+            layer: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              maxZoom: 19,
+              attribution: "&copy; OpenStreetMap contributors"
+            })
+          },
+          imagery: {
+            label: "Esri World Imagery",
+            layer: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+              maxZoom: 19,
+              attribution: "Tiles &copy; Esri"
+            })
+          },
+          light: {
+            label: "Carto Positron",
+            layer: L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+              maxZoom: 20,
+              attribution: "&copy; OpenStreetMap contributors &copy; CARTO"
+            })
+          }
+        };
+      }
+
+      function setBasemap(root, name) {
+        if (!root || !root._argiloMap || !root._argiloBaseLayers) {
+          return;
+        }
+
+        const next = root._argiloBaseLayers[name];
+        if (!next) {
+          return;
+        }
+
+        if (root._argiloCurrentBaseLayer) {
+          root._argiloMap.removeLayer(root._argiloCurrentBaseLayer.layer);
+        }
+
+        next.layer.addTo(root._argiloMap);
+        root._argiloCurrentBaseLayer = next;
+
+        const label = root.querySelector('[data-role="map-basemap-label"]');
+        if (label) {
+          label.textContent = next.label;
+        }
+
+        root.querySelectorAll('[data-role="basemap-switch"]').forEach(function (button) {
+          button.classList.toggle("is-active", button.dataset.basemap === name);
+        });
+      }
+
+      function bindAtlasControls(root) {
+        function updateAtlasFilters() {
+          const targetUrl = new URL(window.location.href);
+          const mineral = root.querySelector('[data-role="mineral-filter"]');
+          const composition = root.querySelector('[data-role="global-composition-filter"]');
+          const mining = root.querySelector('[data-role="mining-layer-filter"]');
+
+          if (mineral && mineral.value) {
+            targetUrl.searchParams.set("mineral_term", mineral.value);
+          } else {
+            targetUrl.searchParams.delete("mineral_term");
+          }
+
+          if (composition && composition.value) {
+            targetUrl.searchParams.set("has_global_composition", composition.value);
+          } else {
+            targetUrl.searchParams.delete("has_global_composition");
+          }
+
+          if (mining && mining.value) {
+            targetUrl.searchParams.set("mining_layer", mining.value);
+          } else {
+            targetUrl.searchParams.delete("mining_layer");
+          }
+
+          window.location.assign(targetUrl.toString());
+        }
+
+        const updateFiltersButton = root.querySelector('[data-role="update-map-filters"]');
+        if (updateFiltersButton) {
+          updateFiltersButton.addEventListener("click", updateAtlasFilters);
+        }
+
+        root.querySelectorAll('[data-role="basemap-switch"]').forEach(function (button) {
+          button.addEventListener("click", function () {
+            setBasemap(root, button.dataset.basemap);
+          });
+        });
+
+        const zoomAllButton = root.querySelector('[data-role="zoom-all"]');
+        if (zoomAllButton) {
+          zoomAllButton.addEventListener("click", function () {
+            if (root._argiloBounds && root._argiloBounds.isValid()) {
+              root._argiloMap.fitBounds(root._argiloBounds.pad(0.18));
+            }
+          });
+        }
+
+        const fullscreenButton = root.querySelector('[data-role="fullscreen-map"]');
+        if (fullscreenButton) {
+          fullscreenButton.addEventListener("click", async function () {
+            const target = root.querySelector(".argilo-map-atlas-mapwrap") || root;
+
+            try {
+              if (document.fullscreenElement) {
+                await document.exitFullscreen();
+              } else if (target.requestFullscreen) {
+                await target.requestFullscreen();
+              }
+            } catch (error) {
+              console.warn("Nao foi possivel alternar para tela cheia.", error);
+            } finally {
+              if (root._argiloMap) {
+                window.setTimeout(function () {
+                  root._argiloMap.invalidateSize();
+                }, 150);
+              }
+            }
+          });
+        }
+
+        const miningButton = root.querySelector('[data-role="toggle-mining-layer"]');
+        if (miningButton) {
+          miningButton.addEventListener("click", function () {
+            toggleMiningLayer(root, miningButton);
+          });
+        }
+
+        syncMiningControls(root, root.dataset.miningLayer === "sim");
+      }
+
+      function syncMiningControls(root, active) {
+        const button = root.querySelector('[data-role="toggle-mining-layer"]');
+        const filter = root.querySelector('[data-role="mining-layer-filter"]');
+        if (button) {
+          button.classList.toggle("is-active", !!active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        }
+        if (filter) {
+          filter.value = active ? "sim" : "";
+        }
+      }
+
+      function miningStyle(feature) {
+        const props = feature.properties || {};
+        const kind = String(props.tipo_area || props.fase || "").toLowerCase();
+        const color = kind.indexOf("lavra") >= 0 || kind.indexOf("extracao") >= 0 ? "#b24f1c" : "#6f7d2c";
+        return {
+          color: color,
+          weight: 4,
+          opacity: 0.96,
+          fillColor: color,
+          fillOpacity: 0.34
+        };
+      }
+
+      async function toggleMiningLayer(root, button) {
+        if (!root || !root._argiloMap || !button) {
+          return;
+        }
+
+        if (root._argiloMiningLayer && root._argiloMap.hasLayer(root._argiloMiningLayer)) {
+          root._argiloMap.removeLayer(root._argiloMiningLayer);
+          syncMiningControls(root, false);
+          setMiningCount(root, 0);
+          setStatus(root, "Pontos visíveis");
+          return;
+        }
+
+        if (root._argiloMiningLayer) {
+          root._argiloMiningLayer.addTo(root._argiloMap);
+          syncMiningControls(root, true);
+          setMiningCount(root, root._argiloMiningFeatureCount || 0);
+          setStatus(root, "Camada ANM/SIGMINE sobreposta");
+          return;
+        }
+
+        const apiUrl = root.dataset.miningApiUrl;
+        if (!apiUrl) {
+          setStatus(root, "Camada ANM/SIGMINE indisponível");
+          return;
+        }
+
+        button.classList.add("is-loading");
+        setStatus(root, "Carregando áreas minerárias ANM...");
+
+        try {
+          const url = new URL(apiUrl, window.location.origin);
+          if (root.dataset.mineralTerm) {
+            url.searchParams.set("mineral_term", root.dataset.mineralTerm);
+          }
+          url.searchParams.set("limit", "1200");
+
+          const response = await fetch(url.toString(), {
+            headers: { Accept: "application/json" }
+          });
+
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+
+          const payload = await response.json();
+          if (!payload.success) {
+            throw new Error(payload.error || "Falha ao carregar áreas ANM");
+          }
+
+          const collection = payload.feature_collection || { type: "FeatureCollection", features: [] };
+          const features = Array.isArray(collection.features) ? collection.features : [];
+          if (!features.length) {
+            setMiningCount(root, 0);
+            syncMiningControls(root, false);
+            setStatus(root, "Sem áreas ANM para o filtro atual");
+            return;
+          }
+
+          const layer = L.geoJSON(collection, {
+            style: miningStyle,
+            onEachFeature: function (feature, targetLayer) {
+              targetLayer.bindPopup(buildMiningPopup(feature));
+            }
+          });
+
+          root._argiloMiningLayer = layer;
+          root._argiloMiningFeatureCount = features.length;
+          layer.addTo(root._argiloMap);
+          fitMiningLayer(root, layer);
+          syncMiningControls(root, true);
+          setMiningCount(root, features.length);
+          setStatus(root, "Camada ANM/SIGMINE sobreposta");
+        } catch (error) {
+          syncMiningControls(root, false);
+          setStatus(root, "Erro camada ANM: " + error.message);
+        } finally {
+          if (button) {
+            button.classList.remove("is-loading");
+          }
+        }
+      }
+
+      function fitMiningLayer(root, layer) {
+        if (!root || !root._argiloMap || !layer || typeof layer.getBounds !== "function") {
+          return;
+        }
+        const layerBounds = layer.getBounds();
+        if (!layerBounds || !layerBounds.isValid()) {
+          return;
+        }
+        root._argiloMap.fitBounds(layerBounds.pad(0.35));
+      }
+
+      async function initMap(root) {
+        if (!root) {
+          return;
+        }
+
+        const mapId = root.dataset.mapId;
+        if (!mapId || initialized.has(mapId)) {
+          return;
+        }
+
+        const isLazy = root.dataset.mapLazy === "true";
+        if (isLazy && !isVisible(root)) {
+          return;
+        }
+
+        const canvas = document.getElementById(mapId);
+        if (!canvas || (isLazy && !isVisible(canvas))) {
+          return;
+        }
+
+        initialized.add(mapId);
+        setStatus(root, "Carregando pontos...");
+
+        const apiUrl = root.dataset.apiUrl;
+        const recordId = root.dataset.recordId;
+        const highlightRecordId = root.dataset.highlightRecordId;
+        const mineralTerm = root.dataset.mineralTerm;
+        const globalComposition = root.dataset.globalComposition;
+        const miningLayer = root.dataset.miningLayer;
+        const emptyMessage = root.dataset.emptyMessage || "Nenhum ponto encontrado.";
+        const url = new URL(apiUrl, window.location.origin);
+
+        if (recordId) {
+          url.searchParams.set("record_id", recordId);
+        }
+
+        if (mineralTerm) {
+          url.searchParams.set("mineral_term", mineralTerm);
+        }
+
+        if (globalComposition) {
+          url.searchParams.set("has_global_composition", globalComposition);
+        }
+
+        const map = L.map(canvas, {
+          scrollWheelZoom: true,
+          zoomControl: true
+        }).setView([-15.0, -55.0], 4);
+
+        root._argiloMap = map;
+        root._argiloBaseLayers = buildBaseLayers();
+        bindAtlasControls(root);
+        setBasemap(root, "osm");
+
+        const cursorPosition = root.querySelector('[data-role="cursor-position"]');
+        map.on("mousemove", function (event) {
+          if (cursorPosition) {
+            cursorPosition.textContent = event.latlng.lat.toFixed(5) + ", " + event.latlng.lng.toFixed(5);
+          }
+        });
+
+        const clusterGroup = L.markerClusterGroup({
+          showCoverageOnHover: false,
+          spiderfyOnMaxZoom: true,
+          disableClusteringAtZoom: recordId ? 10 : null
+        });
+
+        try {
+          const response = await fetch(url.toString(), {
+            headers: { Accept: "application/json" }
+          });
+
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+
+          const payload = await response.json();
+          if (!payload.success) {
+            throw new Error(payload.error || "Falha ao consultar a API");
+          }
+
+          const points = Array.isArray(payload.points) ? payload.points : [];
+          const validPoints = points.filter(function (point) {
+            return asNumber(point.latitude ?? point.lat) !== null && asNumber(point.longitude ?? point.lon) !== null;
+          });
+
+          setCounts(root, validPoints);
+
+          if (!validPoints.length) {
+            setStatus(root, emptyMessage);
+            map.setView([-15.0, -55.0], 3);
+            window.setTimeout(function () {
+              map.invalidateSize();
+            }, 0);
+            return;
+          }
+
+          const bounds = [];
+
+          validPoints.forEach(function (point) {
+            const lat = asNumber(point.latitude ?? point.lat);
+            const lon = asNumber(point.longitude ?? point.lon);
+            const highlighted = highlightRecordId && (point.record_id === highlightRecordId || point.id === highlightRecordId);
+
+            const marker = L.marker([lat, lon], {
+              icon: L.divIcon({
+                className: "",
+                html: '<span class="argilo-map-marker' + (highlighted ? ' is-highlighted' : '') + (point.dataset_included ? ' is-dataset' : '') + ((Number(point.grouped_points_count || 0) > 1) ? ' is-grouped' : '') + '"></span>',
+                iconSize: highlighted || Number(point.grouped_points_count || 0) > 1 ? [20, 20] : [16, 16],
+                iconAnchor: highlighted || Number(point.grouped_points_count || 0) > 1 ? [10, 10] : [8, 8],
+                popupAnchor: [0, -8]
+              }),
+              title: point.nome || point.label || point.title || "Ponto geográfico"
+            });
+
+            marker.bindPopup(buildPopup(point));
+            clusterGroup.addLayer(marker);
+            bounds.push([lat, lon]);
+          });
+
+          map.addLayer(clusterGroup);
+
+          if (bounds.length === 1) {
+            map.setView(bounds[0], 9);
+            root._argiloBounds = L.latLngBounds(bounds);
+          } else {
+            root._argiloBounds = L.latLngBounds(bounds);
+            map.fitBounds(root._argiloBounds.pad(0.18));
+          }
+
+          setStatus(root, "Mapa carregado");
+          if (miningLayer === "sim") {
+            const miningButton = root.querySelector('[data-role="toggle-mining-layer"]');
+            if (miningButton) {
+              toggleMiningLayer(root, miningButton);
+            }
+          }
+        } catch (error) {
+          setStatus(root, "Erro: " + error.message);
+        } finally {
+          window.setTimeout(function () {
+            map.invalidateSize();
+          }, 0);
+        }
+      }
+
+      function initMaps(scope) {
+        const root = scope || document;
+        const maps = root.querySelectorAll('[data-argilo-map-root="true"]');
+        maps.forEach(initMap);
+      }
+
+      function refreshVisibleMaps() {
+        document.querySelectorAll('[data-argilo-map-root="true"]').forEach(function (root) {
+          if (!root._argiloMap) {
+            initMap(root);
+            return;
+          }
+
+          if (isVisible(root)) {
+            window.setTimeout(function () {
+              root._argiloMap.invalidateSize();
+            }, 0);
+          }
+        });
+      }
+
+      function boot() {
+        initMaps(document);
+      }
+
+      return {
+        boot: boot,
+        initMaps: initMaps,
+        refreshVisibleMaps: refreshVisibleMaps
+      };
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      window.ArgilotecaMapUI.boot();
+    });
+  </script>
+{%- endmacro %}

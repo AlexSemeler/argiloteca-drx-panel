@@ -1,0 +1,28 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Dados e artefatos locais do DRX
+*.raw
+*.RAW
+reports/*.json
+reports/*.html
+reports/*.pdf
+outputs/
+tmp/
+logs/
+var/
+
+# Snapshots completos locais ficam fora do Git; mantemos apenas JSONs de apoio
+# usados como referencia/fallback pelo classificador mineralogico.
+povoamento/visualizacao-drx/saida_argiloteca_drx/*
+!povoamento/visualizacao-drx/saida_argiloteca_drx/webmineral_argilominerais_vocabulario.json
+!povoamento/visualizacao-drx/saida_argiloteca_drx/webmineral_xray_referencia.json
+povoamento/visualizacao-drx/webmineral/*
+!povoamento/visualizacao-drx/webmineral/webmineral_argilominerais_vocabulario_manifest.json
+argiloteca/argiloteca_custom/argiloteca/static/data/analytical_packages/

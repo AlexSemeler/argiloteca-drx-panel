@@ -1,0 +1,552 @@
+{
+  "root": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom",
+  "generated_at": "2026-06-21T00:00:00-03:00",
+  "files_total": 68,
+  "files_changed": 68,
+  "python_files": 64,
+  "js_ts_files": 4,
+  "member_docstrings_added": 493,
+  "jsdoc_added": 537,
+  "results": [
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/setup.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/traceability.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 32,
+      "members_seen": 38
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/app.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scientific_traceability.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 12,
+      "members_seen": 14
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/mineralogia.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx_core/curves.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 6,
+      "members_seen": 13
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx_core/processing.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx_core/ngc.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx_core/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx_core/contracts.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/tests/test_drx.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 101,
+      "members_seen": 102
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/tests/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/tests/test_open_patterns.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 12,
+      "members_seen": 12
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/views.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 21,
+      "members_seen": 91
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/webpack.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/ext.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 2,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/mineralogia.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 8,
+      "members_seen": 48
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/ext_api.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 2,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/static/js/geoquimica-rede.js",
+      "type": "js",
+      "changed": true,
+      "header_added": true,
+      "jsdoc_added": 49
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/static/js/geoquimica-agregada.js",
+      "type": "js",
+      "changed": true,
+      "header_added": true,
+      "jsdoc_added": 34
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/static/js/pacote-analitico.js",
+      "type": "js",
+      "changed": true,
+      "header_added": true,
+      "jsdoc_added": 50
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/static/js/drx-comparacao.js",
+      "type": "js",
+      "changed": true,
+      "header_added": true,
+      "jsdoc_added": 404
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/scrapers/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/scrapers/mindat/client.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 4,
+      "members_seen": 6
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/scrapers/mindat/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/scrapers/mindat/parser.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 5
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/scrapers/mindat/pipeline.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 5,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_report.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 5,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/raw_snapshot_links.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 4,
+      "members_seen": 13
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/analytical_packages.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 19,
+      "members_seen": 50
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_references.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 8,
+      "members_seen": 10
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_analysis.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 4
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_external_jobs.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 8,
+      "members_seen": 12
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_selection_report.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 5,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/neural_evidence.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 6,
+      "members_seen": 8
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_runs.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 4,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/geoquimica.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 17,
+      "members_seen": 71
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_reference_index.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 8,
+      "members_seen": 10
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_science_engine.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 7,
+      "members_seen": 11
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 28,
+      "members_seen": 131
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_ngc_workflow.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 31,
+      "members_seen": 42
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/drx_cif_simulation.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 2
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/mineral_linking/vocabulary.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 8,
+      "members_seen": 11
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/mineral_linking/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/services/mineral_linking/matcher.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 4,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca/drx_core/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/dara_external_adapter.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/run_drx_external_jobs.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/fit_peaks_lmfit.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 2,
+      "members_seen": 2
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/simulate_cif_xrd_pattern.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 2,
+      "members_seen": 2
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/build_drx_neural_evidence_index.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 17,
+      "members_seen": 17
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/build_cif_cod_reference_index.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 7,
+      "members_seen": 7
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/gsas2_external_adapter.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 3,
+      "members_seen": 3
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/detect_peaks_scipy.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/batch_ngc_raw_diagnostics.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 25,
+      "members_seen": 25
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/normalize_rruff.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/fetch_open_patterns.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 17,
+      "members_seen": 18
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/build_open_patterns_index.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/simulate_xrd_from_cif.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/common.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 29,
+      "members_seen": 34
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/__init__.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 0,
+      "members_seen": 0
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/normalize_amcsd.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/normalize_cod.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    },
+    {
+      "file": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/scripts/open_patterns/match_argiloteca_terms.py",
+      "type": "py",
+      "changed": true,
+      "header_added": true,
+      "member_docstrings_added": 1,
+      "members_seen": 1
+    }
+  ]
+}

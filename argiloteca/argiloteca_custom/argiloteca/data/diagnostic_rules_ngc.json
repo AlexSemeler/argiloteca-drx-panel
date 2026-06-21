@@ -1,0 +1,222 @@
+{
+  "version": "argiloteca.drx.ngc.diagnostic_rules.v1",
+  "interpretation_policy": "auxiliary_not_confirmatory",
+  "reference_sources": {
+    "rruff_odr": {
+      "role": "auxiliary_reference_patterns_not_confirmatory",
+      "manifest_path": "app/argiloteca_custom/argiloteca/static/data/rruff_odr_argilominerais_20260619/rruff_odr_curves_manifest.json",
+      "generated_from": "outputs/vocabularios/rruff_odr_argilominerais_20260619",
+      "wavelength_assumption_A": 1.5406,
+      "notes": [
+        "Picos RRUFF/ODR foram convertidos de 2theta para d-spacing assumindo Cu-Kalpha quando necessario.",
+        "Usar como comparacao auxiliar e auditoria de picos companheiros; nao usar como confirmacao isolada.",
+        "Padroes RRUFF/ODR sao de amostras/padroes de referencia e nao substituem comportamento N/G/C em laminas orientadas."
+      ]
+    }
+  },
+  "rules": [
+    {
+      "rule_id": "kaolin_group_ngc",
+      "target": "kaolin_group",
+      "family": "kaolin_group",
+      "level": "group",
+      "candidate_label_pt": "Grupo da caulinita",
+      "applies_to_categories": ["group", "species"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "kaolin_001_n", "preparation": "natural", "d_min": 6.90, "d_max": 7.30, "weight": 0.25},
+        {"id": "kaolin_001_g", "preparation": "glycolated", "d_min": 6.90, "d_max": 7.30, "weight": 0.20},
+        {"id": "kaolin_001_c_loss", "preparation": "calcined", "response": "reduced_or_absent", "relative_to": "natural", "d_min": 6.90, "d_max": 7.30, "weight": 0.25}
+      ],
+      "companion_peaks": [
+        {"id": "kaolin_002", "d_min": 3.54, "d_max": 3.60, "weight": 0.10}
+      ],
+      "treatment_response": "7 Å permanece em G e desaparece ou reduz fortemente em C.",
+      "known_overlaps": ["Clorita também contribui perto de 7 Å.", "Serpentina pode sobrepor 7 Å e 3,5 Å."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "auxiliary_companion_peak_reference",
+        "matched_mineral_ids": ["kaolinite", "dickite"],
+        "reference_peaks": [
+          {"d_A": 7.131, "two_theta_deg": 12.40, "max_relative_intensity": 100.0, "assignment": "001 basal kaolin_group"},
+          {"d_A": 3.570, "two_theta_deg": 24.92, "max_relative_intensity": 70.6, "assignment": "002 companion kaolin_group"},
+          {"d_A": 4.389, "two_theta_deg": 20.22, "max_relative_intensity": 38.1, "assignment": "auxiliary kaolinite reference"},
+          {"d_A": 2.324, "two_theta_deg": 38.71, "max_relative_intensity": 28.0, "assignment": "auxiliary kaolinite reference"}
+        ],
+        "limits": ["RRUFF/ODR reforça picos de referência, mas a separação caulinita/clorita continua dependente de N/G/C."]
+      },
+      "confidence_limits": ["N/G/C resolve principalmente o grupo caulinítico, não espécie."],
+      "additional_tests": ["FTIR", "pico 060", "verificação de clorita por 14/7/4,72/3,53 Å"],
+      "explanation_pt": "O comportamento N-G-C favorece grupo da caulinita quando 7 Å não expande com glicol e perde intensidade após calcinação."
+    },
+    {
+      "rule_id": "chlorite_group_ngc",
+      "target": "chlorite_group",
+      "family": "chlorite_group",
+      "level": "group",
+      "candidate_label_pt": "Grupo da clorita",
+      "applies_to_categories": ["group", "species", "series"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "chlorite_001", "d_min": 14.00, "d_max": 15.30, "weight": 0.30},
+        {"id": "chlorite_no_glycol_expansion", "response": "no_expansion_to_17a", "weight": 0.20},
+        {"id": "chlorite_thermal_persistence", "response": "preserved_in_calcined", "weight": 0.20}
+      ],
+      "companion_peaks": [
+        {"id": "chlorite_002", "d_min": 7.00, "d_max": 7.25, "weight": 0.20},
+        {"id": "chlorite_003", "d_min": 4.65, "d_max": 4.80, "weight": 0.15},
+        {"id": "chlorite_004", "d_min": 3.50, "d_max": 3.60, "weight": 0.15}
+      ],
+      "treatment_response": "14 Å não expande com glicol e tende a persistir no aquecimento.",
+      "known_overlaps": ["Esmectita natural pode ocorrer entre 12 e 16,5 Å.", "Vermiculita pode aparecer perto de 14 Å."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "auxiliary_companion_peak_reference",
+        "matched_mineral_ids": ["clinochlore", "chamosite", "amesite"],
+        "reference_peaks": [
+          {"d_A": 14.193, "two_theta_deg": 6.22, "max_relative_intensity": 100.0, "assignment": "001 basal chlorite_group"},
+          {"d_A": 7.060, "two_theta_deg": 12.53, "max_relative_intensity": 100.0, "assignment": "002 companion chlorite_group"},
+          {"d_A": 4.719, "two_theta_deg": 18.79, "max_relative_intensity": 82.3, "assignment": "003 companion chlorite_group"},
+          {"d_A": 3.530, "two_theta_deg": 25.21, "max_relative_intensity": 71.2, "assignment": "004 companion chlorite_group"},
+          {"d_A": 2.496, "two_theta_deg": 35.98, "max_relative_intensity": 67.4, "assignment": "auxiliary chlorite reference"}
+        ],
+        "limits": ["RRUFF/ODR nao resolve especie de clorita sem quimica, pico 060 e contexto."]
+      },
+      "confidence_limits": ["N/G/C não resolve espécie de clorita sem química, 060 e contexto."],
+      "additional_tests": ["química", "pico 060", "FTIR", "comparação com padrão curado"],
+      "explanation_pt": "Clorita é favorecida por conjunto 14/7/4,72/3,53 Å persistente e ausência de expansão glicolada."
+    },
+    {
+      "rule_id": "smectite_group_ngc",
+      "target": "smectite_group",
+      "family": "smectite_group",
+      "level": "group",
+      "candidate_label_pt": "Grupo da esmectita",
+      "applies_to_categories": ["group", "species", "clay_material"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "smectite_n", "preparation": "natural", "d_min": 12.00, "d_max": 16.50, "weight": 0.30},
+        {"id": "smectite_g", "preparation": "glycolated", "d_min": 16.60, "d_max": 18.60, "weight": 0.40},
+        {"id": "smectite_c", "preparation": "calcined", "d_min": 9.80, "d_max": 10.40, "weight": 0.25}
+      ],
+      "companion_peaks": [],
+      "treatment_response": "12-16,5 Å em N expande para 16,6-18,6 Å em G e colapsa para 9,8-10,4 Å em C.",
+      "known_overlaps": ["Clorita e vermiculita podem ocorrer perto de 14 Å se não houver expansão."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "auxiliary_basal_reference",
+        "matched_mineral_ids": ["montmorillonite", "nontronite", "bentonite"],
+        "reference_peaks": [
+          {"d_A": 14.590, "two_theta_deg": 6.06, "max_relative_intensity": 100.0, "assignment": "natural/reference basal smectite_group"},
+          {"d_A": 13.743, "two_theta_deg": 6.43, "max_relative_intensity": 100.0, "assignment": "natural/reference basal smectite_group"},
+          {"d_A": 13.091, "two_theta_deg": 6.75, "max_relative_intensity": 92.3, "assignment": "natural/reference basal smectite_group"}
+        ],
+        "limits": [
+          "RRUFF/ODR local reforça a faixa basal natural; expansão glicolada e colapso calcinado continuam vindo do comportamento N/G/C.",
+          "Bentonite e nomes materiais devem permanecer como material relacionado, nao identificacao cristalografica primária."
+        ]
+      },
+      "confidence_limits": ["N/G/C não separa montmorillonita, beidellita, nontronita, saponita ou hectorita."],
+      "additional_tests": ["saturação Mg/K", "glicerol", "modelagem de interestratificados"],
+      "explanation_pt": "Esmectita é favorecida por expansão com etilenoglicol e colapso térmico."
+    },
+    {
+      "rule_id": "illite_mica_ngc",
+      "target": "illite_mica",
+      "family": "illite_mica",
+      "level": "series",
+      "candidate_label_pt": "Ilita/mica",
+      "applies_to_categories": ["series", "species", "group"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "illite_001_stable", "d_min": 9.70, "d_max": 10.55, "weight": 0.35},
+        {"id": "illite_no_glycol_expansion", "response": "no_expansion", "weight": 0.20},
+        {"id": "illite_thermal_persistence", "response": "preserved_in_calcined", "weight": 0.15}
+      ],
+      "companion_peaks": [
+        {"id": "illite_002", "d_min": 4.95, "d_max": 5.05, "weight": 0.15},
+        {"id": "illite_003", "d_min": 3.30, "d_max": 3.37, "weight": 0.10}
+      ],
+      "treatment_response": "10 Å estável em N/G/C, sem expansão e sem colapso induzido.",
+      "known_overlaps": ["Quartzo 101 em ~3,34 Å pode inflar evidência falsa.", "Muscovita e outras micas compartilham 10 Å."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "auxiliary_companion_peak_reference",
+        "matched_mineral_ids": ["muscovite", "phlogopite", "biotite", "lepidolite", "clintonite"],
+        "reference_peaks": [
+          {"d_A": 9.985, "two_theta_deg": 8.85, "max_relative_intensity": 100.0, "assignment": "001 basal illite_mica/mica_group"},
+          {"d_A": 4.968, "two_theta_deg": 17.84, "max_relative_intensity": 57.0, "assignment": "002 companion illite_mica"},
+          {"d_A": 3.335, "two_theta_deg": 26.71, "max_relative_intensity": 100.0, "assignment": "003 companion; overlaps quartz 101"},
+          {"d_A": 2.553, "two_theta_deg": 35.13, "max_relative_intensity": 100.0, "assignment": "auxiliary mica reference"},
+          {"d_A": 2.004, "two_theta_deg": 45.24, "max_relative_intensity": 71.4, "assignment": "auxiliary mica reference"}
+        ],
+        "limits": ["Pico 3.33-3.34 A deve ser penalizado se quartzo explicar a evidência sem 10 A e 5 A persistentes."]
+      },
+      "confidence_limits": ["Sem química e 060, limitar a ilita/mica em vez de espécie."],
+      "additional_tests": ["química", "pico 060", "padrão de pó randômico"],
+      "explanation_pt": "Ilita/mica é favorecida por 10 Å estável nos três tratamentos."
+    },
+    {
+      "rule_id": "vermiculite_group_ngc",
+      "target": "vermiculite_group",
+      "family": "vermiculite_group",
+      "level": "ambiguous",
+      "candidate_label_pt": "Vermiculita/interestratificado 14 Å",
+      "applies_to_categories": ["group", "species", "interstratified"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "vermiculite_14a", "preparation": "natural", "d_min": 13.70, "d_max": 14.80, "weight": 0.30},
+        {"id": "vermiculite_no_17a", "response": "no_expansion_to_17a", "weight": 0.20},
+        {"id": "vermiculite_partial_collapse", "response": "partial_or_total_collapse", "weight": 0.20}
+      ],
+      "companion_peaks": [],
+      "treatment_response": "14 Å não expande claramente para 17 Å e pode colapsar parcialmente com aquecimento.",
+      "known_overlaps": ["Clorita também tem 14 Å persistente.", "Interestratificados podem simular colapso parcial."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "no_direct_local_pattern_available",
+        "matched_mineral_ids": [],
+        "related_reference_peaks": [
+          {"d_A": 14.193, "two_theta_deg": 6.22, "max_relative_intensity": 100.0, "source_family": "chlorite_group", "reason": "principal sobreposicao local perto de 14 A"},
+          {"d_A": 14.590, "two_theta_deg": 6.06, "max_relative_intensity": 100.0, "source_family": "smectite_group", "reason": "esmectita natural pode competir perto de 14-15 A"}
+        ],
+        "limits": ["Sem padrao RRUFF/ODR local de vermiculita no manifesto; manter hipotese provisoria e exigir K/Mg/glicerol."]
+      },
+      "confidence_limits": ["N/G/C sozinho deve manter vermiculita como provisória."],
+      "additional_tests": ["saturação K/Mg", "glicerol", "controle de umidade"],
+      "explanation_pt": "Vermiculita é uma hipótese provisória quando há 14 Å sem expansão e resposta térmica parcial."
+    },
+    {
+      "rule_id": "mixed_layer_ngc",
+      "target": "mixed_layer",
+      "family": "mixed_layer",
+      "level": "interstratified",
+      "candidate_label_pt": "Interestratificado ou mistura",
+      "applies_to_categories": ["interstratified"],
+      "required_preparations": ["natural", "glycolated", "calcined"],
+      "features": [
+        {"id": "partial_expansion", "response": "partial_expansion", "weight": 0.30},
+        {"id": "coexisting_stable_and_expandable", "response": "coexisting_stable_and_expandable", "weight": 0.30},
+        {"id": "broad_or_shoulder", "response": "broad_or_shoulder", "weight": 0.20}
+      ],
+      "companion_peaks": [],
+      "treatment_response": "Expansão parcial, ombros, picos largos ou coexistência de 10 Å estável e banda expansiva.",
+      "known_overlaps": ["Corrensita e clorita/esmectita podem gerar resposta mista."],
+      "rruff_odr_reference": {
+        "source": "rruff_odr",
+        "role": "contextual_overlap_reference_not_primary",
+        "matched_mineral_ids": [],
+        "related_reference_peaks": [
+          {"d_A": 14.193, "two_theta_deg": 6.22, "source_family": "chlorite_group"},
+          {"d_A": 14.590, "two_theta_deg": 6.06, "source_family": "smectite_group"},
+          {"d_A": 9.985, "two_theta_deg": 8.85, "source_family": "illite_mica"},
+          {"d_A": 7.131, "two_theta_deg": 12.40, "source_family": "kaolin_group"}
+        ],
+        "limits": ["RRUFF/ODR de minerais puros nao modela interestratificados; usar apenas para indicar picos que podem compor mistura."]
+      },
+      "confidence_limits": ["Não forçar mineral puro quando a resposta N/G/C é incompleta."],
+      "additional_tests": ["modelagem de interestratificados", "amostras saturadas", "padrões curados"],
+      "explanation_pt": "Padrão parcial ou misto deve ser tratado como interestratificado/mistura provável."
+    }
+  ]
+}

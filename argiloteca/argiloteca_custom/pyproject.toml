@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argiloteca"
+version = "0.1"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["argiloteca*"]
+
+[tool.setuptools.package-data]
+argiloteca = ["data/*.json"]
+
+[project.entry-points."invenio_base.apps"]
+argiloteca = "argiloteca.ext:ArgilotecaUIExtension"
+
+[project.entry-points."invenio_base.api_apps"]
+argiloteca = "argiloteca.ext_api:ArgilotecaAPIExtension"
+
+[project.entry-points."invenio_assets.webpack"]
+argiloteca_theme = "argiloteca.webpack:theme"

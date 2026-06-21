@@ -1,0 +1,595 @@
+{% extends config.BASE_TEMPLATE %}
+
+{% from "semantic-ui/argilo_map_components.html" import render_argilo_map_css, render_argilo_map_js, render_argilo_map_panel %}
+
+{% block css %}
+  {{ super() }}
+  {{ render_argilo_map_css() }}
+{% endblock css %}
+
+{% block page_body %}
+<style>
+  .argilo-mineral-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .argilo-mineral-hero {
+    background:
+      radial-gradient(circle at top right, rgba(210, 171, 114, 0.22), transparent 34%),
+      linear-gradient(135deg, #f7f1e3 0%, #fbfaf6 48%, #eef4f5 100%);
+    border: 1px solid rgba(123, 102, 67, 0.18);
+    border-radius: 1.2rem;
+    padding: 1.6rem;
+    box-shadow: 0 18px 40px rgba(64, 53, 35, 0.08);
+    margin-bottom: 1.4rem;
+  }
+
+  .argilo-mineral-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 1.2rem;
+    align-items: start;
+  }
+
+  .argilo-mineral-kicker {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #866744;
+    margin-bottom: 0.55rem;
+  }
+
+  .argilo-mineral-title {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: #2d3d3b;
+  }
+
+  .argilo-mineral-subtitle {
+    margin-top: 0.45rem;
+    color: #516462;
+    font-size: 1rem;
+  }
+
+  .argilo-mineral-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .argilo-mineral-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(87, 97, 96, 0.15);
+    color: #44514f;
+    font-size: 0.92rem;
+  }
+
+  .argilo-mineral-media-card {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(87, 97, 96, 0.14);
+    border-radius: 1rem;
+    padding: 0.8rem;
+  }
+
+  .argilo-mineral-media-card img {
+    width: 100%;
+    display: block;
+    border-radius: 0.8rem;
+    object-fit: cover;
+    background: #f1f1ed;
+  }
+
+  .argilo-mineral-media-meta {
+    margin-top: 0.7rem;
+    color: #4a5b59;
+    line-height: 1.55;
+    font-size: 0.92rem;
+  }
+
+  .argilo-mineral-media-meta p {
+    margin: 0.35rem 0 0;
+  }
+
+  .argilo-mineral-media-kicker {
+    display: block;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #866744;
+    margin-bottom: 0.35rem;
+  }
+
+  .argilo-mineral-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 1rem;
+  }
+
+  .argilo-mineral-card {
+    background: #fff;
+    border: 1px solid rgba(89, 99, 101, 0.12);
+    border-radius: 1rem;
+    padding: 1.2rem 1.25rem;
+    box-shadow: 0 10px 26px rgba(33, 42, 51, 0.05);
+  }
+
+  .argilo-mineral-card h2 {
+    margin: 0 0 0.9rem;
+    font-size: 1.1rem;
+    color: #314240;
+  }
+
+  .argilo-mineral-card p {
+    color: #465857;
+    line-height: 1.68;
+    margin: 0 0 0.95rem;
+  }
+
+  .argilo-mineral-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .argilo-mineral-tech-list {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .argilo-mineral-tech-item {
+    padding: 0.9rem 1rem;
+    border-radius: 0.85rem;
+    background: linear-gradient(180deg, #fcfbf7 0%, #f6f4ee 100%);
+    border: 1px solid rgba(136, 108, 69, 0.12);
+  }
+
+  .argilo-mineral-tech-title {
+    font-weight: 700;
+    color: #7a5d39;
+    margin-bottom: 0.3rem;
+  }
+
+  .argilo-mineral-tech-value {
+    white-space: pre-line;
+  }
+
+  .argilo-mineral-tech-references {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #465857;
+  }
+
+  .argilo-mineral-tech-references li + li {
+    margin-top: 0.6rem;
+  }
+
+  .argilo-mineral-facts {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .argilo-mineral-fact {
+    padding: 0.75rem 0.85rem;
+    background: linear-gradient(180deg, #fcfcfb 0%, #f5f7f6 100%);
+    border-radius: 0.8rem;
+    border: 1px solid rgba(89, 99, 101, 0.08);
+  }
+
+  .argilo-mineral-fact-label {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a6c45;
+    margin-bottom: 0.2rem;
+  }
+
+  .argilo-mineral-fact-value {
+    color: #314240;
+    line-height: 1.45;
+    white-space: pre-line;
+  }
+
+  .argilo-mineral-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .argilo-mineral-map-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.85rem;
+  }
+
+  .argilo-mineral-source-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1rem;
+  }
+
+  .argilo-mineral-source-card {
+    padding: 1rem;
+    border-radius: 0.95rem;
+    border: 1px solid rgba(89, 99, 101, 0.1);
+    background: linear-gradient(180deg, #fdfcf8 0%, #f5f8f8 100%);
+  }
+
+  .argilo-mineral-source-card h3 {
+    margin: 0 0 0.55rem;
+    color: #2f4140;
+    font-size: 1rem;
+  }
+
+  .argilo-mineral-source-badge {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(122, 93, 57, 0.12);
+    color: #7a5d39;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .argilo-mineral-source-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .argilo-mineral-source-facts,
+  .argilo-mineral-source-sample-facts {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .argilo-mineral-source-fact,
+  .argilo-mineral-source-sample {
+    padding: 0.75rem 0.85rem;
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(89, 99, 101, 0.08);
+  }
+
+  .argilo-mineral-source-sample + .argilo-mineral-source-sample {
+    margin-top: 0.75rem;
+  }
+
+  .argilo-mineral-source-fact-label,
+  .argilo-mineral-source-sample-title {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a6c45;
+    margin-bottom: 0.2rem;
+  }
+
+  .argilo-mineral-source-sample-code {
+    display: inline-block;
+    margin-left: 0.35rem;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(122, 93, 57, 0.12);
+    color: #7a5d39;
+    font-size: 0.78rem;
+  }
+
+  .argilo-mineral-license-grid {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .argilo-mineral-license-item {
+    padding: 0.95rem 1rem;
+    border-radius: 0.9rem;
+    background: linear-gradient(180deg, #fcfcfb 0%, #f5f7f6 100%);
+    border: 1px solid rgba(89, 99, 101, 0.1);
+  }
+
+  .argilo-mineral-license-title {
+    margin: 0 0 0.35rem;
+    color: #2f4140;
+    font-size: 1rem;
+  }
+
+  .argilo-mineral-license-text {
+    color: #435554;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  @media (max-width: 900px) {
+    .argilo-mineral-hero-grid,
+    .argilo-mineral-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="argilo-mineral-page">
+  <section class="argilo-mineral-hero">
+    <div class="argilo-mineral-hero-grid">
+      <div>
+        <div class="argilo-mineral-kicker">Perfil local de argilomineral</div>
+        <h1 class="argilo-mineral-title">{{ mineral.get("nome") or mineral.get("nome_cientifico_padronizado") }}</h1>
+        <div class="argilo-mineral-subtitle">
+          {% if mineral.get("nome_cientifico_padronizado") and mineral.get("nome_cientifico_padronizado") != mineral.get("nome") %}
+            {{ mineral.get("nome_cientifico_padronizado") }}
+          {% endif %}
+          {% if mineral.get("nome_pt") and mineral.get("nome_en") and mineral.get("nome_pt") != mineral.get("nome_en") %}
+            {% if mineral.get("nome_cientifico_padronizado") and mineral.get("nome_cientifico_padronizado") != mineral.get("nome") %} • {% endif %}
+            {{ mineral.get("nome_pt") }} / {{ mineral.get("nome_en") }}
+          {% endif %}
+        </div>
+
+        <div class="argilo-mineral-tags">
+          {% if mineral.get("grupo_mineralogico") %}
+            <span class="argilo-mineral-tag">{{ mineral.get("grupo_mineralogico") }}</span>
+          {% endif %}
+          {% if mineral.get("classe_estrutural") %}
+            <span class="argilo-mineral-tag">{{ mineral.get("classe_estrutural") }}</span>
+          {% endif %}
+          {% if mineral.get("sistema_cristalino") %}
+            <span class="argilo-mineral-tag">Sistema {{ mineral.get("sistema_cristalino") }}</span>
+          {% endif %}
+          {% if mineral.get("formula_ideal") %}
+            <span class="argilo-mineral-tag">{{ mineral.get("formula_ideal") }}</span>
+          {% endif %}
+        </div>
+
+        <div class="argilo-mineral-links">
+          <a class="ui button basic" href="{{ url_for('argiloteca.catalogo_autorizado_argilominerais') }}">Voltar para o catálogo</a>
+          <a class="ui primary button" href="{{ url_for('argiloteca.drx_comparacao', argilomineral=mineral.get('slug') or mineral.get('id') or mineral.get('nome')) }}">Ver comparação DRX N/G/C deste argilomineral</a>
+          {% if mineral.get("community_slug") %}
+            <a class="ui button basic" href="/communities/{{ mineral.get('community_slug') }}/records?q=&amp;l=list&amp;p=1&amp;s=10&amp;sort=newest">Ver coleção temática</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="argilo-mineral-media-card">
+        <span class="argilo-mineral-media-kicker">Imagem reutilizável</span>
+        {% set reusable_image = mineral.get("reusable_image") or {} %}
+        {% if reusable_image.get("image_url") %}
+          <img src="{{ reusable_image.get('image_url') }}" alt="{{ reusable_image.get('title') or mineral.get('nome') }}">
+          <div class="argilo-mineral-media-meta">
+            {% if reusable_image.get("title") %}
+              <p><strong>{{ reusable_image.get("title") }}</strong></p>
+            {% endif %}
+            {% if reusable_image.get("scope_label") %}
+              <p><strong>Escopo:</strong> {{ reusable_image.get("scope_label") }}</p>
+            {% endif %}
+            {% if reusable_image.get("credit") %}
+              <p><strong>Crédito:</strong> {{ reusable_image.get("credit") }}</p>
+            {% endif %}
+            {% if reusable_image.get("license") %}
+              <p><strong>Licença:</strong> {{ reusable_image.get("license") }}</p>
+            {% endif %}
+            {% if reusable_image.get("locality") %}
+              <p><strong>Localidade:</strong> {{ reusable_image.get("locality") }}</p>
+            {% endif %}
+            {% if reusable_image.get("scope_note") %}
+              <p>{{ reusable_image.get("scope_note") }}</p>
+            {% endif %}
+            {% if reusable_image.get("exact_page_url") %}
+              <p><strong>Imagem exata curada:</strong> {{ reusable_image.get("exact_title") or mineral.get("nome") }}</p>
+              {% if reusable_image.get("exact_source") %}
+                <p><strong>Fonte exata:</strong> {{ reusable_image.get("exact_source") }}</p>
+              {% endif %}
+              {% if reusable_image.get("exact_credit") %}
+                <p><strong>Crédito da imagem exata:</strong> {{ reusable_image.get("exact_credit") }}</p>
+              {% endif %}
+              {% if reusable_image.get("exact_license") %}
+                <p><strong>Licença da imagem exata:</strong> {{ reusable_image.get("exact_license") }}</p>
+              {% endif %}
+              {% if reusable_image.get("exact_locality") %}
+                <p><strong>Localidade da imagem exata:</strong> {{ reusable_image.get("exact_locality") }}</p>
+              {% endif %}
+              {% if reusable_image.get("exact_note") %}
+                <p>{{ reusable_image.get("exact_note") }}</p>
+              {% endif %}
+              <p><a href="{{ reusable_image.get('exact_page_url') }}" target="_blank" rel="noopener noreferrer">Abrir imagem exata curada</a></p>
+            {% endif %}
+            {% if reusable_image.get("page_url") %}
+              <p><a href="{{ reusable_image.get('page_url') }}" target="_blank" rel="noopener noreferrer">Abrir página da imagem</a></p>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="argilo-mineral-media-meta">
+            <p>Nenhuma imagem reutilizável confirmada foi curada ainda para este argilomineral nas fontes atualmente auditadas.</p>
+            <p>Quando houver foto ou micrografia com licença aberta ou domínio público confirmado, ela aparecerá aqui com crédito e vínculo para a fonte original.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <div class="argilo-mineral-grid">
+    <section class="argilo-mineral-card">
+      <h2>Descrição expandida</h2>
+      {% for paragraph in (mineral.get("classic_description") or "").split('\n\n') if paragraph.strip() %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+      {% if not mineral.get("classic_description") %}
+        <p>Nenhuma descrição expandida local foi cadastrada para este argilomineral.</p>
+      {% endif %}
+
+      {% set technical_blocks = [
+        ("Chemistry of " ~ (mineral.get("nome_cientifico_padronizado") or mineral.get("nome") or "mineral"), mineral.get("quimica_mindat")),
+        ("X-Ray Powder Diffraction", mineral.get("difracao_raios_x_po_mindat")),
+        ("In Petrology", mineral.get("petrologia_mindat")),
+        ("References for " ~ (mineral.get("nome_cientifico_padronizado") or mineral.get("nome") or "mineral"), mineral.get("referencias_mindat")),
+      ] %}
+      {% if technical_blocks | selectattr(1) | list %}
+        <h2 style="margin-top: 1.4rem;">Blocos técnicos Mindat</h2>
+        <div class="argilo-mineral-tech-list">
+          {% for title, value in technical_blocks if value not in [none, '', [], {}] %}
+            <div class="argilo-mineral-tech-item">
+              <div class="argilo-mineral-tech-title">{{ title }}</div>
+              {% if title.startswith('References for') and mineral.get("referencias_mindat_itens") %}
+                <ol class="argilo-mineral-tech-references">
+                  {% for item in mineral.get("referencias_mindat_itens", []) %}
+                    <li>{{ item }}</li>
+                  {% endfor %}
+                </ol>
+              {% else %}
+                <div class="argilo-mineral-tech-value">{{ value }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    </section>
+
+    <aside class="argilo-mineral-card">
+      <h2>Ficha curatorial</h2>
+      <div class="argilo-mineral-facts">
+        {% for fact in mineral.get("curatorial_facts", []) %}
+          <div class="argilo-mineral-fact">
+            <span class="argilo-mineral-fact-label">{{ fact.get("label") }}</span>
+            <div class="argilo-mineral-fact-value">
+              {% if fact.get("href") %}
+                <a href="{{ fact.get('href') }}" target="_blank" rel="noopener noreferrer">{{ fact.get("value") }}</a>
+              {% else %}
+                {{ fact.get("value") }}
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+        {% if not mineral.get("curatorial_facts") %}
+          <div class="argilo-mineral-fact">
+            <span class="argilo-mineral-fact-label">Estado da curadoria</span>
+            <div class="argilo-mineral-fact-value">Nenhuma informação curatorial estruturada foi encontrada para este argilomineral.</div>
+          </div>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+
+  <section class="argilo-mineral-card" style="margin-top: 1rem;">
+    {% if mineral.get("scientific_source_blocks") %}
+      <h2>Fontes científicas complementares</h2>
+      <div class="argilo-mineral-source-grid">
+        {% for block in mineral.get("scientific_source_blocks", []) %}
+          <div class="argilo-mineral-source-card">
+            <h3>{{ block.get("title") }}</h3>
+            {% if block.get("badge") %}
+              <div class="argilo-mineral-source-badge">{{ block.get("badge") }}</div>
+            {% endif %}
+            <p>{{ block.get("summary") }}</p>
+
+            <div class="argilo-mineral-source-meta">
+              {% if block.get("href") %}
+                <a class="ui mini basic button" href="{{ block.get('href') }}" target="_blank" rel="noopener noreferrer">{{ block.get("href_label") or "Abrir fonte" }}</a>
+              {% endif %}
+              {% if block.get("secondary_href") %}
+                <a class="ui mini basic button" href="{{ block.get('secondary_href') }}" target="_blank" rel="noopener noreferrer">{{ block.get("secondary_href_label") or "Abrir repositório" }}</a>
+              {% endif %}
+            </div>
+
+            {% if block.get("facts") %}
+              <div class="argilo-mineral-source-facts">
+                {% for fact in block.get("facts", []) %}
+                  <div class="argilo-mineral-source-fact">
+                    <span class="argilo-mineral-source-fact-label">{{ fact.get("label") }}</span>
+                    <div>{{ fact.get("value") }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if block.get("samples") %}
+              <div style="margin-top: 0.9rem;">
+                {% for sample in block.get("samples", []) %}
+                  <div class="argilo-mineral-source-sample">
+                    <span class="argilo-mineral-source-sample-title">
+                      {% if sample.get("href") %}
+                        <a href="{{ sample.get('href') }}" target="_blank" rel="noopener noreferrer">{{ sample.get("label") or "Material de referência" }}</a>
+                      {% else %}
+                        {{ sample.get("label") or "Material de referência" }}
+                      {% endif %}
+                      {% if sample.get("code") %}
+                        <span class="argilo-mineral-source-sample-code">{{ sample.get("code") }}</span>
+                      {% endif %}
+                    </span>
+                    <div class="argilo-mineral-source-sample-facts">
+                      {% for fact in sample.get("facts", []) %}
+                        <div><strong>{{ fact.get("label") }}:</strong> {{ fact.get("value") }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <h2>Fontes científicas complementares</h2>
+      <p>Ainda não há enriquecimento complementar estruturado por Handbook of Mineralogy, Source Clays ou EarthChem para este argilomineral.</p>
+    {% endif %}
+  </section>
+
+  <section class="argilo-mineral-card" style="margin-top: 1rem;">
+    <h2>Distribuição geográfica na Argiloteca</h2>
+    {% if map_summary %}
+      <p>
+        {{ map_summary.get("matched_records", 0) }} registros relacionados a este argilomineral na Argiloteca; {{ map_summary.get("georeferenced_records", 0) }} deles possuem georreferenciamento utilizável no mapa.
+      </p>
+    {% endif %}
+    {{ render_argilo_map_panel(
+      map_id="argilo-mineral-related-map-" ~ mineral.get("id"),
+      api_url=url_for('argiloteca.api_pontos_argilominerais', mineral_term=mineral.get("slug") or mineral.get("id")),
+      title=_("Registros georreferenciados relacionados a %(mineral)s", mineral=mineral.get("nome") or mineral.get("nome_cientifico_padronizado")),
+      subtitle=_("O mapa reúne amostras e pontos mineralógicos dos registros da Argiloteca que mencionam este argilomineral."),
+      lazy=false,
+      map_height="460px",
+      empty_message=_("Nenhum registro georreferenciado relacionado a este argilomineral foi encontrado.")
+    ) }}
+    <div class="argilo-mineral-map-actions">
+      <a class="ui basic button" href="/mapa-argilominerais?mineral_term={{ mineral.get('slug') or mineral.get('id') }}">
+        Visualizar registros no mapa em tela cheia
+      </a>
+    </div>
+  </section>
+
+  <section class="argilo-mineral-card" style="margin-top: 1rem;">
+    <h2>Licensa</h2>
+    {% if mineral.get("license_entries") %}
+      <div class="argilo-mineral-license-grid">
+        {% for entry in mineral.get("license_entries", []) %}
+          <div class="argilo-mineral-license-item">
+            <h3 class="argilo-mineral-license-title">{{ entry.get("source") }}</h3>
+            <div class="argilo-mineral-license-text">{{ entry.get("license") }}</div>
+            {% if entry.get("href") %}
+              <p style="margin: 0.55rem 0 0;">
+                <a href="{{ entry.get('href') }}" target="_blank" rel="noopener noreferrer">Abrir fonte</a>
+              </p>
+            {% endif %}
+            {% if entry.get("note") %}
+              <p style="margin: 0.6rem 0 0;"><strong>Observação curatorial:</strong> {{ entry.get("note") }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Ainda não há informações consolidadas de licensa para as fontes deste argilomineral.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  {{ render_argilo_map_js() }}
+{% endblock javascript %}

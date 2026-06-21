@@ -1,0 +1,45 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argilo_map_components.html" import render_argilo_map_css, render_argilo_map_js, render_argilo_atlas_panel with context %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  {{ render_argilo_map_css() }}
+{% endblock css %}
+
+{% block page_body %}
+  {{ render_scientific_header(
+    section=_("Território"),
+    title=_("Mapa de argilominerais"),
+    subtitle=_("Explore registros, amostras e ocorrências de argilominerais no território."),
+    breadcrumbs=[
+      {"label": _("Início"), "href": "/"},
+      {"label": _("Território"), "href": None},
+      {"label": _("Mapa de argilominerais"), "href": None}
+    ],
+    active_module="map",
+    actions=[
+      {"label": _("Abrir catálogo de nomes"), "href": url_for("argiloteca.catalogo_autorizado_argilominerais")},
+      {"label": _("Ver análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
+    ]
+  ) }}
+  <div class="ui fluid container" style="padding: 1rem 1rem 1.5rem;">
+    <div class="ui basic segment" style="padding: 0;">
+      {{ render_argilo_atlas_panel(
+        map_id="argilo-global-map",
+        api_url=url_for('argiloteca.api_pontos_argilominerais'),
+        title=_("Distribuição espacial dos argilominerais"),
+        subtitle=_("Visualização cartográfica integrada do acervo georreferenciado, com base mutável, leitura territorial e acesso rápido aos registros."),
+        highlight_record_id=request.args.get('highlight_record_id', ''),
+        empty_message=_("Nenhum registro com coordenadas geográficas foi encontrado."),
+        active_panel="mapa"
+      ) }}
+    </div>
+  </div>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  {{ render_argilo_map_js() }}
+{% endblock javascript %}

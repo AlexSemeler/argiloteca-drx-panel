@@ -1,0 +1,275 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/geoquimica-rede.css') }}?v=20260430-cores-fullscreen">
+{% endblock css %}
+
+{% block page_body %}
+  {{ render_scientific_header(
+    section=_("Geoquímica"),
+    title=_("Rede de analogias geoquímicas"),
+    subtitle=_("Compare registros por semelhança química, mineralógica e contextual."),
+    breadcrumbs=[
+      {"label": _("Início"), "href": "/"},
+      {"label": _("Geoquímica"), "href": None},
+      {"label": _("Rede geoquímica"), "href": None}
+    ],
+    active_module="network",
+    actions=[
+      {"label": _("Abrir atlas químico"), "href": url_for("argiloteca.geoquimica_agregada")},
+      {"label": _("Ver análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
+    ]
+  ) }}
+  <div
+    class="argilo-geo-network"
+    data-network-url="/api/argiloteca/geoquimica/rede"
+    data-record-url-template="/api/argiloteca/geoquimica/registro/__record_id__"
+  >
+    <header class="argilo-geo-network__header argilo-legacy-module-header">
+      <div>
+        <p class="argilo-geo-network__eyebrow">{{ _("Argiloteca") }}</p>
+        <h2>{{ _("Rede de Analogias Geoquímicas") }}</h2>
+        <p>
+          {{ _("Painel científico para explorar analogias entre registros da Argiloteca, combinando evidências geoquímicas, mineralógicas, contextuais e funcionais de forma auditável e explicável.") }}
+        </p>
+        <div class="argilo-geo-network__mode-indicator" data-role="mode-indicator">
+          {{ _("Modo atual: analogia composta") }}
+        </div>
+      </div>
+      <div class="argilo-geo-network__header-actions">
+        <a class="ui button" href="{{ url_for('argiloteca.mapa_argilominerais') }}">
+          {{ _("Mapa") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.catalogo_autorizado_argilominerais') }}">
+          {{ _("Catálogo de nomes") }}
+        </a>
+        <a class="ui primary button" href="{{ url_for('argiloteca.geoquimica_rede') }}">
+          {{ _("Rede geoquímica") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.geoquimica_agregada') }}">
+          {{ _("Atlas químico") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.drx_comparacao') }}">
+          {{ _("Comparação DRX") }}
+        </a>
+      </div>
+    </header>
+
+    <div class="argilo-geo-network__layout">
+      <aside class="argilo-geo-network__panel argilo-geo-network__filters-panel" aria-label="{{ _('Filtros') }}">
+        <form class="ui form" data-role="network-filters">
+          <h2>{{ _("Filtros científicos") }}</h2>
+
+          <label>{{ _("Modo de análise") }}</label>
+          <select name="analysis_mode" class="ui dropdown" data-role="analysis-mode-options">
+            <option value="composite">{{ _("Analogia composta") }}</option>
+            <option value="geoquimico">{{ _("Analogia geoquímica") }}</option>
+            <option value="mineralogico">{{ _("Analogia mineralógica") }}</option>
+            <option value="contextual">{{ _("Analogia contextual") }}</option>
+            <option value="funcional">{{ _("Analogia funcional") }}</option>
+          </select>
+
+          <label>{{ _("Grupo mineral") }}</label>
+          <select name="mineral_group" class="ui dropdown" data-role="grupo-options">
+            <option value="">{{ _("Todas") }}</option>
+          </select>
+
+          <label>{{ _("Argilomineral") }}</label>
+          <select name="argilomineral" class="ui dropdown" data-role="argilomineral-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <label>{{ _("Ambiente de formação") }}</label>
+          <select name="ambiente_formacao" class="ui dropdown" data-role="ambiente-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <label>{{ _("Rocha hospedeira") }}</label>
+          <select name="rocha_hospedeira" class="ui dropdown" data-role="rocha-options">
+            <option value="">{{ _("Todas") }}</option>
+          </select>
+
+          <label>{{ _("Era geológica") }}</label>
+          <select name="era_geologica" class="ui dropdown" data-role="era-options">
+            <option value="">{{ _("Todas") }}</option>
+          </select>
+
+          <div class="two fields">
+            <div class="field">
+              <label>{{ _("Razão Si/Al mín.") }}</label>
+              <input type="number" min="0" step="0.01" name="razao_si_al_min">
+            </div>
+            <div class="field">
+              <label>{{ _("Razão Si/Al máx.") }}</label>
+              <input type="number" min="0" step="0.01" name="razao_si_al_max">
+            </div>
+          </div>
+
+          <label>{{ _("Tipo de analogia") }}</label>
+          <select name="relation_type" class="ui dropdown" data-role="relation-type-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <label>{{ _("Classe de analogia") }}</label>
+          <select name="analogy_class" class="ui dropdown" data-role="analogy-class-options">
+            <option value="">{{ _("Todas") }}</option>
+          </select>
+
+          <label>{{ _("Nível de confiança") }}</label>
+          <select name="confidence_class" class="ui dropdown" data-role="confidence-class-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <details class="argilo-geo-network__advanced-filters">
+            <summary>{{ _("Parâmetros avançados") }}</summary>
+
+            <label>{{ _("Métrica geoquímica") }}</label>
+            <select name="metric" class="ui dropdown">
+              <option value="cosine">{{ _("Cosseno") }}</option>
+              <option value="euclidean">{{ _("Euclidiana") }}</option>
+            </select>
+
+            <label>{{ _("Critério de arestas") }}</label>
+            <select name="edge_mode" class="ui dropdown">
+              <option value="knn">k-NN</option>
+              <option value="threshold">{{ _("Limiar") }}</option>
+            </select>
+
+            <div class="two fields">
+              <div class="field">
+                <label>k</label>
+                <input type="number" min="1" max="25" step="1" name="k" value="3">
+              </div>
+              <div class="field">
+                <label>{{ _("Score mínimo da aresta") }}</label>
+                <input type="number" min="0" max="1" step="0.01" name="threshold" value="0.80">
+              </div>
+            </div>
+
+            <div class="two fields">
+              <div class="field">
+                <label>SiO2 mín.</label>
+                <input type="number" min="0" step="0.01" name="sio2_min">
+              </div>
+              <div class="field">
+                <label>SiO2 máx.</label>
+                <input type="number" min="0" step="0.01" name="sio2_max">
+              </div>
+            </div>
+
+            <div class="two fields">
+              <div class="field">
+                <label>Al2O3 mín.</label>
+                <input type="number" min="0" step="0.01" name="al2o3_min">
+              </div>
+              <div class="field">
+                <label>Al2O3 máx.</label>
+                <input type="number" min="0" step="0.01" name="al2o3_max">
+              </div>
+            </div>
+
+            <div class="two fields">
+              <div class="field">
+                <label>Fe2O3 mín.</label>
+                <input type="number" min="0" step="0.01" name="fe2o3_min">
+              </div>
+              <div class="field">
+                <label>Fe2O3 máx.</label>
+                <input type="number" min="0" step="0.01" name="fe2o3_max">
+              </div>
+            </div>
+
+            <div class="two fields">
+              <div class="field">
+                <label>TiO2 mín.</label>
+                <input type="number" min="0" step="0.01" name="tio2_min">
+              </div>
+              <div class="field">
+                <label>TiO2 máx.</label>
+                <input type="number" min="0" step="0.01" name="tio2_max">
+              </div>
+            </div>
+
+            <div class="two fields">
+              <div class="field">
+                <label>{{ _("Fração argilosa mín.") }}</label>
+                <input type="number" min="0" step="0.01" name="fracao_min">
+              </div>
+              <div class="field">
+                <label>{{ _("Fração argilosa máx.") }}</label>
+                <input type="number" min="0" step="0.01" name="fracao_max">
+              </div>
+            </div>
+          </details>
+
+          <button class="ui primary button" type="submit">{{ _("Atualizar rede") }}</button>
+          <button class="ui button" type="reset" data-role="clear-filters">{{ _("Limpar") }}</button>
+        </form>
+      </aside>
+
+      <section class="argilo-geo-network__graph-area">
+        <div class="argilo-geo-network__toolbar">
+          <div data-role="network-status" aria-live="polite">{{ _("Carregando rede geoquímica...") }}</div>
+          <div class="argilo-geo-network__toolbar-actions">
+            <button class="ui button" type="button" data-role="fit-graph">{{ _("Centralizar") }}</button>
+            <button class="ui button" type="button" data-role="fullscreen-graph" aria-pressed="false">
+              {{ _("Tela cheia") }}
+            </button>
+          </div>
+        </div>
+        <div id="argilo-geo-network-graph" class="argilo-geo-network__graph" aria-label="{{ _('Grafo geoquímico') }}"></div>
+      </section>
+
+      <section class="argilo-geo-network__panel argilo-geo-network__details-panel" aria-label="{{ _('Detalhes') }}">
+        <h2 data-role="details-title">{{ _("Registro selecionado") }}</h2>
+        <div data-role="node-details" class="argilo-geo-network__details">
+          <p>{{ _("Selecione um nó ou uma aresta para ver a explicação científica da analogia.") }}</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="argilo-geo-network__summary" data-role="graph-legend">
+      <h2>{{ _("Legenda científica da rede") }}</h2>
+      <p>{{ _("As arestas expressam relações de analogia explicável. A cor indica a dimensão principal da relação, a espessura indica a força da analogia e a opacidade indica a confiança.") }}</p>
+      <div class="argilo-geo-network__legend-grid" data-role="legend-content"></div>
+    </section>
+
+    <section class="argilo-geo-network__summary" data-role="comparison-panel">
+      <h2>{{ _("Comparação pareada") }}</h2>
+      <p>{{ _("Selecione uma aresta ou dois nós para comparar os registros lado a lado.") }}</p>
+      <div data-role="comparison-content"></div>
+    </section>
+
+    <section class="argilo-geo-network__summary" data-role="cluster-summary">
+      <h2>{{ _("Agrupamentos") }}</h2>
+      <p>{{ _("Os agrupamentos serão listados após o carregamento da rede.") }}</p>
+    </section>
+
+    <section class="argilo-geo-network__summary" data-role="network-table-summary" aria-live="polite">
+      <h2>{{ _("Resumo tabular da rede") }}</h2>
+      <p>{{ _("Após o carregamento, use a visão geral dos registros e os detalhes selecionados como alternativa textual inicial para nós e relações da rede.") }}</p>
+    </section>
+
+    <section class="argilo-geo-network__summary" data-role="mineral-map-summary">
+      <h2>{{ _("Mapa de argilominerais da rede") }}</h2>
+      <p>{{ _("Os argilominerais serão organizados a partir do campo subject e das ligações entre os registros carregados.") }}</p>
+    </section>
+
+    <section class="argilo-geo-network__summary">
+      <h2>{{ _("Visão geral dos registros") }}</h2>
+      <div data-role="composition-overview-list">
+        <p>{{ _("Os cartões analíticos serão listados após o carregamento da rede.") }}</p>
+      </div>
+    </section>
+
+  </div>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.29.2/dist/cytoscape.min.js"></script>
+  <script src="{{ url_for('argiloteca.static', filename='js/geoquimica-rede.js') }}?v=20260430-cores-fullscreen"></script>
+{% endblock javascript %}

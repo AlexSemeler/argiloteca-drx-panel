@@ -1,0 +1,213 @@
+{% extends config.BASE_TEMPLATE %}
+{% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+
+{% block css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/geoquimica-agregada.css') }}?v=20260430-mineral-tabela">
+{% endblock css %}
+
+{% block page_body %}
+  {{ render_scientific_header(
+    section=_("Geoquímica"),
+    title=_("Atlas químico"),
+    subtitle=_("Explore composições globais por argilomineral, grupo mineralógico e amostra."),
+    breadcrumbs=[
+      {"label": _("Início"), "href": "/"},
+      {"label": _("Geoquímica"), "href": None},
+      {"label": _("Atlas químico"), "href": None}
+    ],
+    active_module="atlas",
+    actions=[
+      {"label": _("Abrir rede geoquímica"), "href": url_for("argiloteca.geoquimica_rede")},
+      {"label": _("Ver análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
+    ]
+  ) }}
+  <div
+    class="argilo-geo-atlas"
+    data-endpoint="{{ url_for('argiloteca.api_geoquimica_agregada') }}"
+  >
+    <header class="argilo-geo-atlas__header argilo-legacy-module-header">
+      <div>
+        <p class="argilo-geo-atlas__eyebrow">{{ _("Argiloteca") }}</p>
+        <h2>{{ _("Atlas Geoquímico da Argiloteca") }}</h2>
+        <p>
+          {{ _("Painel científico-analítico para explorar a composição química global do acervo, relacionando tempo geológico, grupos mineralógicos, argilominerais, amostras e registros.") }}
+        </p>
+      </div>
+      <div class="argilo-geo-atlas__actions">
+        <a class="ui button" href="{{ url_for('argiloteca.mapa_argilominerais') }}">
+          {{ _("Mapa") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.catalogo_autorizado_argilominerais') }}">
+          {{ _("Catálogo de nomes") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.geoquimica_rede') }}">
+          {{ _("Rede geoquímica") }}
+        </a>
+        <a class="ui button" href="{{ url_for('argiloteca.drx_comparacao') }}">
+          {{ _("Comparação DRX") }}
+        </a>
+        <a class="ui primary button" href="{{ url_for('argiloteca.geoquimica_agregada') }}">
+          {{ _("Atlas químico") }}
+        </a>
+      </div>
+    </header>
+
+    <section class="argilo-geo-atlas__stats" data-role="stats-cards">
+      <div class="argilo-geo-atlas__empty" aria-live="polite">{{ _("Carregando indicadores do acervo...") }}</div>
+    </section>
+
+    <div class="argilo-geo-atlas__layout">
+      <aside class="argilo-geo-atlas__panel">
+        <form class="ui form" data-role="filters-form">
+          <h2>{{ _("Filtros científicos") }}</h2>
+
+          <label>{{ _("Busca textual") }}</label>
+          <input type="text" name="q" placeholder="{{ _('Título, código da amostra ou argilomineral') }}">
+
+          <label>{{ _("Grupo mineralógico") }}</label>
+          <select class="ui dropdown" name="mineral_group" data-role="group-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <label>{{ _("Argilomineral") }}</label>
+          <select class="ui dropdown" name="argilomineral" data-role="mineral-options">
+            <option value="">{{ _("Todos") }}</option>
+          </select>
+
+          <label>{{ _("Apenas registros com amostra") }}</label>
+          <select class="ui dropdown" name="has_sample">
+            <option value="">{{ _("Todos") }}</option>
+            <option value="true">{{ _("Sim") }}</option>
+            <option value="false">{{ _("Sem amostra vinculada") }}</option>
+          </select>
+
+          <div class="two fields">
+            <div class="field">
+              <label>SiO2 mín.</label>
+              <input type="number" min="0" step="0.01" name="sio2_min">
+            </div>
+            <div class="field">
+              <label>SiO2 máx.</label>
+              <input type="number" min="0" step="0.01" name="sio2_max">
+            </div>
+          </div>
+
+          <div class="two fields">
+            <div class="field">
+              <label>Al2O3 mín.</label>
+              <input type="number" min="0" step="0.01" name="al2o3_min">
+            </div>
+            <div class="field">
+              <label>Al2O3 máx.</label>
+              <input type="number" min="0" step="0.01" name="al2o3_max">
+            </div>
+          </div>
+
+          <div class="two fields">
+            <div class="field">
+              <label>Fe2O3 mín.</label>
+              <input type="number" min="0" step="0.01" name="fe2o3_min">
+            </div>
+            <div class="field">
+              <label>Fe2O3 máx.</label>
+              <input type="number" min="0" step="0.01" name="fe2o3_max">
+            </div>
+          </div>
+
+          <div class="two fields">
+            <div class="field">
+              <label>MgO mín.</label>
+              <input type="number" min="0" step="0.01" name="mgo_min">
+            </div>
+            <div class="field">
+              <label>MgO máx.</label>
+              <input type="number" min="0" step="0.01" name="mgo_max">
+            </div>
+          </div>
+
+          <div class="argilo-geo-atlas__form-actions">
+            <button class="ui primary button" type="submit">{{ _("Atualizar painel") }}</button>
+            <button class="ui button" type="reset" data-role="clear-filters">{{ _("Limpar") }}</button>
+          </div>
+        </form>
+      </aside>
+
+      <section class="argilo-geo-atlas__content">
+        <div class="argilo-geo-atlas__status" data-role="status">
+          {{ _("Carregando painel geoquímico...") }}
+        </div>
+
+        <section class="argilo-geo-atlas__block">
+          <div class="argilo-geo-atlas__block-header">
+            <div>
+              <h2>{{ _("Gráfico de barras agregado") }}</h2>
+              <p>{{ _("Médias por recorte geológico, grupo mineralógico ou argilomineral, com clique para filtrar a tabela.") }}</p>
+              <p class="argilo-geo-atlas__status">{{ _("As médias são calculadas para o recorte filtrado. O número de registros e os óxidos considerados dependem dos dados disponíveis.") }}</p>
+            </div>
+            <div class="argilo-geo-atlas__inline-controls">
+              <select class="ui dropdown" data-role="bar-dimension">
+                <option value="by_era">{{ _("Por era geológica") }}</option>
+                <option value="by_periodo">{{ _("Por período") }}</option>
+                <option value="by_epoca">{{ _("Por época") }}</option>
+                <option value="by_mineral_group">{{ _("Por grupo mineralógico") }}</option>
+                <option value="by_argilomineral">{{ _("Por argilomineral") }}</option>
+              </select>
+              <select class="ui dropdown" data-role="bar-oxide">
+                <option value="SiO2">SiO2 (%)</option>
+                <option value="Al2O3">Al2O3 (%)</option>
+                <option value="Fe2O3">Fe2O3 (%)</option>
+                <option value="MgO">MgO (%)</option>
+                <option value="CaO">CaO (%)</option>
+                <option value="K2O">K2O (%)</option>
+                <option value="Na2O">Na2O (%)</option>
+                <option value="TiO2">TiO2 (%)</option>
+                <option value="LOI">LOI (%)</option>
+                <option value="PF">PF (%)</option>
+              </select>
+            </div>
+          </div>
+          <div data-role="bar-chart"></div>
+        </section>
+
+        <section class="argilo-geo-atlas__block">
+          <div class="argilo-geo-atlas__block-header">
+            <div>
+              <h2>{{ _("Radar comparativo") }}</h2>
+              <p>{{ _("Comparação entre grupos ou eras com base nas médias dos principais óxidos.") }}</p>
+            </div>
+            <select class="ui dropdown" data-role="radar-dimension">
+              <option value="by_mineral_group">{{ _("Grupos mineralógicos") }}</option>
+              <option value="by_era">{{ _("Eras geológicas") }}</option>
+            </select>
+          </div>
+          <div data-role="radar-chart"></div>
+        </section>
+
+        <section class="argilo-geo-atlas__block">
+          <div class="argilo-geo-atlas__block-header">
+            <div>
+              <h2>{{ _("Tabela científica consolidada") }}</h2>
+              <p>{{ _("Base analítica dos gráficos, com ligação direta para os registros originais.") }}</p>
+            </div>
+            <div class="argilo-geo-atlas__inline-controls" data-role="table-mineral-control">
+              <label class="argilo-geo-atlas__compact-label" for="argilo-table-mineral-filter">
+                {{ _("Argilomineral na tabela") }}
+              </label>
+              <select class="ui dropdown" id="argilo-table-mineral-filter" data-role="table-mineral-filter">
+                <option value="">{{ _("Todos") }}</option>
+              </select>
+            </div>
+          </div>
+          <div data-role="table-wrap"></div>
+        </section>
+      </section>
+    </div>
+  </div>
+{% endblock page_body %}
+
+{% block javascript %}
+  {{ super() }}
+  <script src="{{ url_for('argiloteca.static', filename='js/geoquimica-agregada.js') }}?v=20260430-mineral-tabela"></script>
+{% endblock javascript %}

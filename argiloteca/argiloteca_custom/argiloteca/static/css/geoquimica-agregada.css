@@ -1,0 +1,363 @@
+.argilo-geo-atlas {
+  --atlas-border: var(--arg-color-border);
+  --atlas-text: var(--arg-color-text);
+  --atlas-muted: var(--arg-color-text-muted);
+  --atlas-surface: var(--arg-color-surface);
+  --atlas-band: linear-gradient(180deg, #edf3f1 0%, #e4ece8 100%);
+  --atlas-accent: var(--arg-color-primary);
+  --atlas-accent-strong: var(--arg-color-primary-strong);
+  --atlas-accent-soft: var(--arg-color-analysis-soft);
+  background: var(--atlas-band);
+  color: var(--atlas-text);
+  display: grid;
+  font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+  gap: 0.85rem;
+  margin-left: calc(50% - 50vw);
+  min-height: calc(100vh - 1rem);
+  padding: 0.85rem;
+  width: 100vw;
+}
+
+.argilo-geo-atlas__header,
+.argilo-geo-atlas__stats,
+.argilo-geo-atlas__panel,
+.argilo-geo-atlas__block {
+  background: var(--atlas-surface);
+  border: 1px solid var(--atlas-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(25, 44, 53, 0.06);
+}
+
+.argilo-geo-atlas__header {
+  align-items: center;
+  background: linear-gradient(135deg, var(--atlas-accent) 0%, var(--atlas-accent-strong) 100%);
+  box-shadow: 0 20px 42px rgba(25, 44, 53, 0.14);
+  color: #f3f7f6;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem 1.1rem;
+}
+
+.argilo-geo-atlas__header h1,
+.argilo-geo-atlas__header p {
+  color: inherit;
+}
+
+.argilo-geo-atlas__header p:last-child {
+  color: rgba(243, 247, 246, 0.88);
+  max-width: 62rem;
+}
+
+.argilo-geo-atlas__eyebrow {
+  color: rgba(216, 235, 231, 0.95);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.argilo-geo-atlas__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.argilo-geo-atlas .ui.button {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: #f5f8f7;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.argilo-geo-atlas .ui.button:hover,
+.argilo-geo-atlas .ui.button:focus {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.argilo-geo-atlas .ui.primary.button {
+  background: #f3f7f6;
+  border-color: #f3f7f6;
+  color: var(--atlas-accent-strong);
+}
+
+.argilo-geo-atlas .ui.primary.button:hover,
+.argilo-geo-atlas .ui.primary.button:focus {
+  background: #ffffff;
+  color: var(--atlas-accent-strong);
+}
+
+.argilo-geo-atlas__stats {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  padding: 1rem 1.1rem;
+}
+
+.argilo-geo-atlas__stat-card {
+  background: linear-gradient(180deg, #fdfefe 0%, #f4f8f7 100%);
+  border: 1px solid var(--atlas-border);
+  border-radius: 10px;
+  padding: 0.9rem;
+}
+
+.argilo-geo-atlas__stat-label {
+  color: var(--atlas-muted);
+  font-size: 0.86rem;
+  margin-bottom: 0.3rem;
+}
+
+.argilo-geo-atlas__stat-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.argilo-geo-atlas__layout {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+}
+
+.argilo-geo-atlas__panel {
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+  padding: 1rem;
+}
+
+.argilo-geo-atlas__panel label {
+  color: var(--atlas-muted);
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+}
+
+.argilo-geo-atlas__content {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.argilo-geo-atlas__status {
+  color: var(--atlas-muted);
+  font-weight: 600;
+  padding: 0 0.2rem;
+}
+
+.argilo-geo-atlas__block {
+  padding: 1rem 1.1rem;
+}
+
+.argilo-geo-atlas__block-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.argilo-geo-atlas__block-header h2 {
+  margin: 0 0 0.2rem;
+}
+
+.argilo-geo-atlas__block-header p {
+  color: var(--atlas-muted);
+  margin: 0;
+}
+
+.argilo-geo-atlas__inline-controls,
+.argilo-geo-atlas__form-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.argilo-geo-atlas__compact-label {
+  color: var(--atlas-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.argilo-geo-atlas__empty {
+  color: var(--atlas-muted);
+}
+
+.argilo-geo-atlas__bar-chart {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.argilo-geo-atlas__bar-row {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: minmax(180px, 220px) 1fr 74px;
+}
+
+.argilo-geo-atlas__bar-label {
+  font-weight: 600;
+}
+
+.argilo-geo-atlas__bar-track {
+  background: #e4ece7;
+  border-radius: 999px;
+  height: 0.9rem;
+  overflow: hidden;
+}
+
+.argilo-geo-atlas__bar-fill {
+  background: linear-gradient(90deg, var(--atlas-accent) 0%, #66a9a3 100%);
+  height: 100%;
+}
+
+.argilo-geo-atlas__bar-value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.argilo-geo-atlas__radar-wrap {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(360px, 1fr) minmax(180px, 240px);
+}
+
+.argilo-geo-atlas__radar-wrap svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.argilo-geo-atlas__radar-legend {
+  align-content: start;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.argilo-geo-atlas__legend-item {
+  align-items: center;
+  border: 1px solid var(--atlas-border);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #fdfefe 0%, #f4f8f7 100%);
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+}
+
+.argilo-geo-atlas__legend-item strong {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.argilo-geo-atlas__legend-item small {
+  color: var(--atlas-muted);
+  display: block;
+  font-size: 0.76rem;
+  line-height: 1.15;
+}
+
+.argilo-geo-atlas__legend-swatch {
+  border-radius: 999px;
+  flex: 0 0 10px;
+  height: 10px;
+  width: 10px;
+}
+
+.argilo-geo-atlas__table-wrap {
+  overflow: auto;
+}
+
+.argilo-geo-atlas__table {
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  width: 100%;
+}
+
+.argilo-geo-atlas__table th,
+.argilo-geo-atlas__table td {
+  border-bottom: 1px solid var(--atlas-border);
+  padding: 0.55rem 0.45rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.argilo-geo-atlas__table th {
+  background: #f2f7f5;
+  font-size: 0.82rem;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+  z-index: 1;
+}
+
+.argilo-geo-atlas__table td.is-numeric {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.argilo-geo-atlas__record-start td {
+  border-top: 2px solid #c9dbd5;
+}
+
+.argilo-geo-atlas__record-cell {
+  background: #f8fbfa;
+  font-weight: 700;
+  max-width: 320px;
+  min-width: 240px;
+}
+
+.argilo-geo-atlas__record-cell a {
+  color: var(--atlas-accent-strong);
+  line-height: 1.25;
+}
+
+.argilo-geo-atlas__mineral-name {
+  background: #eaf3f1;
+  border: 1px solid #c9dbd5;
+  border-radius: 999px;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0.2rem 0.48rem;
+}
+
+.argilo-geo-atlas__table small {
+  color: var(--atlas-muted);
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .argilo-geo-atlas__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .argilo-geo-atlas__panel {
+    max-height: none;
+  }
+
+  .argilo-geo-atlas__radar-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .argilo-geo-atlas__header,
+  .argilo-geo-atlas__block-header {
+    flex-direction: column;
+  }
+
+  .argilo-geo-atlas__bar-row {
+    grid-template-columns: 1fr;
+  }
+}
