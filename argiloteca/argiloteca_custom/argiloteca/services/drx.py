@@ -186,32 +186,32 @@ ADVANCED_ALS_SCHERRER_K = 0.9
 # Faixas diagnosticas em d-spacing (Angstrom) usadas pelo painel para orientar
 # argilominerais e calibracao por quartzo, nao para substituir curadoria.
 DRX_DIAGNOSTIC_D_RANGES = {
-    "illite10A": (9.7, 10.4),
-    "kaolinite7A": (6.9, 7.8),
-    "smectiteNatural": (13.0, 16.5),
-    "smectiteGlycolated": (16.6, 18.6),
-    "smectiteCalcined": (9.4, 10.4),
-    "chlorite14A": (13.7, 14.6),
-    "quartz101": (3.24, 3.44),
+    "illite10A": (9.73, 10.38),
+    "kaolinite7A": (6.96, 7.42),
+    "smectiteNatural": (13.46, 16.86),
+    "smectiteGlycolated": (16.06, 18.31),
+    "smectiteCalcined": (9.65, 10.37),
+    "chlorite14A": (13.58, 14.87),
+    "quartz101": (3.27, 3.42),
     "quartz100": (4.23, 4.35),
 }
 TARGETED_BASAL_PEAK_RANGES = (
-    {"range_id": "smectite_n_12_15a", "mineral": "Esmectita", "label": "Esmectita N 12-15 A", "d_min": 12.0, "d_max": 15.5},
-    {"range_id": "smectite_g_17a", "mineral": "Esmectita", "label": "Esmectita G ~17 A", "d_min": 16.6, "d_max": 18.6},
-    {"range_id": "smectite_c_10a", "mineral": "Esmectita", "label": "Esmectita C ~10 A", "d_min": 9.4, "d_max": 10.4},
-    {"range_id": "illite_10a", "mineral": "Ilita", "label": "Ilita/Mica 10 A", "d_min": 9.7, "d_max": 10.4},
+    {"range_id": "smectite_n_13_16a", "mineral": "Esmectita", "label": "Esmectita N 13.46-16.86 A", "d_min": 13.46, "d_max": 16.86},
+    {"range_id": "smectite_g_17a", "mineral": "Esmectita", "label": "Esmectita G 16.06-18.31 A", "d_min": 16.06, "d_max": 18.31},
+    {"range_id": "smectite_c_10a", "mineral": "Esmectita", "label": "Esmectita C 9.65-10.37 A", "d_min": 9.65, "d_max": 10.37},
+    {"range_id": "illite_10a", "mineral": "Ilita", "label": "Ilita/Mica 9.73-10.38 A", "d_min": 9.73, "d_max": 10.38},
     {"range_id": "illite_5a", "mineral": "Ilita", "label": "Ilita/Mica 5 A", "d_min": 4.85, "d_max": 5.15},
     {"range_id": "illite_3_33a", "mineral": "Ilita", "label": "Ilita/Mica 3.33 A", "d_min": 3.26, "d_max": 3.40},
-    {"range_id": "kaolinite_7a", "mineral": "Caulinita", "label": "Caulinita 7 A", "d_min": 6.9, "d_max": 7.8},
+    {"range_id": "kaolinite_7a", "mineral": "Caulinita", "label": "Caulinita 6.96-7.42 A", "d_min": 6.96, "d_max": 7.42},
     {"range_id": "kaolinite_3_57a", "mineral": "Caulinita", "label": "Caulinita 3.57 A", "d_min": 3.52, "d_max": 3.62},
-    {"range_id": "chlorite_14a", "mineral": "Clorita", "label": "Clorita 14 A", "d_min": 13.7, "d_max": 15.3},
+    {"range_id": "chlorite_14a", "mineral": "Clorita", "label": "Clorita 13.58-14.87 A", "d_min": 13.58, "d_max": 14.87},
     {"range_id": "chlorite_7a", "mineral": "Clorita", "label": "Clorita 7 A", "d_min": 6.9, "d_max": 7.4},
     {"range_id": "chlorite_4_72a", "mineral": "Clorita", "label": "Clorita 4.72 A", "d_min": 4.60, "d_max": 4.85},
     {"range_id": "chlorite_3_53a", "mineral": "Clorita", "label": "Clorita 3.53 A", "d_min": 3.45, "d_max": 3.65},
-    {"range_id": "quartz_101", "mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.24, "d_max": 3.44},
+    {"range_id": "quartz_101", "mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.27, "d_max": 3.42},
     {"range_id": "quartz_100", "mineral": "Quartzo", "label": "Quartzo 100", "d_min": 4.23, "d_max": 4.35},
 )
-DRX_QUARTZ_CALIBRATION_SEARCH_D_RANGE = (3.24, 3.44)
+DRX_QUARTZ_CALIBRATION_SEARCH_D_RANGE = (3.27, 3.42)
 DRX_QUARTZ_CALIBRATION_TARGET_D = 3.34
 DRX_QUARTZ_CALIBRATION_MIN_RELATIVE_INTENSITY = 2.0
 DRX_QUARTZ_CALIBRATION_MIN_OFFSET = 0.02

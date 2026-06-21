@@ -661,7 +661,7 @@ class DrxParserTest(unittest.TestCase):
         Raises:
             Exception: Propaga erros das dependências quando a validação ou o processamento falha.
         """
-        peaks = [{"d": 14.9, "i_abs": 90}, {"d": 7.1, "i_abs": 60}, {"d": 4.72, "i_abs": 40}, {"d": 3.53, "i_abs": 35}]
+        peaks = [{"d": 14.7, "i_abs": 90}, {"d": 7.1, "i_abs": 60}, {"d": 4.72, "i_abs": 40}, {"d": 3.53, "i_abs": 35}]
         payload = build_ngc_workflow(self._ngc_items("CHL-01", natural=peaks, glycolated=peaks, calcined=peaks))
 
         chlorite = self._clay_candidate(payload, "chlorite_group")
@@ -878,7 +878,7 @@ class DrxParserTest(unittest.TestCase):
         self.assertTrue(any(row["mineral"] == "Esmectita" for row in group["interval_diagnostics"]))
         self.assertTrue(
             any(
-                "ESMECTITA Detectada: Expansao p/ 16.6-18.6 A no Glicol e colapso na Calcinada."
+                "ESMECTITA Detectada: Expansao p/ 16.1-18.3 A no Glicol e colapso na Calcinada."
                 in row["message"]
                 for row in group["interval_diagnostics"]
             )
@@ -939,7 +939,7 @@ class DrxParserTest(unittest.TestCase):
         self.assertIn("Quartzo", minerals)
         messages = [row["message"] for row in group["interval_diagnostics"]]
         self.assertTrue(any("ILITA Detectada: Pico estavel entre 9.7-10.4 A" in message for message in messages))
-        self.assertTrue(any("CAULINITA Detectada: Pico entre 6.9-7.8 A destruido na Calcinacao." in message for message in messages))
+        self.assertTrue(any("CAULINITA Detectada: Pico entre 7.0-7.4 A destruido na Calcinacao." in message for message in messages))
         self.assertTrue(any("QUARTZO Detectado: Pico principal da ordem 101 imutavel" in message for message in messages))
         self.assertTrue(any("Confirmado por pico secundario (100)" in message for message in messages))
         self.assertIn("illite", group["companion_peaks"])

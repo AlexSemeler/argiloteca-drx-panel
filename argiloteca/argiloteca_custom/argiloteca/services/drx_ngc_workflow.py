@@ -47,27 +47,42 @@ WEBMINERAL_MANIFEST_CANDIDATES = [
 ]
 
 DIAGNOSTIC_RANGES = {
-    "smectite_glycolated_17a": (16.6, 18.6),
-    "smectite_calcined_10a": (9.4, 10.4),
-    "chlorite_14a": (13.7, 15.3),
+    "smectite_natural_13_16a": (13.46, 16.86),
+    "smectite_glycolated_17a": (16.06, 18.31),
+    "smectite_calcined_10a": (9.65, 10.37),
+    "chlorite_14a": (13.58, 14.87),
     "chlorite_7a": (6.9, 7.4),
     "chlorite_4_72a": (4.60, 4.85),
     "chlorite_3_5a": (3.45, 3.65),
-    "kaolinite_7a": (7.05, 7.30),
+    "kaolinite_7a": (6.96, 7.42),
     "kaolinite_3_57a": (3.52, 3.62),
-    "illite_10a": (9.8, 10.25),
+    "illite_10a": (9.73, 10.38),
     "illite_5a": (4.85, 5.15),
     "illite_3_33a": (3.26, 3.40),
+    "quartz_101": (3.27, 3.42),
 }
 
 SCRIPT_INTERVAL_RANGES = {
-    "illite_10a": (9.7, 10.4),
-    "kaolinite_7a": (6.9, 7.8),
-    "smectite_n": (13.0, 16.5),
-    "smectite_g": (16.6, 18.6),
-    "smectite_c": (9.4, 10.4),
-    "chlorite_14a": (13.7, 15.3),
-    "quartz_101": (3.24, 3.44),
+    "illite_10a": (9.73, 10.38),
+    "illite_10a_n": (9.84, 10.36),
+    "illite_10a_g": (9.82, 10.30),
+    "illite_10a_c": (9.73, 10.38),
+    "kaolinite_7a": (6.96, 7.42),
+    "kaolinite_7a_n": (6.97, 7.42),
+    "kaolinite_7a_g": (6.96, 7.42),
+    # Janela usada apenas para verificar persistência/perda após 550 C.
+    "kaolinite_7a_c_check": (6.96, 7.42),
+    "smectite_n": (13.46, 16.86),
+    "smectite_g": (16.06, 18.31),
+    "smectite_c": (9.65, 10.37),
+    "chlorite_14a": (13.58, 14.87),
+    "chlorite_14a_n": (13.74, 14.74),
+    "chlorite_14a_g": (13.83, 14.72),
+    "chlorite_14a_c": (13.58, 14.87),
+    "quartz_101": (3.27, 3.42),
+    "quartz_101_n": (3.28, 3.41),
+    "quartz_101_g": (3.28, 3.42),
+    "quartz_101_c": (3.27, 3.42),
     "quartz_100": (4.23, 4.35),
 }
 
@@ -535,21 +550,22 @@ def _companion_peak_set(natural, glycolated, calcined):
             "calcined_10a": _interval_observation(calcined, "smectite_c"),
         },
         "illite": {
-            "stable_10a_n": _interval_observation(natural, "illite_10a"),
-            "stable_10a_g": _interval_observation(glycolated, "illite_10a"),
-            "stable_10a_c": _interval_observation(calcined, "illite_10a"),
+            "stable_10a_n": _interval_observation(natural, "illite_10a_n"),
+            "stable_10a_g": _interval_observation(glycolated, "illite_10a_g"),
+            "stable_10a_c": _interval_observation(calcined, "illite_10a_c"),
             "companion_5a": _diagnostic_observation(representative, "illite_5a"),
             "companion_3_33a": _diagnostic_observation(representative, "illite_3_33a"),
         },
         "kaolinite": {
-            "natural_7a": _interval_observation(natural, "kaolinite_7a"),
-            "glycolated_7a": _interval_observation(glycolated, "kaolinite_7a"),
-            "calcined_7a": _interval_observation(calcined, "kaolinite_7a"),
+            "natural_7a": _interval_observation(natural, "kaolinite_7a_n"),
+            "glycolated_7a": _interval_observation(glycolated, "kaolinite_7a_g"),
+            "calcined_7a": _interval_observation(calcined, "kaolinite_7a_c_check"),
             "companion_3_57a": _diagnostic_observation(representative, "kaolinite_3_57a"),
         },
         "chlorite": {
-            "natural_14a": _interval_observation(natural, "chlorite_14a"),
-            "calcined_14a": _interval_observation(calcined, "chlorite_14a"),
+            "natural_14a": _interval_observation(natural, "chlorite_14a_n"),
+            "glycolated_14a": _interval_observation(glycolated, "chlorite_14a_g"),
+            "calcined_14a": _interval_observation(calcined, "chlorite_14a_c"),
             "companion_7a": _diagnostic_observation(representative, "chlorite_7a"),
             "companion_4_72a": _diagnostic_observation(representative, "chlorite_4_72a"),
             "companion_3_53a": _diagnostic_observation(representative, "chlorite_3_5a"),
@@ -646,9 +662,9 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
     diagnostics = []
     minerals = []
 
-    int_n_10 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["illite_10a"])
-    int_g_10 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["illite_10a"])
-    int_c_10 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["illite_10a"])
+    int_n_10 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["illite_10a_n"])
+    int_g_10 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["illite_10a_g"])
+    int_c_10 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["illite_10a_c"])
     if int_n_10 > 0 and int_g_10 > 0 and int_c_10 > 0:
         minerals.append("Ilita")
         diagnostics.append({
@@ -660,9 +676,9 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
                 int_n_10,
             ),
             "observations": {
-                "natural": _interval_observation(natural, "illite_10a"),
-                "glycolated": _interval_observation(glycolated, "illite_10a"),
-                "calcined": _interval_observation(calcined, "illite_10a"),
+                "natural": _interval_observation(natural, "illite_10a_n"),
+                "glycolated": _interval_observation(glycolated, "illite_10a_g"),
+                "calcined": _interval_observation(calcined, "illite_10a_c"),
             },
         })
 
@@ -685,9 +701,9 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
             },
         })
 
-    int_n_7 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["kaolinite_7a"])
-    int_g_7 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["kaolinite_7a"])
-    int_c_7 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["kaolinite_7a"])
+    int_n_7 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_n"])
+    int_g_7 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_g"])
+    int_c_7 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_c_check"])
     if int_n_7 > 0 and int_g_7 > 0 and int_c_7 < (0.1 * int_n_7):
         minerals.append("Caulinita")
         diagnostics.append({
@@ -698,14 +714,14 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
                 SCRIPT_INTERVAL_RANGES["kaolinite_7a"][1],
             ),
             "observations": {
-                "natural": _interval_observation(natural, "kaolinite_7a"),
-                "glycolated": _interval_observation(glycolated, "kaolinite_7a"),
-                "calcined": _interval_observation(calcined, "kaolinite_7a"),
+                "natural": _interval_observation(natural, "kaolinite_7a_n"),
+                "glycolated": _interval_observation(glycolated, "kaolinite_7a_g"),
+                "calcined": _interval_observation(calcined, "kaolinite_7a_c_check"),
             },
         })
 
-    int_n_cl_14 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["chlorite_14a"])
-    int_c_cl_14 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["chlorite_14a"])
+    int_n_cl_14 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["chlorite_14a_n"])
+    int_c_cl_14 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["chlorite_14a_c"])
     if int_n_cl_14 > 0 and int_c_cl_14 > 0:
         minerals.append("Clorita")
         status = "intensificado" if int_c_cl_14 > int_n_cl_14 else "preservado"
@@ -714,14 +730,15 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
             "rule": "14a_preserved_or_intensified_calcined",
             "message": "CLORITA Detectada: Pico ~14.2 A %s na Calcinada (Int C: %.0f cps)." % (status, int_c_cl_14),
             "observations": {
-                "natural": _interval_observation(natural, "chlorite_14a"),
-                "calcined": _interval_observation(calcined, "chlorite_14a"),
+                "natural": _interval_observation(natural, "chlorite_14a_n"),
+                "glycolated": _interval_observation(glycolated, "chlorite_14a_g"),
+                "calcined": _interval_observation(calcined, "chlorite_14a_c"),
             },
         })
 
-    int_n_qz_101 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["quartz_101"])
-    int_g_qz_101 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["quartz_101"])
-    int_c_qz_101 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["quartz_101"])
+    int_n_qz_101 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["quartz_101_n"])
+    int_g_qz_101 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["quartz_101_g"])
+    int_c_qz_101 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["quartz_101_c"])
     int_n_qz_100 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["quartz_100"])
     if int_n_qz_101 > 0 and int_g_qz_101 > 0 and int_c_qz_101 > 0:
         minerals.append("Quartzo")
@@ -733,9 +750,9 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
             "rule": "stable_quartz_101_ngc",
             "message": message,
             "observations": {
-                "natural_101": _interval_observation(natural, "quartz_101"),
-                "glycolated_101": _interval_observation(glycolated, "quartz_101"),
-                "calcined_101": _interval_observation(calcined, "quartz_101"),
+                "natural_101": _interval_observation(natural, "quartz_101_n"),
+                "glycolated_101": _interval_observation(glycolated, "quartz_101_g"),
+                "calcined_101": _interval_observation(calcined, "quartz_101_c"),
                 "natural_100": _interval_observation(natural, "quartz_100"),
             },
         })
@@ -841,7 +858,7 @@ def _targeted_clay_screening(natural, glycolated, calcined, all_items, companion
     smectite_hits = sum(1 for key in ("natural_12_15a", "glycolated_17a", "calcined_10a") if _peak_present(smectite.get(key)))
     if smectite_hits == 3:
         smectite_status = "detected"
-        smectite_message = "Esmectita provavel: pico 12-15 A em N expande para ~17 A em G e colapsa para ~10 A em C."
+        smectite_message = "Esmectita provavel: pico 13,46-16,86 A em N expande para 16,06-18,31 A em G e colapsa para 9,65-10,37 A em C."
         smectite_score = 0.88
     elif smectite_hits > 0:
         smectite_status = "mixed_layer_suspected" if smectite_hits == 2 else "possible"
@@ -852,9 +869,9 @@ def _targeted_clay_screening(natural, glycolated, calcined, all_items, companion
         smectite_message = "Esmectita nao observada pelos intervalos expansivos principais."
         smectite_score = 0.0
 
-    n_10 = _interval_observation(natural, "illite_10a")
-    g_10 = _interval_observation(glycolated, "illite_10a")
-    c_10 = _interval_observation(calcined, "illite_10a")
+    n_10 = _interval_observation(natural, "illite_10a_n")
+    g_10 = _interval_observation(glycolated, "illite_10a_g")
+    c_10 = _interval_observation(calcined, "illite_10a_c")
     illite_hits = sum(1 for row in (n_10, g_10, c_10) if _observation_intensity(row) > 0)
     illite_hint = _candidate_hint(all_items, "illite", "ilita", "mica")
     if illite_hits == 3:
@@ -867,9 +884,9 @@ def _targeted_clay_screening(natural, glycolated, calcined, all_items, companion
         illite_status = "not_observed"
         illite_message = "Ilita/mica nao observada pelos intervalos principais."
 
-    n_7 = _interval_observation(natural, "kaolinite_7a")
-    g_7 = _interval_observation(glycolated, "kaolinite_7a")
-    c_7 = _interval_observation(calcined, "kaolinite_7a")
+    n_7 = _interval_observation(natural, "kaolinite_7a_n")
+    g_7 = _interval_observation(glycolated, "kaolinite_7a_g")
+    c_7 = _interval_observation(calcined, "kaolinite_7a_c_check")
     n_7_i = _observation_intensity(n_7)
     g_7_i = _observation_intensity(g_7)
     c_7_i = _observation_intensity(c_7)
@@ -884,8 +901,8 @@ def _targeted_clay_screening(natural, glycolated, calcined, all_items, companion
         kaolinite_status = "not_observed"
         kaolinite_message = "Caulinita nao observada pelos intervalos principais."
 
-    n_cl14 = _interval_observation(natural, "chlorite_14a")
-    c_cl14 = _interval_observation(calcined, "chlorite_14a")
+    n_cl14 = _interval_observation(natural, "chlorite_14a_n")
+    c_cl14 = _interval_observation(calcined, "chlorite_14a_c")
     n_cl14_i = _observation_intensity(n_cl14)
     c_cl14_i = _observation_intensity(c_cl14)
     n_35 = _diagnostic_observation(natural, "chlorite_3_5a") if natural else {}
@@ -1306,25 +1323,29 @@ def _observations_for_clay_rules(natural, glycolated, calcined):
         Exception: Propaga erros das dependências quando a validação ou o processamento falha.
     """
     return {
-        "kaolin_n_7": _interval_observation(natural, "kaolinite_7a"),
-        "kaolin_g_7": _interval_observation(glycolated, "kaolinite_7a"),
-        "kaolin_c_7": _interval_observation(calcined, "kaolinite_7a"),
+        "kaolin_n_7": _interval_observation(natural, "kaolinite_7a_n"),
+        "kaolin_g_7": _interval_observation(glycolated, "kaolinite_7a_g"),
+        "kaolin_c_7": _interval_observation(calcined, "kaolinite_7a_c_check"),
         "kaolin_3_57": _diagnostic_observation(natural or glycolated or calcined or {}, "kaolinite_3_57a"),
-        "chlorite_n_14": _interval_observation(natural, "chlorite_14a"),
-        "chlorite_g_14": _interval_observation(glycolated, "chlorite_14a"),
-        "chlorite_c_14": _interval_observation(calcined, "chlorite_14a"),
+        "chlorite_n_14": _interval_observation(natural, "chlorite_14a_n"),
+        "chlorite_g_14": _interval_observation(glycolated, "chlorite_14a_g"),
+        "chlorite_c_14": _interval_observation(calcined, "chlorite_14a_c"),
         "chlorite_7": _diagnostic_observation(natural or glycolated or calcined or {}, "chlorite_7a"),
         "chlorite_4_72": _diagnostic_observation(natural or glycolated or calcined or {}, "chlorite_4_72a"),
         "chlorite_3_53": _diagnostic_observation(natural or glycolated or calcined or {}, "chlorite_3_5a"),
         "smectite_n": _interval_observation(natural, "smectite_n"),
         "smectite_g": _interval_observation(glycolated, "smectite_g"),
         "smectite_c": _interval_observation(calcined, "smectite_c"),
-        "illite_n_10": _interval_observation(natural, "illite_10a"),
-        "illite_g_10": _interval_observation(glycolated, "illite_10a"),
-        "illite_c_10": _interval_observation(calcined, "illite_10a"),
+        "illite_n_10": _interval_observation(natural, "illite_10a_n"),
+        "illite_g_10": _interval_observation(glycolated, "illite_10a_g"),
+        "illite_c_10": _interval_observation(calcined, "illite_10a_c"),
         "illite_5": _diagnostic_observation(natural or glycolated or calcined or {}, "illite_5a"),
         "illite_3_33": _diagnostic_observation(natural or glycolated or calcined or {}, "illite_3_33a"),
-        "quartz_101": _interval_observation(natural or glycolated or calcined or {}, "quartz_101"),
+        "quartz_101": (
+            _interval_observation(natural, "quartz_101_n")
+            or _interval_observation(glycolated, "quartz_101_g")
+            or _interval_observation(calcined, "quartz_101_c")
+        ),
     }
 
 

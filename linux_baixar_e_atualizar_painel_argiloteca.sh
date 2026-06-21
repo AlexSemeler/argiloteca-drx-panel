@@ -239,8 +239,8 @@ show_applied_markers() {
 
   echo "Marcadores aplicados no servidor:"
   grep -nF "$EXPECTED_ASSET_VERSION" "$APP_ROOT/argiloteca_custom/argiloteca/templates/semantic-ui/argiloteca/drx_comparacao.html" || true
-  grep -nF "chlorite14A: [13.7, 14.6]" "$APP_ROOT/argiloteca_custom/argiloteca/static/js/drx-comparacao.js" || true
-  grep -nF '"chlorite14A": (13.7, 14.6)' "$APP_ROOT/argiloteca_custom/argiloteca/services/drx.py" || true
+  grep -nF "chlorite14A: [13.58, 14.87]" "$APP_ROOT/argiloteca_custom/argiloteca/static/js/drx-comparacao.js" || true
+  grep -nF '"chlorite14A": (13.58, 14.87)' "$APP_ROOT/argiloteca_custom/argiloteca/services/drx.py" || true
 }
 
 check_panel_url_marker() {

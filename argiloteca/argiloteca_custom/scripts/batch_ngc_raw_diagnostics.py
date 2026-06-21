@@ -79,35 +79,47 @@ DEFAULT_MAX_PEAKS = 15
 DEFAULT_WAVELENGTH_CU = 1.5406
 DEFAULT_K_SCHERRER = 0.9
 DEFAULT_PEAK_BOUNDARY_THRESHOLD = 0.01
-DEFAULT_QUARTZ_SEARCH_D = (3.24, 3.44)
+DEFAULT_QUARTZ_SEARCH_D = (3.27, 3.42)
 DEFAULT_TARGET_QUARTZ_D = 3.34
 DEFAULT_MIN_QUARTZ_INTENSITY_PERCENT = 2.0
 
 RANGES = {
-    "illite_10a": (9.7, 10.4),
-    "kaolinite_7a": (6.9, 7.8),
-    "smectite_n": (13.0, 16.5),
-    "smectite_g": (16.6, 18.6),
-    "smectite_c": (9.4, 10.4),
-    "chlorite_14a": (13.7, 15.3),
-    "quartz_101": (3.24, 3.44),
+    "illite_10a": (9.73, 10.38),
+    "illite_10a_n": (9.84, 10.36),
+    "illite_10a_g": (9.82, 10.30),
+    "illite_10a_c": (9.73, 10.38),
+    "kaolinite_7a": (6.96, 7.42),
+    "kaolinite_7a_n": (6.97, 7.42),
+    "kaolinite_7a_g": (6.96, 7.42),
+    "kaolinite_7a_c_check": (6.96, 7.42),
+    "smectite_n": (13.46, 16.86),
+    "smectite_g": (16.06, 18.31),
+    "smectite_c": (9.65, 10.37),
+    "chlorite_14a": (13.58, 14.87),
+    "chlorite_14a_n": (13.74, 14.74),
+    "chlorite_14a_g": (13.83, 14.72),
+    "chlorite_14a_c": (13.58, 14.87),
+    "quartz_101": (3.27, 3.42),
+    "quartz_101_n": (3.28, 3.41),
+    "quartz_101_g": (3.28, 3.42),
+    "quartz_101_c": (3.27, 3.42),
     "quartz_100": (4.23, 4.35),
 }
 
 TARGETED_BASAL_RANGES = {
-    "smectite_n_12_15a": {"mineral": "Esmectita", "label": "Esmectita N 12-15 A", "d_min": 12.0, "d_max": 15.5},
-    "smectite_g_17a": {"mineral": "Esmectita", "label": "Esmectita G ~17 A", "d_min": 16.6, "d_max": 18.6},
-    "smectite_c_10a": {"mineral": "Esmectita", "label": "Esmectita C ~10 A", "d_min": 9.4, "d_max": 10.4},
-    "illite_10a": {"mineral": "Ilita", "label": "Ilita/Mica 10 A", "d_min": 9.7, "d_max": 10.4},
+    "smectite_n_13_16a": {"mineral": "Esmectita", "label": "Esmectita N 13.46-16.86 A", "d_min": 13.46, "d_max": 16.86},
+    "smectite_g_17a": {"mineral": "Esmectita", "label": "Esmectita G 16.06-18.31 A", "d_min": 16.06, "d_max": 18.31},
+    "smectite_c_10a": {"mineral": "Esmectita", "label": "Esmectita C 9.65-10.37 A", "d_min": 9.65, "d_max": 10.37},
+    "illite_10a": {"mineral": "Ilita", "label": "Ilita/Mica 9.73-10.38 A", "d_min": 9.73, "d_max": 10.38},
     "illite_5a": {"mineral": "Ilita", "label": "Ilita/Mica 5 A", "d_min": 4.85, "d_max": 5.15},
     "illite_3_33a": {"mineral": "Ilita", "label": "Ilita/Mica 3.33 A", "d_min": 3.26, "d_max": 3.40},
-    "kaolinite_7a": {"mineral": "Caulinita", "label": "Caulinita 7 A", "d_min": 6.9, "d_max": 7.8},
+    "kaolinite_7a": {"mineral": "Caulinita", "label": "Caulinita 6.96-7.42 A", "d_min": 6.96, "d_max": 7.42},
     "kaolinite_3_57a": {"mineral": "Caulinita", "label": "Caulinita 3.57 A", "d_min": 3.52, "d_max": 3.62},
-    "chlorite_14a": {"mineral": "Clorita", "label": "Clorita 14 A", "d_min": 13.7, "d_max": 15.3},
+    "chlorite_14a": {"mineral": "Clorita", "label": "Clorita 13.58-14.87 A", "d_min": 13.58, "d_max": 14.87},
     "chlorite_7a": {"mineral": "Clorita", "label": "Clorita 7 A", "d_min": 6.9, "d_max": 7.4},
     "chlorite_4_72a": {"mineral": "Clorita", "label": "Clorita 4.72 A", "d_min": 4.60, "d_max": 4.85},
     "chlorite_3_53a": {"mineral": "Clorita", "label": "Clorita 3.53 A", "d_min": 3.45, "d_max": 3.65},
-    "quartz_101": {"mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.24, "d_max": 3.44},
+    "quartz_101": {"mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.27, "d_max": 3.42},
     "quartz_100": {"mineral": "Quartzo", "label": "Quartzo 100", "d_min": 4.23, "d_max": 4.35},
 }
 
@@ -392,9 +404,9 @@ def diagnose_clays(peaks_n, peaks_g, peaks_c):
     diagnoses = []
     minerals = []
 
-    int_n_10 = intensity_in_range(peaks_n, *RANGES["illite_10a"])
-    int_g_10 = intensity_in_range(peaks_g, *RANGES["illite_10a"])
-    int_c_10 = intensity_in_range(peaks_c, *RANGES["illite_10a"])
+    int_n_10 = intensity_in_range(peaks_n, *RANGES["illite_10a_n"])
+    int_g_10 = intensity_in_range(peaks_g, *RANGES["illite_10a_g"])
+    int_c_10 = intensity_in_range(peaks_c, *RANGES["illite_10a_c"])
     if int_n_10 > 0 and int_g_10 > 0 and int_c_10 > 0:
         diagnoses.append({
             "mineral": "Ilita",
@@ -414,9 +426,9 @@ def diagnose_clays(peaks_n, peaks_g, peaks_c):
         })
         minerals.append("Esmectita")
 
-    int_n_7 = intensity_in_range(peaks_n, *RANGES["kaolinite_7a"])
-    int_g_7 = intensity_in_range(peaks_g, *RANGES["kaolinite_7a"])
-    int_c_7 = intensity_in_range(peaks_c, *RANGES["kaolinite_7a"])
+    int_n_7 = intensity_in_range(peaks_n, *RANGES["kaolinite_7a_n"])
+    int_g_7 = intensity_in_range(peaks_g, *RANGES["kaolinite_7a_g"])
+    int_c_7 = intensity_in_range(peaks_c, *RANGES["kaolinite_7a_c_check"])
     if int_n_7 > 0 and int_g_7 > 0 and int_c_7 < (0.1 * int_n_7):
         diagnoses.append({
             "mineral": "Caulinita",
@@ -425,8 +437,8 @@ def diagnose_clays(peaks_n, peaks_g, peaks_c):
         })
         minerals.append("Caulinita")
 
-    int_n_cl = intensity_in_range(peaks_n, *RANGES["chlorite_14a"])
-    int_c_cl = intensity_in_range(peaks_c, *RANGES["chlorite_14a"])
+    int_n_cl = intensity_in_range(peaks_n, *RANGES["chlorite_14a_n"])
+    int_c_cl = intensity_in_range(peaks_c, *RANGES["chlorite_14a_c"])
     if int_n_cl > 0 and int_c_cl > 0:
         status = "intensificado" if int_c_cl > int_n_cl else "preservado"
         diagnoses.append({
@@ -436,9 +448,9 @@ def diagnose_clays(peaks_n, peaks_g, peaks_c):
         })
         minerals.append("Clorita")
 
-    int_n_qz_101 = intensity_in_range(peaks_n, *RANGES["quartz_101"])
-    int_g_qz_101 = intensity_in_range(peaks_g, *RANGES["quartz_101"])
-    int_c_qz_101 = intensity_in_range(peaks_c, *RANGES["quartz_101"])
+    int_n_qz_101 = intensity_in_range(peaks_n, *RANGES["quartz_101_n"])
+    int_g_qz_101 = intensity_in_range(peaks_g, *RANGES["quartz_101_g"])
+    int_c_qz_101 = intensity_in_range(peaks_c, *RANGES["quartz_101_c"])
     int_n_qz_100 = intensity_in_range(peaks_n, *RANGES["quartz_100"])
     if int_n_qz_101 > 0 and int_g_qz_101 > 0 and int_c_qz_101 > 0:
         message = "Pico principal 101 do quartzo imutavel nos tres tratamentos."
@@ -1080,7 +1092,7 @@ def parse_args(argv=None):
     parser.add_argument("--wavelength", type=float, default=DEFAULT_WAVELENGTH_CU)
     parser.add_argument("--scherrer-k", type=float, default=DEFAULT_K_SCHERRER)
     parser.add_argument("--peak-boundary-threshold", type=float, default=DEFAULT_PEAK_BOUNDARY_THRESHOLD)
-    parser.add_argument("--quartz-search-d", default="3.24,3.44")
+    parser.add_argument("--quartz-search-d", default="3.27,3.42")
     parser.add_argument("--target-quartz-d", type=float, default=DEFAULT_TARGET_QUARTZ_D)
     parser.add_argument("--min-quartz-intensity-percent", type=float, default=DEFAULT_MIN_QUARTZ_INTENSITY_PERCENT)
     parser.add_argument("--manual-offsets-json", default=None, help="JSON opcional {filename: offset_2theta}.")

@@ -38,18 +38,30 @@ CACHED_HTML_MIN_BYTES = 1000
 # Faixas de d-spacing que tambem aparecem no classificador e no painel. Aqui
 # ficam no manifesto WebMineral para rastrear a origem das regras auxiliares.
 DRX_DIAGNOSTIC_RANGES = {
-    "illite_10a": {"d_min": 9.7, "d_max": 10.4, "preparation": "any", "label": "Ilita 10A"},
-    "kaolinite_7a": {"d_min": 6.9, "d_max": 7.8, "preparation": "any", "label": "Caulinita 7A"},
-    "smectite_natural": {"d_min": 13.0, "d_max": 16.5, "preparation": "natural", "label": "Esmectita natural"},
-    "smectite_glycolated": {"d_min": 16.6, "d_max": 18.6, "preparation": "glicolado", "label": "Esmectita glicolada"},
-    "smectite_calcined": {"d_min": 9.4, "d_max": 10.4, "preparation": "calcinado", "label": "Esmectita calcinada"},
-    "chlorite_001_basal": {"d_min": 13.7, "d_max": 14.6, "preparation": "any", "label": "Clorita basal 001"},
-    "quartz_101": {"d_min": 3.24, "d_max": 3.44, "preparation": "any", "label": "Quartzo 101"},
+    "illite_10a": {"d_min": 9.73, "d_max": 10.38, "preparation": "any", "label": "Ilita 10A"},
+    "illite_10a_natural": {"d_min": 9.84, "d_max": 10.36, "preparation": "natural", "label": "Ilita 10A natural"},
+    "illite_10a_glycolated": {"d_min": 9.82, "d_max": 10.30, "preparation": "glicolado", "label": "Ilita 10A glicolada"},
+    "illite_10a_calcined": {"d_min": 9.73, "d_max": 10.38, "preparation": "calcinado", "label": "Ilita 10A calcinada"},
+    "kaolinite_7a": {"d_min": 6.96, "d_max": 7.42, "preparation": "any", "label": "Caulinita 7A"},
+    "kaolinite_7a_natural": {"d_min": 6.97, "d_max": 7.42, "preparation": "natural", "label": "Caulinita 7A natural"},
+    "kaolinite_7a_glycolated": {"d_min": 6.96, "d_max": 7.42, "preparation": "glicolado", "label": "Caulinita 7A glicolada"},
+    "kaolinite_7a_calcined_check": {"d_min": 6.96, "d_max": 7.42, "preparation": "calcinado", "label": "Caulinita 7A calcinada - verificar perda"},
+    "smectite_natural": {"d_min": 13.46, "d_max": 16.86, "preparation": "natural", "label": "Esmectita natural"},
+    "smectite_glycolated": {"d_min": 16.06, "d_max": 18.31, "preparation": "glicolado", "label": "Esmectita glicolada"},
+    "smectite_calcined": {"d_min": 9.65, "d_max": 10.37, "preparation": "calcinado", "label": "Esmectita calcinada"},
+    "chlorite_001_basal": {"d_min": 13.58, "d_max": 14.87, "preparation": "any", "label": "Clorita basal 001"},
+    "chlorite_001_natural": {"d_min": 13.74, "d_max": 14.74, "preparation": "natural", "label": "Clorita basal 001 natural"},
+    "chlorite_001_glycolated": {"d_min": 13.83, "d_max": 14.72, "preparation": "glicolado", "label": "Clorita basal 001 glicolada"},
+    "chlorite_001_calcined": {"d_min": 13.58, "d_max": 14.87, "preparation": "calcinado", "label": "Clorita basal 001 calcinada"},
+    "quartz_101": {"d_min": 3.27, "d_max": 3.42, "preparation": "any", "label": "Quartzo 101"},
+    "quartz_101_natural": {"d_min": 3.28, "d_max": 3.41, "preparation": "natural", "label": "Quartzo 101 natural"},
+    "quartz_101_glycolated": {"d_min": 3.28, "d_max": 3.42, "preparation": "glicolado", "label": "Quartzo 101 glicolada"},
+    "quartz_101_calcined": {"d_min": 3.27, "d_max": 3.42, "preparation": "calcinado", "label": "Quartzo 101 calcinada"},
     "quartz_100": {"d_min": 4.23, "d_max": 4.35, "preparation": "any", "label": "Quartzo 100"},
 }
 CHLORITE_BASAL_RANGE = DRX_DIAGNOSTIC_RANGES["chlorite_001_basal"]
-CHLORITE_DIAGNOSTIC_SOURCE = "diagnostic_rule_chlorite_13_7_14_6a"
-CHLORITE_DIAGNOSTIC_FEATURE = "diagnostic_basal_chlorite_13_7_14_6a"
+CHLORITE_DIAGNOSTIC_SOURCE = "diagnostic_rule_chlorite_13_58_14_87a"
+CHLORITE_DIAGNOSTIC_FEATURE = "diagnostic_basal_chlorite_13_58_14_87a"
 CHLORITE_TARGET_D = 14.2
 # Padrao local para clorita basal: ajuda a triagem quando WebMineral nao traz
 # uma linha 001 clara, mas continua exigindo curadoria N/G/C.
@@ -665,7 +677,7 @@ def collect(vocab_path: Path, output_dir: Path, reference_json: Path, timeout: i
             "Copia local criada para uso como referencia de triagem DRX.",
             "Nem todo termo do vocabulario da Argiloteca corresponde a uma especie com pagina WebMineral.",
             "Linhas d/I devem ser usadas como evidencia auxiliar, nao como confirmacao mineralogica.",
-            "Faixas diagnosticas locais N/G/C sincronizadas em 2026-06-19; clorita 001 usa 13.70-14.60 A.",
+            "Faixas diagnosticas locais N/G/C sincronizadas em 2026-06-21; clorita 001 usa 13.58-14.87 A com subfaixas N/G/C.",
         ],
     }
     save_json(reference_json, payload)

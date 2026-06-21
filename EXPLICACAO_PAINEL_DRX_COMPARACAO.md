@@ -72,26 +72,26 @@ Faixas atualmente registradas no vocabulario WebMineral local e no comparador. O
 |---|---|---:|---|
 | `RANGE_ILITA_10A` | qualquer | 9,70-10,40 | pico 001 de ilita/mica; estabilidade entre tratamentos reforca hipotese nao expansiva |
 | `RANGE_CAULINITA_7A` | qualquer | 6,90-7,80 | pico de caulinita 7 A; sobrepoe com clorita 002 |
-| `RANGE_ESMECTITA_N` | Natural | 13,00-16,50 | basal de esmectita em amostra natural |
-| `RANGE_ESMECTITA_G` | Glicolado | 16,60-18,60 | expansao apos glicolacao, criterio central para esmectita expansiva |
-| `RANGE_ESMECTITA_C` | Calcinado | 9,40-10,40 | colapso termico de esmectita apos aquecimento |
-| `RANGE_CLORITA_14A` | qualquer | 13,70-14,60 | pico basal 001 de clorita; deve ser lido com estabilidade termica e ausencia de expansao em EG |
-| `RANGE_QUARTZO_101` | qualquer | 3,24-3,44 | pico principal 101 do quartzo; fase nao argilosa que pode dominar a curva |
+| `RANGE_ESMECTITA_N` | Natural | 13,46-16,86 | basal de esmectita em amostra natural |
+| `RANGE_ESMECTITA_G` | Glicolado | 16,06-18,31 | expansao apos glicolacao, criterio central para esmectita expansiva |
+| `RANGE_ESMECTITA_C` | Calcinado | 9,65-10,37 | colapso termico de esmectita apos aquecimento |
+| `RANGE_CLORITA_14A` | qualquer | 13,58-14,87 | pico basal 001 de clorita; deve ser lido com estabilidade termica e ausencia de expansao em EG |
+| `RANGE_QUARTZO_101` | qualquer | 3,27-3,42 | pico principal 101 do quartzo; fase nao argilosa que pode dominar a curva |
 | `RANGE_QUARTZO_100` | qualquer | 4,23-4,35 | pico secundario 100 do quartzo |
 
 Constantes operacionais atuais:
 
 ```python
-RANGE_ILITA_10A = (9.7, 10.4)
-RANGE_CAULINITA_7A = (6.9, 7.8)
+RANGE_ILITA_10A = (9.73, 10.38)
+RANGE_CAULINITA_7A = (6.96, 7.42)
 
-RANGE_ESMECTITA_N = (13.0, 16.5)
-RANGE_ESMECTITA_G = (16.6, 18.6)
-RANGE_ESMECTITA_C = (9.4, 10.4)
+RANGE_ESMECTITA_N = (13.46, 16.86)
+RANGE_ESMECTITA_G = (16.06, 18.31)
+RANGE_ESMECTITA_C = (9.65, 10.37)
 
-RANGE_CLORITA_14A = (13.7, 14.6)
+RANGE_CLORITA_14A = (13.58, 14.87)
 
-RANGE_QUARTZO_101 = (3.24, 3.44)
+RANGE_QUARTZO_101 = (3.27, 3.42)
 RANGE_QUARTZO_100 = (4.23, 4.35)
 ```
 

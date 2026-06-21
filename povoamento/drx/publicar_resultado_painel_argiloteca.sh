@@ -144,13 +144,25 @@ diagnostic_ranges = vocab.get("diagnostic_ranges") if isinstance(vocab, dict) el
 # Mantem o contrato cientifico minimo do painel: N/G/C, clorita e quartzo devem
 # conservar as janelas de d-spacing esperadas antes de qualquer restart/API check.
 required_ranges = {
-    "illite_10a": (9.7, 10.4),
-    "kaolinite_7a": (6.9, 7.8),
-    "smectite_natural": (13.0, 16.5),
-    "smectite_glycolated": (16.6, 18.6),
-    "smectite_calcined": (9.4, 10.4),
-    "chlorite_001_basal": (13.7, 14.6),
-    "quartz_101": (3.24, 3.44),
+    "illite_10a": (9.73, 10.38),
+    "illite_10a_natural": (9.84, 10.36),
+    "illite_10a_glycolated": (9.82, 10.30),
+    "illite_10a_calcined": (9.73, 10.38),
+    "kaolinite_7a": (6.96, 7.42),
+    "kaolinite_7a_natural": (6.97, 7.42),
+    "kaolinite_7a_glycolated": (6.96, 7.42),
+    "kaolinite_7a_calcined_check": (6.96, 7.42),
+    "smectite_natural": (13.46, 16.86),
+    "smectite_glycolated": (16.06, 18.31),
+    "smectite_calcined": (9.65, 10.37),
+    "chlorite_001_basal": (13.58, 14.87),
+    "chlorite_001_natural": (13.74, 14.74),
+    "chlorite_001_glycolated": (13.83, 14.72),
+    "chlorite_001_calcined": (13.58, 14.87),
+    "quartz_101": (3.27, 3.42),
+    "quartz_101_natural": (3.28, 3.41),
+    "quartz_101_glycolated": (3.28, 3.42),
+    "quartz_101_calcined": (3.27, 3.42),
     "quartz_100": (4.23, 4.35),
 }
 range_errors = []

@@ -5614,13 +5614,25 @@
   const DIAGNOSTIC_PEAK_MAX_TWO_THETA = 32;
   const DIAGNOSTIC_PEAK_MAX_D_ANGSTROM = 32;
   const SEM_TITULO_NGC_DIAGNOSTIC_RANGES = {
-    illite10A: [9.7, 10.4],
-    kaolinite7A: [6.9, 7.8],
-    smectiteNatural: [13.0, 16.5],
-    smectiteGlycolated: [16.6, 18.6],
-    smectiteCalcined: [9.4, 10.4],
-    chlorite14A: [13.7, 14.8],
-    quartz101: [3.24, 3.44],
+    illite10A: [9.73, 10.38],
+    illite10ANatural: [9.84, 10.36],
+    illite10AGlycolated: [9.82, 10.30],
+    illite10ACalcined: [9.73, 10.38],
+    kaolinite7A: [6.96, 7.42],
+    kaolinite7ANatural: [6.97, 7.42],
+    kaolinite7AGlycolated: [6.96, 7.42],
+    kaolinite7ACalcinedCheck: [6.96, 7.42],
+    smectiteNatural: [13.46, 16.86],
+    smectiteGlycolated: [16.06, 18.31],
+    smectiteCalcined: [9.65, 10.37],
+    chlorite14A: [13.58, 14.87],
+    chlorite14ANatural: [13.74, 14.74],
+    chlorite14AGlycolated: [13.83, 14.72],
+    chlorite14ACalcined: [13.58, 14.87],
+    quartz101: [3.27, 3.42],
+    quartz101Natural: [3.28, 3.41],
+    quartz101Glycolated: [3.28, 3.42],
+    quartz101Calcined: [3.27, 3.42],
     quartz100: [4.23, 4.35],
   };
 
@@ -6011,10 +6023,10 @@
     const mineral = match && match.candidate && match.candidate.mineral;
     const ranges = SEM_TITULO_NGC_DIAGNOSTIC_RANGES;
     if (Number.isFinite(d)) {
-      if (d >= ranges.smectiteGlycolated[0] && d <= ranges.smectiteGlycolated[1] && treatment === "glicolado") return "Pico basal em 16,6-18,6 Å após glicolação; compatível com fase expansiva, não conclusivo isoladamente.";
-      if (d >= ranges.chlorite14A[0] && d <= ranges.chlorite14A[1]) return "Reflexão basal em 13,7-14,6 Å; compatível com clorita, exige comparação N/G/C e harmônicos.";
-      if (d >= ranges.illite10A[0] && d <= ranges.illite10A[1]) return "Reflexão em 9,7-10,4 Å; compatível com ilita/mica se persistente e sem expansão.";
-      if (d >= ranges.kaolinite7A[0] && d <= ranges.kaolinite7A[1]) return "Reflexão em 6,9-7,8 Å; compatível com caulinita/clorita, atenção à sobreposição.";
+      if (d >= ranges.smectiteGlycolated[0] && d <= ranges.smectiteGlycolated[1] && treatment === "glicolado") return "Pico basal em 16,06-18,31 Å após glicolação; compatível com fase expansiva, não conclusivo isoladamente.";
+      if (d >= ranges.chlorite14A[0] && d <= ranges.chlorite14A[1]) return "Reflexão basal em 13,58-14,87 Å; compatível com clorita, exige comparação N/G/C e harmônicos.";
+      if (d >= ranges.illite10A[0] && d <= ranges.illite10A[1]) return "Reflexão em 9,73-10,38 Å; compatível com ilita/mica se persistente e sem expansão.";
+      if (d >= ranges.kaolinite7A[0] && d <= ranges.kaolinite7A[1]) return "Reflexão em 6,96-7,42 Å; compatível com caulinita/clorita, atenção à sobreposição.";
       if (d >= 3.0 && d <= 3.1 && /calcite/i.test(mineral || "")) return "Pico forte compatível com calcita quando acompanhado por outros picos de carbonato.";
       if (d >= 3.15 && d <= 3.25 && /albite|feldspar/i.test(mineral || "")) return "Pico compatível com feldspato; pode sobrepor fases silicáticas.";
     }
@@ -6687,14 +6699,14 @@
       const glicolada = group.glicolada[0] || null;
       const calcinada = group.calcinada[0] || null;
       const nPeak = strongestPeakInDRange(natural, ranges.smectiteNatural[0], ranges.smectiteNatural[1])
-        || strongestPeakInDRange(natural, ranges.chlorite14A[0], ranges.chlorite14A[1])
-        || strongestPeakInDRange(natural, ranges.illite10A[0], ranges.illite10A[1]);
+        || strongestPeakInDRange(natural, ranges.chlorite14ANatural[0], ranges.chlorite14ANatural[1])
+        || strongestPeakInDRange(natural, ranges.illite10ANatural[0], ranges.illite10ANatural[1]);
       const gPeak = strongestPeakInDRange(glicolada, ranges.smectiteGlycolated[0], ranges.smectiteGlycolated[1])
-        || strongestPeakInDRange(glicolada, ranges.chlorite14A[0], ranges.chlorite14A[1])
-        || strongestPeakInDRange(glicolada, ranges.illite10A[0], ranges.illite10A[1]);
+        || strongestPeakInDRange(glicolada, ranges.chlorite14AGlycolated[0], ranges.chlorite14AGlycolated[1])
+        || strongestPeakInDRange(glicolada, ranges.illite10AGlycolated[0], ranges.illite10AGlycolated[1]);
       const cPeak = strongestPeakInDRange(calcinada, ranges.smectiteCalcined[0], ranges.smectiteCalcined[1])
-        || strongestPeakInDRange(calcinada, ranges.chlorite14A[0], ranges.chlorite14A[1])
-        || strongestPeakInDRange(calcinada, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
+        || strongestPeakInDRange(calcinada, ranges.chlorite14ACalcined[0], ranges.chlorite14ACalcined[1])
+        || strongestPeakInDRange(calcinada, ranges.kaolinite7ACalcinedCheck[0], ranges.kaolinite7ACalcinedCheck[1]);
       const nD = nPeak ? Number(nPeak.d) : null;
       const gD = gPeak ? Number(gPeak.d) : null;
       const cD = cPeak ? Number(cPeak.d) : null;
@@ -7090,9 +7102,9 @@
     const missingEvidence = missing.length ? ["conjunto incompleto: falta " + missing.join(", ")] : [];
     const rows = [];
 
-    const n10 = semTituloPeak(natural, ranges.illite10A);
-    const g10 = semTituloPeak(glicolada, ranges.illite10A);
-    const c10 = semTituloPeak(calcinada, ranges.illite10A);
+    const n10 = semTituloPeak(natural, ranges.illite10ANatural);
+    const g10 = semTituloPeak(glicolada, ranges.illite10AGlycolated);
+    const c10 = semTituloPeak(calcinada, ranges.illite10ACalcined);
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
      * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -7130,9 +7142,9 @@
       });
     }
 
-    const n7 = semTituloPeak(natural, ranges.kaolinite7A);
-    const g7 = semTituloPeak(glicolada, ranges.kaolinite7A);
-    const c7 = semTituloPeak(calcinada, ranges.kaolinite7A);
+    const n7 = semTituloPeak(natural, ranges.kaolinite7ANatural);
+    const g7 = semTituloPeak(glicolada, ranges.kaolinite7AGlycolated);
+    const c7 = semTituloPeak(calcinada, ranges.kaolinite7ACalcinedCheck);
     if (n7 && g7 && (!c7 || c7.intensity < (0.1 * n7.intensity))) {
       rows.push({
         mineral: "Caulinita",
@@ -7147,9 +7159,9 @@
       });
     }
 
-    const nChlorite = semTituloPeak(natural, ranges.chlorite14A);
-    const gChlorite = semTituloPeak(glicolada, ranges.chlorite14A);
-    const cChlorite = semTituloPeak(calcinada, ranges.chlorite14A);
+    const nChlorite = semTituloPeak(natural, ranges.chlorite14ANatural);
+    const gChlorite = semTituloPeak(glicolada, ranges.chlorite14AGlycolated);
+    const cChlorite = semTituloPeak(calcinada, ranges.chlorite14ACalcined);
     const chloriteReference = nChlorite || gChlorite;
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -7189,9 +7201,9 @@
       });
     }
 
-    const nQuartz101 = semTituloPeak(natural, ranges.quartz101);
-    const gQuartz101 = semTituloPeak(glicolada, ranges.quartz101);
-    const cQuartz101 = semTituloPeak(calcinada, ranges.quartz101);
+    const nQuartz101 = semTituloPeak(natural, ranges.quartz101Natural);
+    const gQuartz101 = semTituloPeak(glicolada, ranges.quartz101Glycolated);
+    const cQuartz101 = semTituloPeak(calcinada, ranges.quartz101Calcined);
     const nQuartz100 = semTituloPeak(natural, ranges.quartz100);
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -7335,15 +7347,15 @@
     const nExpandable = strongestPeakInDRange(natural, ranges.smectiteNatural[0], ranges.smectiteNatural[1]);
     const gExpanded = strongestPeakInDRange(glicolada, ranges.smectiteGlycolated[0], ranges.smectiteGlycolated[1]);
     const cCollapsed = strongestPeakInDRange(calcinada, ranges.smectiteCalcined[0], ranges.smectiteCalcined[1]);
-    const nTen = strongestPeakInDRange(natural, ranges.illite10A[0], ranges.illite10A[1]);
-    const gTen = strongestPeakInDRange(glicolada, ranges.illite10A[0], ranges.illite10A[1]);
-    const cTen = strongestPeakInDRange(calcinada, ranges.illite10A[0], ranges.illite10A[1]);
-    const nFourteen = strongestPeakInDRange(natural, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-    const gFourteen = strongestPeakInDRange(glicolada, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-    const cFourteen = strongestPeakInDRange(calcinada, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-    const nSeven = strongestPeakInDRange(natural, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
-    const gSeven = strongestPeakInDRange(glicolada, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
-    const cSeven = strongestPeakInDRange(calcinada, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
+    const nTen = strongestPeakInDRange(natural, ranges.illite10ANatural[0], ranges.illite10ANatural[1]);
+    const gTen = strongestPeakInDRange(glicolada, ranges.illite10AGlycolated[0], ranges.illite10AGlycolated[1]);
+    const cTen = strongestPeakInDRange(calcinada, ranges.illite10ACalcined[0], ranges.illite10ACalcined[1]);
+    const nFourteen = strongestPeakInDRange(natural, ranges.chlorite14ANatural[0], ranges.chlorite14ANatural[1]);
+    const gFourteen = strongestPeakInDRange(glicolada, ranges.chlorite14AGlycolated[0], ranges.chlorite14AGlycolated[1]);
+    const cFourteen = strongestPeakInDRange(calcinada, ranges.chlorite14ACalcined[0], ranges.chlorite14ACalcined[1]);
+    const nSeven = strongestPeakInDRange(natural, ranges.kaolinite7ANatural[0], ranges.kaolinite7ANatural[1]);
+    const gSeven = strongestPeakInDRange(glicolada, ranges.kaolinite7AGlycolated[0], ranges.kaolinite7AGlycolated[1]);
+    const cSeven = strongestPeakInDRange(calcinada, ranges.kaolinite7ACalcinedCheck[0], ranges.kaolinite7ACalcinedCheck[1]);
 
     const nD = nExpandable ? Number(nExpandable.d) : null;
     const gD = gExpanded ? Number(gExpanded.d) : null;
@@ -7451,15 +7463,15 @@
       const nExpandable = strongestPeakInDRange(natural, ranges.smectiteNatural[0], ranges.smectiteNatural[1]);
       const gExpanded = strongestPeakInDRange(glicolada, ranges.smectiteGlycolated[0], ranges.smectiteGlycolated[1]);
       const cCollapsed = strongestPeakInDRange(calcinada, ranges.smectiteCalcined[0], ranges.smectiteCalcined[1]);
-      const nTen = strongestPeakInDRange(natural, ranges.illite10A[0], ranges.illite10A[1]);
-      const gTen = strongestPeakInDRange(glicolada, ranges.illite10A[0], ranges.illite10A[1]);
-      const cTen = strongestPeakInDRange(calcinada, ranges.illite10A[0], ranges.illite10A[1]);
-      const nFourteen = strongestPeakInDRange(natural, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-      const gFourteen = strongestPeakInDRange(glicolada, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-      const cFourteen = strongestPeakInDRange(calcinada, ranges.chlorite14A[0], ranges.chlorite14A[1]);
-      const nSeven = strongestPeakInDRange(natural, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
-      const gSeven = strongestPeakInDRange(glicolada, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
-      const cSeven = strongestPeakInDRange(calcinada, ranges.kaolinite7A[0], ranges.kaolinite7A[1]);
+      const nTen = strongestPeakInDRange(natural, ranges.illite10ANatural[0], ranges.illite10ANatural[1]);
+      const gTen = strongestPeakInDRange(glicolada, ranges.illite10AGlycolated[0], ranges.illite10AGlycolated[1]);
+      const cTen = strongestPeakInDRange(calcinada, ranges.illite10ACalcined[0], ranges.illite10ACalcined[1]);
+      const nFourteen = strongestPeakInDRange(natural, ranges.chlorite14ANatural[0], ranges.chlorite14ANatural[1]);
+      const gFourteen = strongestPeakInDRange(glicolada, ranges.chlorite14AGlycolated[0], ranges.chlorite14AGlycolated[1]);
+      const cFourteen = strongestPeakInDRange(calcinada, ranges.chlorite14ACalcined[0], ranges.chlorite14ACalcined[1]);
+      const nSeven = strongestPeakInDRange(natural, ranges.kaolinite7ANatural[0], ranges.kaolinite7ANatural[1]);
+      const gSeven = strongestPeakInDRange(glicolada, ranges.kaolinite7AGlycolated[0], ranges.kaolinite7AGlycolated[1]);
+      const cSeven = strongestPeakInDRange(calcinada, ranges.kaolinite7ACalcinedCheck[0], ranges.kaolinite7ACalcinedCheck[1]);
 
       if (!natural) warnings.push("preparo natural ausente");
       if (!glicolada) warnings.push("preparo glicolado ausente");
@@ -7603,7 +7615,7 @@
      * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
      */
     if (rows.some(function (row) { return row.d >= ranges.chlorite14A[0] && row.d <= ranges.chlorite14A[1]; })) {
-      evidences.push("pico basal em 13,7-14,6 Å, compatível com clorita e pendente de comparação N/G/C");
+      evidences.push("pico basal em 13,58-14,87 Å, compatível com clorita e pendente de comparação N/G/C");
     }
     if (rows.some(function (row) { return row.d >= ranges.illite10A[0] && row.d <= ranges.illite10A[1]; })) {
       evidences.push("pico próximo de 10 Å, compatível com ilita/mica quando estável entre tratamentos");
@@ -7939,10 +7951,10 @@
       });
     }
     const rows = [
-      "Esmectita/montmorilonita: pico basal variável; expansão após glicolação e possível colapso após calcinação. Dados atuais: " + (seen(ranges.smectiteGlycolated[0], ranges.smectiteGlycolated[1], "glicolado") ? "compatível com expansão em 16,6-18,6 Å." : "não conclusivo para expansão em 16,6-18,6 Å."),
-      "Clorita: pico basal em 13,7-14,6 Å, com reflexões associadas próximas de 7 Å, 4,7 Å e 3,5 Å; não deve expandir como esmectita. Dados atuais: " + (seen(ranges.chlorite14A[0], ranges.chlorite14A[1]) ? "há pico basal na faixa da clorita, requer comparação com 7 Å e tratamentos." : "sem evidência basal robusta em 13,7-14,6 Å."),
-      "Caulinita: picos próximos de 7 Å e 3,57 Å; atenção à sobreposição com clorita. Dados atuais: " + (seen(ranges.kaolinite7A[0], ranges.kaolinite7A[1]) ? "pico em 6,9-7,8 Å observado, não conclusivo isoladamente." : "pico em 6,9-7,8 Å não destacado."),
-      "Ilita/mica: pico próximo de 10 Å, sem expansão significativa com glicolação. Dados atuais: " + (seen(ranges.illite10A[0], ranges.illite10A[1]) ? "pico em 9,7-10,4 Å observado, compatível mas requer estabilidade entre tratamentos." : "sem pico em 9,7-10,4 Å destacado."),
+      "Esmectita/montmorilonita: pico basal variável; expansão após glicolação e possível colapso após calcinação. Dados atuais: " + (seen(ranges.smectiteGlycolated[0], ranges.smectiteGlycolated[1], "glicolado") ? "compatível com expansão em 16,06-18,31 Å." : "não conclusivo para expansão em 16,06-18,31 Å."),
+      "Clorita: pico basal em 13,58-14,87 Å, com reflexões associadas próximas de 7 Å, 4,7 Å e 3,5 Å; não deve expandir como esmectita. Dados atuais: " + (seen(ranges.chlorite14A[0], ranges.chlorite14A[1]) ? "há pico basal na faixa da clorita, requer comparação com 7 Å e tratamentos." : "sem evidência basal robusta em 13,58-14,87 Å."),
+      "Caulinita: picos próximos de 7 Å e 3,57 Å; atenção à sobreposição com clorita. Dados atuais: " + (seen(ranges.kaolinite7A[0], ranges.kaolinite7A[1]) ? "pico em 6,96-7,42 Å observado, não conclusivo isoladamente." : "pico em 6,96-7,42 Å não destacado."),
+      "Ilita/mica: pico próximo de 10 Å, sem expansão significativa com glicolação. Dados atuais: " + (seen(ranges.illite10A[0], ranges.illite10A[1]) ? "pico em 9,73-10,38 Å observado, compatível mas requer estabilidade entre tratamentos." : "sem pico em 9,73-10,38 Å destacado."),
       "Interestratificados: picos largos, assimétricos ou deslocados, com comportamento intermediário; requer curadoria manual.",
     ];
     return "<section class='compact-section'><h2>Critérios diagnósticos usados</h2>" + htmlListLinked(rows.map(linkKnownMineralText)) + "</section>";

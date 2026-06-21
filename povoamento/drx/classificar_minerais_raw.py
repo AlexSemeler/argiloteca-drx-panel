@@ -663,7 +663,7 @@ def preferred_chlorite_reference(reference):
 
 
 def chlorite_basal_diagnostic_candidate(peaks, reference):
-    """Cria candidato auxiliar quando ha pico basal de clorita em 13,7-14,6 A."""
+    """Cria candidato auxiliar quando ha pico basal de clorita em 13,58-14,87 A."""
     peak = strongest_peak_in_d_range(peaks, *CHLORITE_BASAL_D_RANGE)
     if not peak:
         return None
