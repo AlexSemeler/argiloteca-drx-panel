@@ -42,7 +42,7 @@ git remote -v
 echo
 
 echo "[3] Checando arquivos bloqueados por seguranca..."
-blocked_files="$(find . -type f \( \
+blocked_candidates="$(find . -type f \( \
   -iname '*.raw' -o \
   -iname '*.pyc' -o \
   -iname '*.zip' -o \
@@ -54,6 +54,15 @@ blocked_files="$(find . -type f \( \
   -path './.venv/*' -o \
   -path './instance/*' \
 \) -not -path './.git/*' -print)"
+
+blocked_files=""
+while IFS= read -r candidate; do
+  [[ -z "$candidate" ]] && continue
+  if git check-ignore -q "$candidate"; then
+    continue
+  fi
+  blocked_files+="${candidate}"$'\n'
+done <<< "$blocked_candidates"
 
 if [[ -n "$blocked_files" ]]; then
   echo "ERRO: encontrei arquivos que nao devem ser enviados ao Git:" >&2
