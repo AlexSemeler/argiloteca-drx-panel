@@ -5,9 +5,6 @@
  * Autor:
  * Alexandre Ribas Semeler
  * E-mail: alexandre.semeler@ufrgs.br
- * Colaboradores:
- * Lucas Jantsch
- * Arthur Oliveira
  * Instituição:
  * Universidade Federal do Rio Grande do Sul (UFRGS)
  * Projeto:
