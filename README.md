@@ -20,7 +20,7 @@ reuso de dados em Geoquímica, e apoiando coleções e laboratórios universitá
 
 ## Estado atual
 
-Auditoria de referência: `2026-06-18`.
+Auditoria de referência: `2026-06-25`.
 
 Este repositório representa a tela integrada da Argiloteca em
 `/drx/comparacao`. Essa tela é diferente da bancada local Streamlit localizada
@@ -32,6 +32,90 @@ Argiloteca/InvenioRDM.
 O documento
 [`EXPLICACAO_PAINEL_DRX_COMPARACAO.md`](EXPLICACAO_PAINEL_DRX_COMPARACAO.md)
 descreve a lógica científica e a relação entre esses dois usos.
+
+A documentação técnica completa do painel está em
+[`argiloteca/argiloteca_custom/docs/painel_drx_documentacao.md`](argiloteca/argiloteca_custom/docs/painel_drx_documentacao.md).
+Esse documento detalha funções, classes, objetos, regras mineralógicas, fontes
+bibliográficas, estruturas JSON, payloads do painel, XAI e proveniência.
+
+## Base científica e literatura
+
+O painel foi ampliado para tratar a interpretação de DRX como um processo
+rastreável, baseado em geometria, preparo da amostra, padrões 00l completos,
+comportamento entre tratamentos e literatura mineralógica. A política atual da
+engine N/G/C é `argiloteca_rule_based_diagnostic`: a Argiloteca pode registrar
+diagnóstico assistido baseado em regras quando há evidência convergente, mas não
+confirma mineral por pico isolado.
+
+Referências e bases de conhecimento usadas na documentação e nas regras:
+
+- `X-Ray Diffraction and the Identification and Analysis of Clay Minerals`,
+  Capítulo 7, `Identification of Clay Minerals and Associated Minerals`: base
+  executável para ilita/mica, caulinita, clorita, esmectita, vermiculita,
+  minerais associados, reflexões 00l, comportamento N/G/C, d060 auxiliar,
+  tabelas diagnósticas, limitações e ambiguidades.
+- `X-Ray Diffraction and the Identification and Analysis of Clay Minerals`,
+  Capítulo 8, `Identification of Mixed-Layered Clay Minerals`: base conceitual
+  para argilominerais interestratificados, incluindo illite/smectite,
+  chlorite/smectite, corrensite, kaolinite/smectite, serpentine/chlorite,
+  mica/vermiculite, hydrobioite, Reichweite, ordenamento R0/R1/R3,
+  superestruturas, mistura física versus interestratificação e comparação com
+  padrões calculados.
+- Capítulo `Diffraction I: Geometry`: base físico-geométrica para Lei de
+  Bragg, separação rigorosa entre θ e 2θ, d-spacing, Laue, rede recíproca,
+  esfera de Ewald, métodos Laue/cristal rotativo/pó, difratômetro,
+  espectrômetro, unidades e condições não ideais.
+- Anexo de modelagem 1D e cálculo de intensidade 00l da ilita: base para
+  estrutura de camada, fator de estrutura de camada `G(θ)`, função de
+  interferência, Lorentz-polarização, orientação preferencial, parâmetros
+  instrumentais, intercamadas, defect broadening, distribuição de tamanho de
+  cristalito e comparação observado × calculado.
+- Brindley & Brown (1980), Bailey (1980/1988), Moore & Reynolds (1989/1997),
+  Drits & Tchoubar (1990), Lanson & Bouchet (1995), Meunier, *Clays* (2005),
+  fluxograma USGS de identificação de argilominerais por DRX e referências
+  empíricas Pre-Sal UFRGS/Petrobras.
+
+Os PDFs locais usados como fontes de extração ficam fora deste recorte Git. Os
+caminhos locais documentados durante a curadoria foram:
+
+- `/home/invenio/Downloads/analises.pdf`;
+- `/home/invenio/invenio-project/textos/capitulo8.pdf`;
+- `/home/invenio/invenio-project/textos/difracao-geomentria.pdf`;
+- `/home/invenio/invenio-project/textos/capitulo3-ilita.pdf`;
+- `/home/invenio/invenio-project/textos/lanson-1995-bull-centres-rech-ep-19-91.pdf`;
+- `/home/invenio/invenio-project/Clays_Meunier.pdf`.
+
+O repositório versiona somente fragmentos curtos de proveniência, estruturas
+derivadas, regras e documentação técnica. Ele não redistribui os livros ou PDFs.
+
+## Motores e regras incorporados
+
+- Motor N/G/C: compara Natural, Glicolado e Calcinado como trajetória
+  mineralógica, preservando incerteza quando falta preparo ou quando há
+  sobreposição.
+- Motor de geometria DRX: aplica a Lei de Bragg com θ = 2θ/2, calcula
+  d-spacing, valida radiação/comprimento de onda e registra limitações
+  geométricas.
+- Motor de picos: normaliza curvas, detecta máximos, estima FWHM, intensidade,
+  área, largura e qualidade, sem transformar pico isolado em diagnóstico final.
+- Base executável do Capítulo 7:
+  `argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/chapter7_knowledge.py`
+  e JSONs derivados em
+  `argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/data/generated/`.
+- Motor de interestratificados:
+  `argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/mixed_layer_engine.py`,
+  com hipóteses para corrensite, I/S, C/S, K/S e T/S quando aparecem expansão
+  parcial, ombros, bandas largas ou sequências N/G/C compatíveis.
+- Comparador de literatura, empírico e Pre-Sal: separa `literature_matches`,
+  `empirical_matches` e `presalt_matches`, preservando proveniência e impedindo
+  que dataset local substitua regra bibliográfica.
+- XAI e proveniência: cada interpretação deve indicar regra, fonte, preparo,
+  evidência a favor, evidência contra, ambiguidade, dados ausentes e próximos
+  testes recomendados.
+- Simulação 1D e observado × calculado: documentada como módulo de evolução do
+  painel para testar se padrões 00l calculados são compatíveis com o padrão
+  observado em posição, intensidade, largura, forma e comportamento entre
+  tratamentos.
 
 ## Componentes principais
 
@@ -59,6 +143,14 @@ descreve a lógica científica e a relação entre esses dois usos.
   ponte opcional entre snapshots gerais de RAW e registros públicos da Argiloteca.
 - `povoamento/drx/gerar_metricas_painel_drx.py`:
   geração de métricas portáveis do painel.
+- `argiloteca/argiloteca_custom/docs/painel_drx_documentacao.md`:
+  documentação técnica completa do painel, incluindo literatura, regras,
+  módulos, classes, funções, JSONs e XAI.
+- `argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/chapter7_knowledge.py`:
+  base executável rastreável do Capítulo 7.
+- `argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/mixed_layer_engine.py`:
+  hipóteses de argilominerais interestratificados e alertas de perfis 00l
+  complexos.
 - `povoamento/visualizacao-drx/saida_argiloteca_drx/webmineral_argilominerais_vocabulario.json`:
   JSON de referência usado pelo classificador mineralógico.
 - `povoamento/visualizacao-drx/saida_argiloteca_drx/webmineral_xray_referencia.json`:
@@ -73,8 +165,14 @@ descreve a lógica científica e a relação entre esses dois usos.
 - Seleciona RAWs vindos do snapshot geral ou de pacotes analíticos por registro.
 - Compara tratamentos Natural/Glicolado/Calcinado e calcula leitura N/G/C
   assistida.
+- Calcula e exibe relações 2θ, θ e d-spacing usando a Lei de Bragg quando os
+  metadados de radiação permitem.
 - Agrega candidatos mineralógicos, picos de suporte, reflexões ausentes,
   conflitos e recomendações.
+- Emite hipóteses para argilominerais interestratificados quando o padrão 00l,
+  os tratamentos e a largura/forma dos picos sugerem comportamento misto.
+- Mostra regra-fonte, política de interpretação, evidências e ambiguidades para
+  revisão curatorial.
 - Compara RAW temporário com pacotes DRX já indexados sem gravar o arquivo como
   registro.
 - Mostra XRDNet apenas como evidência contextual quando há RAW semelhante ou
@@ -184,9 +282,22 @@ versionados para tornar a comparação mineralógica reprodutível.
 
 - Comparação N/G/C: usa Natural, Glicolado e Calcinado como trajetória
   diagnóstica assistida.
+- Geometria DRX: separa 2θ de θ, calcula d-spacing e evita interpretação de
+  picos sem radiação, unidade e preparo.
 - Reflexões confirmatórias: cruza picos observados com janelas esperadas para
   argilominerais como esmectita/montmorilonita, ilita/mica, clorita, caulinita e
   vermiculita.
+- Interestratificados: registra hipóteses como illite/smectite,
+  chlorite/smectite, corrensite, kaolinite/smectite, mica/vermiculite e
+  kerolite/stevensite quando o padrão não deve ser forçado para mineral puro.
+- Capítulo 7: fornece entidades, regras diagnósticas, regras de comportamento,
+  regras d060, intensidade auxiliar, perfis minerais e tabelas de reflexão.
+- Capítulo 8: fornece o modelo conceitual de mixed-layer, Reichweite, R0/R1/R3,
+  superestruturas, Δ2θ, alargamento de linhas e distinção entre mistura física e
+  interestratificação.
+- Simulação 1D: documenta como testar hipóteses por padrão calculado, fator de
+  estrutura de camada, função de interferência, correções instrumentais e
+  resíduos observado × calculado.
 - Similaridade RAW: combina metadados, forma da curva, picos e candidatos
   mineralógicos para encontrar RAWs já existentes em pacotes.
 - XRDNet contextual: aparece apenas em cartões de similaridade, como evidência
@@ -197,6 +308,12 @@ versionados para tornar a comparação mineralógica reprodutível.
 ## Validação rápida
 
 ```bash
+PYTHONPATH="$PWD:$PWD/argiloteca/argiloteca_custom" \
+  /home/invenio/invenio-project/argiloteca-local/venvs/app-py310-l3/bin/python \
+  -m unittest discover \
+  -s argiloteca/argiloteca_custom/tests \
+  -p test_drx_v3_engine.py
+
 python3 -m py_compile \
   argiloteca/argiloteca_custom/argiloteca/services/drx.py \
   argiloteca/argiloteca_custom/argiloteca/services/analytical_packages.py \

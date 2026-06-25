@@ -4,6 +4,8 @@ Este documento explica a logica do painel `DRX > Comparacao`, especialmente os b
 
 O ponto central e: o painel gera hipoteses assistidas para curadoria. Ele nao confirma mineral automaticamente. A confirmacao depende da leitura tecnica do difratograma, qualidade do preparo, comparacao entre tratamentos e possiveis sobreposicoes de picos.
 
+Documentacao tecnica completa do painel: [`docs/painel_drx_documentacao.md`](argiloteca/argiloteca_custom/docs/painel_drx_documentacao.md).
+
 ## Projeto
 
 O projeto desenvolve um módulo em Python para comparar arquivos .raw de DRX aplicados a argilominerais, preservando dados brutos e registrando etapas de processamento. O sistema reconstrói curvas 2θ versus intensidade, calcula d-spacing pela Lei de Bragg, corrige linha de base, normaliza sinais, detecta picos e estima FWHM, áreas, intensidades relativas e qualidade. Também compara difratogramas com artigos, teses, dissertações, relatórios e dados científicos organizados por metadados geológicos e analíticos. O objetivo é ranquear referências semelhantes e gerar hipóteses rastreáveis, sem confirmar automaticamente minerais, fortalecendo reprodutibilidade, curadoria científica e reuso de dados em Geoquímica, e apoiando coleções e laboratórios universitários.
