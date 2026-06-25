@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA

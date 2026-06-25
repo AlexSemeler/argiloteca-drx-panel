@@ -1,0 +1,37 @@
+{
+  "source": "Projeto Pre-Sal UFRGS/Petrobras 2019-2023",
+  "policy": "argiloteca_rule_based_diagnostic",
+  "minerals": {
+    "kerolite": {
+      "observed_peaks": {"natural": [9.35, 9.45], "glycolated": [9.44, 9.45]},
+      "behavior": ["non_expandable", "stable_after_glycol"],
+      "context": ["presalt", "magnesian_clays"],
+      "confidence": "reference_empirical"
+    },
+    "stevensite": {
+      "observed_peaks": {"natural": [14.0, 15.5], "glycolated": [16.5, 17.2], "calcined": [9.8, 10.4]},
+      "behavior": ["expands_with_glycol", "collapses_after_heating"],
+      "context": ["presalt", "lacustrine", "evaporitic", "magnesian_clays"],
+      "confidence": "reference_empirical"
+    },
+    "saponite": {
+      "observed_peaks": {"natural": [14.0, 15.5], "glycolated": [16.5, 17.2], "calcined": [9.8, 10.4]},
+      "behavior": ["expands_with_glycol", "collapses_after_heating", "trioctahedral_smectite"],
+      "context": ["magnesian_clays"],
+      "confidence": "reference_empirical"
+    },
+    "corrensite": {
+      "observed_peaks": {"natural": [28.5, 29.8], "glycolated": [30.8, 32.2], "calcined": [23.5, 24.8]},
+      "behavior": ["ordered_chlorite_smectite", "rational_sequence"],
+      "context": ["presalt", "magnesian_clays"],
+      "confidence": "reference_empirical"
+    },
+    "kerolite_stevensite_mixed_layer": {
+      "observed_peaks": {"natural": [9.0, 10.0], "glycolated": [9.4, 17.1]},
+      "behavior": ["partial_expansion", "magnesian_mixed_layer"],
+      "context": ["presalt", "lacustrine", "evaporitic", "magnesian_clays"],
+      "confidence": "reference_empirical"
+    }
+  }
+}
+

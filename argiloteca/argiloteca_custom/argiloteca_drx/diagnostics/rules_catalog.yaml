@@ -1,0 +1,25 @@
+version: argiloteca.drx.ngc.v3
+policy: argiloteca_rule_based_diagnostic
+rules:
+  - id: corrensite_regular_cs
+    target: corrensite
+    natural_A: [28.5, 29.8]
+    glycolated_A: [30.8, 32.2]
+    heated_A: [23.5, 24.8]
+    behavior: [rational_sequence, ordered_chlorite_smectite]
+  - id: chlorite_ngc
+    target: chlorite
+    natural_A: [13.7, 14.8]
+    glycolated_A: [13.7, 14.8]
+    heated_A: [13.5, 14.9]
+    companions_A: [[7.0, 7.25], [4.65, 4.8], [3.5, 3.6]]
+  - id: smectite_ngc
+    target: smectite_group
+    natural_A: [12.0, 16.86]
+    glycolated_A: [16.06, 18.31]
+    heated_A: [9.65, 10.37]
+  - id: kerolite_presalt
+    target: kerolite
+    natural_A: [9.35, 9.45]
+    glycolated_A: [9.35, 9.50]
+    context: [presalt, magnesian_clays]

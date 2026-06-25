@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -23,6 +21,25 @@ Preservar licença existente no repositório.
 
 Observação:
 Este arquivo integra o sistema de análise, comparação e interpretação de difratogramas de raios X para argilominerais.
+
+
+Fundamentacao cientifica revisada:
+    Este arquivo integra o Painel DRX da Argiloteca, projeto fundamentado nas
+    referencias cientificas revisadas para interpretacao auxiliar de DRX de
+    argilominerais: Brindley & Brown (1980), Bailey (1980/1988),
+    Moore & Reynolds (1989/1997), Drits & Tchoubar (1990),
+    Lanson & Bouchet (1995), Meunier, Clays (2005), fluxograma USGS para
+    identificacao de argilominerais por DRX e referencias empiricas Pre-Sal
+    UFRGS/Petrobras.
+
+Autoria cientifica e curadoria:
+    Alexandre Ribas Semeler
+    E-mail: alexandre.semler@ufrgs.br
+
+Politica de interpretacao:
+    Resultados mineralogicos sao auxiliares e nao confirmatorios. O codigo
+    combina comportamento N/G/C, picos companheiros, d060, ambiguidades,
+    contexto e proveniencia; nao confirma mineral por pico isolado.
 """
 
 from __future__ import annotations
@@ -57,6 +74,12 @@ from argiloteca.drx_core.curves import (
     parse_curve_bytes as core_parse_curve_bytes,
     parse_raw_bytes as core_parse_raw_bytes,
     parse_text_curve_bytes as core_parse_text_curve_bytes,
+)
+from argiloteca_drx.diagnostics.diagnostic_peak_rules import (
+    mapped_ranges,
+    named_range,
+    range_target,
+    targeted_basal_ranges,
 )
 
 
@@ -182,34 +205,10 @@ ADVANCED_ALS_WAVELENGTH_CU = 1.5406
 ADVANCED_ALS_SCHERRER_K = 0.9
 # Faixas diagnosticas em d-spacing (Angstrom) usadas pelo painel para orientar
 # argilominerais e calibracao por quartzo, nao para substituir curadoria.
-DRX_DIAGNOSTIC_D_RANGES = {
-    "illite10A": (9.73, 10.38),
-    "kaolinite7A": (6.96, 7.42),
-    "smectiteNatural": (13.46, 16.86),
-    "smectiteGlycolated": (16.06, 18.31),
-    "smectiteCalcined": (9.65, 10.37),
-    "chlorite14A": (13.58, 14.87),
-    "quartz101": (3.27, 3.42),
-    "quartz100": (4.23, 4.35),
-}
-TARGETED_BASAL_PEAK_RANGES = (
-    {"range_id": "smectite_n_13_16a", "mineral": "Esmectita", "label": "Esmectita N 13.46-16.86 A", "d_min": 13.46, "d_max": 16.86},
-    {"range_id": "smectite_g_17a", "mineral": "Esmectita", "label": "Esmectita G 16.06-18.31 A", "d_min": 16.06, "d_max": 18.31},
-    {"range_id": "smectite_c_10a", "mineral": "Esmectita", "label": "Esmectita C 9.65-10.37 A", "d_min": 9.65, "d_max": 10.37},
-    {"range_id": "illite_10a", "mineral": "Ilita", "label": "Ilita/Mica 9.73-10.38 A", "d_min": 9.73, "d_max": 10.38},
-    {"range_id": "illite_5a", "mineral": "Ilita", "label": "Ilita/Mica 5 A", "d_min": 4.85, "d_max": 5.15},
-    {"range_id": "illite_3_33a", "mineral": "Ilita", "label": "Ilita/Mica 3.33 A", "d_min": 3.26, "d_max": 3.40},
-    {"range_id": "kaolinite_7a", "mineral": "Caulinita", "label": "Caulinita 6.96-7.42 A", "d_min": 6.96, "d_max": 7.42},
-    {"range_id": "kaolinite_3_57a", "mineral": "Caulinita", "label": "Caulinita 3.57 A", "d_min": 3.52, "d_max": 3.62},
-    {"range_id": "chlorite_14a", "mineral": "Clorita", "label": "Clorita 13.58-14.87 A", "d_min": 13.58, "d_max": 14.87},
-    {"range_id": "chlorite_7a", "mineral": "Clorita", "label": "Clorita 7 A", "d_min": 6.9, "d_max": 7.4},
-    {"range_id": "chlorite_4_72a", "mineral": "Clorita", "label": "Clorita 4.72 A", "d_min": 4.60, "d_max": 4.85},
-    {"range_id": "chlorite_3_53a", "mineral": "Clorita", "label": "Clorita 3.53 A", "d_min": 3.45, "d_max": 3.65},
-    {"range_id": "quartz_101", "mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.27, "d_max": 3.42},
-    {"range_id": "quartz_100", "mineral": "Quartzo", "label": "Quartzo 100", "d_min": 4.23, "d_max": 4.35},
-)
-DRX_QUARTZ_CALIBRATION_SEARCH_D_RANGE = (3.27, 3.42)
-DRX_QUARTZ_CALIBRATION_TARGET_D = 3.34
+DRX_DIAGNOSTIC_D_RANGES = mapped_ranges("drx_diagnostic_d_ranges")
+TARGETED_BASAL_PEAK_RANGES = targeted_basal_ranges(as_tuple=True)
+DRX_QUARTZ_CALIBRATION_SEARCH_D_RANGE = named_range("quartz_101")
+DRX_QUARTZ_CALIBRATION_TARGET_D = range_target("quartz_101", 3.34)
 DRX_QUARTZ_CALIBRATION_MIN_RELATIVE_INTENSITY = 2.0
 DRX_QUARTZ_CALIBRATION_MIN_OFFSET = 0.02
 ADVANCED_FIT_RESULT_KEYS = (
@@ -3636,6 +3635,7 @@ def _load_ngc_group_classification_index(path_text=None):
         sample_id = safe_text(group.get("sample_id"))
         keys = set(_classification_lookup_keys(sample_id))
         keys.update(_classification_lookup_keys(infer_diffractogram_sample_base(sample_id)))
+        confirmed_minerals = [_normalize_ngc_group_candidate(row) for row in (group.get("confirmed_minerals") or [])]
         probable_minerals = [_normalize_ngc_group_candidate(row) for row in (group.get("probable_minerals") or [])]
         possible_minerals = [_normalize_ngc_group_candidate(row) for row in (group.get("possible_minerals") or [])]
         accessory_minerals = [_normalize_ngc_group_candidate(row) for row in (group.get("accessory_minerals") or [])]
@@ -3648,6 +3648,7 @@ def _load_ngc_group_classification_index(path_text=None):
                     "sample_id": sample_id,
                     "status": group.get("status"),
                     "available_treatments": group.get("available_treatments") or [],
+                    "confirmed_minerals": confirmed_minerals,
                     "probable_minerals": probable_minerals,
                     "possible_minerals": possible_minerals,
                     "accessory_minerals": accessory_minerals,
@@ -3689,8 +3690,9 @@ def _normalize_ngc_group_candidate(candidate):
             if row.get(key) is not None:
                 row["score"] = row.get(key)
                 break
-    row.setdefault("score_role", "ngc_group_auxiliary")
-    row.setdefault("interpretation_policy", "classificacao N/G/C auxiliar; nao confirma fase mineralogica")
+    row.setdefault("score_role", "ngc_group_rule_based")
+    row.setdefault("interpretation_policy", "argiloteca_rule_based_diagnostic")
+    row.setdefault("policy_scope", "rule_based_confirmation_within_argiloteca_ngc_engine")
     return row
 
 

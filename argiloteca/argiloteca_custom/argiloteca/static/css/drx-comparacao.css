@@ -1,3 +1,15 @@
+/*
+ * Projeto: Painel DRX Argiloteca
+ * Arquivo: estilos visuais do painel de comparação DRX.
+ * Autoria: Alexandre Ribas Semeler
+ * E-mail: alexandre.semler@ufrgs.br
+ * Fundamentação científica: Brindley & Brown (1980), Bailey (1980/1988),
+ * Moore & Reynolds (1989/1997), Drits & Tchoubar (1990), Lanson & Bouchet
+ * (1995), Meunier, Clays (2005), fluxograma USGS e referências empíricas
+ * Pré-Sal UFRGS/Petrobras.
+ * Política: interface para interpretação mineralógica auxiliar e não confirmatória.
+ */
+
 :root {
   --arg-drx-ink: #27342f;
   --arg-drx-muted: #60706a;
@@ -410,21 +422,22 @@
   background: #fff;
   border: 1px solid var(--arg-drx-line);
   border-radius: 8px;
-  min-height: 520px;
+  height: clamp(380px, 52vh, 520px);
+  min-height: 360px;
   overflow: hidden;
   position: relative;
 }
 
 .argilo-drx__chart {
   display: block;
-  height: min(64vh, 620px);
-  min-height: 480px;
+  height: 100%;
+  min-height: 0;
   width: 100%;
 }
 
 .argilo-drx__plotly-chart {
-  height: min(64vh, 620px);
-  min-height: 480px;
+  height: 100%;
+  min-height: 0;
   width: 100%;
 }
 
@@ -1002,6 +1015,35 @@
   margin-bottom: .3rem;
 }
 
+.argilo-drx__gsas2 {
+  background: #f8fbfa;
+  border: 1px solid var(--arg-drx-line);
+  border-radius: 8px;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.argilo-drx__gsas2-grid {
+  display: grid;
+  gap: .65rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: .75rem;
+}
+
+.argilo-drx__gsas2-grid > div {
+  background: #fff;
+  border: 1px solid var(--arg-drx-line);
+  border-radius: 6px;
+  min-width: 0;
+  padding: .65rem;
+}
+
+.argilo-drx__gsas2-grid strong,
+.argilo-drx__gsas2-grid span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
 .argilo-drx__ngc-interpretation {
   border-left: 3px solid #5f7c6d;
   margin: .9rem 0;
@@ -1012,6 +1054,67 @@
   background: #fbfbf8;
   border-color: rgba(72, 91, 79, .16);
   margin: .6rem 0;
+}
+
+.argilo-drx__ngc-found {
+  background: #eef6f2;
+  border: 1px solid rgba(75, 117, 92, .22);
+  border-radius: 7px;
+  color: #243c37;
+  margin: .65rem 0;
+  padding: .65rem .75rem;
+}
+
+.argilo-drx__ngc-found strong {
+  display: block;
+  font-size: .82rem;
+  margin-bottom: .2rem;
+  text-transform: uppercase;
+}
+
+.argilo-drx__ngc-evidence-grid {
+  display: grid;
+  gap: .65rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin: .55rem 0 .75rem;
+}
+
+.argilo-drx__ngc-evidence-card {
+  background: #fff;
+  border: 1px solid var(--arg-drx-line);
+  border-radius: 7px;
+  padding: .65rem .75rem;
+}
+
+.argilo-drx__ngc-evidence-card h6 {
+  color: #243c37;
+  font-size: .78rem;
+  letter-spacing: 0;
+  margin: 0 0 .45rem;
+  text-transform: uppercase;
+}
+
+.argilo-drx__ngc-evidence-row {
+  border-top: 1px solid rgba(72, 91, 79, .12);
+  padding: .45rem 0 0;
+}
+
+.argilo-drx__ngc-evidence-row:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.argilo-drx__ngc-evidence-row strong,
+.argilo-drx__ngc-evidence-row span {
+  display: block;
+}
+
+.argilo-drx__ngc-evidence-row span {
+  color: var(--arg-drx-muted);
+  font-size: .84rem;
+  line-height: 1.35;
+  margin-top: .15rem;
+  overflow-wrap: anywhere;
 }
 
 .argilo-drx__mini-note {
@@ -1159,6 +1262,16 @@
 .argilo-drx__badge--externo {
   background: #eef2ff;
   color: #394b8f;
+}
+
+.argilo-drx__badge--ok {
+  background: #dceee8;
+  color: #205c4c;
+}
+
+.argilo-drx__badge--warn {
+  background: #fff2d8;
+  color: #76500f;
 }
 
 .argilo-drx__empty {
@@ -1329,6 +1442,16 @@
 }
 
 @media (max-width: 760px) {
+  .argilo-drx__chart-wrap {
+    height: 340px;
+    min-height: 320px;
+  }
+
+  .argilo-drx__chart,
+  .argilo-drx__plotly-chart {
+    height: 100%;
+  }
+
   .argilo-drx__rruff-controls {
     grid-template-columns: 1fr;
   }

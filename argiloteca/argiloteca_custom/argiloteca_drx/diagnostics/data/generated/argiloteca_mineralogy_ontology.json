@@ -1,0 +1,77 @@
+{
+  "Diagnostico": {
+    "policy": "argiloteca_rule_based_diagnostic",
+    "requires_convergent_evidence": true
+  },
+  "Especie": {
+    "examples": [
+      "kaolinite",
+      "montmorillonite",
+      "sepiolite"
+    ]
+  },
+  "Evidencia": {
+    "children": [
+      "structural",
+      "behavioral",
+      "intensity",
+      "treatment",
+      "morphology"
+    ]
+  },
+  "Grupo": {
+    "examples": [
+      "kaolin_group",
+      "chlorite_group",
+      "smectite_group"
+    ]
+  },
+  "Mineral": {
+    "children": [
+      "Grupo",
+      "Especie",
+      "Polimorfo"
+    ]
+  },
+  "Polimorfo": {
+    "examples": [
+      "kaolinite",
+      "dickite",
+      "nacrite"
+    ]
+  },
+  "Razao de Intensidade": {
+    "examples": [
+      "I003/I005",
+      "(I002+I004)/I003",
+      "I002/I003"
+    ]
+  },
+  "Reflexao": {
+    "children": [
+      "OOl",
+      "060",
+      "hkl_auxiliar"
+    ]
+  },
+  "Reflexao 060": {
+    "role": "octahedral_classifier_auxiliary"
+  },
+  "Regra": {
+    "children": [
+      "diagnostic_rule",
+      "behavior_rule",
+      "d060_rule",
+      "intensity_rule"
+    ]
+  },
+  "Tratamento": {
+    "examples": [
+      "natural",
+      "glycolated",
+      "calcined",
+      "glycerol",
+      "K_saturated"
+    ]
+  }
+}

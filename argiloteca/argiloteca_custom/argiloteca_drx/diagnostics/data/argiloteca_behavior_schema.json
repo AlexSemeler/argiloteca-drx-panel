@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "argiloteca_behavior_schema.json",
+  "title": "Argiloteca DRX Treatment Behavior Rule",
+  "type": "object",
+  "required": ["target", "behavior", "source"],
+  "properties": {
+    "target": {"type": "string"},
+    "behavior": {"type": "object"},
+    "source": {"type": "object"}
+  }
+}

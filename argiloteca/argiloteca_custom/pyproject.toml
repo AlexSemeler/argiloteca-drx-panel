@@ -16,6 +16,7 @@ include = ["argiloteca*"]
 
 [tool.setuptools.package-data]
 argiloteca = ["data/*.json"]
+argiloteca_drx = ["diagnostics/data/*.json", "diagnostics/*.yaml"]
 
 [project.entry-points."invenio_base.apps"]
 argiloteca = "argiloteca.ext:ArgilotecaUIExtension"

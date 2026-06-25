@@ -1,0 +1,255 @@
+{
+  "chlorite": {
+    "behavior": {
+      "C": {
+        "001": "persists_or_increases",
+        "002_003_004": "weakened"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "13.7-14.8A"
+      }
+    },
+    "d060_rules": [
+      "chapter7_d060_trioctahedral"
+    ],
+    "diagnostic_reflections": [
+      "14.2A 001",
+      "7.1A 002",
+      "4.74A 003",
+      "3.55A 004"
+    ],
+    "diagnostic_strength": {
+      "requires_series": true,
+      "single_peak_allowed": false
+    },
+    "group": "chlorite_group",
+    "intensity_rules": [
+      "chapter7_chlorite_fe_003_005",
+      "chapter7_chlorite_symmetry_even_odd"
+    ],
+    "known_interferences": [
+      "kaolin_group at 7A/3.57A",
+      "serpentine near 7A",
+      "vermiculite near 14A"
+    ],
+    "name": "chlorite",
+    "references": [
+      {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.4",
+        "page": 234,
+        "quote_fragment": "chlorite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      }
+    ],
+    "supporting_reflections": [
+      "d060 ~1.54A for trioctahedral types"
+    ]
+  },
+  "illite_mica": {
+    "behavior": {
+      "C": {
+        "001": "unchanged"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "9.8-10.4A"
+      }
+    },
+    "d060_rules": [
+      "chapter7_d060_dioctahedral",
+      "chapter7_d060_trioctahedral"
+    ],
+    "diagnostic_reflections": [
+      "10A 001",
+      "5A 002",
+      "3.33A 003"
+    ],
+    "diagnostic_strength": {
+      "requires_10A_persistence": true,
+      "single_peak_allowed": false
+    },
+    "group": "illite_mica",
+    "intensity_rules": [],
+    "known_interferences": [
+      "quartz 3.34A",
+      "palygorskite 10.4A",
+      "collapsed smectite"
+    ],
+    "name": "illite_mica",
+    "references": [
+      {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.3",
+        "page": 233,
+        "quote_fragment": "illite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      }
+    ],
+    "supporting_reflections": [
+      "d060 for mica type",
+      "quartz check at 3.34A"
+    ]
+  },
+  "kaolin_group": {
+    "behavior": {
+      "C": {
+        "001": "disappears_or_strongly_reduced"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "7.0-7.4A"
+      }
+    },
+    "d060_rules": [
+      "chapter7_d060_dioctahedral"
+    ],
+    "diagnostic_reflections": [
+      "7.15A 001",
+      "3.57A 002"
+    ],
+    "diagnostic_strength": {
+      "requires_thermal_loss": true,
+      "single_peak_allowed": false
+    },
+    "group": "kaolin_group",
+    "intensity_rules": [
+      "chapter7_kaolinite_002_003"
+    ],
+    "known_interferences": [
+      "chlorite 002/004",
+      "serpentine 7A",
+      "halloysite"
+    ],
+    "name": "kaolin_group",
+    "references": [
+      {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 234,
+        "quote_fragment": "kaolinite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      }
+    ],
+    "supporting_reflections": [
+      "d060 ~1.49-1.50A",
+      "resolved hkl for polymorphs"
+    ]
+  },
+  "smectite": {
+    "behavior": {
+      "C": {
+        "001": "collapse_to_10A"
+      },
+      "G": {
+        "001": "about_17A"
+      },
+      "N": {
+        "001": "12-15A"
+      }
+    },
+    "d060_rules": [
+      "chapter7_d060_dioctahedral",
+      "chapter7_d060_trioctahedral"
+    ],
+    "diagnostic_reflections": [
+      "N 12-15A",
+      "G ~16.9A",
+      "C/K ~10A"
+    ],
+    "diagnostic_strength": {
+      "requires_glycol_expansion": true,
+      "single_peak_allowed": false
+    },
+    "group": "smectite_group",
+    "intensity_rules": [
+      "chapter7_smectite_002_003"
+    ],
+    "known_interferences": [
+      "illite-smectite mixed layers",
+      "vermiculite",
+      "chlorite-smectite"
+    ],
+    "name": "smectite",
+    "references": [
+      {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.8",
+        "page": 241,
+        "quote_fragment": "smectite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      }
+    ],
+    "supporting_reflections": [
+      "higher-order 00l where measurable",
+      "d060 for octahedral type"
+    ]
+  },
+  "vermiculite": {
+    "behavior": {
+      "K_or_300C": {
+        "001": "collapse_to_10A"
+      },
+      "N": {
+        "001": "about_14.5A"
+      },
+      "glycerol": {
+        "001": "retains_14.5A"
+      }
+    },
+    "d060_rules": [
+      "chapter7_d060_dioctahedral",
+      "chapter7_d060_trioctahedral"
+    ],
+    "diagnostic_reflections": [
+      "N ~14.5A",
+      "collapse after K/300C"
+    ],
+    "diagnostic_strength": {
+      "operational_definition": true,
+      "single_peak_allowed": false
+    },
+    "group": "vermiculite_group",
+    "intensity_rules": [],
+    "known_interferences": [
+      "chlorite 14A",
+      "smectite 14-17A",
+      "mixed layers"
+    ],
+    "name": "vermiculite",
+    "references": [
+      {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.7",
+        "page": 240,
+        "quote_fragment": "vermiculite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      }
+    ],
+    "supporting_reflections": [
+      "d060 for dioctahedral/trioctahedral separation"
+    ]
+  }
+}

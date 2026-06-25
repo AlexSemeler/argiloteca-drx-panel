@@ -1,0 +1,6 @@
+{
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source": "argiloteca_local_validated_patterns",
+  "ranges": {}
+}
+

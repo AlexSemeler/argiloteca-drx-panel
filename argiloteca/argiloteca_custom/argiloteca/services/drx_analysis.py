@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -23,6 +21,25 @@ Preservar licença existente no repositório.
 
 Observação:
 Este arquivo integra o sistema de análise, comparação e interpretação de difratogramas de raios X para argilominerais.
+
+
+Fundamentacao cientifica revisada:
+    Este arquivo integra o Painel DRX da Argiloteca, projeto fundamentado nas
+    referencias cientificas revisadas para interpretacao auxiliar de DRX de
+    argilominerais: Brindley & Brown (1980), Bailey (1980/1988),
+    Moore & Reynolds (1989/1997), Drits & Tchoubar (1990),
+    Lanson & Bouchet (1995), Meunier, Clays (2005), fluxograma USGS para
+    identificacao de argilominerais por DRX e referencias empiricas Pre-Sal
+    UFRGS/Petrobras.
+
+Autoria cientifica e curadoria:
+    Alexandre Ribas Semeler
+    E-mail: alexandre.semler@ufrgs.br
+
+Politica de interpretacao:
+    Resultados mineralogicos sao auxiliares e nao confirmatorios. O codigo
+    combina comportamento N/G/C, picos companheiros, d060, ambiguidades,
+    contexto e proveniencia; nao confirma mineral por pico isolado.
 """
 
 from __future__ import annotations
@@ -45,46 +62,10 @@ from argiloteca.drx_core.contracts import (
     DRX_DIAGNOSTIC_RULES_SCHEMA,
     auxiliary_policy,
 )
+from argiloteca_drx.diagnostics.diagnostic_peak_rules import simple_analysis_ranges
 
 
-DIAGNOSTIC_D_RANGES = (
-    {
-        "rule_id": "kaolinite_7a",
-        "mineral": "caulinita",
-        "label": "Caulinita 001",
-        "d_min": 7.05,
-        "d_max": 7.30,
-        "required_preparation": "any",
-        "warning": "sobreposicao possivel com clorita proximo de 7 A",
-    },
-    {
-        "rule_id": "illite_10a",
-        "mineral": "ilita/mica",
-        "label": "Ilita/Mica 001",
-        "d_min": 9.80,
-        "d_max": 10.25,
-        "required_preparation": "any",
-        "warning": "pico 10 A isolado requer contexto mineralogico e reflexoes confirmatorias",
-    },
-    {
-        "rule_id": "chlorite_14a",
-        "mineral": "clorita/vermiculita",
-        "label": "Clorita/Vermiculita basal",
-        "d_min": 13.70,
-        "d_max": 14.80,
-        "required_preparation": "any",
-        "warning": "diferenciar com comportamento N/G/C e harmonicos",
-    },
-    {
-        "rule_id": "smectite_eg_17a",
-        "mineral": "esmectita expansiva",
-        "label": "Esmectita glicolada",
-        "d_min": 16.60,
-        "d_max": 18.60,
-        "required_preparation": "glicolado",
-        "warning": "evidencia forte apenas quando comparada com natural e calcinada",
-    },
-)
+DIAGNOSTIC_D_RANGES = simple_analysis_ranges()
 
 
 def _config_hash(payload):

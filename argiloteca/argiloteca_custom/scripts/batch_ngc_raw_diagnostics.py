@@ -10,8 +10,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -24,6 +22,31 @@ Preservar licença existente no repositório.
 
 Observação:
 Este arquivo integra o sistema de análise, comparação e interpretação de difratogramas de raios X para argilominerais.
+
+Referencia aplicada:
+- Brindley & Brown, 1980. Os ranges kaolinite_7a e kaolinite_3_57a sao usados
+  como evidencia auxiliar do grupo da caulinita no processamento em lote.
+  O script nao separa caulinita/dickita/nacrita por pico isolado; exige
+  comportamento N/G/C e perda/reducao termica.
+
+
+Fundamentacao cientifica revisada:
+    Este arquivo integra o Painel DRX da Argiloteca, projeto fundamentado nas
+    referencias cientificas revisadas para interpretacao auxiliar de DRX de
+    argilominerais: Brindley & Brown (1980), Bailey (1980/1988),
+    Moore & Reynolds (1989/1997), Drits & Tchoubar (1990),
+    Lanson & Bouchet (1995), Meunier, Clays (2005), fluxograma USGS para
+    identificacao de argilominerais por DRX e referencias empiricas Pre-Sal
+    UFRGS/Petrobras.
+
+Autoria cientifica e curadoria:
+    Alexandre Ribas Semeler
+    E-mail: alexandre.semler@ufrgs.br
+
+Politica de interpretacao:
+    Resultados mineralogicos sao auxiliares e nao confirmatorios. O codigo
+    combina comportamento N/G/C, picos companheiros, d060, ambiguidades,
+    contexto e proveniencia; nao confirma mineral por pico isolado.
 """
 
 from __future__ import annotations
@@ -59,6 +82,18 @@ for import_path in (str(APP_DIR), str(CUSTOM_DIR)):
     if import_path not in sys.path:
         sys.path.insert(0, import_path)
 
+from argiloteca_drx.diagnostics.diagnostic_peak_rules import (
+    mapped_ranges,
+    named_range,
+    range_target,
+    targeted_basal_ranges,
+)
+from argiloteca_drx.diagnostics.diagnostic_behavior_rules import (
+    CONFIRMED_BY_RULES,
+    POLICY,
+    POSSIBLE_BY_RULES,
+    PROBABLE_BY_RULES,
+)
 from argiloteca_drx_core.curves import CurveParseError, calculate_d_spacing, calculate_two_theta, parse_curve_bytes
 
 
@@ -70,55 +105,18 @@ DEFAULT_WINDOW_LENGTH = 25
 DEFAULT_POLYORDER = 2
 DEFAULT_ALS_LAMBDA = 1e6
 DEFAULT_ALS_P = 0.01
-DEFAULT_START_X_SEARCH = 4.0
+DEFAULT_START_X_SEARCH = 3.8
 DEFAULT_PEAK_PROMINENCE = 0.01
 DEFAULT_MAX_PEAKS = 15
 DEFAULT_WAVELENGTH_CU = 1.5406
 DEFAULT_K_SCHERRER = 0.9
 DEFAULT_PEAK_BOUNDARY_THRESHOLD = 0.01
-DEFAULT_QUARTZ_SEARCH_D = (3.27, 3.42)
-DEFAULT_TARGET_QUARTZ_D = 3.34
+DEFAULT_QUARTZ_SEARCH_D = named_range("quartz_101")
+DEFAULT_TARGET_QUARTZ_D = range_target("quartz_101", 3.34)
 DEFAULT_MIN_QUARTZ_INTENSITY_PERCENT = 2.0
 
-RANGES = {
-    "illite_10a": (9.73, 10.38),
-    "illite_10a_n": (9.84, 10.36),
-    "illite_10a_g": (9.82, 10.30),
-    "illite_10a_c": (9.73, 10.38),
-    "kaolinite_7a": (6.96, 7.42),
-    "kaolinite_7a_n": (6.97, 7.42),
-    "kaolinite_7a_g": (6.96, 7.42),
-    "kaolinite_7a_c_check": (6.96, 7.42),
-    "smectite_n": (13.46, 16.86),
-    "smectite_g": (16.06, 18.31),
-    "smectite_c": (9.65, 10.37),
-    "chlorite_14a": (13.58, 14.87),
-    "chlorite_14a_n": (13.74, 14.74),
-    "chlorite_14a_g": (13.83, 14.72),
-    "chlorite_14a_c": (13.58, 14.87),
-    "quartz_101": (3.27, 3.42),
-    "quartz_101_n": (3.28, 3.41),
-    "quartz_101_g": (3.28, 3.42),
-    "quartz_101_c": (3.27, 3.42),
-    "quartz_100": (4.23, 4.35),
-}
-
-TARGETED_BASAL_RANGES = {
-    "smectite_n_13_16a": {"mineral": "Esmectita", "label": "Esmectita N 13.46-16.86 A", "d_min": 13.46, "d_max": 16.86},
-    "smectite_g_17a": {"mineral": "Esmectita", "label": "Esmectita G 16.06-18.31 A", "d_min": 16.06, "d_max": 18.31},
-    "smectite_c_10a": {"mineral": "Esmectita", "label": "Esmectita C 9.65-10.37 A", "d_min": 9.65, "d_max": 10.37},
-    "illite_10a": {"mineral": "Ilita", "label": "Ilita/Mica 9.73-10.38 A", "d_min": 9.73, "d_max": 10.38},
-    "illite_5a": {"mineral": "Ilita", "label": "Ilita/Mica 5 A", "d_min": 4.85, "d_max": 5.15},
-    "illite_3_33a": {"mineral": "Ilita", "label": "Ilita/Mica 3.33 A", "d_min": 3.26, "d_max": 3.40},
-    "kaolinite_7a": {"mineral": "Caulinita", "label": "Caulinita 6.96-7.42 A", "d_min": 6.96, "d_max": 7.42},
-    "kaolinite_3_57a": {"mineral": "Caulinita", "label": "Caulinita 3.57 A", "d_min": 3.52, "d_max": 3.62},
-    "chlorite_14a": {"mineral": "Clorita", "label": "Clorita 13.58-14.87 A", "d_min": 13.58, "d_max": 14.87},
-    "chlorite_7a": {"mineral": "Clorita", "label": "Clorita 7 A", "d_min": 6.9, "d_max": 7.4},
-    "chlorite_4_72a": {"mineral": "Clorita", "label": "Clorita 4.72 A", "d_min": 4.60, "d_max": 4.85},
-    "chlorite_3_53a": {"mineral": "Clorita", "label": "Clorita 3.53 A", "d_min": 3.45, "d_max": 3.65},
-    "quartz_101": {"mineral": "Quartzo", "label": "Quartzo 101", "d_min": 3.27, "d_max": 3.42},
-    "quartz_100": {"mineral": "Quartzo", "label": "Quartzo 100", "d_min": 4.23, "d_max": 4.35},
-}
+RANGES = mapped_ranges("script_interval_ranges")
+TARGETED_BASAL_RANGES = targeted_basal_ranges()
 
 
 def read_curve(path: Path):
@@ -299,7 +297,8 @@ def targeted_basal_peak_scan(x, y_final, config):
             "expected_d_min": d_min,
             "expected_d_max": d_max,
             "source": "targeted_basal_peak_scan",
-            "interpretation_policy": "pico basal direcionado auxiliar; nao confirma fase mineralogica",
+            "interpretation_policy": POLICY,
+            "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
         }
         if theta_min is None or theta_max is None:
             rows.append({**base, "status": "not_found", "observed_peak": None})
@@ -423,6 +422,9 @@ def diagnose_clays(peaks_n, peaks_g, peaks_c):
         })
         minerals.append("Esmectita")
 
+    # Brindley & Brown, 1980 aplicado no batch: usa 7 A persistente em N/G e
+    # reducao forte em C para sinalizar grupo da caulinita. A saida permanece
+    # auxiliar e nao resolve especie sem hkl/morfologia.
     int_n_7 = intensity_in_range(peaks_n, *RANGES["kaolinite_7a_n"])
     int_g_7 = intensity_in_range(peaks_g, *RANGES["kaolinite_7a_g"])
     int_c_7 = intensity_in_range(peaks_c, *RANGES["kaolinite_7a_c_check"])
@@ -802,7 +804,8 @@ def process_sample(sample_id, paths, output_dir: Path, config):
         "plots": plots,
         "copied_files": copied,
         "warnings": warnings_out,
-        "policy": "Diagnostico N/G/C auxiliar e nao confirmatorio; requer revisao mineralogica.",
+        "policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
     }
 
 
@@ -852,22 +855,31 @@ def group_classification_candidates(sample):
         score = diagnostic_score_for_mineral(sample, mineral)
         role = "accessory"
         if mineral in {"Clorita", "Esmectita", "Ilita", "Caulinita"}:
-            role = "probable" if score >= 0.8 else "possible"
+            if score >= 0.8:
+                role = CONFIRMED_BY_RULES
+            elif score >= 0.5:
+                role = PROBABLE_BY_RULES
+            else:
+                role = POSSIBLE_BY_RULES
+        else:
+            role = POSSIBLE_BY_RULES
         rows.append(
             {
                 "mineral": mineral,
                 "role": role,
-                "status": "probable" if role == "probable" else "possible",
+                "status": role,
                 "ngc_group_score": round(score, 4),
                 "basal_diagnostic_score": round(score, 4),
                 "raw_candidate_score": None,
                 "similarity_score": None,
                 "reference_match_score": None,
                 "auxiliary_neural_score": None,
-                "interpretation_policy": "classificacao N/G/C auxiliar; nao confirma fase mineralogica",
+                "interpretation_policy": POLICY,
+                "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
             }
         )
-    return sorted(rows, key=lambda row: (row["role"] != "probable", -(row["ngc_group_score"] or 0), row["mineral"]))
+    order = {CONFIRMED_BY_RULES: 0, PROBABLE_BY_RULES: 1, POSSIBLE_BY_RULES: 2}
+    return sorted(rows, key=lambda row: (order.get(row["role"], 9), -(row["ngc_group_score"] or 0), row["mineral"]))
 
 
 def best_treatment_summary(sample):
@@ -915,14 +927,16 @@ def build_ngc_group_classification_payload(batch_payload):
     groups = []
     for sample in results:
         candidates = group_classification_candidates(sample)
-        probable = [row for row in candidates if row.get("role") == "probable"]
-        possible = [row for row in candidates if row.get("role") == "possible"]
-        accessory = [row for row in candidates if row.get("role") == "accessory"]
+        confirmed = [row for row in candidates if row.get("role") == CONFIRMED_BY_RULES]
+        probable = [row for row in candidates if row.get("role") in {CONFIRMED_BY_RULES, PROBABLE_BY_RULES}]
+        possible = [row for row in candidates if row.get("role") == POSSIBLE_BY_RULES]
+        accessory = []
         groups.append(
             {
                 "sample_id": sample.get("sample_id"),
                 "status": "trio completo" if all(key in (sample.get("treatments") or {}) for key in ("N", "G", "C")) else "trio incompleto",
                 "available_treatments": sorted((sample.get("treatments") or {}).keys()),
+                "confirmed_minerals": confirmed,
                 "probable_minerals": probable,
                 "possible_minerals": possible,
                 "accessory_minerals": accessory,
@@ -938,7 +952,8 @@ def build_ngc_group_classification_payload(batch_payload):
                     treatment: data.get("targeted_basal_peaks") or []
                     for treatment, data in (sample.get("treatments") or {}).items()
                 },
-                "policy": "triagem mineralogica orientada por N/G/C; nao usar como confirmacao automatica",
+                "policy": POLICY,
+                "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
             }
         )
     return {
@@ -956,7 +971,9 @@ def build_ngc_group_classification_payload(batch_payload):
             "auxiliary_neural_score": "reservado para evidencia neural auxiliar",
         },
         "groups": groups,
-        "interpretation_policy": "classificacao auxiliar para priorizar curadoria; nao confirma mineralogia",
+        "interpretation_policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
+        "diagnostic_labels": [CONFIRMED_BY_RULES, PROBABLE_BY_RULES, POSSIBLE_BY_RULES],
     }
 
 
@@ -1089,7 +1106,7 @@ def parse_args(argv=None):
     parser.add_argument("--wavelength", type=float, default=DEFAULT_WAVELENGTH_CU)
     parser.add_argument("--scherrer-k", type=float, default=DEFAULT_K_SCHERRER)
     parser.add_argument("--peak-boundary-threshold", type=float, default=DEFAULT_PEAK_BOUNDARY_THRESHOLD)
-    parser.add_argument("--quartz-search-d", default="3.27,3.42")
+    parser.add_argument("--quartz-search-d", default="%s,%s" % DEFAULT_QUARTZ_SEARCH_D)
     parser.add_argument("--target-quartz-d", type=float, default=DEFAULT_TARGET_QUARTZ_D)
     parser.add_argument("--min-quartz-intensity-percent", type=float, default=DEFAULT_MIN_QUARTZ_INTENSITY_PERCENT)
     parser.add_argument("--manual-offsets-json", default=None, help="JSON opcional {filename: offset_2theta}.")

@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -1368,6 +1366,7 @@ def _score_external_against_package_item(
     intensity: list[float] | None,
     detected_peaks: list[dict] | None,
     mineral_candidates: list[dict] | None,
+    load_curve: bool = True,
 ) -> dict:
     """Score one uploaded RAW against one package item using complementary evidence."""
     external_stem = Path(original_filename or "").stem.lower()
@@ -1383,17 +1382,21 @@ def _score_external_against_package_item(
         evidence.append("nome/código da amostra coincide com arquivo já indexado")
 
     metadata_score, metadata_evidence = _metadata_similarity(metadata or {}, item.get("metadata") or {})
-    package_two_theta, package_intensity, package_curve_source = _load_item_curve_for_similarity(
-        item,
-        record_id=record_id,
-        manifest=manifest,
-    )
-    curve_score, curve_evidence = _curve_shape_similarity(
-        two_theta,
-        intensity,
-        package_two_theta,
-        package_intensity,
-    )
+    package_curve_source = None
+    if load_curve:
+        package_two_theta, package_intensity, package_curve_source = _load_item_curve_for_similarity(
+            item,
+            record_id=record_id,
+            manifest=manifest,
+        )
+        curve_score, curve_evidence = _curve_shape_similarity(
+            two_theta,
+            intensity,
+            package_two_theta,
+            package_intensity,
+        )
+    else:
+        curve_score, curve_evidence = 0.0, []
     if curve_evidence and package_curve_source:
         curve_evidence = [f"{curve_evidence[0]}; fonte: {package_curve_source}"]
     peak_score, peak_evidence, matched_peaks = _peak_similarity(
@@ -1446,6 +1449,19 @@ def _score_external_against_package_item(
     }
 
 
+def _top_matches_by_record(matches: list[dict], limit: int = 5) -> list[dict]:
+    """Return the strongest match for each public Argiloteca record."""
+    grouped = {}
+    for match in sorted(matches or [], key=lambda item: item.get("score", 0), reverse=True):
+        record_id = match.get("record_id") or match.get("package_record_id")
+        if not record_id or record_id in grouped:
+            continue
+        grouped[record_id] = match
+        if len(grouped) >= max(1, limit):
+            break
+    return list(grouped.values())
+
+
 def _compare_external_curve_to_all_packages(
     *,
     original_filename: str,
@@ -1481,13 +1497,16 @@ def _compare_external_curve_to_all_packages(
                 intensity=intensity,
                 detected_peaks=detected_peaks,
                 mineral_candidates=mineral_candidates,
+                load_curve=False,
             )
             if match.get("exact"):
                 exact.append(match)
             elif match.get("score", 0) >= 0.35:
                 results.append(match)
 
-    matches = exact or sorted(results, key=lambda item: item.get("score", 0), reverse=True)[: max(1, limit)]
+    ranked_matches = sorted(exact + results, key=lambda item: item.get("score", 0), reverse=True)
+    matches = (exact or ranked_matches)[: max(1, limit)]
+    record_matches = _top_matches_by_record(ranked_matches, limit=max(1, limit))
     best = matches[0] if matches else None
     if best and best.get("exact"):
         status = "igual"
@@ -1509,6 +1528,7 @@ def _compare_external_curve_to_all_packages(
         "message": message,
         "best_match": best,
         "matches": matches,
+        "record_matches": record_matches,
         "total_items_checked": total_items_checked,
         "total_records_checked": len(record_ids),
     }
@@ -1703,5 +1723,6 @@ def compare_external_curve_to_package(
         "message": message,
         "best_match": best,
         "matches": matches,
+        "record_matches": _top_matches_by_record(matches, limit=max(1, limit)),
         "total_items_checked": len(manifest.get("items") or []),
     }

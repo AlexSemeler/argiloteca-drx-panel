@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "argiloteca_mineral_schema.json",
+  "title": "Argiloteca DRX Mineral Profile",
+  "type": "object",
+  "required": ["name", "group", "diagnostic_reflections", "behavior", "references"],
+  "properties": {
+    "name": {"type": "string"},
+    "group": {"type": "string"},
+    "diagnostic_reflections": {"type": "array"},
+    "supporting_reflections": {"type": "array"},
+    "behavior": {"type": "object"},
+    "intensity_rules": {"type": "array"},
+    "d060_rules": {"type": "array"},
+    "known_interferences": {"type": "array"},
+    "diagnostic_strength": {"type": "object"},
+    "references": {"type": "array"}
+  }
+}

@@ -19,7 +19,6 @@
     ],
     active_module="network",
     actions=[
-      {"label": _("Abrir atlas químico"), "href": url_for("argiloteca.geoquimica_agregada")},
       {"label": _("Ver análises"), "href": url_for("argiloteca.analises_index"), "primary": True}
     ]
   ) }}
@@ -45,12 +44,6 @@
         </a>
         <a class="ui button" href="{{ url_for('argiloteca.catalogo_autorizado_argilominerais') }}">
           {{ _("Catálogo de nomes") }}
-        </a>
-        <a class="ui primary button" href="{{ url_for('argiloteca.geoquimica_rede') }}">
-          {{ _("Rede geoquímica") }}
-        </a>
-        <a class="ui button" href="{{ url_for('argiloteca.geoquimica_agregada') }}">
-          {{ _("Atlas químico") }}
         </a>
         <a class="ui button" href="{{ url_for('argiloteca.drx_comparacao') }}">
           {{ _("Comparação DRX") }}

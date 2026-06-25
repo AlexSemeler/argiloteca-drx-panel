@@ -1,0 +1,2415 @@
+{
+  "behavior_rules": [
+    {
+      "behavior": {
+        "C": {
+          "001": "unchanged"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "9.8-10.4A"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 233,
+        "quote_fragment": "unchanged",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "illite_mica"
+    },
+    {
+      "behavior": {
+        "C": {
+          "001": "persists_or_increases",
+          "002_003_004": "weakened"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "13.7-14.8A"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 234,
+        "quote_fragment": "550°C",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "chlorite"
+    },
+    {
+      "behavior": {
+        "C": {
+          "001": "disappears_or_strongly_reduced"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "7.0-7.4A"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 234,
+        "quote_fragment": "kaolinite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "kaolin_group"
+    },
+    {
+      "behavior": {
+        "C": {
+          "001": "collapse_to_10A"
+        },
+        "G": {
+          "001": "about_17A"
+        },
+        "N": {
+          "001": "12-15A"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 241,
+        "quote_fragment": "glycol",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "smectite"
+    },
+    {
+      "behavior": {
+        "K_or_300C": {
+          "001": "collapse_to_10A"
+        },
+        "N": {
+          "001": "about_14.5A"
+        },
+        "glycerol": {
+          "001": "retains_14.5A"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 240,
+        "quote_fragment": "vermiculite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "vermiculite"
+    },
+    {
+      "behavior": {
+        "G": {
+          "low_angle": "unchanged"
+        },
+        "N": {
+          "low_angle": "12A_or_10.4A"
+        },
+        "mild_heat": {
+          "low_angle": "mostly_unchanged"
+        }
+      },
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 244,
+        "quote_fragment": "sepiolite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.3"
+      },
+      "target": "sepiolite_palygorskite"
+    }
+  ],
+  "d060_rules": [
+    {
+      "if": {
+        "d060_max": 1.505
+      },
+      "rule_id": "chapter7_d060_dioctahedral",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 245,
+        "quote_fragment": "060",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.4"
+      },
+      "then": {
+        "octahedral_type": "dioctahedral"
+      }
+    },
+    {
+      "if": {
+        "d060_min": 1.535
+      },
+      "rule_id": "chapter7_d060_trioctahedral",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 245,
+        "quote_fragment": "060",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.4"
+      },
+      "then": {
+        "octahedral_type": "trioctahedral"
+      }
+    },
+    {
+      "if": {
+        "d060_around": 1.54,
+        "quartz_possible": true
+      },
+      "rule_id": "chapter7_d060_quartz_warning",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 245,
+        "quote_fragment": "1.54",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "then": {
+        "warning": "Check quartz companion reflections before using d060 as trioctahedral evidence."
+      }
+    }
+  ],
+  "diagnostic_rules": [
+    {
+      "conditions": [
+        {
+          "action": "propose_candidate",
+          "feature": "strongest_unassigned_peak"
+        },
+        {
+          "action": "confirm_or_reject",
+          "feature": "weaker_companion_peaks"
+        },
+        {
+          "action": "remove_from_remaining_peaks",
+          "feature": "assigned_peak_set"
+        }
+      ],
+      "explanation": "Iteratively assign a mineral only when the strong peak and weaker companion peaks form a consistent set.",
+      "rule_id": "chapter7_general_iterative_identification",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 227,
+        "quote_fragment": "strongest peak",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "identification_workflow",
+      "weight": 0.6
+    },
+    {
+      "conditions": [
+        {
+          "feature": "oriented_aggregate",
+          "required": true
+        },
+        {
+          "feature": "basal_ool_series",
+          "required": true
+        }
+      ],
+      "explanation": "Clay-mineral identification should prioritize oriented-aggregate basal OOl series over random-powder strongest lines.",
+      "rule_id": "chapter7_ool_series_required",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 228,
+        "quote_fragment": "OOl",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "clay_mineral_identification",
+      "weight": 0.8
+    },
+    {
+      "conditions": [
+        {
+          "d": 14.2,
+          "feature": "peak",
+          "reflection": "001",
+          "tolerance": 0.5
+        },
+        {
+          "d": 7.1,
+          "feature": "peak",
+          "reflection": "002",
+          "tolerance": 0.25
+        },
+        {
+          "d": 4.74,
+          "feature": "peak",
+          "reflection": "003",
+          "tolerance": 0.12
+        },
+        {
+          "d": 3.55,
+          "feature": "peak",
+          "reflection": "004",
+          "tolerance": 0.08
+        }
+      ],
+      "explanation": "Chlorite requires the persistent 14/7/4.74/3.55 A basal set, not only the 7 A overlap.",
+      "rule_id": "chapter7_chlorite_ool",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.4",
+        "page": 234,
+        "quote_fragment": "chlorite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "chlorite",
+      "weight": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "d": 3.57,
+          "feature": "kaolinite_002",
+          "tolerance": 0.05
+        },
+        {
+          "d": 3.53,
+          "feature": "chlorite_004",
+          "tolerance": 0.06
+        },
+        {
+          "chlorite": "persists_or_001_increases",
+          "feature": "heat_550c",
+          "kaolinite": "disappears"
+        }
+      ],
+      "explanation": "Resolve the 7 A overlap by 3.57/3.53 A companions and by heating response.",
+      "rule_id": "chapter7_kaolinite_chlorite_resolution",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 234,
+        "quote_fragment": "550°C",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "kaolin_vs_chlorite",
+      "weight": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "d_max": 15.5,
+          "d_min": 12.0,
+          "feature": "natural_001"
+        },
+        {
+          "d": 16.9,
+          "feature": "glycolated_001",
+          "tolerance": 0.8
+        },
+        {
+          "feature": "heated_or_k300",
+          "response": "collapse_to_10A"
+        }
+      ],
+      "explanation": "Smectite is supported by expansion after ethylene glycol and collapse toward 10 A after heating/K treatment.",
+      "rule_id": "chapter7_smectite_ngc",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.8",
+        "page": 241,
+        "quote_fragment": "glycol",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "smectite",
+      "weight": 1.0
+    },
+    {
+      "conditions": [
+        {
+          "d": 14.5,
+          "feature": "natural_001",
+          "tolerance": 0.8
+        },
+        {
+          "feature": "glycerol_response",
+          "response": "retains_14_5A"
+        },
+        {
+          "feature": "heated_or_k300",
+          "response": "collapses_to_10A"
+        }
+      ],
+      "explanation": "Vermiculite is an operational diagnosis; use glycerol/K/heating to separate it from smectite and chlorite.",
+      "rule_id": "chapter7_vermiculite_operational",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.7",
+        "page": 240,
+        "quote_fragment": "glycerol",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "vermiculite",
+      "weight": 0.85
+    },
+    {
+      "conditions": [
+        {
+          "d": 10.0,
+          "feature": "peak",
+          "reflection": "001",
+          "tolerance": 0.4
+        },
+        {
+          "feature": "treatment_response",
+          "glycol": "unchanged",
+          "heated_550c": "unchanged"
+        },
+        {
+          "feature": "d060",
+          "role": "separate_dioctahedral_trioctahedral"
+        }
+      ],
+      "explanation": "Illite/glauconite/mica-like phases preserve 10 A through glycolation/heating; d060 helps separate mica types.",
+      "rule_id": "chapter7_illite_glauconite_mica",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.3",
+        "page": 233,
+        "quote_fragment": "illite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "illite_mica",
+      "weight": 0.8
+    },
+    {
+      "conditions": [
+        {
+          "feature": "low_angle_peak",
+          "palygorskite": "10.3-10.5A",
+          "sepiolite": "12-12.5A"
+        },
+        {
+          "feature": "glycol_response",
+          "response": "unchanged"
+        },
+        {
+          "feature": "morphology",
+          "importance": "strong_auxiliary",
+          "value": "fibrous_or_tubular"
+        }
+      ],
+      "explanation": "Fibrous/channel minerals need morphology and hkl checks because low-angle peaks overlap expandable clays.",
+      "rule_id": "chapter7_fibrous_channel_minerals",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 244,
+        "quote_fragment": "fibrous",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.3"
+      },
+      "target": "sepiolite_palygorskite_halloysite",
+      "weight": 0.7
+    },
+    {
+      "conditions": [
+        {
+          "d": 3.34,
+          "feature": "quartz_101",
+          "tolerance": 0.06
+        },
+        {
+          "d": 4.26,
+          "feature": "quartz_100",
+          "tolerance": 0.1
+        },
+        {
+          "feature": "role",
+          "value": "internal_standard_and_competitor"
+        }
+      ],
+      "explanation": "Quartz can calibrate peak positions and competes with illite 3.33 A and d060-like regions.",
+      "rule_id": "chapter7_quartz_internal_standard",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 227,
+        "quote_fragment": "quartz",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "quartz",
+      "weight": 0.6
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "illite",
+      "entity_type": "mineral_group",
+      "name": "Illite/mica",
+      "page": 233,
+      "paragraph": "Illite and Glauconite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "glauconite",
+      "entity_type": "mineral",
+      "name": "Glauconite",
+      "page": 233,
+      "paragraph": "Illite and Glauconite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "chlorite",
+      "entity_type": "mineral_group",
+      "name": "Chlorite",
+      "page": 234,
+      "paragraph": "Chlorite and Kaolinite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "kaolinite",
+      "entity_type": "mineral",
+      "name": "Kaolinite",
+      "page": 234,
+      "paragraph": "Chlorite and Kaolinite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "vermiculite",
+      "entity_type": "mineral_group",
+      "name": "Vermiculite",
+      "page": 240,
+      "paragraph": "Vermiculite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "smectite",
+      "entity_type": "mineral_group",
+      "name": "Smectite",
+      "page": 241,
+      "paragraph": "Smectite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "montmorillonite",
+      "entity_type": "mineral",
+      "name": "Montmorillonite",
+      "page": 242,
+      "paragraph": "Smectite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "nontronite",
+      "entity_type": "mineral",
+      "name": "Nontronite",
+      "page": 243,
+      "paragraph": "Smectite intensity",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "saponite",
+      "entity_type": "mineral",
+      "name": "Saponite",
+      "page": 242,
+      "paragraph": "Smectite intensity",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "sepiolite",
+      "entity_type": "mineral",
+      "name": "Sepiolite",
+      "page": 244,
+      "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "palygorskite",
+      "entity_type": "mineral",
+      "name": "Palygorskite",
+      "page": 244,
+      "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "halloysite",
+      "entity_type": "mineral",
+      "name": "Halloysite",
+      "page": 244,
+      "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "quartz",
+      "entity_type": "associated_mineral",
+      "name": "Quartz",
+      "page": 227,
+      "paragraph": "Qualitative identification procedure",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "d060",
+      "entity_type": "reflection",
+      "name": "060 reflection",
+      "page": 245,
+      "paragraph": "060 reflections",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    },
+    {
+      "entity_id": "ool_series",
+      "entity_type": "reflection_series",
+      "name": "OOl basal series",
+      "page": 228,
+      "paragraph": "General principles",
+      "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+    }
+  ],
+  "intensity_rules": [
+    {
+      "limitations": [
+        "Use unoriented powder or controlled measurement where possible.",
+        "Avoid when kaolinite/serpentine interfere with 002/004."
+      ],
+      "meaning": "Auxiliary estimate of chlorite Fe content when chlorite peaks are free of interference.",
+      "ratio": "I003/I005",
+      "rule_id": "chapter7_chlorite_fe_003_005",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 236,
+        "quote_fragment": "I003",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.1"
+      },
+      "target": "chlorite"
+    },
+    {
+      "limitations": [
+        "Requires correction for asymmetry and minimal overlap."
+      ],
+      "meaning": "Auxiliary evidence for Fe distribution/symmetry in chlorite.",
+      "ratio": "(I002+I004)/I003",
+      "rule_id": "chapter7_chlorite_symmetry_even_odd",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 237,
+        "quote_fragment": "I002",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.2"
+      },
+      "target": "chlorite"
+    },
+    {
+      "limitations": [
+        "Fe-rich dioctahedral and Mg-rich trioctahedral patterns may converge; use d060."
+      ],
+      "meaning": "Auxiliary separation of dioctahedral/trioctahedral smectites as octahedral scattering changes.",
+      "ratio": "I002/I003",
+      "rule_id": "chapter7_smectite_002_003",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": "7.9",
+        "page": 242,
+        "quote_fragment": "I002",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "smectite"
+    },
+    {
+      "limitations": [
+        "Use with 550 C response; do not use a single peak."
+      ],
+      "meaning": "Auxiliary support for kaolinite when separating it from chlorite near 25 degrees two-theta.",
+      "ratio": "I002/I003",
+      "rule_id": "chapter7_kaolinite_002_003",
+      "source": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 234,
+        "quote_fragment": "I002",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": null
+      },
+      "target": "kaolinite"
+    }
+  ],
+  "mineral_profiles": {
+    "chlorite": {
+      "behavior": {
+        "C": {
+          "001": "persists_or_increases",
+          "002_003_004": "weakened"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "13.7-14.8A"
+        }
+      },
+      "d060_rules": [
+        "chapter7_d060_trioctahedral"
+      ],
+      "diagnostic_reflections": [
+        "14.2A 001",
+        "7.1A 002",
+        "4.74A 003",
+        "3.55A 004"
+      ],
+      "diagnostic_strength": {
+        "requires_series": true,
+        "single_peak_allowed": false
+      },
+      "group": "chlorite_group",
+      "intensity_rules": [
+        "chapter7_chlorite_fe_003_005",
+        "chapter7_chlorite_symmetry_even_odd"
+      ],
+      "known_interferences": [
+        "kaolin_group at 7A/3.57A",
+        "serpentine near 7A",
+        "vermiculite near 14A"
+      ],
+      "name": "chlorite",
+      "references": [
+        {
+          "chapter": "Identification of Clay Minerals and Associated Minerals",
+          "figure": "7.4",
+          "page": 234,
+          "quote_fragment": "chlorite",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+          "table": null
+        }
+      ],
+      "supporting_reflections": [
+        "d060 ~1.54A for trioctahedral types"
+      ]
+    },
+    "illite_mica": {
+      "behavior": {
+        "C": {
+          "001": "unchanged"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "9.8-10.4A"
+        }
+      },
+      "d060_rules": [
+        "chapter7_d060_dioctahedral",
+        "chapter7_d060_trioctahedral"
+      ],
+      "diagnostic_reflections": [
+        "10A 001",
+        "5A 002",
+        "3.33A 003"
+      ],
+      "diagnostic_strength": {
+        "requires_10A_persistence": true,
+        "single_peak_allowed": false
+      },
+      "group": "illite_mica",
+      "intensity_rules": [],
+      "known_interferences": [
+        "quartz 3.34A",
+        "palygorskite 10.4A",
+        "collapsed smectite"
+      ],
+      "name": "illite_mica",
+      "references": [
+        {
+          "chapter": "Identification of Clay Minerals and Associated Minerals",
+          "figure": "7.3",
+          "page": 233,
+          "quote_fragment": "illite",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+          "table": null
+        }
+      ],
+      "supporting_reflections": [
+        "d060 for mica type",
+        "quartz check at 3.34A"
+      ]
+    },
+    "kaolin_group": {
+      "behavior": {
+        "C": {
+          "001": "disappears_or_strongly_reduced"
+        },
+        "G": {
+          "001": "unchanged"
+        },
+        "N": {
+          "001": "7.0-7.4A"
+        }
+      },
+      "d060_rules": [
+        "chapter7_d060_dioctahedral"
+      ],
+      "diagnostic_reflections": [
+        "7.15A 001",
+        "3.57A 002"
+      ],
+      "diagnostic_strength": {
+        "requires_thermal_loss": true,
+        "single_peak_allowed": false
+      },
+      "group": "kaolin_group",
+      "intensity_rules": [
+        "chapter7_kaolinite_002_003"
+      ],
+      "known_interferences": [
+        "chlorite 002/004",
+        "serpentine 7A",
+        "halloysite"
+      ],
+      "name": "kaolin_group",
+      "references": [
+        {
+          "chapter": "Identification of Clay Minerals and Associated Minerals",
+          "figure": null,
+          "page": 234,
+          "quote_fragment": "kaolinite",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+          "table": null
+        }
+      ],
+      "supporting_reflections": [
+        "d060 ~1.49-1.50A",
+        "resolved hkl for polymorphs"
+      ]
+    },
+    "smectite": {
+      "behavior": {
+        "C": {
+          "001": "collapse_to_10A"
+        },
+        "G": {
+          "001": "about_17A"
+        },
+        "N": {
+          "001": "12-15A"
+        }
+      },
+      "d060_rules": [
+        "chapter7_d060_dioctahedral",
+        "chapter7_d060_trioctahedral"
+      ],
+      "diagnostic_reflections": [
+        "N 12-15A",
+        "G ~16.9A",
+        "C/K ~10A"
+      ],
+      "diagnostic_strength": {
+        "requires_glycol_expansion": true,
+        "single_peak_allowed": false
+      },
+      "group": "smectite_group",
+      "intensity_rules": [
+        "chapter7_smectite_002_003"
+      ],
+      "known_interferences": [
+        "illite-smectite mixed layers",
+        "vermiculite",
+        "chlorite-smectite"
+      ],
+      "name": "smectite",
+      "references": [
+        {
+          "chapter": "Identification of Clay Minerals and Associated Minerals",
+          "figure": "7.8",
+          "page": 241,
+          "quote_fragment": "smectite",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+          "table": null
+        }
+      ],
+      "supporting_reflections": [
+        "higher-order 00l where measurable",
+        "d060 for octahedral type"
+      ]
+    },
+    "vermiculite": {
+      "behavior": {
+        "K_or_300C": {
+          "001": "collapse_to_10A"
+        },
+        "N": {
+          "001": "about_14.5A"
+        },
+        "glycerol": {
+          "001": "retains_14.5A"
+        }
+      },
+      "d060_rules": [
+        "chapter7_d060_dioctahedral",
+        "chapter7_d060_trioctahedral"
+      ],
+      "diagnostic_reflections": [
+        "N ~14.5A",
+        "collapse after K/300C"
+      ],
+      "diagnostic_strength": {
+        "operational_definition": true,
+        "single_peak_allowed": false
+      },
+      "group": "vermiculite_group",
+      "intensity_rules": [],
+      "known_interferences": [
+        "chlorite 14A",
+        "smectite 14-17A",
+        "mixed layers"
+      ],
+      "name": "vermiculite",
+      "references": [
+        {
+          "chapter": "Identification of Clay Minerals and Associated Minerals",
+          "figure": "7.7",
+          "page": 240,
+          "quote_fragment": "vermiculite",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+          "table": null
+        }
+      ],
+      "supporting_reflections": [
+        "d060 for dioctahedral/trioctahedral separation"
+      ]
+    }
+  },
+  "ontology": {
+    "Diagnostico": {
+      "policy": "argiloteca_rule_based_diagnostic",
+      "requires_convergent_evidence": true
+    },
+    "Especie": {
+      "examples": [
+        "kaolinite",
+        "montmorillonite",
+        "sepiolite"
+      ]
+    },
+    "Evidencia": {
+      "children": [
+        "structural",
+        "behavioral",
+        "intensity",
+        "treatment",
+        "morphology"
+      ]
+    },
+    "Grupo": {
+      "examples": [
+        "kaolin_group",
+        "chlorite_group",
+        "smectite_group"
+      ]
+    },
+    "Mineral": {
+      "children": [
+        "Grupo",
+        "Especie",
+        "Polimorfo"
+      ]
+    },
+    "Polimorfo": {
+      "examples": [
+        "kaolinite",
+        "dickite",
+        "nacrite"
+      ]
+    },
+    "Razao de Intensidade": {
+      "examples": [
+        "I003/I005",
+        "(I002+I004)/I003",
+        "I002/I003"
+      ]
+    },
+    "Reflexao": {
+      "children": [
+        "OOl",
+        "060",
+        "hkl_auxiliar"
+      ]
+    },
+    "Reflexao 060": {
+      "role": "octahedral_classifier_auxiliary"
+    },
+    "Regra": {
+      "children": [
+        "diagnostic_rule",
+        "behavior_rule",
+        "d060_rule",
+        "intensity_rule"
+      ]
+    },
+    "Tratamento": {
+      "examples": [
+        "natural",
+        "glycolated",
+        "calcined",
+        "glycerol",
+        "K_saturated"
+      ]
+    }
+  },
+  "schemas": {
+    "argiloteca_behavior_schema": {
+      "properties": {
+        "behavior": {
+          "type": "object"
+        },
+        "source": {
+          "type": "object"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "behavior",
+        "source"
+      ],
+      "type": "object"
+    },
+    "argiloteca_mineral_schema": {
+      "properties": {
+        "behavior": {
+          "type": "object"
+        },
+        "d060_rules": {
+          "type": "array"
+        },
+        "diagnostic_reflections": {
+          "type": "array"
+        },
+        "diagnostic_strength": {
+          "type": "object"
+        },
+        "group": {
+          "type": "string"
+        },
+        "intensity_rules": {
+          "type": "array"
+        },
+        "known_interferences": {
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "references": {
+          "type": "array"
+        },
+        "supporting_reflections": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "group",
+        "diagnostic_reflections",
+        "behavior",
+        "references"
+      ],
+      "type": "object"
+    },
+    "argiloteca_rule_schema": {
+      "properties": {
+        "conditions": {
+          "type": "array"
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object"
+        },
+        "target": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "rule_id",
+        "target",
+        "conditions",
+        "source"
+      ],
+      "type": "object"
+    }
+  },
+  "source": {
+    "chapter": "Identification of Clay Minerals and Associated Minerals",
+    "copyright_note": "Only short source locators are stored; consult local PDF/OCR for full text.",
+    "local_pdf": "/home/invenio/Downloads/analises.pdf",
+    "ocr_text": "/tmp/analises_ocr_combined.txt",
+    "pages_ocr": 33,
+    "policy": "argiloteca_rule_based_diagnostic",
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "source_id": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  "tables": {
+    "table_7_10_zeolites": {
+      "notes": [
+        "Zeolites may change during gentle lab treatment and can overlap low-angle clay ranges."
+      ],
+      "page": 255,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 255,
+        "quote_fragment": "zeolites",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.10"
+      },
+      "rows": [
+        {
+          "d": 8.96,
+          "intensity": 100,
+          "mineral": "heulandite",
+          "two_theta": 9.9
+        },
+        {
+          "d": 7.94,
+          "intensity": 12,
+          "mineral": "heulandite",
+          "two_theta": 11.1
+        },
+        {
+          "d": 5.1,
+          "intensity": 70,
+          "mineral": "heulandite",
+          "two_theta": 17.4
+        },
+        {
+          "d": 3.98,
+          "intensity": 65,
+          "mineral": "heulandite",
+          "two_theta": 22.3
+        },
+        {
+          "d": 2.97,
+          "intensity": 91,
+          "mineral": "heulandite",
+          "two_theta": 31.0
+        },
+        {
+          "d": 8.95,
+          "intensity": 13,
+          "mineral": "clinoptilolite",
+          "two_theta": 9.9
+        },
+        {
+          "d": 7.18,
+          "intensity": 63,
+          "mineral": "clinoptilolite",
+          "two_theta": 12.3
+        },
+        {
+          "d": 5.07,
+          "intensity": 23,
+          "mineral": "clinoptilolite",
+          "two_theta": 17.5
+        },
+        {
+          "d": 3.98,
+          "intensity": 61,
+          "mineral": "clinoptilolite",
+          "two_theta": 22.3
+        },
+        {
+          "d": 3.43,
+          "intensity": 100,
+          "mineral": "clinoptilolite",
+          "two_theta": 26.0
+        },
+        {
+          "d": 8.11,
+          "intensity": 8,
+          "mineral": "phillipsite",
+          "two_theta": 10.9
+        },
+        {
+          "d": 6.42,
+          "intensity": 17,
+          "mineral": "phillipsite",
+          "two_theta": 13.8
+        },
+        {
+          "d": 5.6,
+          "intensity": 60,
+          "mineral": "phillipsite",
+          "two_theta": 15.8
+        },
+        {
+          "d": 4.13,
+          "intensity": 36,
+          "mineral": "phillipsite",
+          "two_theta": 21.5
+        },
+        {
+          "d": 3.21,
+          "intensity": 100,
+          "mineral": "phillipsite",
+          "two_theta": 27.8
+        },
+        {
+          "d": 9.14,
+          "intensity": 2,
+          "mineral": "analcime",
+          "two_theta": 9.7
+        },
+        {
+          "d": 5.6,
+          "intensity": 60,
+          "mineral": "analcime",
+          "two_theta": 15.8
+        },
+        {
+          "d": 4.85,
+          "intensity": 20,
+          "mineral": "analcime",
+          "two_theta": 18.2
+        },
+        {
+          "d": 3.43,
+          "intensity": 21,
+          "mineral": "analcime",
+          "two_theta": 26.0
+        },
+        {
+          "d": 2.93,
+          "intensity": 50,
+          "mineral": "analcime",
+          "two_theta": 30.5
+        }
+      ],
+      "title": "Diffraction data for zeolites",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_11a_rhombohedral_carbonates": {
+      "notes": [
+        "Carbonate identification by one strong peak is uncertain; acid treatment can confirm/removal."
+      ],
+      "page": 256,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 256,
+        "quote_fragment": "rhombohedral carbonates",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.11A"
+      },
+      "rows": [
+        {
+          "d": 3.86,
+          "intensity": 12,
+          "mineral": "calcite",
+          "two_theta": 23.0
+        },
+        {
+          "d": 3.04,
+          "intensity": 100,
+          "mineral": "calcite",
+          "two_theta": 29.43
+        },
+        {
+          "d": 2.5,
+          "intensity": 14,
+          "mineral": "calcite",
+          "two_theta": 36.0
+        },
+        {
+          "d": 2.29,
+          "intensity": 18,
+          "mineral": "calcite",
+          "two_theta": 39.43
+        },
+        {
+          "d": 2.91,
+          "intensity": 100,
+          "mineral": "ankerite",
+          "two_theta": 30.72
+        },
+        {
+          "d": 2.2,
+          "intensity": 5,
+          "mineral": "ankerite",
+          "two_theta": 41.04
+        },
+        {
+          "d": 2.89,
+          "intensity": 100,
+          "mineral": "dolomite",
+          "two_theta": 30.98
+        },
+        {
+          "d": 2.67,
+          "intensity": 4,
+          "mineral": "dolomite",
+          "two_theta": 33.56
+        },
+        {
+          "d": 2.19,
+          "intensity": 19,
+          "mineral": "dolomite",
+          "two_theta": 41.18
+        },
+        {
+          "d": 3.59,
+          "intensity": 25,
+          "mineral": "siderite",
+          "two_theta": 24.78
+        },
+        {
+          "d": 2.8,
+          "intensity": 100,
+          "mineral": "siderite",
+          "two_theta": 32.02
+        },
+        {
+          "d": 2.35,
+          "intensity": 20,
+          "mineral": "siderite",
+          "two_theta": 38.37
+        }
+      ],
+      "title": "Diffraction data for rhombohedral carbonates",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_11b_orthorhombic_carbonates_vaterite": {
+      "notes": [
+        "Associated-carbonate table for interference/removal by acid treatment."
+      ],
+      "page": 256,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 256,
+        "quote_fragment": "orthorhombic carbonates",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.11B"
+      },
+      "rows": [
+        {
+          "d": 3.4,
+          "intensity": 100,
+          "mineral": "aragonite",
+          "two_theta": 26.24
+        },
+        {
+          "d": 3.27,
+          "intensity": 50,
+          "mineral": "aragonite",
+          "two_theta": 27.25
+        },
+        {
+          "d": 2.7,
+          "intensity": 60,
+          "mineral": "aragonite",
+          "two_theta": 33.18
+        },
+        {
+          "d": 1.98,
+          "intensity": 55,
+          "mineral": "aragonite",
+          "two_theta": 45.82
+        },
+        {
+          "d": 4.37,
+          "intensity": 14,
+          "mineral": "strontianite",
+          "two_theta": 20.34
+        },
+        {
+          "d": 3.54,
+          "intensity": 100,
+          "mineral": "strontianite",
+          "two_theta": 25.19
+        },
+        {
+          "d": 3.45,
+          "intensity": 70,
+          "mineral": "strontianite",
+          "two_theta": 25.82
+        },
+        {
+          "d": 2.84,
+          "intensity": 20,
+          "mineral": "strontianite",
+          "two_theta": 31.52
+        },
+        {
+          "d": 4.56,
+          "intensity": 9,
+          "mineral": "witherite",
+          "two_theta": 19.5
+        },
+        {
+          "d": 3.72,
+          "intensity": 100,
+          "mineral": "witherite",
+          "two_theta": 23.9
+        },
+        {
+          "d": 3.67,
+          "intensity": 53,
+          "mineral": "witherite",
+          "two_theta": 24.3
+        },
+        {
+          "d": 2.63,
+          "intensity": 24,
+          "mineral": "witherite",
+          "two_theta": 34.12
+        },
+        {
+          "d": 4.23,
+          "intensity": 25,
+          "mineral": "vaterite",
+          "two_theta": 21.0
+        },
+        {
+          "d": 3.57,
+          "intensity": 60,
+          "mineral": "vaterite",
+          "two_theta": 24.9
+        },
+        {
+          "d": 3.29,
+          "intensity": 100,
+          "mineral": "vaterite",
+          "two_theta": 27.1
+        },
+        {
+          "d": 2.73,
+          "intensity": 90,
+          "mineral": "vaterite",
+          "two_theta": 32.8
+        }
+      ],
+      "title": "Diffraction data for orthorhombic carbonates plus vaterite",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_12_apatite_pyrite_jarosite": {
+      "notes": [
+        "Pyrite can raise background with Cu radiation; jarosite may form during sulfide oxidation."
+      ],
+      "page": 257,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 257,
+        "quote_fragment": "apatite pyrite jarosite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.12"
+      },
+      "rows": [
+        {
+          "d": 8.13,
+          "intensity": 18,
+          "mineral": "apatite_a",
+          "two_theta": 10.9
+        },
+        {
+          "d": 4.06,
+          "intensity": 10,
+          "mineral": "apatite_a",
+          "two_theta": 21.9
+        },
+        {
+          "d": 3.43,
+          "intensity": 16,
+          "mineral": "apatite_a",
+          "two_theta": 26.0
+        },
+        {
+          "d": 2.81,
+          "intensity": 80,
+          "mineral": "apatite_a",
+          "two_theta": 31.83
+        },
+        {
+          "d": 2.72,
+          "intensity": 100,
+          "mineral": "apatite_a",
+          "two_theta": 32.97
+        },
+        {
+          "d": 3.46,
+          "intensity": 25,
+          "mineral": "apatite_b",
+          "two_theta": 25.8
+        },
+        {
+          "d": 3.04,
+          "intensity": 10,
+          "mineral": "apatite_b",
+          "two_theta": 29.4
+        },
+        {
+          "d": 2.78,
+          "intensity": 100,
+          "mineral": "apatite_b",
+          "two_theta": 32.2
+        },
+        {
+          "d": 3.13,
+          "intensity": 35,
+          "mineral": "pyrite",
+          "two_theta": 28.54
+        },
+        {
+          "d": 2.71,
+          "intensity": 85,
+          "mineral": "pyrite",
+          "two_theta": 33.97
+        },
+        {
+          "d": 2.43,
+          "intensity": 65,
+          "mineral": "pyrite",
+          "two_theta": 37.02
+        },
+        {
+          "d": 1.63,
+          "intensity": 100,
+          "mineral": "pyrite",
+          "two_theta": 56.34
+        },
+        {
+          "d": 5.93,
+          "intensity": 45,
+          "mineral": "jarosite",
+          "two_theta": 14.9
+        },
+        {
+          "d": 5.09,
+          "intensity": 70,
+          "mineral": "jarosite",
+          "two_theta": 17.4
+        },
+        {
+          "d": 3.11,
+          "intensity": 75,
+          "mineral": "jarosite",
+          "two_theta": 28.7
+        },
+        {
+          "d": 3.08,
+          "intensity": 100,
+          "mineral": "jarosite",
+          "two_theta": 29.0
+        }
+      ],
+      "title": "Diffraction data for two carbonate apatites, pyrite, and jarosite",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_13_sulfates": {
+      "notes": [
+        "Gypsum can dehydrate to bassanite during drying; heating history matters."
+      ],
+      "page": 257,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 257,
+        "quote_fragment": "sulfates",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.13"
+      },
+      "rows": [
+        {
+          "d": 3.5,
+          "intensity": 100,
+          "mineral": "anhydrite",
+          "role": "diagnostic",
+          "two_theta": 25.46
+        },
+        {
+          "d": 7.61,
+          "intensity": 48,
+          "mineral": "gypsum",
+          "role": "diagnostic",
+          "two_theta": 11.7
+        },
+        {
+          "d": 4.28,
+          "intensity": 9,
+          "mineral": "gypsum",
+          "two_theta": 20.8
+        },
+        {
+          "d": 3.06,
+          "intensity": 100,
+          "mineral": "gypsum",
+          "two_theta": 29.1
+        },
+        {
+          "d": 6.01,
+          "intensity": null,
+          "mineral": "bassanite",
+          "role": "diagnostic after heated gypsum",
+          "two_theta": 14.75
+        },
+        {
+          "d": 3.0,
+          "intensity": 100,
+          "mineral": "bassanite",
+          "two_theta": 29.8
+        },
+        {
+          "d": 3.45,
+          "intensity": 100,
+          "mineral": "celestite",
+          "two_theta": 25.86
+        },
+        {
+          "d": 3.3,
+          "intensity": 98,
+          "mineral": "celestite",
+          "two_theta": 27.06
+        },
+        {
+          "d": 4.34,
+          "intensity": 30,
+          "mineral": "barite",
+          "two_theta": 20.5
+        },
+        {
+          "d": 3.9,
+          "intensity": 50,
+          "mineral": "barite",
+          "two_theta": 23.8
+        },
+        {
+          "d": 3.77,
+          "intensity": 12,
+          "mineral": "barite",
+          "two_theta": 23.58
+        },
+        {
+          "d": 3.58,
+          "intensity": 39,
+          "mineral": "barite",
+          "two_theta": 24.89
+        }
+      ],
+      "title": "Diffraction data for sulfates",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_14_oxides_hydroxides_anatase": {
+      "notes": [
+        "Hydroxides can produce broad clay-like peaks and transform with heating."
+      ],
+      "page": 258,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 258,
+        "quote_fragment": "lepidocrocite goethite gibbsite anatase",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.14"
+      },
+      "rows": [
+        {
+          "d": 6.26,
+          "intensity": 100,
+          "mineral": "lepidocrocite",
+          "two_theta": 14.2
+        },
+        {
+          "d": 3.29,
+          "intensity": 90,
+          "mineral": "lepidocrocite",
+          "two_theta": 27.1
+        },
+        {
+          "d": 2.47,
+          "intensity": 80,
+          "mineral": "lepidocrocite",
+          "two_theta": 36.4
+        },
+        {
+          "d": 4.98,
+          "intensity": 12,
+          "mineral": "goethite",
+          "two_theta": 17.8
+        },
+        {
+          "d": 4.18,
+          "intensity": 100,
+          "mineral": "goethite",
+          "two_theta": 21.24
+        },
+        {
+          "d": 2.69,
+          "intensity": 35,
+          "mineral": "goethite",
+          "two_theta": 33.27
+        },
+        {
+          "d": 4.85,
+          "intensity": 100,
+          "mineral": "gibbsite",
+          "two_theta": 18.3
+        },
+        {
+          "d": 4.37,
+          "intensity": 70,
+          "mineral": "gibbsite",
+          "two_theta": 20.3
+        },
+        {
+          "d": 4.32,
+          "intensity": 50,
+          "mineral": "gibbsite",
+          "two_theta": 20.6
+        },
+        {
+          "d": 3.52,
+          "intensity": 100,
+          "mineral": "anatase",
+          "two_theta": 25.3
+        },
+        {
+          "d": 2.43,
+          "intensity": 10,
+          "mineral": "anatase",
+          "two_theta": 36.98
+        },
+        {
+          "d": 1.89,
+          "intensity": 35,
+          "mineral": "anatase",
+          "two_theta": 48.09
+        }
+      ],
+      "title": "Diffraction data for lepidocrocite, goethite, gibbsite and anatase",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_15_heat_treated_oxides": {
+      "notes": [
+        "Heating can destroy original hydroxide patterns and produce oxide products."
+      ],
+      "page": 258,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 258,
+        "quote_fragment": "after heat treatment",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.15"
+      },
+      "rows": [
+        {
+          "d": 5.9,
+          "intensity": 5,
+          "product": "maghemite_gamma_fe2o3",
+          "source_mineral": "lepidocrocite",
+          "two_theta": 15.0
+        },
+        {
+          "d": 4.82,
+          "intensity": 5,
+          "product": "maghemite_gamma_fe2o3",
+          "source_mineral": "lepidocrocite",
+          "two_theta": 18.4
+        },
+        {
+          "d": 3.2,
+          "intensity": 10,
+          "product": "maghemite_gamma_fe2o3",
+          "source_mineral": "lepidocrocite",
+          "two_theta": 27.9
+        },
+        {
+          "d": 3.67,
+          "intensity": 35,
+          "product": "hematite_alpha_fe2o3",
+          "source_mineral": "goethite",
+          "two_theta": 24.3
+        },
+        {
+          "d": 2.69,
+          "intensity": 100,
+          "product": "hematite_alpha_fe2o3",
+          "source_mineral": "goethite",
+          "two_theta": 33.3
+        },
+        {
+          "d": 2.51,
+          "intensity": 75,
+          "product": "hematite_alpha_fe2o3",
+          "source_mineral": "goethite",
+          "two_theta": 35.8
+        },
+        {
+          "d": 4.52,
+          "intensity": 30,
+          "product": "chi_al2o3",
+          "source_mineral": "gibbsite",
+          "two_theta": 19.6
+        },
+        {
+          "d": 2.38,
+          "intensity": 70,
+          "product": "chi_al2o3",
+          "source_mineral": "gibbsite",
+          "two_theta": 37.8
+        },
+        {
+          "d": 2.12,
+          "intensity": 80,
+          "product": "chi_al2o3",
+          "source_mineral": "gibbsite",
+          "two_theta": 42.7
+        }
+      ],
+      "title": "Diffraction data for lepidocrocite, goethite, and gibbsite after heat treatment",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_3_sepiolite_palygorskite": {
+      "notes": [
+        "Fibrous/channel minerals are not reliably oriented; use additional hkl and morphology."
+      ],
+      "page": 244,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 244,
+        "quote_fragment": "Table 7.3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.3"
+      },
+      "rows": [
+        {
+          "d": 12.0,
+          "mineral": "sepiolite",
+          "reflection": "110",
+          "role": "diagnostic_low_angle",
+          "tolerance": 0.5
+        },
+        {
+          "d": 10.4,
+          "mineral": "palygorskite",
+          "reflection": "110",
+          "role": "diagnostic_low_angle",
+          "tolerance": 0.2
+        }
+      ],
+      "title": "X-ray data for sepiolite and palygorskite",
+      "units": {
+        "d": "angstrom",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_4_d060": {
+      "notes": [
+        "d060 is auxiliary; random powder mount and interference checks are required."
+      ],
+      "page": 245,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 245,
+        "quote_fragment": "060",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.4"
+      },
+      "rows": [
+        {
+          "d060_max": 1.502,
+          "d060_min": 1.488,
+          "mineral": "kaolinite",
+          "octahedral_type": "dioctahedral"
+        },
+        {
+          "d060_max": 1.504,
+          "d060_min": 1.492,
+          "mineral": "montmorillonite",
+          "octahedral_type": "dioctahedral"
+        },
+        {
+          "d060_max": 1.505,
+          "d060_min": 1.495,
+          "mineral": "illite_muscovite",
+          "octahedral_type": "dioctahedral"
+        },
+        {
+          "d060_max": 1.549,
+          "d060_min": 1.538,
+          "mineral": "chlorite",
+          "octahedral_type": "trioctahedral"
+        },
+        {
+          "d060_max": 1.55,
+          "d060_min": 1.54,
+          "mineral": "sepiolite",
+          "octahedral_type": "trioctahedral"
+        },
+        {
+          "d060_max": 1.545,
+          "d060_min": 1.535,
+          "mineral": "vermiculite",
+          "octahedral_type": "trioctahedral_or_unknown"
+        },
+        {
+          "d060_max": 1.57,
+          "d060_min": 1.55,
+          "mineral": "palygorskite",
+          "octahedral_type": "fibrous_channel"
+        }
+      ],
+      "title": "060 reflections",
+      "units": {
+        "d060": "angstrom",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_6_kaolin_polytypes": {
+      "notes": [
+        "Do not separate kaolinite, dickite and nacrite by the 7 A basal peak alone."
+      ],
+      "page": 247,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 247,
+        "quote_fragment": "kaolin",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.6"
+      },
+      "rows": [
+        {
+          "d": 7.15,
+          "mineral": "kaolinite",
+          "reflection": "001",
+          "tolerance": 0.25
+        },
+        {
+          "d": 3.57,
+          "mineral": "kaolinite",
+          "reflection": "002",
+          "tolerance": 0.05
+        },
+        {
+          "d": 7.15,
+          "mineral": "dickite_nacrite",
+          "reflection": "001",
+          "requires": "resolved_hkl",
+          "tolerance": 0.25
+        }
+      ],
+      "title": "Diagnostic reflections for kaolin polytypes",
+      "units": {
+        "d": "angstrom"
+      }
+    },
+    "table_7_8a_silica_minerals": {
+      "notes": [
+        "OCR reviewed manually; use as associated-mineral interference/reference table, not clay diagnosis."
+      ],
+      "page": 251,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 251,
+        "quote_fragment": "silica minerals",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.8A"
+      },
+      "rows": [
+        {
+          "d": 4.04,
+          "intensity": 100,
+          "mineral": "low_cristobalite",
+          "two_theta": 22.0
+        },
+        {
+          "d": 3.14,
+          "intensity": 8,
+          "mineral": "low_cristobalite",
+          "two_theta": 28.4
+        },
+        {
+          "d": 2.84,
+          "intensity": 9,
+          "mineral": "low_cristobalite",
+          "two_theta": 31.49
+        },
+        {
+          "d": 2.49,
+          "intensity": 13,
+          "mineral": "low_cristobalite",
+          "two_theta": 36.15
+        },
+        {
+          "d": 1.64,
+          "intensity": 60,
+          "mineral": "low_cristobalite",
+          "two_theta": 56.04
+        },
+        {
+          "d": 4.15,
+          "intensity": 100,
+          "mineral": "high_cristobalite",
+          "two_theta": 21.4
+        },
+        {
+          "d": 2.92,
+          "intensity": 5,
+          "mineral": "high_cristobalite",
+          "two_theta": 30.6
+        },
+        {
+          "d": 2.53,
+          "intensity": 80,
+          "mineral": "high_cristobalite",
+          "two_theta": 35.5
+        },
+        {
+          "d": 2.17,
+          "intensity": 10,
+          "mineral": "high_cristobalite",
+          "two_theta": 41.6
+        },
+        {
+          "d": 2.07,
+          "intensity": 30,
+          "mineral": "high_cristobalite",
+          "two_theta": 43.8
+        },
+        {
+          "d": 4.33,
+          "intensity": 90,
+          "mineral": "low_tridymite",
+          "two_theta": 20.52
+        },
+        {
+          "d": 4.11,
+          "intensity": 100,
+          "mineral": "low_tridymite",
+          "two_theta": 21.64
+        },
+        {
+          "d": 3.87,
+          "intensity": 20,
+          "mineral": "low_tridymite",
+          "two_theta": 23.0
+        },
+        {
+          "d": 3.82,
+          "intensity": 50,
+          "mineral": "low_tridymite",
+          "two_theta": 23.3
+        },
+        {
+          "d": 2.98,
+          "intensity": 25,
+          "mineral": "low_tridymite",
+          "two_theta": 30.04
+        },
+        {
+          "d": 4.37,
+          "intensity": 100,
+          "mineral": "high_tridymite",
+          "two_theta": 20.3
+        },
+        {
+          "d": 4.12,
+          "intensity": 61,
+          "mineral": "high_tridymite",
+          "two_theta": 21.6
+        },
+        {
+          "d": 3.86,
+          "intensity": 57,
+          "mineral": "high_tridymite",
+          "two_theta": 23.0
+        },
+        {
+          "d": 3.0,
+          "intensity": 16,
+          "mineral": "high_tridymite",
+          "two_theta": 29.8
+        },
+        {
+          "d": 2.52,
+          "intensity": 13,
+          "mineral": "high_tridymite",
+          "two_theta": 35.6
+        }
+      ],
+      "title": "Diffraction data for the silica minerals",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_8b_low_quartz": {
+      "notes": [
+        "Quartz is an internal standard and a competitor for illite 3.33 A and clay d060 readings."
+      ],
+      "page": 251,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 251,
+        "quote_fragment": "low quartz",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.8B"
+      },
+      "rows": [
+        {
+          "d": 4.27,
+          "intensity": 22,
+          "mineral": "quartz_low",
+          "role": "internal_standard_companion",
+          "two_theta": 20.8
+        },
+        {
+          "d": 3.342,
+          "intensity": 100,
+          "mineral": "quartz_low",
+          "role": "strongest; overlaps illite 003",
+          "two_theta": 26.67
+        },
+        {
+          "d": 2.457,
+          "intensity": 8,
+          "mineral": "quartz_low",
+          "two_theta": 36.57
+        },
+        {
+          "d": 2.282,
+          "intensity": 8,
+          "mineral": "quartz_low",
+          "two_theta": 39.49
+        },
+        {
+          "d": 2.237,
+          "intensity": 4,
+          "mineral": "quartz_low",
+          "two_theta": 40.32
+        },
+        {
+          "d": 2.128,
+          "intensity": 6,
+          "mineral": "quartz_low",
+          "two_theta": 42.5
+        },
+        {
+          "d": 1.979,
+          "intensity": 4,
+          "mineral": "quartz_low",
+          "two_theta": 45.83
+        },
+        {
+          "d": 1.818,
+          "intensity": 14,
+          "mineral": "quartz_low",
+          "role": "quartz_check_for_d060_interference",
+          "two_theta": 50.18
+        },
+        {
+          "d": 1.672,
+          "intensity": 4,
+          "mineral": "quartz_low",
+          "two_theta": 54.91
+        },
+        {
+          "d": 1.659,
+          "intensity": 2,
+          "mineral": "quartz_low",
+          "two_theta": 55.38
+        },
+        {
+          "d": 1.541,
+          "intensity": 9,
+          "mineral": "quartz_low",
+          "role": "can interfere with 060 interpretation",
+          "two_theta": 60.0
+        },
+        {
+          "d": 1.453,
+          "intensity": 1,
+          "mineral": "quartz_low",
+          "two_theta": 64.04
+        }
+      ],
+      "title": "Diffraction data for alpha low quartz",
+      "units": {
+        "d": "angstrom",
+        "intensity": "relative",
+        "two_theta": "degree CuKalpha"
+      }
+    },
+    "table_7_9_feldspars": {
+      "notes": [
+        "Use mainly as associated-mineral interference table; feldspars can obscure illite/polytype peaks."
+      ],
+      "page": 253,
+      "reference": {
+        "chapter": "Identification of Clay Minerals and Associated Minerals",
+        "figure": null,
+        "page": 253,
+        "quote_fragment": "feldspars",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+        "table": "7.9"
+      },
+      "rows": [
+        {
+          "d": 4.22,
+          "mineral": "microcline",
+          "two_theta": 21.06
+        },
+        {
+          "d": 3.47,
+          "mineral": "microcline",
+          "two_theta": 25.66
+        },
+        {
+          "d": 3.24,
+          "mineral": "microcline",
+          "role": "K-feldspar indicator near 27.5",
+          "two_theta": 27.53
+        },
+        {
+          "d": 3.03,
+          "mineral": "microcline",
+          "two_theta": 29.5
+        },
+        {
+          "d": 2.96,
+          "mineral": "microcline",
+          "two_theta": 30.2
+        },
+        {
+          "d": 4.22,
+          "mineral": "orthoclase",
+          "two_theta": 21.05
+        },
+        {
+          "d": 3.24,
+          "mineral": "orthoclase",
+          "role": "K-feldspar indicator near 27.5",
+          "two_theta": 27.53
+        },
+        {
+          "d": 2.99,
+          "mineral": "orthoclase",
+          "two_theta": 29.85
+        },
+        {
+          "d": 4.03,
+          "mineral": "albite",
+          "two_theta": 22.05
+        },
+        {
+          "d": 3.68,
+          "mineral": "albite",
+          "two_theta": 24.9
+        },
+        {
+          "d": 3.19,
+          "mineral": "albite",
+          "role": "plagioclase indicator near 28",
+          "two_theta": 27.95
+        },
+        {
+          "d": 3.18,
+          "mineral": "albite",
+          "two_theta": 28.08
+        },
+        {
+          "d": 3.0,
+          "mineral": "albite",
+          "two_theta": 29.78
+        },
+        {
+          "d": 4.04,
+          "mineral": "anorthite",
+          "two_theta": 22.0
+        },
+        {
+          "d": 3.8,
+          "mineral": "anorthite",
+          "two_theta": 23.4
+        },
+        {
+          "d": 3.15,
+          "mineral": "anorthite",
+          "two_theta": 28.25
+        },
+        {
+          "d": 3.0,
+          "mineral": "anorthite",
+          "two_theta": 29.78
+        },
+        {
+          "d": 4.24,
+          "mineral": "high_sanidine",
+          "two_theta": 20.95
+        },
+        {
+          "d": 4.19,
+          "mineral": "high_sanidine",
+          "two_theta": 22.95
+        },
+        {
+          "d": 3.0,
+          "mineral": "high_sanidine",
+          "two_theta": 29.78
+        }
+      ],
+      "title": "Diffraction data for feldspars",
+      "units": {
+        "d": "angstrom",
+        "two_theta": "degree CuKalpha"
+      }
+    }
+  }
+}

@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -23,6 +21,52 @@ Preservar licença existente no repositório.
 
 Observação:
 Este arquivo integra o sistema de análise, comparação e interpretação de difratogramas de raios X para argilominerais.
+
+Referência aplicada:
+- Lanson, B. & Bouchet, A. (1995). Identification des mineraux argileux
+  par diffraction des rayons X: apport du traitement numerique.
+  Bull. Centres Rech. Explor.-Prod. Elf Aquitaine, 19(1), 91-118.
+  Arquivo local: /home/invenio/invenio-project/textos/
+  lanson-1995-bull-centres-rech-ep-19-91.pdf
+
+Como a lógica da referência está aplicada neste arquivo:
+- _mixed_layer_warnings transforma respostas parciais, ombros, largura e
+  deslocamentos de picos em avisos de mistura/interestratificado.
+- interpret_clay_minerals_ngc e _assemble_ngc_group preservam esses avisos no
+  payload do painel, evitando identificação por pico isolado.
+- A engine V3 é chamada por interpret_ngc_v3 e adiciona diagnostic_interpretation
+  com mixed_layer_candidates, ambiguities e confidence_scores.
+
+Referência estrutural aplicada:
+- Meunier, Clays, 2005.
+  Arquivo local: /home/invenio/invenio-project/Clays_Meunier.pdf
+
+Como a lógica de Meunier está aplicada neste arquivo:
+- Este workflow não reimplementa Meunier diretamente; ele coleta e repassa para
+  interpret_ngc_v3 os metadados que a engine usa para aplicar Meunier:
+  d060, context, morphology e chemistry.
+- O retorno diagnostic_interpretation inclui octahedral_classification,
+  mixed_layer_candidates, range_comparison e provenance, onde a referencia
+  aparece como "meunier_2005".
+
+
+Fundamentacao cientifica revisada:
+    Este arquivo integra o Painel DRX da Argiloteca, projeto fundamentado nas
+    referencias cientificas revisadas para interpretacao auxiliar de DRX de
+    argilominerais: Brindley & Brown (1980), Bailey (1980/1988),
+    Moore & Reynolds (1989/1997), Drits & Tchoubar (1990),
+    Lanson & Bouchet (1995), Meunier, Clays (2005), fluxograma USGS para
+    identificacao de argilominerais por DRX e referencias empiricas Pre-Sal
+    UFRGS/Petrobras.
+
+Autoria cientifica e curadoria:
+    Alexandre Ribas Semeler
+    E-mail: alexandre.semler@ufrgs.br
+
+Politica de interpretacao:
+    Resultados mineralogicos sao auxiliares e nao confirmatorios. O codigo
+    combina comportamento N/G/C, picos companheiros, d060, ambiguidades,
+    contexto e proveniencia; nao confirma mineral por pico isolado.
 """
 
 from __future__ import annotations
@@ -34,6 +78,18 @@ from functools import lru_cache
 from pathlib import Path
 
 from argiloteca.drx_core.contracts import DRX_NGC_WORKFLOW_SCHEMA
+from argiloteca_drx.diagnostics.diagnostic_behavior_rules import (
+    CONFIRMED_BY_RULES,
+    POLICY,
+    POSSIBLE_BY_RULES,
+    PROBABLE_BY_RULES,
+)
+from argiloteca_drx.diagnostics.diagnostic_peak_rules import mapped_ranges, targeted_basal_ranges
+
+try:
+    from argiloteca_drx.diagnostics import interpret_ngc as interpret_ngc_v3
+except Exception:  # pragma: no cover - optional compatibility layer
+    interpret_ngc_v3 = None
 
 DEFAULT_WAVELENGTH_A = 1.5406
 DIAGNOSTIC_RULES_PATH = Path(__file__).resolve().parents[1] / "data" / "diagnostic_rules_ngc.json"
@@ -43,45 +99,9 @@ WEBMINERAL_MANIFEST_CANDIDATES = [
     Path(__file__).resolve().parents[4] / "povoamento" / "visualizacao-drx" / "webmineral" / "webmineral_argilominerais_vocabulario_manifest.json",
 ]
 
-DIAGNOSTIC_RANGES = {
-    "smectite_natural_13_16a": (13.46, 16.86),
-    "smectite_glycolated_17a": (16.06, 18.31),
-    "smectite_calcined_10a": (9.65, 10.37),
-    "chlorite_14a": (13.58, 14.87),
-    "chlorite_7a": (6.9, 7.4),
-    "chlorite_4_72a": (4.60, 4.85),
-    "chlorite_3_5a": (3.45, 3.65),
-    "kaolinite_7a": (6.96, 7.42),
-    "kaolinite_3_57a": (3.52, 3.62),
-    "illite_10a": (9.73, 10.38),
-    "illite_5a": (4.85, 5.15),
-    "illite_3_33a": (3.26, 3.40),
-    "quartz_101": (3.27, 3.42),
-}
-
-SCRIPT_INTERVAL_RANGES = {
-    "illite_10a": (9.73, 10.38),
-    "illite_10a_n": (9.84, 10.36),
-    "illite_10a_g": (9.82, 10.30),
-    "illite_10a_c": (9.73, 10.38),
-    "kaolinite_7a": (6.96, 7.42),
-    "kaolinite_7a_n": (6.97, 7.42),
-    "kaolinite_7a_g": (6.96, 7.42),
-    # Janela usada apenas para verificar persistência/perda após 550 C.
-    "kaolinite_7a_c_check": (6.96, 7.42),
-    "smectite_n": (13.46, 16.86),
-    "smectite_g": (16.06, 18.31),
-    "smectite_c": (9.65, 10.37),
-    "chlorite_14a": (13.58, 14.87),
-    "chlorite_14a_n": (13.74, 14.74),
-    "chlorite_14a_g": (13.83, 14.72),
-    "chlorite_14a_c": (13.58, 14.87),
-    "quartz_101": (3.27, 3.42),
-    "quartz_101_n": (3.28, 3.41),
-    "quartz_101_g": (3.28, 3.42),
-    "quartz_101_c": (3.27, 3.42),
-    "quartz_100": (4.23, 4.35),
-}
+DIAGNOSTIC_RANGES = mapped_ranges("workflow_diagnostic_ranges")
+SCRIPT_INTERVAL_RANGES = mapped_ranges("script_interval_ranges")
+TARGETED_BASAL_RANGES = targeted_basal_ranges()
 
 PREPARATION_ORDER = {"natural": 0, "glicolado": 1, "calcinado": 2, "indeterminado": 3}
 
@@ -346,6 +366,12 @@ def _item_from_payload(item):
             candidate for candidate in (item or {}).get("mineral_candidates") or []
             if isinstance(candidate, dict)
         ][:8],
+        "metadata": {
+            "d060": (item or {}).get("d060") or metadata.get("d060"),
+            "morphology": (item or {}).get("morphology") or metadata.get("morphology") or [],
+            "chemistry": (item or {}).get("chemistry") or metadata.get("chemistry") or {},
+            "context": (item or {}).get("context") or metadata.get("context") or [],
+        },
         "warnings": list((item or {}).get("warnings") or metadata.get("warnings") or []),
     }
 
@@ -447,7 +473,8 @@ def _script_report(sample_base, interval_minerals, interval_diagnostics, items):
         "detected_minerals": interval_minerals or [],
         "diagnostics": diagnostics,
         "peak_tables": _script_peak_tables(items),
-        "policy": "Saida estilo script para triagem auxiliar; nao confirma fase mineralogica.",
+        "policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
     }
 
 
@@ -538,7 +565,15 @@ def _diagnostic_observation(item, range_key):
 
 
 def _companion_peak_set(natural, glycolated, calcined):
-    """Return companion reflections used to avoid single-peak identifications."""
+    """
+    Retorna reflexoes companheiras usadas para evitar pico isolado.
+
+    Brindley & Brown, 1980:
+        o objeto "kaolinite" combina 7 A em N/G/C com o pico companheiro 3.57 A.
+        Esses campos alimentam _ngc_behavior, _mixed_layer_warnings e os cards
+        do painel, mas permanecem auxiliares porque 7 A sobrepoe clorita,
+        serpentina, dickita/nacrita e haloisita.
+    """
     representative = natural or glycolated or calcined or {}
     return {
         "smectite": {
@@ -615,7 +650,15 @@ def _ngc_behavior(companion_peaks):
 
 
 def _mixed_layer_warnings(companion_peaks):
-    """Flag partial responses that should be reviewed as mixtures/interstratified clays."""
+    """
+    Gera avisos para respostas que devem ser revisadas como misturas.
+
+    Aplicacao de Lanson & Bouchet 1995:
+        respostas expansivas parciais, picos sobrepostos e comportamento termico
+        incompleto sao tratados como sinais de bandas complexas, defeitos ou
+        interestratificacao. A funcao nao classifica mineral; ela preserva o
+        alerta no payload para impedir conclusao por tabela simples de picos.
+    """
     warnings = []
     smectite = companion_peaks.get("smectite") or {}
     kaolinite = companion_peaks.get("kaolinite") or {}
@@ -698,6 +741,9 @@ def _script_interval_diagnostics(natural, glycolated, calcined):
             },
         })
 
+    # Brindley & Brown, 1980 aplicado na rotina legada: 7 A em N/G e perda forte
+    # em C favorecem grupo da caulinita. A regra usa intensidade relativa para
+    # representar destruicao/reducao termica e nao confirma especie.
     int_n_7 = _interval_peak_intensity(peaks_n, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_n"])
     int_g_7 = _interval_peak_intensity(peaks_g, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_g"])
     int_c_7 = _interval_peak_intensity(peaks_c, *SCRIPT_INTERVAL_RANGES["kaolinite_7a_c_check"])
@@ -821,7 +867,8 @@ def _screening_entry(mineral, status, score, message, observations, warnings=Non
         "companion_peaks": companion_peaks or {},
         "ngc_behavior": behavior or {},
         "warnings": [warning for warning in warnings or [] if warning],
-        "interpretation_policy": "triagem direcionada auxiliar; nao confirma fase mineralogica",
+        "interpretation_policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
     }
 
 
@@ -1081,7 +1128,8 @@ def _candidate(mineral, score, evidences, warnings, complete_trio):
         "confidence": _confidence(score, complete_trio),
         "evidence": [row for row in evidences if row],
         "warnings": [row for row in warnings if row],
-        "interpretation_policy": "triagem N/G/C assistida; nao confirma fase mineralogica sem curadoria e padroes completos",
+        "interpretation_policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
     }
 
 
@@ -1093,7 +1141,8 @@ def load_diagnostic_rules_ngc():
     except (OSError, json.JSONDecodeError):
         return {
             "version": "argiloteca.drx.ngc.diagnostic_rules.unavailable",
-            "interpretation_policy": "auxiliary_not_confirmatory",
+            "interpretation_policy": POLICY,
+            "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
             "rules": [],
         }
 
@@ -1302,7 +1351,8 @@ def _candidate_interpretation(
         "recommendedAdditionalTests": [row for row in recommended_tests or [] if row],
         "explanationPt": explanation or "",
         "warnings": [row for row in warnings or [] if row],
-        "interpretationPolicy": "evidencia auxiliar; nao confirma mineralogia automaticamente",
+        "interpretationPolicy": POLICY,
+        "policyScope": "rule_based_confirmation_within_argiloteca_ngc_engine",
     }
 
 
@@ -1435,6 +1485,15 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     n7 = _observation_intensity(observations["kaolin_n_7"])
     g7 = _observation_intensity(observations["kaolin_g_7"])
     c7 = _observation_intensity(observations["kaolin_c_7"])
+    has_kaolin_3_57 = _peak_present(observations["kaolin_3_57"])
+    has_chlorite_14 = any(
+        _peak_present(observations[key])
+        for key in ("chlorite_n_14", "chlorite_g_14", "chlorite_c_14")
+    )
+    has_chlorite_aux = any(
+        _peak_present(observations[key])
+        for key in ("chlorite_4_72", "chlorite_3_53")
+    )
     kaolin_score = 0.0
     kaolin_for = []
     kaolin_against = []
@@ -1447,10 +1506,12 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     if n7 > 0 and g7 > 0 and abs((_obs_d(observations["kaolin_n_7"]) or 0) - (_obs_d(observations["kaolin_g_7"]) or 0)) <= 0.25:
         kaolin_score += 0.20
         kaolin_for.append("Pico 7 Å permanece sem deslocamento relevante N→G.")
-    if n7 > 0 and (c7 == 0 or c7 < 0.25 * n7):
+    if calcined and n7 > 0 and (c7 == 0 or c7 < 0.25 * n7):
         kaolin_score += 0.25
         kaolin_for.append("Pico ~7 Å ausente ou fortemente reduzido em C.")
-    if _peak_present(observations["kaolin_3_57"]):
+    elif n7 > 0 and not calcined:
+        kaolin_against.append("Sem preparo calcinado, ausência de pico em C não pode ser usada para separar caulinita de clorita/serpentina.")
+    if has_kaolin_3_57:
         kaolin_score += 0.10
         kaolin_for.append(_format_peak_text("Pico companheiro ~3,57 Å presente", observations["kaolin_3_57"]))
     if n7 > 0 and c7 >= 0.5 * n7:
@@ -1460,6 +1521,10 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     if chlorite_set:
         kaolin_score -= 0.20
         kaolin_against.append("Conjunto 14/7/4,72/3,53 Å favorece clorita ou mistura caulinita+clorita.")
+    kaolin_discriminant = bool(calcined and n7 > 0 and (c7 == 0 or c7 < 0.25 * n7))
+    if (n7 > 0 or g7 > 0) and not kaolin_discriminant:
+        kaolin_score = min(kaolin_score, 0.38 if has_kaolin_3_57 else 0.32)
+        kaolin_against.append("7 Å sem perda térmica documentada é evidência ambígua; não classificar caulinita como resultado final.")
     candidates.append(_candidate_interpretation(
         "kaolin_group",
         "kaolin_group",
@@ -1506,6 +1571,10 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     if _peak_present(observations["smectite_g"]):
         cl_score -= 0.30
         cl_against.append("Há expansão para ~17 Å em G, o que favorece esmectita/interestratificado.")
+    chlorite_discriminant = bool(has_chlorite_14 and (has_chlorite_aux or _peak_present(observations["chlorite_c_14"])))
+    if _peak_present(observations["chlorite_7"]) and not chlorite_discriminant:
+        cl_score = min(cl_score, 0.34)
+        cl_against.append("Reflexão ~7 Å sem 14 Å/4,72 Å/3,53 Å diagnósticos não separa clorita de caulinita/serpentina.")
     candidates.append(_candidate_interpretation(
         "chlorite_group",
         "chlorite_group",
@@ -1667,13 +1736,24 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     if cl_score >= 0.6 and kaolin_score >= 0.4 and c7 > 0:
         mixed_score = max(mixed_score, 0.55)
         mixed_for.append("Caulinita e clorita têm evidências simultâneas; mistura provável.")
+    unresolved_7a_overlap = bool(
+        (n7 > 0 or g7 > 0 or _peak_present(observations["chlorite_7"]))
+        and not kaolin_discriminant
+        and not chlorite_discriminant
+    )
+    if unresolved_7a_overlap:
+        global_warnings.append(
+            "Sobreposição 7 Å clorita/caulinita/serpentina sem discriminante N/G/C suficiente; resultado mineralógico principal fica inconclusivo."
+        )
+        mixed_score = max(mixed_score, 0.52)
+        mixed_for.append("Pico ~7 Å é compartilhado por caulinita, clorita e serpentina sem evidência discriminante suficiente.")
     candidates.append(_candidate_interpretation(
-        "mixed_layer",
-        "mixed_layer",
-        "Interestratificado ou mistura",
-        "interstratified",
+        "kaolin_chlorite_overlap_7a" if unresolved_7a_overlap else "mixed_layer",
+        "ambiguous_overlap" if unresolved_7a_overlap else "mixed_layer",
+        "Inconclusivo (sobreposição 7 Å)" if unresolved_7a_overlap else "Interestratificado ou mistura",
+        "ambiguous" if unresolved_7a_overlap else "interstratified",
         mixed_score,
-        _candidate_status(mixed_score, ambiguous=mixed_score >= 0.4),
+        "ambíguo" if unresolved_7a_overlap else _candidate_status(mixed_score, ambiguous=mixed_score >= 0.4),
         mixed_for,
         [],
         [_matched_peak("broad_or_shoulder", {"observed_peak": _compact_peak(broad_peaks[0])}, None, "mixed_layer_ngc") if broad_peaks else None],
@@ -1695,7 +1775,9 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
         "diagnosticRulesVersion": diagnostic_rules.get("version"),
         "vocabularySummary": vocabulary,
         "version": "argiloteca.drx.ngc.clay_interpretation.v1",
-        "interpretationPolicy": "auxiliary_not_confirmatory",
+        "interpretationPolicy": POLICY,
+        "policyScope": "rule_based_confirmation_within_argiloteca_ngc_engine",
+        "diagnosticLabels": [CONFIRMED_BY_RULES, PROBABLE_BY_RULES, POSSIBLE_BY_RULES],
     }
 
 
@@ -1752,6 +1834,53 @@ def _interpret_group(sample_base, items):
             "duplicates": duplicates,
         },
     )
+    diagnostic_interpretation = None
+    if interpret_ngc_v3:
+        try:
+            # Ponte para a engine V3: os picos N/G/C vao junto com d060,
+            # contexto, morfologia e quimica. Esses metadados sao onde a logica
+            # de Meunier e aplicada de fato para octaedria, argilas magnesianas,
+            # minerais fibrosos e interestratificados.
+            diagnostic_interpretation = interpret_ngc_v3(
+                {
+                    "N": (natural or {}).get("peaks") or [],
+                    "G": (glycolated or {}).get("peaks") or [],
+                    "C": (calcined or {}).get("peaks") or [],
+                },
+                metadata={
+                    "sample_id": sample_base,
+                    "d060": next(
+                        (
+                            (item.get("metadata") or {}).get("d060")
+                            for item in items or []
+                            if (item.get("metadata") or {}).get("d060") is not None
+                        ),
+                        None,
+                    ),
+                    "available_preparations": available,
+                    "duplicates": duplicates,
+                    "context": [
+                        value
+                        for item in items or []
+                        for value in ((item.get("metadata") or {}).get("context") or [])
+                    ],
+                    "morphology": [
+                        value
+                        for item in items or []
+                        for value in ((item.get("metadata") or {}).get("morphology") or [])
+                    ],
+                    "chemistry": next(
+                        (
+                            (item.get("metadata") or {}).get("chemistry")
+                            for item in items or []
+                            if (item.get("metadata") or {}).get("chemistry")
+                        ),
+                        {},
+                    ),
+                },
+            ).get("diagnostic_interpretation")
+        except Exception as exc:
+            warnings.append("Falha ao executar engine DRX V3: %s" % exc)
     screening_by_mineral = {
         str(row.get("mineral") or "").casefold(): row
         for row in target_screening
@@ -1831,6 +1960,30 @@ def _interpret_group(sample_base, items):
             )
         )
 
+    unresolved_7a_overlap = bool(
+        (kaolinite_evidence[0] or chlorite_evidence[1])
+        and not chlorite_evidence[0]
+        and not calcined
+    )
+    if unresolved_7a_overlap:
+        candidates = [
+            candidate
+            for candidate in candidates
+            if candidate.get("mineral_candidate") not in ("caulinita", "clorita", "clorita/vermiculita")
+        ]
+        candidates.append(
+            _candidate(
+                "inconclusivo: sobreposição 7 Å clorita/caulinita",
+                0.52,
+                [kaolinite_evidence[0] or chlorite_evidence[1]],
+                warnings + [
+                    "Pico ~7 Å isolado ou sem preparo calcinado não decide entre caulinita, clorita e serpentina.",
+                    "Para decidir clorita, exigir 14 Å com 4,72/3,53 Å ou persistência térmica; para caulinita, exigir perda em C e/ou suporte 3,57 Å coerente.",
+                ],
+                complete_trio,
+            )
+        )
+
     illite_evidence = [
         _evidence("Ilita/mica 001 proxima de 10 A em natural", natural or {}, "illite_10a"),
         _evidence("Ilita/mica 001 proxima de 10 A em glicolado", glycolated or {}, "illite_10a"),
@@ -1867,6 +2020,7 @@ def _interpret_group(sample_base, items):
         "script_report": _script_report(sample_base, interval_minerals, interval_diagnostics, items),
         "target_screening": target_screening,
         "clay_interpretation": clay_interpretation,
+        "diagnostic_interpretation": diagnostic_interpretation,
         "targeted_basal_peaks": targeted_basal_peaks,
         "companion_peaks": companion_peaks,
         "ngc_behavior": ngc_behavior,
@@ -1907,5 +2061,7 @@ def build_ngc_workflow(items):
         "groups": group_payloads,
         "diagnostic_ranges": DIAGNOSTIC_RANGES,
         "script_interval_ranges": SCRIPT_INTERVAL_RANGES,
-        "interpretation_policy": "Workflow N/G/C experimental e auxiliar; nao deve ser apresentado como identificacao confirmatoria.",
+        "interpretation_policy": POLICY,
+        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
+        "diagnostic_labels": [CONFIRMED_BY_RULES, PROBABLE_BY_RULES, POSSIBLE_BY_RULES],
     }

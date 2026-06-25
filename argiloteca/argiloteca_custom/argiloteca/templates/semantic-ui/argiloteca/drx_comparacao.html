@@ -1,10 +1,27 @@
+{#
+  Projeto: Painel DRX Argiloteca
+  Template: interface de comparação de difratogramas, RAW externos e interpretação N/G/C.
+  Autoria: Alexandre Ribas Semeler
+  E-mail: alexandre.semler@ufrgs.br
+  Fundamentação científica: Brindley & Brown (1980), Bailey (1980/1988),
+  Moore & Reynolds (1989/1997), Drits & Tchoubar (1990), Lanson & Bouchet
+  (1995), Meunier, Clays (2005), fluxograma USGS e referências empíricas
+  Pré-Sal UFRGS/Petrobras.
+  Política: resultado auxiliar, não confirmatório, sem identificação por pico isolado.
+#}
 {% extends config.BASE_TEMPLATE %}
 {% from "semantic-ui/argiloteca/_scientific_page.html" import render_scientific_header with context %}
+{% set drx_show_raw_picker = false %}
+{% set drx_show_geologist_queue = false %}
+{% set drx_show_rruff_odr = false %}
+{% set drx_show_mineral_panel = false %}
+{% set drx_show_compared_samples = false %}
+{% set drx_show_reference_compare = false %}
 
 {% block css %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/argiloteca-scientific.css') }}?v=20260520-map-panel">
-  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/drx-comparacao.css') }}?v=20260620-core-runs-v2">
+  <link rel="stylesheet" href="{{ url_for('argiloteca.static', filename='css/drx-comparacao.css') }}?v=20260623-taller-ngc">
 {% endblock css %}
 
 {% block page_body %}
@@ -36,6 +53,9 @@
     data-package-url-template="{{ url_for('argiloteca.api_pacote_analitico', record_id='__record_id__') }}"
     data-package-curve-url-template="{{ url_for('argiloteca.api_pacote_analitico_drx_curva', record_id='__record_id__') }}"
     data-external-raw-url="{{ url_for('argiloteca.api_drx_externo_curva') }}"
+    data-gsas2-status-url="{{ url_for('argiloteca.api_drx_gsas2_status') }}"
+    data-gsas2-validate-url="{{ url_for('argiloteca.api_drx_gsas2_validate_pattern') }}"
+    data-diagnostic-peak-rules-url="{{ url_for('argiloteca.static', filename='data/diagnostic_peak_rules_catalog.json') }}"
     data-xrdnet-summary-url="{{ url_for('argiloteca.static', filename='data/xrdnet_argilominerais_v1/panel_summary.json') }}"
     data-xrdnet-policy="legacy_auxiliary_backend_neural_preferred"
     data-geologist-triage-url="{{ url_for('argiloteca.static', filename='data/drx_geologist_review_20260616/triage_queues.json') }}"
@@ -105,13 +125,24 @@
           <div class="argilo-drx__toolbar-controls">
             <div class="argilo-drx__toolbar-group" aria-label="{{ _('Seleção') }}">
               <strong>{{ _("Seleção") }}</strong>
+              {% if drx_show_raw_picker %}
               <button class="ui primary button" type="button" data-role="open-raw-picker">{{ _("Adicionar amostras RAW") }}</button>
+              {% endif %}
+              {% if drx_show_compared_samples %}
               <button class="ui button" type="button" data-role="open-suggestions">{{ _("Amostras Comparadas (N/C/G)") }}</button>
+              {% endif %}
+              {% if drx_show_geologist_queue %}
               <button class="ui button" type="button" data-role="open-triage-queue">{{ _("Fila do geólogo") }}</button>
+              {% endif %}
+              {% if drx_show_rruff_odr %}
               <button class="ui button" type="button" data-role="toggle-rruff-odr" aria-pressed="false">{{ _("RRUFF ODR") }}</button>
+              {% endif %}
               <button class="ui button" type="button" data-role="external-raw-button">{{ _("Comparar arquivo temporário") }}</button>
+              <button class="ui button" type="button" data-role="clear-selection">{{ _("Remover todas") }}</button>
               <input type="file" accept=".raw,.RAW,.csv,.CSV,.txt,.TXT,.xy,.XY,.dat,.DAT" data-role="external-raw-file" multiple hidden>
+              {% if drx_show_reference_compare %}
               <button class="ui button" type="button" data-role="reference-compare-button">{{ _("Comparar referência") }}</button>
+              {% endif %}
               <input type="file" accept=".json,.JSON,.csv,.CSV,.txt,.TXT,.xy,.XY,.dat,.DAT,.cif,.CIF" data-role="reference-compare-file" hidden>
             </div>
             <div class="argilo-drx__toolbar-group" aria-label="{{ _('Visualização') }}">
@@ -136,6 +167,7 @@
 
         <p class="argilo-drx__note">{{ _("Arquivos temporários RAW, CSV, TXT, XY ou DAT são usados apenas para comparação local nesta sessão e não são salvos como registros.") }}</p>
 
+        {% if drx_show_raw_picker %}
         <section class="argilo-drx__raw-picker" data-role="raw-picker" hidden>
           <div class="argilo-drx__selected-header">
             <div>
@@ -161,6 +193,7 @@
           <div class="argilo-drx__raw-picker-status" data-role="raw-picker-status"></div>
           <div class="argilo-drx__raw-picker-list" data-role="raw-picker-list"></div>
         </section>
+        {% endif %}
 
         <section class="argilo-drx__raw-picker" data-role="suggestions-panel" hidden>
           <div class="argilo-drx__selected-header">
@@ -170,7 +203,9 @@
             </div>
             <div class="argilo-drx__header-actions">
               <button class="ui button" type="button" data-role="load-ngc-suggestions">{{ _("Conjuntos N/G/C") }}</button>
+              {% if drx_show_geologist_queue %}
               <button class="ui button" type="button" data-role="load-triage-queue">{{ _("Fila do geólogo") }}</button>
+              {% endif %}
               <button class="ui button" type="button" data-role="close-suggestions">{{ _("Fechar") }}</button>
             </div>
           </div>
@@ -187,6 +222,7 @@
           </div>
         </section>
 
+        {% if drx_show_rruff_odr %}
         <section class="argilo-drx__rruff-panel" data-role="rruff-odr-panel" hidden>
           <div class="argilo-drx__selected-header">
             <div>
@@ -223,17 +259,18 @@
           <div class="argilo-drx__rruff-chart" data-role="rruff-odr-chart"></div>
           <div class="argilo-drx__rruff-meta" data-role="rruff-odr-meta"></div>
         </section>
+        {% endif %}
 
         <section class="argilo-drx__selected">
           <div class="argilo-drx__selected-header">
             <h2>{{ _("Amostras Selecionadas") }}</h2>
-            <button class="ui button" type="button" data-role="clear-selection">{{ _("Remover todas") }}</button>
           </div>
           <div class="argilo-drx__selected-grid" data-role="selected-summary">
             <p>{{ _("A descrição dos registros aparecerá aqui junto com a seleção.") }}</p>
           </div>
         </section>
 
+        {% if drx_show_mineral_panel %}
         <section class="argilo-drx__mineral-panel" data-role="mineral-panel-section">
           <div class="argilo-drx__selected-header">
             <h2>{{ _("Painel mineralógico") }}</h2>
@@ -242,6 +279,7 @@
             <p>{{ _("Selecione difratogramas para ver minerais candidatos e evidências de picos.") }}</p>
           </div>
         </section>
+        {% endif %}
       </main>
     </div>
   </div>
@@ -250,5 +288,5 @@
 {% block javascript %}
   {{ super() }}
   <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
-  <script src="{{ url_for('argiloteca.static', filename='js/drx-comparacao.js') }}?v=20260620-core-runs-v2"></script>
+  <script src="{{ url_for('argiloteca.static', filename='js/drx-comparacao.js') }}?v=20260623-taller-ngc"></script>
 {% endblock javascript %}

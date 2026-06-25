@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "behavior_rules": 6,
+    "d060_rules": 3,
+    "diagnostic_rules": 9,
+    "entities": 15,
+    "intensity_rules": 4,
+    "mineral_profiles": 5,
+    "tables": 13
+  },
+  "files": [
+    "argiloteca_mineralogy_ontology.json",
+    "chapter7_behavior_rules.json",
+    "chapter7_d060_rules.json",
+    "chapter7_diagnostic_rules.json",
+    "chapter7_entities.json",
+    "chapter7_intensity_rules.json",
+    "chapter7_knowledge_complete.json",
+    "chapter7_mineral_profiles.json",
+    "chapter7_reflection_tables.json",
+    "chapter7_schemas.json"
+  ],
+  "output_dir": "/home/invenio/invenio-project/argiloteca-local/app/argiloteca_custom/argiloteca_drx/diagnostics/data/generated",
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+  "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+  "source_pdf": "/home/invenio/Downloads/analises.pdf",
+  "version": "argiloteca.drx.chapter7.knowledge.export.v1"
+}

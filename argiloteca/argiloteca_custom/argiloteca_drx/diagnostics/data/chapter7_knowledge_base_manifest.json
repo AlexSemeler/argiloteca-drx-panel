@@ -1,0 +1,24 @@
+{
+  "version": "argiloteca.drx.chapter7.knowledge.v1",
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+  "source_pdf": "/home/invenio/Downloads/analises.pdf",
+  "source_chapter": "Identification of Clay Minerals and Associated Minerals",
+  "executable_module": "argiloteca_drx.diagnostics.chapter7_knowledge",
+  "outputs": {
+    "ontology": "ONTOLOGY",
+    "entities": "CHAPTER7_ENTITIES",
+    "tables": "REFLECTION_TABLES",
+    "diagnostic_rules": "DIAGNOSTIC_RULES",
+    "behavior_rules": "BEHAVIOR_RULES",
+    "d060_rules": "D060_RULES",
+    "intensity_rules": "INTENSITY_RULES",
+    "mineral_profiles": "MINERAL_PROFILES"
+  },
+  "schemas": [
+    "argiloteca_rule_schema.json",
+    "argiloteca_mineral_schema.json",
+    "argiloteca_behavior_schema.json"
+  ],
+  "acceptance_note": "The executable module stores the versioned knowledge. This manifest is the stable data entry point for provenance and audits."
+}

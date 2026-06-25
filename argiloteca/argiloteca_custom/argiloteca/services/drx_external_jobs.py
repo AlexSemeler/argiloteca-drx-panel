@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -23,6 +21,25 @@ Preservar licença existente no repositório.
 
 Observação:
 Este arquivo integra o sistema de análise, comparação e interpretação de difratogramas de raios X para argilominerais.
+
+
+Fundamentacao cientifica revisada:
+    Este arquivo integra o Painel DRX da Argiloteca, projeto fundamentado nas
+    referencias cientificas revisadas para interpretacao auxiliar de DRX de
+    argilominerais: Brindley & Brown (1980), Bailey (1980/1988),
+    Moore & Reynolds (1989/1997), Drits & Tchoubar (1990),
+    Lanson & Bouchet (1995), Meunier, Clays (2005), fluxograma USGS para
+    identificacao de argilominerais por DRX e referencias empiricas Pre-Sal
+    UFRGS/Petrobras.
+
+Autoria cientifica e curadoria:
+    Alexandre Ribas Semeler
+    E-mail: alexandre.semler@ufrgs.br
+
+Politica de interpretacao:
+    Resultados mineralogicos sao auxiliares e nao confirmatorios. O codigo
+    combina comportamento N/G/C, picos companheiros, d060, ambiguidades,
+    contexto e proveniencia; nao confirma mineral por pico isolado.
 """
 
 from __future__ import annotations
@@ -146,6 +163,7 @@ def submit_external_job(engine, payload=None):
         "started_at": None,
         "finished_at": None,
         "request": payload or {},
+        "policy": "auxiliary_not_confirmatory",
         "adapter": {
             "engine": engine_key,
             "command_env": ENGINE_COMMAND_ENV[engine_key],
@@ -385,12 +403,13 @@ def run_external_job_adapter(job):
     result = {
         "implemented": True,
         "engine": engine,
+        "policy": "auxiliary_not_confirmatory",
         "returncode": process.returncode,
         "input_manifest": str(input_manifest),
         "stdout_path": str(stdout_path),
         "stderr_path": str(stderr_path),
         "adapter_result": adapter_payload,
-        "policy": "Resultado GSAS-II/DARA e artefato auxiliar ate revisao e curadoria mineralogica.",
+        "interpretation_policy": "Resultado GSAS-II/DARA e artefato auxiliar ate revisao e curadoria mineralogica.",
     }
     return complete_external_job(
         job_id,

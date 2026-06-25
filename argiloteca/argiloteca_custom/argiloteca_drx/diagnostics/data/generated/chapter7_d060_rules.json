@@ -1,0 +1,60 @@
+[
+  {
+    "if": {
+      "d060_max": 1.505
+    },
+    "rule_id": "chapter7_d060_dioctahedral",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 245,
+      "quote_fragment": "060",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": "7.4"
+    },
+    "then": {
+      "octahedral_type": "dioctahedral"
+    }
+  },
+  {
+    "if": {
+      "d060_min": 1.535
+    },
+    "rule_id": "chapter7_d060_trioctahedral",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 245,
+      "quote_fragment": "060",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": "7.4"
+    },
+    "then": {
+      "octahedral_type": "trioctahedral"
+    }
+  },
+  {
+    "if": {
+      "d060_around": 1.54,
+      "quartz_possible": true
+    },
+    "rule_id": "chapter7_d060_quartz_warning",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 245,
+      "quote_fragment": "1.54",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "then": {
+      "warning": "Check quartz companion reflections before using d060 as trioctahedral evidence."
+    }
+  }
+]

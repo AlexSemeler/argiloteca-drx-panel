@@ -5,8 +5,7 @@
  * Autor:
  * Alexandre Ribas Semeler
  * E-mail: alexandre.semeler@ufrgs.br
- * Instituição:
- * Universidade Federal do Rio Grande do Sul (UFRGS)
+ * E-mail de documentação científica revisada: alexandre.semler@ufrgs.br
  * Projeto:
  * Argiloteca / CPAA
  * Última revisão:
@@ -14,6 +13,11 @@
  * Este arquivo integra o sistema de análise,
  * comparação e interpretação de difratogramas
  * de raios X para argilominerais.
+ * Fundamentação científica revisada:
+ * Brindley & Brown (1980), Bailey (1980/1988), Moore & Reynolds (1989/1997),
+ * Drits & Tchoubar (1990), Lanson & Bouchet (1995), Meunier, Clays (2005),
+ * fluxograma USGS e referências empíricas Pré-Sal UFRGS/Petrobras.
+ * Política: interpretação auxiliar, não confirmatória, sem identificação por pico isolado.
  */
 
 (function () {
@@ -35,15 +39,21 @@
   const packageUrlTemplate = root.dataset.packageUrlTemplate;
   const packageCurveUrlTemplate = root.dataset.packageCurveUrlTemplate;
   const externalRawUrl = root.dataset.externalRawUrl;
+  const gsas2StatusUrl = root.dataset.gsas2StatusUrl;
+  const gsas2ValidateUrl = root.dataset.gsas2ValidateUrl;
   const xrdnetSummaryUrl = root.dataset.xrdnetSummaryUrl;
   const geologistTriageUrl = root.dataset.geologistTriageUrl;
   const geologistSimilarityReviewUrl = root.dataset.geologistSimilarityReviewUrl;
   const rruffOdrCurvesUrl = root.dataset.rruffOdrCurvesUrl;
   const mineralDetailUrlBase = root.dataset.mineralDetailUrlBase || "/argilominerais/";
+  const diagnosticPeakRulesCatalogUrl = root.dataset.diagnosticPeakRulesUrl || "/argiloteca/static/data/diagnostic_peak_rules_catalog.json";
   const contextRecordId = root.dataset.contextRecordId || "";
   const contextRecordTitle = root.dataset.contextRecordTitle || "";
   const EXTERNAL_RAW_UPLOAD_TIMEOUT_MS = 240000;
   const NGC_AXIS_ALIGNMENT_MIN_OFFSET = 0.05;
+  const DRX_SHOW_RRUFF_ODR_REVIEW_LINK = false;
+  const DRX_SHOW_METHODOLOGY_LIMITATIONS = false;
+  const DRX_SHOW_OBSERVED_PEAK_DIAGNOSTIC_TABLE = false;
   // Catalogo autorizado para transformar candidatos em links locais; os dados
   // do template sobrescrevem este fallback quando disponiveis.
   const defaultAuthorizedMineralSlugs = [
@@ -130,6 +140,9 @@
   const rawPickerFormEl = root.querySelector('[data-role="raw-picker-form"]');
   const rawPickerStatusEl = root.querySelector('[data-role="raw-picker-status"]');
   const rawPickerListEl = root.querySelector('[data-role="raw-picker-list"]');
+  const gsas2ValidationPanelEl = root.querySelector('[data-role="gsas2-validation-panel"]');
+  const gsas2StatusBadgeEl = root.querySelector('[data-role="gsas2-status-badge"]');
+  const gsas2StatusSummaryEl = root.querySelector('[data-role="gsas2-status-summary"]');
   const openSuggestionsEl = root.querySelector('[data-role="open-suggestions"]');
   const openTriageQueueEl = root.querySelector('[data-role="open-triage-queue"]');
   const openSuggestionsFromRawEl = root.querySelector('[data-role="open-suggestions-from-raw"]');
@@ -723,7 +736,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function formatScore(value) {
-    if (typeof value !== "number" || !Number.isFinite(value)) return "score nao informado";
+    if (typeof value !== "number" || !Number.isFinite(value)) return "valor nao informado";
     return value.toLocaleString("pt-BR", { maximumFractionDigits: 3 });
   }
 
@@ -811,6 +824,56 @@
     const url = explicitUrl || recordUrl(recordId);
     if (!url) return "";
     return '<a class="ui tiny button" href="' + escapeHtml(url) + '">' + escapeHtml(label || "Abrir registro") + "</a>";
+  }
+
+  /**
+   * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
+   * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
+   */
+  function renderRelatedRecordMatches(similarity) {
+    const matches = Array.isArray(similarity && similarity.record_matches)
+      ? similarity.record_matches
+      : (Array.isArray(similarity && similarity.matches) ? similarity.matches : []);
+    const seen = new Set();
+    const rows = matches.filter(function (match) {
+      const recordId = match && (match.record_id || match.package_record_id);
+      const key = String(recordId || "") + "|" + String(match && (match.filename || match.sample_code || ""));
+      if (!recordId || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 5).map(function (match) {
+      const recordId = match.record_id || match.package_record_id || "";
+      const candidates = (match.mineral_candidates || []).map(function (candidate) {
+        return candidate.mineral || candidate.label || candidate.name || "";
+      }).filter(Boolean).slice(0, 3).join(", ");
+      const loadButton = match.filename || match.sample_code ? [
+        '<button class="ui tiny button argilo-drx__load-similar" type="button"',
+        ' data-load-similar-raw="1"',
+        ' data-record-id="', escapeHtml(recordId), '"',
+        ' data-sample-code="', escapeHtml(match.sample_code || ""), '"',
+        ' data-filename="', escapeHtml(match.filename || ""), '">',
+        'Carregar RAW',
+        '</button>',
+      ].join("") : "";
+      return [
+        "<li>",
+        "<strong>", escapeHtml(match.sample_code || match.filename || "RAW relacionado"), "</strong>",
+        " · ", treatmentBadge({ treatment: match.preparation, treatment_label: match.preparation_label }),
+        candidates ? " · candidatos: " + escapeHtml(candidates) : "",
+        '<div class="argilo-drx__match-actions">',
+        recordButton(recordId, "Abrir registro", match.record_url),
+        loadButton,
+        "</div>",
+        "</li>",
+      ].join("");
+    }).join("");
+    if (!rows) return "";
+    return [
+      '<details class="argilo-drx__score-details" open>',
+      "<summary>Registros relacionados por RAW/argilominerais semelhantes</summary>",
+      "<ul>", rows, "</ul>",
+      "</details>",
+    ].join("");
   }
 
   /**
@@ -1786,8 +1849,8 @@
     const sampleBase = inferExternalSampleBase(file.name);
     const query = new URLSearchParams();
     query.set("max_points", "3000");
-    query.set("similarity_scope", hasRecordContext() ? "record" : "snapshot");
-    statusEl.textContent = "Convertendo RAW externo para comparação: " + file.name;
+    query.set("similarity_scope", "all");
+    statusEl.textContent = "Convertendo RAW externo e procurando similares na Argiloteca: " + file.name;
     return uploadRawFormData(externalRawUrl + "?" + query.toString(), formData, { timeout: EXTERNAL_RAW_UPLOAD_TIMEOUT_MS })
       .then(function (payload) {
         const metadata = payload.metadata || {};
@@ -1829,6 +1892,7 @@
           analysisRun: payload.analysis_run || metadata.analysis_run || null,
           technicalReport: payload.technical_report || metadata.technical_report || null,
           diagnosticEvidence: payload.diagnostic_evidence || metadata.diagnostic_evidence || [],
+          gsas2Validation: payload.gsas2_validation || metadata.gsas2_validation || null,
           mineralClassification: {
             source: metadata.mineral_classification_source || "classificacao_temporaria",
             error: metadata.mineral_classification_error || null,
@@ -3155,7 +3219,7 @@
       return "<li>" + escapeHtml(row) + "</li>";
     }).join("");
     const webLine = web.top
-      ? "WebMineral fallback/comparação: " + web.top + " · score " + formatScore(web.score) + " · " + (web.confidence || "conf. N/D")
+      ? "WebMineral fallback/comparação: " + web.top + " · " + (web.confidence || "conf. N/D")
       : "WebMineral fallback/comparação: sem candidato";
     const xrdLine = xrd.top
       ? "XRDNet auxiliar: " + xrd.top + " · " + xrdnetPercent(xrd.probability)
@@ -3806,7 +3870,7 @@
 
     const width = 960;
     const height = 520;
-    const margin = { top: 32, right: 28, bottom: 58, left: 72 };
+    const margin = { top: 20, right: 18, bottom: 48, left: 62 };
     const plotW = width - margin.left - margin.right;
     const plotH = height - margin.top - margin.bottom;
     const allX = items.flatMap(function (item) { return item.twoTheta; });
@@ -3870,14 +3934,19 @@
     if (!plotlyChartEl || !window.Plotly || typeof window.Plotly.react !== "function") return false;
     const baseX = xDomain || extent(items.flatMap(function (item) { return item.twoTheta; }));
     const traces = items.map(function (item, index) {
+      const customData = (item.twoTheta || []).map(function (theta) {
+        const mineralLabel = peakMineralLabelForTheta(item, theta);
+        return [mineralLabel ? "<br>" + mineralLabel : ""];
+      });
       return {
         x: item.twoTheta,
         y: transformedSeries(item, index),
+        customdata: customData,
         type: "scatter",
         mode: "lines",
         name: sampleLabel(item),
         line: { color: palette[index % palette.length], width: 2 },
-        hovertemplate: "%{fullData.name}<br>2θ %{x:.3f}<br>I %{y:.3f}<extra></extra>",
+        hovertemplate: "%{fullData.name}<br>2θ %{x:.3f}<br>I %{y:.3f}%{customdata[0]}<extra></extra>",
       };
     });
     /**
@@ -3896,7 +3965,11 @@
           if (!point) return;
           peakX.push(theta);
           peakY.push(point.y);
-          peakText.push(Number.isFinite(Number(peak.d)) ? "d " + formatNumber(Number(peak.d), 3) + " A" : "2θ " + formatNumber(theta, 3));
+          const mineralLabel = peakMineralLabelForTheta(item, theta);
+          peakText.push([
+            Number.isFinite(Number(peak.d)) ? "d " + formatNumber(Number(peak.d), 3) + " A" : "2θ " + formatNumber(theta, 3),
+            mineralLabel || "",
+          ].filter(Boolean).join("<br>"));
         });
         /**
          * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -3920,13 +3993,14 @@
     }
     showPlotlyChart();
     window.Plotly.react(plotlyChartEl, traces, {
-      margin: { l: 64, r: 24, t: 28, b: 54 },
+      autosize: true,
+      margin: { l: 58, r: 16, t: 14, b: 46 },
       xaxis: { title: "2θ", range: xDomain || baseX, zeroline: false },
       yaxis: { title: modeEl.value === "area" ? "Intensidade / área" : "Intensidade", rangemode: modeEl.value === "absolute" ? "tozero" : "nonnegative" },
       paper_bgcolor: "#ffffff",
       plot_bgcolor: "#fbfdfc",
       hovermode: "x unified",
-      legend: { orientation: "h", y: -0.2 },
+      legend: { orientation: "h", y: -0.14 },
     }, {
       displaylogo: false,
       responsive: true,
@@ -3997,6 +4071,37 @@
     return nodes.join("");
   }
 
+  function peakMineralLabelForTheta(item, theta) {
+    const thetaValue = Number(theta);
+    if (!Number.isFinite(thetaValue)) return "";
+    let nearestPeak = null;
+    let bestThetaDelta = Infinity;
+    observedPeaks(item).forEach(function (peak) {
+      const peakTheta = Number(peak.two_theta);
+      if (!Number.isFinite(peakTheta)) return;
+      const delta = Math.abs(peakTheta - thetaValue);
+      if (delta < bestThetaDelta) {
+        bestThetaDelta = delta;
+        nearestPeak = peak;
+      }
+    });
+    if (!nearestPeak || bestThetaDelta > 0.28) return "";
+    const match = matchPeakToCandidate(nearestPeak, item);
+    if (match && match.candidate && match.candidate.mineral) {
+      return "Argilomineral: " + match.candidate.mineral;
+    }
+    const dValue = Number(nearestPeak.d) || braggDSpacing(thetaValue);
+    const minerals = Array.from(new Set(mineralReflectionRules().filter(function (rule) {
+      return Number.isFinite(dValue) && dValue >= rule.min && dValue <= rule.max;
+    }).map(function (rule) {
+      return rule.mineral;
+    }).filter(Boolean))).slice(0, 3);
+    if (minerals.length) {
+      return "Argilomineral: " + minerals.join(" / ");
+    }
+    return "";
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -4023,7 +4128,14 @@
           bestIndex = index;
         }
       });
-      return "<div><strong>" + escapeHtml(sampleLabel(item)) + "</strong> " + treatmentBadge(item) + ": 2θ " + formatNumber(item.twoTheta[bestIndex], 3) + ", I " + formatNumber(item.intensity[bestIndex], 1) + "</div>";
+      const mineralLabel = peakMineralLabelForTheta(item, item.twoTheta[bestIndex]);
+      return [
+        "<div><strong>", escapeHtml(sampleLabel(item)), "</strong> ", treatmentBadge(item),
+        ": 2θ ", formatNumber(item.twoTheta[bestIndex], 3),
+        ", I ", formatNumber(item.intensity[bestIndex], 1),
+        mineralLabel ? "<br><span class='argilo-drx__mini-note'>" + escapeHtml(mineralLabel) + "</span>" : "",
+        "</div>",
+      ].join("");
     }).join("");
     tooltipEl.innerHTML = rows;
     tooltipEl.style.left = Math.min(rect.width - 300, Math.max(8, event.clientX - rect.left + 12)) + "px";
@@ -4077,12 +4189,7 @@
    */
   function renderBestScoredClayCandidate(candidate) {
     if (!candidate) return "N/D";
-    const score = Number(candidate.score);
-    return [
-      mineralLink(candidate.mineral || "Argilomineral candidato"),
-      "score " + escapeHtml(formatScore(Number.isFinite(score) ? score : candidate.score)),
-      candidate.confidence ? "conf. " + escapeHtml(candidate.confidence) : "",
-    ].filter(Boolean).join(" · ");
+    return mineralLink(candidate.mineral || "Argilomineral candidato");
   }
 
   /**
@@ -4225,6 +4332,284 @@
     });
   }
 
+  function bestNgcDiagnosticCandidate(group) {
+    const diagnostic = group && group.diagnostic_interpretation || {};
+    const clay = group && group.clay_interpretation || {};
+    const clayCandidates = clay.candidates || [];
+    const ambiguous7a = clayCandidates.find(function (row) {
+      return row && row.candidateId === "kaolin_chlorite_overlap_7a" && row.status !== "descartado";
+    });
+    if (ambiguous7a) {
+      return {
+        label: ambiguous7a.candidateLabelPt || ambiguous7a.candidateId,
+        score: ambiguous7a.score,
+        confidence: ambiguous7a.status,
+      };
+    }
+    const combined = diagnostic.combined_candidates || [];
+    const candidate = combined.find(function (row) {
+      return row && row.label;
+    });
+    if (candidate) {
+      return {
+        label: candidate.label,
+        score: candidate.score,
+        confidence: candidate.confidence,
+      };
+    }
+    const clayCandidate = clayCandidates.find(function (row) {
+      return row && row.status !== "descartado" && (Number(row.score) || 0) > 0;
+    });
+    if (clayCandidate) {
+      return {
+        label: clayCandidate.candidateLabelPt || clayCandidate.candidateId,
+        score: clayCandidate.score,
+        confidence: clayCandidate.confidence,
+      };
+    }
+    const script = group && group.script_report || {};
+    if ((script.detected_minerals || []).length) {
+      return {
+        label: script.detected_minerals[0],
+        score: undefined,
+        confidence: undefined,
+      };
+    }
+    const best = group && group.best_candidate || {};
+    if (best.mineral_candidate) {
+      return {
+        label: best.mineral_candidate,
+        score: best.score,
+        confidence: best.confidence,
+      };
+    }
+    return null;
+  }
+
+  function renderDiagnosticV3Block(group) {
+    const diagnostic = group && group.diagnostic_interpretation || null;
+    if (!diagnostic) return "";
+    const behaviorLabels = {
+      expands_with_glycol: "Expansão com glicolação",
+      collapses_after_heating: "Colapso após aquecimento",
+      appears_after_heating: "Pico aparece após aquecimento",
+      disappears_after_heating: "Pico desaparece após aquecimento",
+      persists_after_heating: "Persistência após aquecimento",
+      stable_after_glycol: "Estabilidade após glicolação",
+      broad_or_shoulder: "Pico largo ou ombro",
+      quartz_internal_standard_pattern: "Quartzo como padrão/interferência",
+      partial_expansion_with_glycol: "Expansão parcial com glicolação",
+      rational_sequence: "Sequência racional",
+      ordered_chlorite_smectite: "Clorita/esmectita ordenada",
+    };
+    function behaviorGroupKey(behavior) {
+      if (/expands|collapses|partial_expansion|rational_sequence|ordered_chlorite/i.test(behavior || "")) return "Trajetória N→G→C";
+      if (/heating|appears|disappears|persists/i.test(behavior || "")) return "Resposta ao aquecimento";
+      if (/stable_after_glycol/i.test(behavior || "")) return "Picos estáveis";
+      return "Qualidade e interferências";
+    }
+    function renderBehaviorCards(rows) {
+      const grouped = {};
+      (rows || []).slice(0, 10).forEach(function (row) {
+        const key = behaviorGroupKey(row && row.behavior);
+        grouped[key] = grouped[key] || [];
+        grouped[key].push(row);
+      });
+      return ["Trajetória N→G→C", "Resposta ao aquecimento", "Picos estáveis", "Qualidade e interferências"].map(function (groupName) {
+        const items = grouped[groupName] || [];
+        if (!items.length) return "";
+        const body = items.map(function (row) {
+          const label = row && typeof row === "object" ? row.behavior : row;
+          const values = row && typeof row === "object" ? (row.values || []) : [];
+          const relations = row && typeof row === "object" ? (row.relations || []) : [];
+          const valueRows = values.length ? values : relations.map(function (relation) {
+            const delta = relation.delta_d !== null && relation.delta_d !== undefined
+              ? " · Δd " + formatNumber(Number(relation.delta_d), 3) + " Å"
+              : "";
+            return [
+              relation.source || "N/D",
+              " -> ",
+              relation.target || "N/D",
+              delta,
+            ].join("");
+          });
+          return [
+            '<div class="argilo-drx__ngc-evidence-row">',
+            "<strong>", escapeHtml(behaviorLabels[label] || label || "Evidência"), "</strong>",
+            valueRows.length ? "<span>" + escapeHtml(valueRows.slice(0, 4).join(" | ")) + "</span>" : "",
+            "</div>",
+          ].join("");
+        }).join("");
+        return [
+          '<article class="argilo-drx__ngc-evidence-card">',
+          "<h6>", escapeHtml(groupName), "</h6>",
+          body,
+          "</article>",
+        ].join("");
+      }).filter(Boolean).join("");
+    }
+    function renderRangeDiagnosticCard() {
+      const diagnostics = ((group && group.script_report && group.script_report.diagnostics) || (group && group.interval_diagnostics) || []).slice(0, 6);
+      if (!diagnostics.length) return "";
+      const body = diagnostics.map(function (diagnostic) {
+        const observations = diagnostic.observations || {};
+        const values = Object.keys(observations).map(function (key) {
+          const peak = (observations[key] || {}).observed_peak || {};
+          if (!peak.d_angstrom) return "";
+          return key + ": d " + formatNumber(Number(peak.d_angstrom), 2) + " Å"
+            + (peak.two_theta ? " / 2θ " + formatNumber(Number(peak.two_theta), 2) + "°" : "")
+            + (peak.intensity_abs ? " / int. " + formatNumber(Number(peak.intensity_abs), 0) : "");
+        }).filter(Boolean).join(" | ");
+        return [
+          '<div class="argilo-drx__ngc-evidence-row">',
+          "<strong>", escapeHtml(diagnostic.mineral || "Inconclusivo"), "</strong>",
+          diagnostic.message ? "<span>" + escapeHtml(diagnostic.message) + "</span>" : "",
+          values ? "<span>" + escapeHtml(values) + "</span>" : "",
+          "</div>",
+        ].join("");
+      }).join("");
+      return [
+        '<article class="argilo-drx__ngc-evidence-card">',
+        "<h6>Faixas diagnósticas</h6>",
+        body,
+        "</article>",
+      ].join("");
+    }
+    function sourceRuleTargets(candidate) {
+      // Mapeia o candidato exibido no painel para os alvos das regras do
+      // Capitulo 7 de "X-Ray Diffraction and the Identification and Analysis
+      // of Clay Minerals". O painel trabalha com grupos como kaolin_group ou
+      // smectite_group, enquanto a base de conhecimento tambem possui regras
+      // transversais como kaolin_vs_chlorite.
+      const label = String(candidate && candidate.label || "").toLowerCase();
+      const family = String(candidate && candidate.family || "").toLowerCase();
+      const targets = [label, family];
+      if (label === "smectite_group") targets.push("smectite");
+      if (label === "kaolin_group") targets.push("kaolin_vs_chlorite", "kaolinite");
+      if (label === "chlorite") targets.push("kaolin_vs_chlorite");
+      if (label === "illite_mica") targets.push("illite_mica");
+      if (label === "vermiculite") targets.push("vermiculite");
+      if (family === "fibrous_channel") targets.push("sepiolite_palygorskite_halloysite");
+      return targets.filter(Boolean);
+    }
+    function renderSourceRulePanel(candidate) {
+      // Renderiza a secao recolhivel "Regra-fonte". Ela usa os objetos
+      // source_rule_index e source_mineral_profiles injetados pela engine
+      // Python. O loop sobre Object.keys(index) e finito e apenas filtra regras
+      // ja recebidas no JSON; nenhuma inferencia mineralogica e feita no
+      // frontend.
+      const index = diagnostic.source_rule_index || {};
+      const profiles = diagnostic.source_mineral_profiles || {};
+      const profile = profiles[candidate.label] || profiles[candidate.family] || null;
+      const targets = sourceRuleTargets(candidate);
+      const rows = Object.keys(index).map(function (key) { return index[key]; }).filter(function (rule) {
+        const target = String(rule && rule.target || "").toLowerCase();
+        return targets.indexOf(target) >= 0;
+      }).slice(0, 3);
+      const profileRefs = profile && (profile.references || []).length
+        ? (profile.references || []).slice(0, 2).map(function (ref) {
+            const parts = [
+              ref.page ? "p. " + ref.page : "",
+              ref.table ? "Tabela " + ref.table : "",
+              ref.figure ? "Figura " + ref.figure : "",
+            ].filter(Boolean).join(" · ");
+            return "<li>" + escapeHtml(parts || ref.source_id || "referência") + "</li>";
+          }).join("")
+        : "";
+      const ruleRows = rows.map(function (rule) {
+        const source = rule.source || {};
+        const sourceBits = [
+          source.page ? "p. " + source.page : "",
+          source.table ? "Tabela " + source.table : "",
+          source.figure ? "Figura " + source.figure : "",
+        ].filter(Boolean).join(" · ");
+        return [
+          "<li>",
+          "<strong>", escapeHtml(rule.rule_id || "regra"), "</strong>",
+          sourceBits ? " <span>(" + escapeHtml(sourceBits) + ")</span>" : "",
+          rule.explanation ? "<br><span>" + escapeHtml(rule.explanation) + "</span>" : "",
+          "</li>",
+        ].join("");
+      }).join("");
+      if (!profileRefs && !ruleRows) return "";
+      return [
+        "<details class='argilo-drx__source-rule'>",
+        "<summary>Regra-fonte</summary>",
+        profileRefs ? "<p><strong>Perfil mineralógico</strong></p><ul>" + profileRefs + "</ul>" : "",
+        ruleRows ? "<p><strong>Regras aplicadas</strong></p><ul>" + ruleRows + "</ul>" : "",
+        "</details>",
+      ].join("");
+    }
+    const bestNgcCandidate = bestNgcDiagnosticCandidate(group);
+    const bestNgcLine = bestNgcCandidate && bestNgcCandidate.label
+      ? [
+          '<p class="argilo-drx__ngc-found">',
+          "<strong>Argilomineral encontrado nos picos N/G/C</strong>",
+          mineralLink(bestNgcCandidate.label),
+          "</p>",
+        ].join("")
+      : "";
+    const candidates = (diagnostic.combined_candidates || []).slice(0, 5).map(function (candidate) {
+      const evidences = (candidate.evidences || []).slice(0, 4).map(function (row) {
+        return "<li>" + escapeHtml(row.message || row.kind || "Evidência") + "</li>";
+      }).join("");
+      const competitors = (candidate.competitors || []).slice(0, 3).map(function (row) {
+        return "<li>" + escapeHtml(row.competitor || "competidor") + ": " + escapeHtml(row.reason || "") + "</li>";
+      }).join("");
+      return [
+        '<article class="argilo-drx__diagnostic-block">',
+        "<strong>", mineralLink(candidate.label || "candidato"), "</strong>",
+        "<p>família ", escapeHtml(candidate.family || "N/D"), "</p>",
+        candidate.explain ? "<p>" + escapeHtml(candidate.explain) + "</p>" : "",
+        evidences ? "<p><strong>Informações que resultam no argilomineral</strong></p><ul>" + evidences + "</ul>" : "",
+        renderSourceRulePanel(candidate),
+        competitors ? "<p><strong>Competidores</strong></p><ul>" + competitors + "</ul>" : "",
+        "</article>",
+      ].join("");
+    }).join("");
+    const behavior = renderBehaviorCards(diagnostic.behavior_candidates || []) + renderRangeDiagnosticCard();
+    const peakSets = (diagnostic.peak_set_candidates || []).slice(0, 5).map(function (row) {
+      return "<li>" + mineralLink(row.label || "conjunto") + "</li>";
+    }).join("");
+    const mixed = (diagnostic.mixed_layer_candidates || []).slice(0, 4).map(function (row) {
+      return "<li>" + mineralLink(row.mixed_layer_candidate || "interestratificado") + " · " + escapeHtml(row.explanation || "") + "</li>";
+    }).join("");
+    const ambiguities = (diagnostic.ambiguities || []).slice(0, 5).map(function (row) {
+      return "<li>" + escapeHtml(row.window || "janela") + ": " + escapeHtml((row.candidates || []).join(", ")) + "</li>";
+    }).join("");
+    const tests = (diagnostic.recommended_next_tests || []).slice(0, 6).map(function (row) {
+      return "<li>" + escapeHtml(row) + "</li>";
+    }).join("");
+    const oct = diagnostic.octahedral_classification || {};
+    const octDetails = oct.octahedral_type ? [
+      escapeHtml(oct.octahedral_type),
+      oct.d060 !== undefined ? " · d060 " + escapeHtml(formatNumber(Number(oct.d060), 3)) + " Å" : "",
+      oct.source ? " · " + escapeHtml(oct.source) : "",
+      oct.preparation ? " · preparo " + escapeHtml(oct.preparation) : "",
+      oct.intensity !== undefined && oct.intensity !== null ? " · intensidade " + escapeHtml(formatNumber(Number(oct.intensity), 2)) : "",
+      " · ",
+      escapeHtml(oct.evidence || ""),
+    ].join("") : "";
+    const warnings = (diagnostic.warnings || []).slice(0, 3).map(function (row) {
+      return "<li>" + escapeHtml(row) + "</li>";
+    }).join("");
+    return [
+      '<div class="argilo-drx__ngc-interpretation argilo-drx__ngc-v3">',
+      "<h4>Interpretação Mineralógica Assistida</h4>",
+      '<p class="argilo-drx__mini-note">Resultado auxiliar. Não substitui interpretação mineralógica completa, refinamento estrutural, modelagem de difratogramas, análise química ou validação por especialista.</p>',
+      bestNgcLine,
+      candidates ? "<h5>Candidatos por comportamento N-G-C</h5>" + candidates : "",
+      behavior ? "<h5>Resumo das evidências N-G-C</h5><div class='argilo-drx__ngc-evidence-grid'>" + behavior + "</div>" : "",
+      peakSets ? "<h5>Candidatos por conjunto de picos</h5><ul>" + peakSets + "</ul>" : "",
+      octDetails ? "<h5>Classificação 060</h5><p>" + octDetails + "</p>" : "",
+      mixed ? "<h5>Interestratificados</h5><ul>" + mixed + "</ul>" : "",
+      ambiguities ? "<h5>Ambiguidades</h5><ul>" + ambiguities + "</ul>" : "",
+      tests ? "<h5>Próximos testes recomendados</h5><ul>" + tests + "</ul>" : "",
+      warnings ? "<h5>Proveniência e limitações</h5><ul>" + warnings + "</ul>" : "",
+      "</div>",
+    ].join("");
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -4263,7 +4648,7 @@
         return row.status && row.status !== "not_observed";
       }).slice(0, 5).map(function (row) {
         return "<li><strong>" + escapeHtml(row.mineral || "Mineral") + ":</strong> "
-          + escapeHtml(row.status || "N/D") + " · score " + escapeHtml(formatScore(row.score))
+          + escapeHtml(row.status || "N/D")
           + "<br><span class='argilo-drx__mini-note'>" + escapeHtml(row.message || "") + "</span></li>";
       }).join("");
       return [
@@ -4271,7 +4656,8 @@
         "<h3>Leitura N/G/C principal · ", escapeHtml(group.sample_base || "amostra"), "</h3>",
         "<p><strong>Tratamentos:</strong> Natural, Glicolado, Calcinado</p>",
         "<p><strong>Minerais sinalizados:</strong> ", escapeHtml(minerals), "</p>",
-        best.mineral_candidate ? "<p><strong>Melhor hipótese auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + " · score " + escapeHtml(formatScore(best.score)) + " · confiança " + escapeHtml(best.confidence || "N/D") + "</p>" : "",
+        best.mineral_candidate ? "<p><strong>Melhor hipótese auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + "</p>" : "",
+        renderDiagnosticV3Block(group),
         diagnostics ? "<p><strong>Diagnóstico por faixas:</strong></p><ul>" + diagnostics + "</ul>" : "",
         screenings ? "<p><strong>Triagem mineralógica:</strong></p><ul>" + screenings + "</ul>" : "",
         '<p class="argilo-drx__mini-note">Resultado auxiliar para orientar curadoria; não confirma mineralogia automaticamente.</p>',
@@ -4279,6 +4665,185 @@
       ].join("");
     }).join("");
     return '<section class="argilo-drx__selected-ngc-summary">' + cards + "</section>";
+  }
+
+  function isExternalRawItem(item) {
+    return Boolean(
+      item &&
+      (
+        String(item.id || "").indexOf("external:") === 0 ||
+        (item.record && item.record.id === "arquivo-externo") ||
+        (item.traceability && item.traceability.source === "arquivo_externo_temporario")
+      )
+    );
+  }
+
+  function renderExternalRawFileRows(items) {
+    return (items || []).map(function (item) {
+      const filename = (item.metadata || {}).original_filename || item.sampleCode || item.id;
+      return [
+        "<tr>",
+        "<td>", escapeHtml(filename || "RAW externo"), "</td>",
+        "<td>", treatmentBadge(item), "</td>",
+        "<td>", escapeHtml(item.treatment_evidence || "N/D"), "</td>",
+        "</tr>",
+      ].join("");
+    }).join("");
+  }
+
+  function externalSimilarityEntries(items) {
+    const seen = new Set();
+    return (items || []).map(function (item) {
+      const similarity = item.packageSimilarity || {};
+      const best = similarity.best_match || {};
+      const recordId = best.record_id || similarity.record_id || "";
+      const key = [recordId, best.filename || "", best.sample_code || ""].join("|");
+      if (!similarity.available || !recordId || seen.has(key)) return "";
+      seen.add(key);
+      const loadButton = best.filename || best.sample_code ? [
+        '<button class="ui tiny button argilo-drx__load-similar" type="button"',
+        ' data-load-similar-raw="1"',
+        ' data-record-id="', escapeHtml(recordId), '"',
+        ' data-sample-code="', escapeHtml(best.sample_code || ""), '"',
+        ' data-filename="', escapeHtml(best.filename || ""), '">',
+        'Carregar RAW similar',
+        '</button>',
+      ].join("") : "";
+      return [
+        "<li>",
+        "<strong>", escapeHtml(best.sample_code || best.filename || "RAW similar no banco"), "</strong>",
+        best.preparation || best.preparation_label ? " · " + treatmentBadge({ treatment: best.preparation, treatment_label: best.preparation_label }) : "",
+        best.filename ? " · arquivo " + escapeHtml(best.filename) : "",
+        '<div class="argilo-drx__match-actions">',
+        recordButton(recordId, "Abrir registro", best.record_url),
+        loadButton,
+        "</div>",
+        "</li>",
+      ].join("");
+    }).filter(Boolean);
+  }
+
+  function renderExternalSimilarityLinks(items) {
+    const entries = externalSimilarityEntries(items);
+    const related = (items || []).map(function (item) {
+      return renderRelatedRecordMatches(item.packageSimilarity || {});
+    }).filter(Boolean).join("");
+    if (!entries.length && !related) return "";
+    return [
+      '<section class="compact-section argilo-drx__external-match">',
+      "<h3>RAW similar na Argiloteca</h3>",
+      entries.length ? "<ul>" + entries.join("") + "</ul>" : "",
+      related,
+      "</section>",
+    ].join("");
+  }
+
+  function renderExternalNgcCandidateEvidenceFromBackend(group) {
+    const screeningRows = (group && group.target_screening || [])
+      .filter(function (row) { return row.status && row.status !== "not_observed"; })
+      .slice(0, 6)
+      .map(function (row) {
+        return [
+          "<li>",
+          "<strong>", mineralLink(row.mineral || "Mineral"), ":</strong> ",
+          escapeHtml(row.status || "N/D"),
+          row.message ? "<br><span class='argilo-drx__mini-note'>" + escapeHtml(row.message) + "</span>" : "",
+          "</li>",
+        ].join("");
+      }).join("");
+    return [
+      renderDiagnosticV3Block(group),
+      screeningRows ? "<p><strong>Triagem mineralógica:</strong></p><ul>" + screeningRows + "</ul>" : "",
+    ].join("");
+  }
+
+  function renderExternalNgcCandidateEvidenceLocal(items) {
+    const assembly = buildMineralAssembly(items || []);
+    const bestMineral = bestClayMineralFromAssembly(assembly);
+    const groups = buildNgcGroups(items || []);
+    const groupRows = groups.slice(0, 3).map(function (group) {
+      const score = buildNgcTrajectoryScore(group);
+      const evidences = (score.evidences || []).slice(0, 5).map(function (row) {
+        return "<li>" + escapeHtml(row) + "</li>";
+      }).join("");
+      return [
+        "<li>",
+        "<strong>", escapeHtml(group.sampleBase || "amostra"), ":</strong> ",
+        "N ", escapeHtml(group.natural.length || 0), " · G ", escapeHtml(group.glicolada.length || 0), " · C ", escapeHtml(group.calcinada.length || 0),
+        evidences ? "<ul>" + evidences + "</ul>" : "",
+        "</li>",
+      ].join("");
+    }).join("");
+    const peakRows = bestMineral && (bestMineral.supportPeaks || []).length
+      ? bestMineral.supportPeaks.slice(0, 6).map(function (row) { return "<li>" + escapeHtml(row) + "</li>"; }).join("")
+      : "";
+    return [
+      bestMineral ? "<p><strong>Argilomineral resultante:</strong> " + mineralLink(bestMineral.mineral) + "</p>" : '<p class="argilo-drx__mini-note">Sem argilomineral resultante com evidência suficiente.</p>',
+      peakRows ? "<p><strong>Picos/observações que sustentam a hipótese:</strong></p><ul>" + peakRows + "</ul>" : "",
+      groupRows ? "<p><strong>Composição N/G/C do conjunto externo:</strong></p><ul>" + groupRows + "</ul>" : "",
+    ].join("");
+  }
+
+  function renderExternalGsas2Validation(items) {
+    const rows = (items || []).map(function (item) {
+      const validation = item.gsas2Validation || (item.metadata && item.metadata.gsas2_validation) || null;
+      if (!validation) return "";
+      const warnings = validation.warnings || [];
+      const jobId = validation.job_id || "N/D";
+      const instrument = validation.instrument_path || "não configurado";
+      const peakMode = validation.allow_peak_refinement ? "picos semeados enviados" : "somente importação/GPX";
+      return [
+        "<tr>",
+        "<td>", escapeHtml((item.metadata || {}).original_filename || item.sampleCode || item.id), "</td>",
+        "<td>", escapeHtml(validation.status || "registrado"), "</td>",
+        "<td>", escapeHtml(jobId), "</td>",
+        "<td>", escapeHtml(instrument), "</td>",
+        "<td>", escapeHtml(peakMode), "</td>",
+        "<td>", escapeHtml(warnings.slice(0, 2).join(" | ") || "sem aviso"), "</td>",
+        "</tr>",
+      ].join("");
+    }).filter(Boolean).join("");
+    if (!rows) return "";
+    return [
+      '<section class="compact-section argilo-drx__external-match">',
+      "<h3>Validação GSAS-II do RAW externo</h3>",
+      "<p>GSAS-II foi registrado como job externo auxiliar. O resultado não substitui a leitura N/G/C.</p>",
+      '<div class="argilo-drx__table-scroll"><table class="ui very compact celled table">',
+      "<thead><tr><th>Arquivo</th><th>Status</th><th>Job</th><th>Instrumento</th><th>Modo</th><th>Avisos</th></tr></thead><tbody>",
+      rows,
+      "</tbody></table></div>",
+      "</section>",
+    ].join("");
+  }
+
+  function renderExternalRawMergedNgcPanel(items) {
+    const groups = backendNgcGroups();
+    const completeGroups = groups.filter(function (group) {
+      const preps = group.available_preparations || [];
+      return preps.indexOf("natural") >= 0 && preps.indexOf("glicolado") >= 0 && preps.indexOf("calcinado") >= 0;
+    });
+    const backendGroup = completeGroups[0] || groups[0] || null;
+    const backendLoading = ngcWorkflowPayload && ngcWorkflowPayload.loading;
+    const backendError = ngcWorkflowPayload && ngcWorkflowPayload.success === false ? ngcWorkflowPayload.error : "";
+    const sourceBlock = backendLoading
+      ? '<p class="argilo-drx__mini-note">Calculando análise N/G/C do conjunto externo...</p>'
+      : (backendGroup ? renderExternalNgcCandidateEvidenceFromBackend(backendGroup) : renderExternalNgcCandidateEvidenceLocal(items));
+    return [
+      '<section class="argilo-drx__selected-ngc-summary">',
+      '<article class="argilo-drx__selected-card argilo-drx__selected-card--ngc">',
+      "<h3>Leitura N/G/C do RAW externo</h3>",
+      "<p>Os RAWs externos selecionados foram mesclados em uma única leitura para evitar cards separados por arquivo. A hipótese mineral abaixo usa os preparos Natural, Glicolado e Calcinado quando disponíveis.</p>",
+      '<div class="argilo-drx__table-scroll"><table class="ui very compact celled table">',
+      "<thead><tr><th>Arquivo</th><th>Preparo</th><th>Critério</th></tr></thead><tbody>",
+      renderExternalRawFileRows(items) || "<tr><td colspan='3'>Nenhum RAW externo selecionado.</td></tr>",
+      "</tbody></table></div>",
+      backendError ? '<p class="argilo-drx__mini-note">Workflow N/G/C backend indisponível: ' + escapeHtml(backendError) + '</p>' : "",
+      sourceBlock,
+      renderExternalSimilarityLinks(items),
+      '<p class="argilo-drx__mini-note">Leitura auxiliar para curadoria: o argilomineral resulta da combinação de tratamento N/G/C e picos basais/companheiros.</p>',
+      "</article>",
+      "</section>",
+    ].join("");
   }
 
   /**
@@ -4290,8 +4855,6 @@
     return [
       mineralLink(candidate.mineral || "Argilomineral candidato"),
       "(" + escapeHtml(mineralClass(candidate) || "Argilomineral") + ")",
-      "score " + escapeHtml(formatScore(Number(candidate.score))),
-      "confiança " + escapeHtml(candidate.confidence || "não informada") + ".",
       escapeHtml(evidenceSummary(candidate)),
     ].join(" ");
   }
@@ -4352,6 +4915,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderRruffOdrReviewLink(target) {
+    if (!DRX_SHOW_RRUFF_ODR_REVIEW_LINK) return "";
     if (!target || !target.slug) {
       return [
         "<section class='compact-section argilo-drx__rruff-link-card argilo-drx__rruff-link-card--missing'>",
@@ -4415,8 +4979,7 @@
     const alternatives = alternativeClayMinerals(assembly, selectedMineral);
     if (!alternatives.length) return "Nenhum candidato alternativo forte no conjunto selecionado.";
     return alternatives.map(function (row) {
-      return mineralLink(row.mineral) + " · score " + escapeHtml(formatScore(row.bestScore))
-        + " · confiança " + escapeHtml(row.bestConfidence || confidenceLabel(row.bestConfidenceRank));
+      return mineralLink(row.mineral);
     }).join("<br>");
   }
 
@@ -4451,8 +5014,6 @@
       const evidence = bestMineral
         ? mineralLink(bestMineral.mineral)
           + " (" + escapeHtml(bestMineral.classLabel || bestMineral.group || "Argilomineral") + ")"
-          + ", score " + escapeHtml(formatScore(bestMineral.bestScore))
-          + ", confiança " + escapeHtml(bestMineral.bestConfidence || confidenceLabel(bestMineral.bestConfidenceRank))
           + ". " + escapeHtml((bestMineral.evidences || []).filter(Boolean)[0] || evidenceSummary(bestMineral.candidate))
         : "N/D";
       return [
@@ -4653,7 +5214,7 @@
         return [
           "<li>",
           "<strong>", escapeHtml(screening.mineral || "Mineral"), ":</strong> ",
-          escapeHtml(statusLabel), " · score ", escapeHtml(formatScore(screening.score)),
+          escapeHtml(statusLabel),
           "<br><span>", escapeHtml(screening.message || ""), "</span>",
           values ? "<br><span class='argilo-drx__mini-note'>" + values + "</span>" : "",
           companionValues && companionValues !== values ? "<br><span class='argilo-drx__mini-note'>Picos companheiros: " + companionValues + "</span>" : "",
@@ -4685,7 +5246,6 @@
           '<article class="argilo-drx__diagnostic-block">',
           "<strong>", escapeHtml(candidate.candidateLabelPt || candidate.candidateId || "Candidato"), "</strong>",
           "<p><span>Status: ", escapeHtml(candidate.status || "N/D"), "</span>",
-          " · <span>score ", escapeHtml(formatScore(candidate.score)), "</span>",
           " · <span>família ", escapeHtml(candidate.family || "N/D"), "</span>",
           " · <span>nível ", escapeHtml(candidate.level || "N/D"), "</span></p>",
           candidate.explanationPt ? "<p>" + escapeHtml(candidate.explanationPt) + "</p>" : "",
@@ -4729,7 +5289,8 @@
         "<h3>Workflow N/G/C backend · ", escapeHtml(group.sample_base || "amostra"), "</h3>",
         "<p><strong>Status:</strong> ", escapeHtml(group.status || "N/D"),
         " · <strong>preparos:</strong> ", escapeHtml((group.available_preparations || []).map(treatmentLabel).join(", ") || "N/D"), "</p>",
-        best.mineral_candidate ? "<p><strong>Melhor candidato auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + " · score " + escapeHtml(formatScore(best.score)) + " · confiança " + escapeHtml(best.confidence || "N/D") + "</p>" : '<p class="argilo-drx__mini-note">Sem candidato N/G/C com evidência suficiente.</p>',
+        best.mineral_candidate ? "<p><strong>Melhor candidato auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + "</p>" : '<p class="argilo-drx__mini-note">Sem candidato N/G/C com evidência suficiente.</p>',
+        renderDiagnosticV3Block(group),
         clayInterpretationBlock,
         scriptReport.title ? "<p><strong>" + escapeHtml(scriptReport.title) + ":</strong></p>" + scriptMinerals + (scriptDiagnostics ? "<ul>" + scriptDiagnostics + "</ul>" : "") + scriptPeakTables : "",
         evidence ? "<ul>" + evidence + "</ul>" : "",
@@ -4756,6 +5317,10 @@
       return;
     }
     refreshNgcWorkflow(items);
+    if (items.length && items.every(isExternalRawItem)) {
+      selectedSummaryEl.innerHTML = renderExternalRawMergedNgcPanel(items);
+      return;
+    }
     const hasBackendNgc = hasBackendNgcCompleteGroup();
     const cards = items.map(function (item, index) {
       const color = palette[index % palette.length];
@@ -4777,12 +5342,12 @@
       ].join("") : "";
       const similarityBlock = similarity.available ? [
         '<div class="argilo-drx__external-match">',
-        '<p><strong>Comparação com o pacote do registro:</strong> ', escapeHtml(similarity.message || "Sem resultado informado."), "</p>",
-        bestMatch.filename ? '<p><strong>Mais semelhante:</strong> ' + escapeHtml(bestMatch.sample_code || bestMatch.filename) + " · " + treatmentBadge({ treatment: bestMatch.preparation, treatment_label: bestMatch.preparation_label }) + " · score " + escapeHtml(formatScore(bestMatch.score)) + "</p>" : "",
+        '<p><strong>Comparação com registros da Argiloteca:</strong> ', escapeHtml(similarity.message || "Sem resultado informado."), "</p>",
+        bestMatch.filename ? '<p><strong>Mais semelhante:</strong> ' + escapeHtml(bestMatch.sample_code || bestMatch.filename) + " · " + treatmentBadge({ treatment: bestMatch.preparation, treatment_label: bestMatch.preparation_label }) + "</p>" : "",
         similarRecordButton ? '<p>' + similarRecordButton + "</p>" : "",
-        renderScoreBreakdown(bestMatch),
         renderMatchedPeaks(bestMatch),
         loadSimilarButton,
+        renderRelatedRecordMatches(similarity),
         bestMatch.has_interpretation ? '<p><strong>Interpretação existente:</strong> há picos/candidatos mineralógicos já indexados na Argiloteca para esse arquivo.</p>' : "",
         (bestMatch.evidence || []).length ? '<ul>' + bestMatch.evidence.slice(0, 4).map(function (evidence) { return "<li>" + escapeHtml(evidence) + "</li>"; }).join("") + "</ul>" : "",
         "</div>",
@@ -5051,15 +5616,16 @@
       const matches = (candidate.matches || []).slice(0, 3).map(function (match) {
         const observed = match.observed_two_theta != null ? formatNumber(match.observed_two_theta, 2) + "°2θ" : "pico observado";
         const reference = match.reference_d_angstrom != null ? "ref. d=" + formatNumber(match.reference_d_angstrom, 2) + " Å" : "referência";
-        return "<li>" + escapeHtml(observed + " · " + reference + " · score " + formatScore(match.score)) + "</li>";
+        return "<li>" + escapeHtml(observed + " · " + reference) + "</li>";
       }).join("");
+      const candidateMeta = [
+        candidate.confidence ? "<strong>conf.:</strong> " + escapeHtml(candidate.confidence) : "",
+        candidate.matched_lines != null ? "<strong>linhas:</strong> " + escapeHtml(candidate.matched_lines) : "",
+      ].filter(Boolean).join(" · ");
       return [
         '<article class="argilo-drx__neural-candidate">',
         '<h5>', mineralLink(candidate.mineral || candidate.title_pt || candidate.argilomineral_id || "Mineral candidato"), "</h5>",
-        '<p><strong>Score:</strong> ', escapeHtml(formatScore(candidate.score)),
-        ' · <strong>conf.:</strong> ', escapeHtml(candidate.confidence || "N/D"),
-        candidate.matched_lines != null ? ' · <strong>linhas:</strong> ' + escapeHtml(candidate.matched_lines) : "",
-        "</p>",
+        candidateMeta ? "<p>" + candidateMeta + "</p>" : "",
         matches ? '<ul class="argilo-drx__evidence-list">' + matches + "</ul>" : "",
         "</article>",
       ].join("");
@@ -5632,6 +6198,38 @@
     quartz101Calcined: [3.27, 3.42],
     quartz100: [4.23, 4.35],
   };
+  let diagnosticPeakRulesCatalog = null;
+
+  function catalogRangePair(rangeId, fallback) {
+    const row = diagnosticPeakRulesCatalog && diagnosticPeakRulesCatalog.named_ranges && diagnosticPeakRulesCatalog.named_ranges[rangeId];
+    if (!row) return fallback;
+    const dMin = Number(row.d_min);
+    const dMax = Number(row.d_max);
+    if (!Number.isFinite(dMin) || !Number.isFinite(dMax)) return fallback;
+    return [dMin, dMax];
+  }
+
+  function hydrateDiagnosticPeakRulesCatalog(payload) {
+    if (!payload || payload.policy !== "argiloteca_rule_based_diagnostic") return;
+    diagnosticPeakRulesCatalog = payload;
+    const mapping = payload.frontend_sem_titulo_ranges || {};
+    Object.keys(mapping).forEach(function (key) {
+      SEM_TITULO_NGC_DIAGNOSTIC_RANGES[key] = catalogRangePair(mapping[key], SEM_TITULO_NGC_DIAGNOSTIC_RANGES[key]);
+    });
+  }
+
+  if (typeof fetch === "function") {
+    fetch(diagnosticPeakRulesCatalogUrl, { credentials: "same-origin" })
+      .then(function (response) {
+        if (!response.ok) throw new Error("diagnostic_peak_rules_catalog unavailable");
+        return response.json();
+      })
+      .then(hydrateDiagnosticPeakRulesCatalog)
+      .catch(function () {
+        // O painel mantem os fallbacks locais quando o catalogo estatico ainda
+        // nao foi publicado ou o navegador esta offline.
+      });
+  }
 
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -5711,6 +6309,9 @@
    */
   function confidenceRank(confidence) {
     const value = String(confidence || "").toLowerCase();
+    if (value === "confirmed_by_rules") return 3;
+    if (value === "probable_by_rules") return 2;
+    if (value === "possible_by_rules") return 1;
     if (value.indexOf("alta") >= 0 || value === "high") return 3;
     if (value.indexOf("media") >= 0 || value.indexOf("média") >= 0 || value === "medium") return 2;
     if (value.indexOf("baixa") >= 0 || value === "low") return 1;
@@ -5722,9 +6323,9 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function confidenceLabel(rank) {
-    if (rank >= 3) return "alta";
-    if (rank >= 2) return "média";
-    if (rank >= 1) return "baixa";
+    if (rank >= 3) return "confirmed_by_rules";
+    if (rank >= 2) return "probable_by_rules";
+    if (rank >= 1) return "possible_by_rules";
     return "não informada";
   }
 
@@ -6113,6 +6714,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderMethodologyLimitations(items) {
+    if (!DRX_SHOW_METHODOLOGY_LIMITATIONS) return "";
     const methods = items.length ? items.map(methodPayload) : [methodPayload({})];
     const wavelengths = Array.from(new Set(methods.map(function (method) {
       return formatNumber(method.wavelength, 5) + " Å" + (method.wavelengthAssumed ? " assumido" : " informado");
@@ -6161,7 +6763,6 @@
     return [
       mineralLink(bestClayMineral.mineral)
         + " (" + escapeHtml(bestClayMineral.classLabel || bestClayMineral.group || "Argilomineral") + ")"
-        + ", score " + escapeHtml(formatScore(bestClayMineral.bestScore))
         + ", confiança " + escapeHtml(bestClayMineral.bestConfidence || confidenceLabel(bestClayMineral.bestConfidenceRank))
         + ". " + escapeHtml(evidence),
     ];
@@ -6303,7 +6904,6 @@
     const suggestedMineral = selectedMineral
       ? mineralLink(selectedMineral.mineral)
         + " · " + escapeHtml(interpretationStrengthLabel(selectedMineral))
-        + " · score " + escapeHtml(formatScore(selectedMineral.bestScore))
         + " · confiança " + escapeHtml(selectedMineral.bestConfidence || confidenceLabel(selectedMineral.bestConfidenceRank))
       : "N/D";
     return [
@@ -6749,6 +7349,31 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function mineralReflectionRules() {
+    if (
+      diagnosticPeakRulesCatalog
+      && Array.isArray(diagnosticPeakRulesCatalog.frontend_mineral_reflection_rules)
+      && diagnosticPeakRulesCatalog.frontend_mineral_reflection_rules.length
+    ) {
+      return diagnosticPeakRulesCatalog.frontend_mineral_reflection_rules.map(function (rule) {
+        const fallback = [
+          Number(rule.d_min),
+          Number(rule.d_max),
+        ];
+        const fallbackRange = Number.isFinite(fallback[0]) && Number.isFinite(fallback[1]) ? fallback : [null, null];
+        const pair = rule.range ? catalogRangePair(rule.range, fallbackRange) : fallbackRange;
+        return {
+          mineral: rule.mineral,
+          reflection: rule.reflection,
+          target: rule.target,
+          min: pair[0],
+          max: pair[1],
+          required: rule.required || "",
+          note: rule.note || "",
+        };
+      }).filter(function (rule) {
+        return Number.isFinite(rule.min) && Number.isFinite(rule.max);
+      });
+    }
     return [
       { mineral: "Esmectita/montmorilonita", reflection: "001 em EG", target: 17.0, min: 16.6, max: 18.6, required: "EG/Glicolado", note: "expansão após glicolação; requer trajetória AD→EG→H" },
       { mineral: "Esmectita/montmorilonita", reflection: "001 natural", target: 15.0, min: 13.0, max: 16.5, required: "AD/Natural", note: "basal variável; não conclusivo isoladamente" },
@@ -7431,7 +8056,7 @@
     }).join("");
     return [
       '<details class="argilo-drx__score-details">',
-      "<summary>Componentes do score N/G/C</summary>",
+      "<summary>Critérios N-G-C</summary>",
       '<table class="argilo-drx__score-table"><tbody>', rows, "</tbody></table>",
       "</details>",
     ].join("");
@@ -7547,9 +8172,8 @@
       return [
         '<article class="argilo-drx__mineral-card">',
         "<h3>Comparação N/G/C · ", escapeHtml(row.sampleBase), "</h3>",
-        "<p><strong>Status:</strong> ", escapeHtml(row.status), " · <strong>score N/G/C:</strong> ", escapeHtml(formatScore(row.ngcScore)), " · <strong>confiança:</strong> ", escapeHtml(row.confidence), "</p>",
+        "<p><strong>Status:</strong> ", escapeHtml(row.status), " · <strong>confiança:</strong> ", escapeHtml(row.confidence), "</p>",
         "<p><strong>Hipótese assistida:</strong> ", linkKnownMineralText(row.candidates.join("; ")), "</p>",
-        renderNgcScoreDetails(row),
         '<ul class="argilo-drx__evidence-list">', evidenceRows, "</ul>",
         '<p class="argilo-drx__note">Interpretação preliminar, pendente de curadoria; não confirma mineral automaticamente.</p>',
         "</article>",
@@ -7909,6 +8533,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderPeakTable(rows) {
+    if (!DRX_SHOW_OBSERVED_PEAK_DIAGNOSTIC_TABLE) return "";
     const filteredRows = rows.filter(function (row) {
       return isDiagnosticPeak({ two_theta: row.twoTheta, d: row.d }) && hasDiagnosticCandidate(row.mineral);
     });
@@ -8101,7 +8726,7 @@
         "<h3>", mineralLink(summary.title || candidate.mineral), "</h3>",
         "<p><a href=\"", escapeHtml(summary.page_url || ""), "\">Abrir página completa na Argiloteca</a></p>",
         summary.classic_description ? "<p><strong>Descrição geral:</strong> " + escapeHtml(truncateReportText(String(summary.classic_description).split("\n\n")[0], 420)) + "</p>" : "",
-        "<p><strong>Score candidato:</strong> ", escapeHtml(formatScore(candidate.score)), " · <strong>Confiança:</strong> ", escapeHtml(candidate.confidence || "nao informada"), "</p>",
+        candidate.confidence ? "<p><strong>Confiança:</strong> " + escapeHtml(candidate.confidence) + "</p>" : "",
         renderTechnicalBlocks(summary.technical_blocks),
         "<h4>Handbook of Mineralogy</h4>",
         renderSourceBlocks(summary.scientific_source_blocks),
@@ -8113,7 +8738,7 @@
       "<section class='mineral-note'>",
       "<h3>", escapeHtml(description.title), "</h3>",
       "<p>", escapeHtml(description.text), "</p>",
-      "<p><strong>Score candidato:</strong> ", escapeHtml(formatScore(candidate.score)), " · <strong>Confiança:</strong> ", escapeHtml(candidate.confidence || "nao informada"), "</p>",
+      candidate.confidence ? "<p><strong>Confiança:</strong> " + escapeHtml(candidate.confidence) + "</p>" : "",
       "</section>",
     ].join("");
   }
@@ -8455,6 +9080,58 @@
       }
     });
   }
+  /**
+   * Atualiza a secao auxiliar GSAS-II. A chamada consulta apenas o backend da
+   * Argiloteca, que por sua vez executa o Python do GSAS-II em subprocesso; o
+   * navegador nao participa de refinamento nem de leitura direta de arquivos.
+   * @returns {Promise<void>} Resultado aplicado ao painel de status.
+   */
+  function loadGsas2Status() {
+    if (!gsas2ValidationPanelEl || !gsas2StatusUrl) return Promise.resolve();
+    if (gsas2StatusBadgeEl) gsas2StatusBadgeEl.textContent = "verificando";
+    if (gsas2StatusSummaryEl) {
+      gsas2StatusSummaryEl.innerHTML = "<div>Status: verificando ambiente externo...</div>";
+    }
+    return fetch(gsas2StatusUrl, { headers: { Accept: "application/json" } })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(function (payload) {
+        const engine = payload.engine || {};
+        const available = Boolean(engine.available);
+        if (gsas2StatusBadgeEl) {
+          gsas2StatusBadgeEl.textContent = available ? "disponivel" : "indisponivel";
+          gsas2StatusBadgeEl.classList.toggle("argilo-drx__badge--ok", available);
+          gsas2StatusBadgeEl.classList.toggle("argilo-drx__badge--warn", !available);
+        }
+        if (!gsas2StatusSummaryEl) return;
+        const binaries = engine.binary_modules || {};
+        const warnings = engine.warnings || [];
+        gsas2StatusSummaryEl.innerHTML = [
+          "<div><strong>Status</strong><span>" + escapeHtml(available ? "disponivel" : "indisponivel") + "</span></div>",
+          "<div><strong>Python</strong><span>" + escapeHtml(engine.python || "-") + "</span></div>",
+          "<div><strong>GSAS-II</strong><span>" + escapeHtml(engine.gsas2_root || "-") + "</span></div>",
+          "<div><strong>Scriptable</strong><span>" + escapeHtml(engine.scriptable_import ? "ok" : "falhou") + "</span></div>",
+          "<div><strong>Binarios</strong><span>" + escapeHtml(["pyspg", "pypowder", "pydiffax"].map(function (key) {
+            return key + "=" + (binaries[key] ? "ok" : "nao");
+          }).join(", ")) + "</span></div>",
+          "<div><strong>Politica</strong><span>auxiliary_not_confirmatory</span></div>",
+          warnings.length
+            ? "<div class=\"argilo-drx__gsas2-warnings\"><strong>Avisos</strong><span>" + escapeHtml(warnings.join(" | ")) + "</span></div>"
+            : "",
+        ].join("");
+      })
+      .catch(function (error) {
+        if (gsas2StatusBadgeEl) {
+          gsas2StatusBadgeEl.textContent = "erro";
+          gsas2StatusBadgeEl.classList.add("argilo-drx__badge--warn");
+        }
+        if (gsas2StatusSummaryEl) {
+          gsas2StatusSummaryEl.innerHTML = "<div><strong>Status</strong><span>falha ao consultar GSAS-II: " + escapeHtml(error.message || String(error)) + "</span></div>";
+        }
+      });
+  }
   // Ligacao final dos controles: paineis, exportacoes, zoom/pan e carregamentos
   // automaticos ficam concentrados aqui para separar estado, render e eventos.
   /**
@@ -8585,4 +9262,5 @@
   loadRecords()
     .then(loadPackageSelectionFromUrl)
     .then(loadMineralSelectionFromUrl);
+  loadGsas2Status();
 }());

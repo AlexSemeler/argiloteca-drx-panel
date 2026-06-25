@@ -1,0 +1,92 @@
+{
+  "argiloteca_behavior_schema": {
+    "properties": {
+      "behavior": {
+        "type": "object"
+      },
+      "source": {
+        "type": "object"
+      },
+      "target": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "target",
+      "behavior",
+      "source"
+    ],
+    "type": "object"
+  },
+  "argiloteca_mineral_schema": {
+    "properties": {
+      "behavior": {
+        "type": "object"
+      },
+      "d060_rules": {
+        "type": "array"
+      },
+      "diagnostic_reflections": {
+        "type": "array"
+      },
+      "diagnostic_strength": {
+        "type": "object"
+      },
+      "group": {
+        "type": "string"
+      },
+      "intensity_rules": {
+        "type": "array"
+      },
+      "known_interferences": {
+        "type": "array"
+      },
+      "name": {
+        "type": "string"
+      },
+      "references": {
+        "type": "array"
+      },
+      "supporting_reflections": {
+        "type": "array"
+      }
+    },
+    "required": [
+      "name",
+      "group",
+      "diagnostic_reflections",
+      "behavior",
+      "references"
+    ],
+    "type": "object"
+  },
+  "argiloteca_rule_schema": {
+    "properties": {
+      "conditions": {
+        "type": "array"
+      },
+      "explanation": {
+        "type": "string"
+      },
+      "rule_id": {
+        "type": "string"
+      },
+      "source": {
+        "type": "object"
+      },
+      "target": {
+        "type": "string"
+      },
+      "weight": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "rule_id",
+      "target",
+      "conditions",
+      "source"
+    ],
+    "type": "object"
+  }
+}

@@ -1,0 +1,147 @@
+[
+  {
+    "behavior": {
+      "C": {
+        "001": "unchanged"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "9.8-10.4A"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 233,
+      "quote_fragment": "unchanged",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "illite_mica"
+  },
+  {
+    "behavior": {
+      "C": {
+        "001": "persists_or_increases",
+        "002_003_004": "weakened"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "13.7-14.8A"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 234,
+      "quote_fragment": "550°C",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "chlorite"
+  },
+  {
+    "behavior": {
+      "C": {
+        "001": "disappears_or_strongly_reduced"
+      },
+      "G": {
+        "001": "unchanged"
+      },
+      "N": {
+        "001": "7.0-7.4A"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 234,
+      "quote_fragment": "kaolinite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "kaolin_group"
+  },
+  {
+    "behavior": {
+      "C": {
+        "001": "collapse_to_10A"
+      },
+      "G": {
+        "001": "about_17A"
+      },
+      "N": {
+        "001": "12-15A"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 241,
+      "quote_fragment": "glycol",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "smectite"
+  },
+  {
+    "behavior": {
+      "K_or_300C": {
+        "001": "collapse_to_10A"
+      },
+      "N": {
+        "001": "about_14.5A"
+      },
+      "glycerol": {
+        "001": "retains_14.5A"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 240,
+      "quote_fragment": "vermiculite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "vermiculite"
+  },
+  {
+    "behavior": {
+      "G": {
+        "low_angle": "unchanged"
+      },
+      "N": {
+        "low_angle": "12A_or_10.4A"
+      },
+      "mild_heat": {
+        "low_angle": "mostly_unchanged"
+      }
+    },
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 244,
+      "quote_fragment": "sepiolite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": "7.3"
+    },
+    "target": "sepiolite_palygorskite"
+  }
+]

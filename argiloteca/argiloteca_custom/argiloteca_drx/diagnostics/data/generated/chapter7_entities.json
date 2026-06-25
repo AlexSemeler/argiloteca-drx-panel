@@ -1,0 +1,122 @@
+[
+  {
+    "entity_id": "illite",
+    "entity_type": "mineral_group",
+    "name": "Illite/mica",
+    "page": 233,
+    "paragraph": "Illite and Glauconite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "glauconite",
+    "entity_type": "mineral",
+    "name": "Glauconite",
+    "page": 233,
+    "paragraph": "Illite and Glauconite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "chlorite",
+    "entity_type": "mineral_group",
+    "name": "Chlorite",
+    "page": 234,
+    "paragraph": "Chlorite and Kaolinite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "kaolinite",
+    "entity_type": "mineral",
+    "name": "Kaolinite",
+    "page": 234,
+    "paragraph": "Chlorite and Kaolinite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "vermiculite",
+    "entity_type": "mineral_group",
+    "name": "Vermiculite",
+    "page": 240,
+    "paragraph": "Vermiculite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "smectite",
+    "entity_type": "mineral_group",
+    "name": "Smectite",
+    "page": 241,
+    "paragraph": "Smectite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "montmorillonite",
+    "entity_type": "mineral",
+    "name": "Montmorillonite",
+    "page": 242,
+    "paragraph": "Smectite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "nontronite",
+    "entity_type": "mineral",
+    "name": "Nontronite",
+    "page": 243,
+    "paragraph": "Smectite intensity",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "saponite",
+    "entity_type": "mineral",
+    "name": "Saponite",
+    "page": 242,
+    "paragraph": "Smectite intensity",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "sepiolite",
+    "entity_type": "mineral",
+    "name": "Sepiolite",
+    "page": 244,
+    "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "palygorskite",
+    "entity_type": "mineral",
+    "name": "Palygorskite",
+    "page": 244,
+    "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "halloysite",
+    "entity_type": "mineral",
+    "name": "Halloysite",
+    "page": 244,
+    "paragraph": "Sepiolite, Palygorskite, and Halloysite",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "quartz",
+    "entity_type": "associated_mineral",
+    "name": "Quartz",
+    "page": 227,
+    "paragraph": "Qualitative identification procedure",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "d060",
+    "entity_type": "reflection",
+    "name": "060 reflection",
+    "page": 245,
+    "paragraph": "060 reflections",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  },
+  {
+    "entity_id": "ool_series",
+    "entity_type": "reflection_series",
+    "name": "OOl basal series",
+    "page": 228,
+    "paragraph": "General principles",
+    "source": "moore_reynolds_chapter7_ocr_analises_pdf"
+  }
+]

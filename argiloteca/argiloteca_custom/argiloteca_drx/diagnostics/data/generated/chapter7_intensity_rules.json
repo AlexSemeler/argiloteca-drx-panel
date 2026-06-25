@@ -1,0 +1,79 @@
+[
+  {
+    "limitations": [
+      "Use unoriented powder or controlled measurement where possible.",
+      "Avoid when kaolinite/serpentine interfere with 002/004."
+    ],
+    "meaning": "Auxiliary estimate of chlorite Fe content when chlorite peaks are free of interference.",
+    "ratio": "I003/I005",
+    "rule_id": "chapter7_chlorite_fe_003_005",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 236,
+      "quote_fragment": "I003",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": "7.1"
+    },
+    "target": "chlorite"
+  },
+  {
+    "limitations": [
+      "Requires correction for asymmetry and minimal overlap."
+    ],
+    "meaning": "Auxiliary evidence for Fe distribution/symmetry in chlorite.",
+    "ratio": "(I002+I004)/I003",
+    "rule_id": "chapter7_chlorite_symmetry_even_odd",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 237,
+      "quote_fragment": "I002",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": "7.2"
+    },
+    "target": "chlorite"
+  },
+  {
+    "limitations": [
+      "Fe-rich dioctahedral and Mg-rich trioctahedral patterns may converge; use d060."
+    ],
+    "meaning": "Auxiliary separation of dioctahedral/trioctahedral smectites as octahedral scattering changes.",
+    "ratio": "I002/I003",
+    "rule_id": "chapter7_smectite_002_003",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": "7.9",
+      "page": 242,
+      "quote_fragment": "I002",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "smectite"
+  },
+  {
+    "limitations": [
+      "Use with 550 C response; do not use a single peak."
+    ],
+    "meaning": "Auxiliary support for kaolinite when separating it from chlorite near 25 degrees two-theta.",
+    "ratio": "I002/I003",
+    "rule_id": "chapter7_kaolinite_002_003",
+    "source": {
+      "chapter": "Identification of Clay Minerals and Associated Minerals",
+      "figure": null,
+      "page": 234,
+      "quote_fragment": "I002",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_id": "moore_reynolds_chapter7_ocr_analises_pdf",
+      "table": null
+    },
+    "target": "kaolinite"
+  }
+]

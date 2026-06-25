@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "argiloteca_rule_schema.json",
+  "title": "Argiloteca DRX Diagnostic Rule",
+  "type": "object",
+  "required": ["rule_id", "target", "conditions", "source"],
+  "properties": {
+    "rule_id": {"type": "string"},
+    "target": {"type": "string"},
+    "weight": {"type": "number"},
+    "conditions": {"type": "array"},
+    "explanation": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["source_id", "source_book", "chapter", "page"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "source_book": {"type": "string"},
+        "chapter": {"type": "string"},
+        "page": {"type": ["integer", "string"]},
+        "figure": {"type": ["string", "null"]},
+        "table": {"type": ["string", "null"]},
+        "quote_fragment": {"type": "string"}
+      }
+    }
+  }
+}

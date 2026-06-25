@@ -9,8 +9,6 @@ Autores:
   E-mail: alexandre.semeler@ufrgs.br
 
 
-Instituição:
-Universidade Federal do Rio Grande do Sul (UFRGS)
 
 Projeto:
 Argiloteca / CPAA
@@ -91,6 +89,13 @@ from .services.drx_references import compare_reference_pattern, parse_reference_
 from .services.drx_science_engine import science_engine_status
 from .services.drx_reference_index import reference_pattern_from_index, search_reference_index
 from .services.drx_external_jobs import get_external_job, list_external_jobs, submit_external_job
+from .services.drx_gsas2_bridge import (
+    compare_completed_job,
+    gsas2_status,
+    seed_peaks_from_analysis,
+    submit_gsas2_pattern_validation,
+    submit_temporary_upload_gsas2_validation,
+)
 from .services.drx_cif_simulation import build_cif_simulation_payload
 from .services.drx_ngc_workflow import build_ngc_workflow
 from .services.drx_selection_report import build_drx_selection_report, render_drx_selection_report_html
@@ -326,6 +331,22 @@ def _read_json_snapshot(path):
         except Exception:
             continue
     return None
+
+
+def _safe_upload_filename(filename):
+    """Return a bounded ASCII-ish filename segment for local temp artifacts."""
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(str(filename or "upload")).name).strip("._")
+    return stem[:160] or "upload"
+
+
+def _persist_drx_temp_upload(content, original_filename, raw_sha256):
+    """Persist a temporary DRX upload so offline GSAS-II workers can read it."""
+    temp_dir = _INSTANCE_PATH / "argiloteca_drx_temp_uploads"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    safe_name = _safe_upload_filename(original_filename)
+    path = temp_dir / f"{raw_sha256[:16]}_{safe_name}"
+    path.write_bytes(content)
+    return path
 
 def _load_points_snapshot():
     """Load georeferenced point snapshot when no runtime filters are active."""
@@ -2112,6 +2133,44 @@ def create_blueprint(app):
         return jsonify({"success": bool(payload.get("available")), "engine": payload})
 
     @blueprint.route(
+        "/api/argiloteca/drx/gsas2/status",
+        endpoint="api_drx_gsas2_status",
+    )
+    @blueprint.route("/argiloteca/drx/gsas2/status")
+    def api_drx_gsas2_status():
+        """Return GSAS-II availability without importing it in Flask."""
+        payload = gsas2_status()
+        return jsonify({"success": bool(payload.get("available")), "engine": payload})
+
+    @blueprint.route(
+        "/api/argiloteca/drx/gsas2/validate-pattern",
+        methods=["POST"],
+        endpoint="api_drx_gsas2_validate_pattern",
+    )
+    @blueprint.route("/argiloteca/drx/gsas2/validate-pattern", methods=["POST"])
+    def api_drx_gsas2_validate_pattern():
+        """Register a GSAS-II external validation job for a local pattern path."""
+        try:
+            payload = request.get_json(silent=True) or request.form.to_dict(flat=True) or {}
+            pattern_path = payload.get("pattern_path") or payload.get("xrd_path") or payload.get("diffractogram_path")
+            if not pattern_path:
+                return jsonify({"success": False, "policy": "auxiliary_not_confirmatory", "error": "Informe pattern_path."}), 400
+            result = submit_gsas2_pattern_validation(payload)
+            return jsonify(result), 202 if result.get("success") else 400
+        except Exception as e:
+            return jsonify({"success": False, "policy": "auxiliary_not_confirmatory", "error": str(e), "traceback": traceback.format_exc()}), 500
+
+    @blueprint.route(
+        "/api/argiloteca/drx/gsas2/compare-job/<job_id>",
+        endpoint="api_drx_gsas2_compare_job",
+    )
+    @blueprint.route("/argiloteca/drx/gsas2/compare-job/<job_id>")
+    def api_drx_gsas2_compare_job(job_id):
+        """Compare Argiloteca and GSAS-II parser summaries for a completed job."""
+        payload = compare_completed_job(job_id)
+        return jsonify(payload), 200 if payload.get("success") else 404
+
+    @blueprint.route(
         "/api/argiloteca/drx/cif/simulate",
         methods=["POST"],
         endpoint="api_drx_cif_simulate",
@@ -2580,6 +2639,7 @@ def create_blueprint(app):
             if content is None:
                 return _upload_too_large_response(DRX_TEMP_UPLOAD_MAX_BYTES)
             raw_sha256 = hashlib.sha256(content).hexdigest()
+            temp_upload_path = _persist_drx_temp_upload(content, original_filename, raw_sha256)
             parsed = parse_diffractogram_bytes(content, filename=original_filename)
             sample_code = request.form.get("sample_code") or Path(original_filename).stem
             treatment = infer_diffractogram_treatment(sample_code, original_filename)
@@ -2635,12 +2695,16 @@ def create_blueprint(app):
             similarity_scope = (
                 request.form.get("similarity_scope")
                 or request.args.get("similarity_scope")
-                or ("record" if record_id else "snapshot")
+                or "all"
             ).strip().lower()
-            # A comparacao global e opt-in porque varrer todos os pacotes DRX e
-            # mais caro que verificar o contexto do registro ou o snapshot geral.
+            global_package_scan = similarity_scope in {"all", "global", "packages", "pacotes"}
+            # Para upload temporario, o painel deve avisar se o RAW ja existe
+            # ou se ha curva parecida em outros registros da Argiloteca. Quando
+            # a busca global estiver ativa, omitimos o record_id para a rotina
+            # consultar snapshot geral e pacotes analiticos DRX de todos os
+            # registros, em vez de ficar presa ao pacote do registro aberto.
             package_similarity = compare_external_curve_to_package(
-                record_id,
+                None if global_package_scan else record_id,
                 original_filename=original_filename,
                 raw_sha256=raw_sha256,
                 metadata=parsed.metadata,
@@ -2648,7 +2712,12 @@ def create_blueprint(app):
                 intensity=parsed.intensity,
                 detected_peaks=advanced_processing.get("peaks") or identification.get("peaks") or [],
                 mineral_candidates=identification.get("candidates") or [],
-                global_package_scan=similarity_scope in {"all", "global", "packages", "pacotes"},
+                global_package_scan=global_package_scan,
+            )
+            gsas2_validation = submit_temporary_upload_gsas2_validation(
+                temp_upload_path,
+                original_filename=original_filename,
+                seed_peaks=seed_peaks_from_analysis(advanced_processing.get("peaks") or identification.get("peaks") or []),
             )
             two_theta, intensity = decimate_series(
                 parsed.two_theta,
@@ -2662,6 +2731,8 @@ def create_blueprint(app):
                 "source": "arquivo_externo_temporario",
                 "source_sha256": raw_sha256,
                 "stored": False,
+                "temporary_upload_path": str(temp_upload_path),
+                "gsas2_validation": gsas2_validation,
                 "mineral_classification_source": identification.get("reference_source"),
                 "mineral_classification_error": identification.get("classification_error"),
                 "advanced_summary": advanced_summary,
@@ -2693,6 +2764,7 @@ def create_blueprint(app):
                     "advanced_curve": advanced_curve,
                     "mineral_candidates": identification.get("candidates") or [],
                     "package_similarity": package_similarity,
+                    "gsas2_validation": gsas2_validation,
                     "two_theta": two_theta,
                     "intensity": intensity,
                     "render_points": len(two_theta),

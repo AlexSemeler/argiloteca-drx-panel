@@ -1,0 +1,10 @@
+{
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source": "argiloteca_local_validated_patterns",
+  "builder": "argiloteca_drx.diagnostics.empirical_builder.build_empirical_ranges",
+  "notes": [
+    "Empirical ranges must be generated only from specialist-accepted patterns.",
+    "Empirical ranges are auxiliary local hypotheses and do not replace bibliographic ranges."
+  ]
+}
+

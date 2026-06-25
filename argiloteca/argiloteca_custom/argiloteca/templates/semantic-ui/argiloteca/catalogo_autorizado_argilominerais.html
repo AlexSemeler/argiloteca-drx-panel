@@ -534,9 +534,6 @@
                 <a class="ui basic button" href="{{ url_for('argiloteca.mapa_argilominerais', mineral_term=mineral.get('slug')) }}">
                   Ver no mapa
                 </a>
-                <a class="ui basic button" href="{{ url_for('argiloteca.geoquimica_agregada') }}?argilomineral={{ mineral.get('slug') }}">
-                  Explorar no atlas químico
-                </a>
                 <a class="ui basic button" href="{{ url_for('argiloteca.drx_comparacao') }}?argilomineral={{ mineral.get('slug') }}">
                   Abrir comparação DRX N/G/C
                 </a>
