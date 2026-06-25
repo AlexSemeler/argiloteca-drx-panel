@@ -127,7 +127,9 @@ if [[ "$RUN_TESTS" == "1" ]]; then
   echo "[5] Rodando testes DRX disponiveis..."
   if [[ -f argiloteca/argiloteca_custom/tests/test_drx_v3_engine.py ]]; then
     PYTHONPATH="$REPO_DIR:$REPO_DIR/argiloteca/argiloteca_custom" \
-      "$PYTHON_BIN" -m unittest argiloteca/argiloteca_custom/tests/test_drx_v3_engine.py
+      "$PYTHON_BIN" -m unittest discover \
+        -s argiloteca/argiloteca_custom/tests \
+        -p test_drx_v3_engine.py
   else
     echo "AVISO: test_drx_v3_engine.py nao encontrado; testes pulados."
   fi

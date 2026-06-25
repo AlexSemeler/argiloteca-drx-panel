@@ -16,7 +16,7 @@ class DrxV3EngineTest(unittest.TestCase):
 
     def test_classic_kaolinite_ngc(self):
         payload = interpret_ngc({"N": [(7.16, 100), (3.57, 50)], "G": [(7.15, 90)], "C": []}, {"d060": 1.49})
-        self.assertEqual(payload["diagnostic_interpretation"]["policy"], "auxiliary_not_confirmatory")
+        self.assertEqual(payload["diagnostic_interpretation"]["policy"], "argiloteca_rule_based_diagnostic")
         self.assertIn("kaolin_group", self.labels(payload))
 
     def test_kaolinite_strong_thermal_reduction_is_accepted(self):
@@ -112,11 +112,11 @@ class DrxV3EngineTest(unittest.TestCase):
             {"sample_base": "S1", "preparation": "glycolated", "peaks": [{"d_spacing": 17.0, "intensity": 100}]},
             {"sample_base": "S1", "preparation": "calcined", "peaks": [{"d_spacing": 10.0, "intensity": 80}]},
         ])
-        self.assertEqual(workflow["groups"][0]["diagnostic_interpretation"]["policy"], "auxiliary_not_confirmatory")
+        self.assertEqual(workflow["groups"][0]["diagnostic_interpretation"]["policy"], "argiloteca_rule_based_diagnostic")
 
     def test_chapter7_knowledge_base_is_traceable(self):
         knowledge = get_chapter7_knowledge()
-        self.assertEqual(knowledge["source"]["policy"], "auxiliary_not_confirmatory")
+        self.assertEqual(knowledge["source"]["policy"], "argiloteca_rule_based_diagnostic")
         self.assertIn("chapter7_chlorite_ool", {row["rule_id"] for row in knowledge["diagnostic_rules"]})
         for rule in knowledge["diagnostic_rules"]:
             self.assertIn("source", rule)
