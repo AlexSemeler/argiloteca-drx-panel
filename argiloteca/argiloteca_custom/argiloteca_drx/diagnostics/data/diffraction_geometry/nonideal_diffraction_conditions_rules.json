@@ -1,0 +1,140 @@
+[
+  {
+    "id": "bragg_law_strict_validity_requires_ideal_conditions",
+    "rule_id": "bragg_law_strict_validity_requires_ideal_conditions",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "validity_constraint",
+    "title": "Strict Bragg law needs ideal conditions",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "ideal_assumptions": [
+          "perfect crystal",
+          "parallel beam",
+          "monochromatic radiation"
+        ]
+      }
+    ],
+    "outputs": [
+      "exact Bragg condition only idealized"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Real peaks have finite width and intensity away from exact Bragg angle."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "perfect crystal and an incident beam composed of perfectly parallel and strictly monochromatic radiation",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "nonideal_conditions_peak_broadening",
+    "rule_id": "nonideal_conditions_peak_broadening",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "nonideal_condition",
+    "title": "Nonideal conditions broaden peaks",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "conditions": [
+          "finite_crystallite_size",
+          "strain",
+          "dislocations",
+          "beam_divergence",
+          "finite_spectral_width"
+        ]
+      }
+    ],
+    "outputs": [
+      "peak_broadening_or_shape_change"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Imperfections ... can broaden the diffraction peaks",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "kinematical_theory_thick_perfect_exception",
+    "rule_id": "kinematical_theory_thick_perfect_exception",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "nonideal_condition",
+    "title": "Kinematical assumption exception",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "sample": "thick_highly_perfect_crystal"
+      }
+    ],
+    "outputs": [
+      "multiple_scattering_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "holds except for diffraction from thick, highly perfect crystals",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

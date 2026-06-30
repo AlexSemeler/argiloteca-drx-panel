@@ -1,0 +1,9 @@
+{
+  "schema_id": "xrd_dashboard_input_schema",
+  "widgets": [
+    "file_upload",
+    "wavelength",
+    "treatment_state",
+    "instrument_profile"
+  ]
+}

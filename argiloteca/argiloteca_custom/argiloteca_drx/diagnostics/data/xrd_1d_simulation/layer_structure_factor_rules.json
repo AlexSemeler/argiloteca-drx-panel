@@ -1,0 +1,60 @@
+[
+  {
+    "rule_id": "layer_G_depends_on_z_and_chemistry",
+    "rule_type": "layer_structure_factor",
+    "target": "G_theta",
+    "formal_statement": "G(theta) depends on atomic scattering factors, occupancies and z-coordinate distribution.",
+    "conditions": [],
+    "input_features": [
+      "atomic_coordinates_z",
+      "atomic_scattering_factors",
+      "occupancies",
+      "theta",
+      "lambda"
+    ],
+    "output": "G_theta_or_G_squared",
+    "diagnostic_implication": "Similar peak positions can have different intensities.",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "99",
+      "pdf_page": "4",
+      "figure": "",
+      "table": "",
+      "equation": "3.16",
+      "quote_fragment": "multiply the number of atoms"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "similar_positions_do_not_imply_similar_intensities",
+    "rule_type": "layer_structure_factor",
+    "target": "intensity",
+    "formal_statement": "If two minerals have similar peak positions, do not assume similar intensities because G depends on chemistry and z coordinates.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [
+      "high-angle intensities are more sensitive"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "367",
+      "pdf_page": "17",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "small errors ... small discrepancies"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid"
+  }
+]

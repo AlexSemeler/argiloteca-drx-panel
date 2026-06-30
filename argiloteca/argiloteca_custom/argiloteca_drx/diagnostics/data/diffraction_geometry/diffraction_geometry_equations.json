@@ -1,0 +1,1212 @@
+[
+  {
+    "equation_id": "eq_3_1",
+    "id": "eq_3_1",
+    "type": "equation",
+    "title": "Bragg law nth order",
+    "name": "Bragg law nth order",
+    "chapter": "3",
+    "section": "3-3",
+    "number": "3-1",
+    "original": "n\\lambda = 2d'\\sin\\theta",
+    "latex": "n\\lambda = 2d'\\sin\\theta",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-1",
+      "problem": "",
+      "quote_fragment": "n lambda equals 2 d prime sin theta",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_2",
+    "id": "eq_3_2",
+    "type": "equation",
+    "title": "Bragg sine constraint",
+    "name": "Bragg sine constraint",
+    "chapter": "3",
+    "section": "3-3",
+    "number": "3-2",
+    "original": "n\\lambda/(2d') = \\sin\\theta < 1",
+    "latex": "n\\lambda/(2d') = \\sin\\theta < 1",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-2",
+      "problem": "",
+      "quote_fragment": "sin theta cannot exceed unity",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_3",
+    "id": "eq_3_3",
+    "type": "equation",
+    "title": "Bragg observability",
+    "name": "Bragg observability",
+    "chapter": "3",
+    "section": "3-3",
+    "number": "3-3",
+    "original": "\\lambda < 2d'",
+    "latex": "\\lambda < 2d'",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-3",
+      "problem": "",
+      "quote_fragment": "condition for diffraction at any observable angle",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_4",
+    "id": "eq_3_4",
+    "type": "equation",
+    "title": "nth order as first order",
+    "name": "nth order as first order",
+    "chapter": "3",
+    "section": "3-3",
+    "number": "3-4",
+    "original": "\\lambda = 2(d'/n)\\sin\\theta",
+    "latex": "\\lambda = 2(d'/n)\\sin\\theta",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-4",
+      "problem": "",
+      "quote_fragment": "reflection of any order can be considered first-order",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_5",
+    "id": "eq_3_5",
+    "type": "equation",
+    "title": "Bragg law first-order form",
+    "name": "Bragg law first-order form",
+    "chapter": "3",
+    "section": "3-3",
+    "number": "3-5",
+    "original": "\\lambda = 2d\\sin\\theta",
+    "latex": "\\lambda = 2d\\sin\\theta",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [
+      "d = lambda/(2*sin(theta))",
+      "theta = asin(lambda/(2*d))",
+      "two_theta = 2*theta"
+    ],
+    "implementation": "bragg_d_spacing(lambda_A, two_theta_deg)",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-5",
+      "problem": "",
+      "quote_fragment": "This form will be used throughout this book",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_6a",
+    "id": "eq_3_6a",
+    "type": "equation",
+    "title": "Laue equation a",
+    "name": "Laue equation a",
+    "chapter": "3",
+    "section": "3-4",
+    "number": "3-6a",
+    "original": "a(\\cos\\alpha-\\cos\\alpha_0)=h\\lambda",
+    "latex": "a(\\cos\\alpha-\\cos\\alpha_0)=h\\lambda",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "3-6a",
+      "problem": "",
+      "quote_fragment": "one-dimensional array of scatterers",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_6b",
+    "id": "eq_3_6b",
+    "type": "equation",
+    "title": "Laue equation b",
+    "name": "Laue equation b",
+    "chapter": "3",
+    "section": "3-4",
+    "number": "3-6b",
+    "original": "b(\\cos\\beta-\\cos\\beta_0)=k\\lambda",
+    "latex": "b(\\cos\\beta-\\cos\\beta_0)=k\\lambda",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "3-6b",
+      "problem": "",
+      "quote_fragment": "second equation must be simultaneously satisfied",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_6c",
+    "id": "eq_3_6c",
+    "type": "equation",
+    "title": "Laue equation c",
+    "name": "Laue equation c",
+    "chapter": "3",
+    "section": "3-4",
+    "number": "3-6c",
+    "original": "c(\\cos\\gamma-\\cos\\gamma_0)=l\\lambda",
+    "latex": "c(\\cos\\gamma-\\cos\\gamma_0)=l\\lambda",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "3-6c",
+      "problem": "",
+      "quote_fragment": "third condition arises",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_7",
+    "id": "eq_3_7",
+    "type": "equation",
+    "title": "Direct-lattice path difference",
+    "name": "Direct-lattice path difference",
+    "chapter": "3",
+    "section": "3-5",
+    "number": "3-7",
+    "original": "\\delta=-\\vec{OA}\\cdot(\\vec{S}-\\vec{S}_0)",
+    "latex": "\\delta=-\\vec{OA}\\cdot(\\vec{S}-\\vec{S}_0)",
+    "variables": [
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-7",
+      "problem": "",
+      "quote_fragment": "path difference for x-rays scattered from O and A",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_8",
+    "id": "eq_3_8",
+    "type": "equation",
+    "title": "Phase difference",
+    "name": "Phase difference",
+    "chapter": "3",
+    "section": "3-5",
+    "number": "3-8",
+    "original": "\\phi=2\\pi\\delta/\\lambda=2\\pi\\vec{s}\\cdot\\vec{OA}",
+    "latex": "\\phi=2\\pi\\delta/\\lambda=2\\pi\\vec{s}\\cdot\\vec{OA}",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-8",
+      "problem": "",
+      "quote_fragment": "corresponding phase difference",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_9",
+    "id": "eq_3_9",
+    "type": "equation",
+    "title": "Reciprocal condition expansion",
+    "name": "Reciprocal condition expansion",
+    "chapter": "3",
+    "section": "3-5",
+    "number": "3-9",
+    "original": "\\vec{s}=h'\\vec{b}_1+k'\\vec{b}_2+l'\\vec{b}_3",
+    "latex": "\\vec{s}=h'\\vec{b}_1+k'\\vec{b}_2+l'\\vec{b}_3",
+    "variables": [
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-9",
+      "problem": "",
+      "quote_fragment": "h prime, k prime and l prime are continuously variable",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_10",
+    "id": "eq_3_10",
+    "type": "equation",
+    "title": "Reciprocal lattice diffraction condition",
+    "name": "Reciprocal lattice diffraction condition",
+    "chapter": "3",
+    "section": "3-5",
+    "number": "3-10",
+    "original": "\\vec{s}=h\\vec{b}_1+k\\vec{b}_2+l\\vec{b}_3",
+    "latex": "\\vec{s}=h\\vec{b}_1+k\\vec{b}_2+l\\vec{b}_3",
+    "variables": [
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-10",
+      "problem": "",
+      "quote_fragment": "h, k and l must be integers",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_11",
+    "id": "eq_3_11",
+    "type": "equation",
+    "title": "Cubic diffraction directions",
+    "name": "Cubic diffraction directions",
+    "chapter": "3",
+    "section": "3-6",
+    "number": "3-11",
+    "original": "\\sin^2\\theta=\\lambda^2(h^2+k^2+l^2)/(4a^2)",
+    "latex": "\\sin^2\\theta=\\lambda^2(h^2+k^2+l^2)/(4a^2)",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "cubic_two_theta(lambda_A, a_A, h, k, l)",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-6",
+      "book_page": "102",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "3-11",
+      "problem": "",
+      "quote_fragment": "predicts all possible Bragg angles",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_12",
+    "id": "eq_3_12",
+    "type": "equation",
+    "title": "Tetragonal diffraction directions",
+    "name": "Tetragonal diffraction directions",
+    "chapter": "3",
+    "section": "3-6",
+    "number": "3-12",
+    "original": "\\sin^2\\theta=\\lambda^2/4[(h^2+k^2)/a^2+l^2/c^2]",
+    "latex": "\\sin^2\\theta=\\lambda^2/4[(h^2+k^2)/a^2+l^2/c^2]",
+    "variables": [
+      {
+        "symbol": "\\lambda",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "required": true
+      },
+      {
+        "symbol": "\\theta",
+        "name": "Bragg_angle",
+        "unit": "degree_or_radian",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "tetragonal_two_theta(lambda_A, a_A, c_A, h, k, l)",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-6",
+      "book_page": "102",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "3-12",
+      "problem": "",
+      "quote_fragment": "if the crystal is tetragonal",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_13",
+    "id": "eq_3_13",
+    "type": "equation",
+    "title": "X-ray density",
+    "name": "X-ray density",
+    "chapter": "3",
+    "section": "3-7",
+    "number": "3-13",
+    "original": "\\rho=\\Sigma A/(NV)",
+    "latex": "\\rho=\\Sigma A/(NV)",
+    "variables": [
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-13",
+      "problem": "",
+      "quote_fragment": "x-ray density equals weight of atoms in unit cell over volume",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_14",
+    "id": "eq_3_14",
+    "type": "equation",
+    "title": "X-ray density Angstrom volume",
+    "name": "X-ray density Angstrom volume",
+    "chapter": "3",
+    "section": "3-7",
+    "number": "3-14",
+    "original": "\\rho=1.66042\\Sigma A/V'",
+    "latex": "\\rho=1.66042\\Sigma A/V'",
+    "variables": [
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-14",
+      "problem": "",
+      "quote_fragment": "where V prime is the unit-cell volume in A^3",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_15",
+    "id": "eq_3_15",
+    "type": "equation",
+    "title": "kX definition",
+    "name": "kX definition",
+    "chapter": "3",
+    "section": "3-7",
+    "number": "3-15",
+    "original": "1\\,kX=d_{211}(calcite)/3.02945",
+    "latex": "1\\,kX=d_{211}(calcite)/3.02945",
+    "variables": [
+      {
+        "symbol": "d",
+        "name": "interplanar_spacing",
+        "unit": "angstrom",
+        "required": false
+      },
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-15",
+      "problem": "",
+      "quote_fragment": "kX unit is therefore defined by the relation",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_3_16",
+    "id": "eq_3_16",
+    "type": "equation",
+    "title": "kX to Angstrom-star conversion",
+    "name": "kX to Angstrom-star conversion",
+    "chapter": "3",
+    "section": "3-7",
+    "number": "3-16",
+    "original": "1\\,kX=1.002056\\,\\AA^*",
+    "latex": "1\\,kX=1.002056\\,\\AA^*",
+    "variables": [
+      {
+        "symbol": "h,k,l",
+        "name": "Miller_or_Laue_indices",
+        "unit": "dimensionless_integer",
+        "required": false
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree_or_radian",
+      "angstrom^-1"
+    ],
+    "domain_of_validity": [
+      "geometric diffraction condition",
+      "intensity not evaluated"
+    ],
+    "hypotheses": [
+      "periodic scattering centers",
+      "kinematical geometry unless noted"
+    ],
+    "rearrangements": [],
+    "implementation": "",
+    "examples": [],
+    "limitations": [
+      "Geometric possibility does not guarantee nonzero intensity."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-16",
+      "problem": "",
+      "quote_fragment": "relation is now believed to be",
+      "validation_status": "valid"
+    },
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "validation_status": "valid"
+  }
+]

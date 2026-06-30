@@ -1,0 +1,92 @@
+[
+  {
+    "id": "spectrometer_known_d_unknown_lambda",
+    "rule_id": "spectrometer_known_d_unknown_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_spectroscopy",
+    "title": "Known d unknown wavelength",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "known": [
+          "d_spacing",
+          "theta"
+        ]
+      }
+    ],
+    "outputs": [
+      "lambda=2*d*sin(theta)"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "crystal with planes of known spacing d ... determine wavelength",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffractometer_known_lambda_unknown_d",
+    "rule_id": "diffractometer_known_lambda_unknown_d",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_spectroscopy",
+    "title": "Known wavelength unknown d",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "known": [
+          "lambda",
+          "theta"
+        ]
+      }
+    ],
+    "outputs": [
+      "d=lambda/(2*sin(theta))"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "using x-rays of known wavelength and measuring theta, the spacing d ... determined",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

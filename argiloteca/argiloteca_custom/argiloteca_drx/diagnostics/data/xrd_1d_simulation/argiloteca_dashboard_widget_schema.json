@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "argiloteca_dashboard_widget_schema",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "module",
+    "source",
+    "version",
+    "validation_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "module": {
+      "const": "xrd_1d_simulation"
+    },
+    "mineral_system": {
+      "type": "string"
+    },
+    "layer_model": {},
+    "interlayer_model": {},
+    "instrument_profile": {},
+    "input_parameters": {
+      "type": "array"
+    },
+    "equations": {
+      "type": "array"
+    },
+    "conditions": {
+      "type": "array"
+    },
+    "outputs": {
+      "type": "array"
+    },
+    "units": {
+      "type": "array"
+    },
+    "validity_conditions": {
+      "type": "array"
+    },
+    "limitations": {
+      "type": "array"
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "dashboard_components": {
+      "type": "array"
+    },
+    "source": {
+      "type": "object"
+    },
+    "version": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "validation_status": {
+      "type": "string"
+    }
+  }
+}

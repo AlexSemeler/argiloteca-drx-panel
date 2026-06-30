@@ -1,0 +1,82 @@
+[
+  {
+    "rule_id": "intensity_corrensite_integrated_areas",
+    "type": "chapter8_rule",
+    "rule_type": "intensity",
+    "title": "intensity corrensite integrated areas",
+    "target": "corrensite",
+    "mineral_system": "corrensite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "reflection": "chlorite_002_smectite_001_corrensite_003_star",
+        "intensity_type": "integrated_area",
+        "preparation": "dehydrated"
+      }
+    ],
+    "output": "Integrated areas in dehydrated patterns can support quantitative chlorite/smectite/corrensite mixture analysis with mineral intensity factors.",
+    "diagnostic_implication": "Integrated areas in dehydrated patterns can support quantitative chlorite/smectite/corrensite mixture analysis with mineral intensity factors.",
+    "confidence_weight": 0.7,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "283",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.5",
+      "equation": "",
+      "quote_fragment": "integrated areas were measured",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "intensity_preparation_particle_size_limitation",
+    "type": "chapter8_rule",
+    "rule_type": "intensity",
+    "title": "intensity preparation particle size limitation",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "pipetted_glass_slide",
+        "operator": "used",
+        "value": true
+      }
+    ],
+    "output": "Quantitative intensity analysis is suspect if preparation emphasizes finer particle sizes.",
+    "diagnostic_implication": "Quantitative intensity analysis is suspect if preparation emphasizes finer particle sizes.",
+    "confidence_weight": 0.7,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "283",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "sample preparation method ... finer particle sizes",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

@@ -1,0 +1,330 @@
+[
+  {
+    "rule_id": "behavior_IS_EG_then_heated_confirmation",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior IS EG then heated confirmation",
+    "target": "illite_smectite",
+    "mineral_system": "illite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "ethylene_glycol_solvated",
+        "feature": "air_dried_pattern_altered"
+      },
+      {
+        "preparation": "heated_375C",
+        "feature": "illite_like_pattern"
+      }
+    ],
+    "output": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+    "diagnostic_implication": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+    "confidence_weight": 0.9,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Heating to 375C for 1 h provides confirmation",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_CS_EG_expansion_favors_smectite_component",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior CS EG expansion favors smectite component",
+    "target": "chlorite_smectite",
+    "mineral_system": "chlorite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "ethylene_glycol_solvated",
+        "feature": "expansion",
+        "presence": true
+      }
+    ],
+    "output": "Expansion with EG favors chlorite/smectite over chlorite/vermiculite.",
+    "diagnostic_implication": "Expansion with EG favors chlorite/smectite over chlorite/vermiculite.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "280",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "migration of the 001/001 peak",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_CS_no_EG_ambiguous_CV",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior CS no EG ambiguous CV",
+    "target": "chlorite_smectite_vs_chlorite_vermiculite",
+    "mineral_system": "chlorite_smectite_vs_chlorite_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "ethylene_glycol_solvated",
+        "feature": "expansion",
+        "presence": false
+      }
+    ],
+    "output": "If EG does not cause apparent expansion, C/S versus C/V remains indeterminate without additional evidence.",
+    "diagnostic_implication": "If EG does not cause apparent expansion, C/S versus C/V remains indeterminate without additional evidence.",
+    "confidence_weight": 0.55,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "280",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "possible misidentification of vermiculite/smectite",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_CV_heated_collapse_to_10A",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior CV heated collapse to 10A",
+    "target": "chlorite_vermiculite",
+    "mineral_system": "chlorite_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "heated",
+        "feature": "collapse_to_about_10_A",
+        "presence": true
+      }
+    ],
+    "output": "Heat collapse toward 10 A favors vermiculite-bearing interstratification over C/S.",
+    "diagnostic_implication": "Heat collapse toward 10 A favors vermiculite-bearing interstratification over C/S.",
+    "confidence_weight": 0.7,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "280",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "heat treatment would have collapsed",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_corrensite_dehydrated_resolves_mixture",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior corrensite dehydrated resolves mixture",
+    "target": "corrensite",
+    "mineral_system": "corrensite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "dehydrated",
+        "feature": "expandable_layers_collapsed_to_about_9_6_A"
+      }
+    ],
+    "output": "Na-saturated dehydrated analysis can resolve corrensite/chlorite/smectite mixtures that EG or air-dried patterns cannot.",
+    "diagnostic_implication": "Na-saturated dehydrated analysis can resolve corrensite/chlorite/smectite mixtures that EG or air-dried patterns cannot.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "281",
+      "section": "",
+      "figure": "Fig. 8.14",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Little can be learned from EG and air-dried",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_KS_requires_three_treatments",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior KS requires three treatments",
+    "target": "kaolinite_smectite",
+    "mineral_system": "kaolinite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "air_dried"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      },
+      {
+        "preparation": "heated_375C"
+      }
+    ],
+    "output": "Compare air-dried, EG and 375C patterns before rejecting K/S as kaolinite or halloysite.",
+    "diagnostic_implication": "Compare air-dried, EG and 375C patterns before rejecting K/S as kaolinite or halloysite.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "285",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Heat treatments are necessary",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_SC_unaffected_by_solvation_heating",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior SC unaffected by solvation heating",
+    "target": "serpentine_chlorite",
+    "mineral_system": "serpentine_chlorite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "liquid_solvation",
+        "feature": "no_effect"
+      },
+      {
+        "preparation": "moderate_heating",
+        "feature": "no_effect"
+      }
+    ],
+    "output": "Serpentine/chlorite is not diagnosed by solvation response; use odd/even peak broadening and equations.",
+    "diagnostic_implication": "Serpentine/chlorite is not diagnosed by solvation response; use odd/even peak broadening and equations.",
+    "confidence_weight": 0.75,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "292",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "unaffected by liquid solvation",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "behavior_MV_Mg_glycerol_proves_vermiculite",
+    "type": "chapter8_rule",
+    "rule_type": "treatment_behavior",
+    "title": "behavior MV Mg glycerol proves vermiculite",
+    "target": "mica_vermiculite",
+    "mineral_system": "mica_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "preparation": "Mg_glycerol_solvated",
+        "feature": "essentially_unchanged_from_air_dried"
+      }
+    ],
+    "output": "Mg saturation plus glycerol with little change is proof of a vermiculite component in mica/vermiculite context.",
+    "diagnostic_implication": "Mg saturation plus glycerol with little change is proof of a vermiculite component in mica/vermiculite context.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "293",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Proof of a vermiculite component requires",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "rule_id": "quartz_reference_requires_same_conditions",
+    "rule_type": "correction_or_normalization",
+    "target": "absolute_intensity",
+    "formal_statement": "If experimental and reference patterns were not measured under comparable operating conditions, absolute intensity comparison is invalid.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "366",
+      "pdf_page": "16",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "same operating conditions"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "dashboard_behavior": "disable_absolute_normalization"
+  },
+  {
+    "rule_id": "long_beam_correction_only_when_LB_exceeds_sample",
+    "rule_type": "correction_or_normalization",
+    "target": "beam_projection",
+    "formal_statement": "Apply sample length correction only when beam footprint LB exceeds sample length.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "366",
+      "pdf_page": "16",
+      "figure": "",
+      "table": "",
+      "equation": "A.6",
+      "quote_fragment": "only for angles at which LB exceeds"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid"
+  }
+]

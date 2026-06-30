@@ -1,0 +1,161 @@
+[
+  {
+    "rule_id": "mixture_fixed_discrete_peaks",
+    "type": "chapter8_rule",
+    "rule_type": "differential_diagnosis",
+    "title": "mixture fixed discrete peaks",
+    "target": "physical_mixture_or_interstratification",
+    "mineral_system": "physical_mixture_or_interstratification",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "peaks",
+        "behavior": "fixed_independent_between_treatments"
+      }
+    ],
+    "output": "Fixed independent peaks support a physical mixture more than true interstratification.",
+    "diagnostic_implication": "Fixed independent peaks support a physical mixture more than true interstratification.",
+    "confidence_weight": 0.7,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "Fig. 8.8",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Mixtures of discrete ... illite with I/S",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "interstratification_migrating_composite_peaks",
+    "type": "chapter8_rule",
+    "rule_type": "differential_diagnosis",
+    "title": "interstratification migrating composite peaks",
+    "target": "physical_mixture_or_interstratification",
+    "mineral_system": "physical_mixture_or_interstratification",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "composite_peaks",
+        "behavior": "migrate_between_end_members"
+      }
+    ],
+    "output": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+    "diagnostic_implication": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "296",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "identifying the whole",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "mixture_noise_preserve_ambiguity",
+    "type": "chapter8_rule",
+    "rule_type": "differential_diagnosis",
+    "title": "mixture noise preserve ambiguity",
+    "target": "physical_mixture_or_interstratification",
+    "mineral_system": "physical_mixture_or_interstratification",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "noise_or_poor_pattern",
+        "operator": "present",
+        "value": true
+      }
+    ],
+    "output": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+    "diagnostic_implication": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "Fig. 8.8",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "poor patterns from mineral mixtures",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "corrensite_mixture_dehydrated_resolution",
+    "type": "chapter8_rule",
+    "rule_type": "differential_diagnosis",
+    "title": "corrensite mixture dehydrated resolution",
+    "target": "physical_mixture_or_interstratification",
+    "mineral_system": "physical_mixture_or_interstratification",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "chlorite_smectite_corrensite_mixture"
+      },
+      {
+        "preparation": "dehydrated"
+      }
+    ],
+    "output": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+    "diagnostic_implication": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "281",
+      "section": "",
+      "figure": "Fig. 8.14",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "power of the dehydration",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

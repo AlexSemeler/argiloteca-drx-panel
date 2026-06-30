@@ -1,0 +1,389 @@
+[
+  {
+    "id": "laue_method_rule",
+    "rule_id": "laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "method_lambda_theta_summary",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Laue Variable Fixed",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "transmission_laue_method_rule",
+    "rule_id": "transmission_laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Transmission Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "film ... behind the crystal",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "back_reflection_laue_method_rule",
+    "rule_id": "back_reflection_laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Back-reflection Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "film is placed between the crystal and the x-ray source",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "rotating_crystal_method_rule",
+    "rule_id": "rotating_crystal_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Rotating-crystal method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable_in_part"
+      }
+    ],
+    "outputs": [
+      "rotating_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "crystal is rotated about the chosen direction",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "powder_method_rule",
+    "rule_id": "powder_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Powder method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "randomly_oriented_polycrystalline_powder"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "every set of lattice planes will be capable of diffraction",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "hull_debye_scherrer_method_rule",
+    "rule_id": "hull_debye_scherrer_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Hull/Debye-Scherrer method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "powder_in_capillary_or_holder"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Hull/Debye-Scherrer powder method",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffractometer_method_rule",
+    "rule_id": "diffractometer_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Powder diffractometer",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "powder_sample"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "detector intercepts and measures only a short arc",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "xray_spectrometer_rule",
+    "rule_id": "xray_spectrometer_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "X-ray spectrometer",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "unknown_or_scanned",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "known_analyzer_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "essential features of an x-ray spectrometer",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "tem_reciprocal_lattice_rule",
+    "rule_id": "tem_reciprocal_lattice_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "TEM reciprocal-lattice visualization",
+    "chapter": "3",
+    "section": "3-9",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed_electron_wavelength",
+        "theta_behavior": "near_planar_ewald_section"
+      }
+    ],
+    "outputs": [
+      "thin_crystalline_sample"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-9",
+      "book_page": "118",
+      "pdf_page": "30",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Ewald sphere is essentially a plane",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

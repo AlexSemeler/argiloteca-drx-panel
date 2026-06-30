@@ -1,0 +1,675 @@
+[
+  {
+    "equation_id": "eq_3_6_F_00l",
+    "equation_number": "3.6",
+    "name": "00l structure factor for discrete Bragg reflection",
+    "latex": "F(00l)=\\sum_n f_n\\cos\\phi_n=\\sum_n f_n\\cos(2\\pi l z_n/c)",
+    "plain_text": "F(00l) equals the sum of atomic scattering terms multiplied by cosine phase terms.",
+    "variables": [
+      {
+        "symbol": "F(00l)",
+        "name": "structure factor",
+        "unit": "electron scattering units",
+        "meaning": "amplitude at hkl=00l",
+        "required": true
+      },
+      {
+        "symbol": "f_n",
+        "name": "atomic scattering factor",
+        "unit": "electron scattering units",
+        "meaning": "scattering power of atom/plane n",
+        "required": true
+      },
+      {
+        "symbol": "z_n/c",
+        "name": "fractional z coordinate",
+        "unit": "dimensionless",
+        "meaning": "position along c",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "atomic_scattering_factors",
+      "fractional_z",
+      "l_order"
+    ],
+    "outputs": [
+      "F_00l"
+    ],
+    "validity_conditions": [
+      "Bragg reflection hkl=00l",
+      "centrosymmetric cosine simplification"
+    ],
+    "limitations": [
+      "Use G(theta), not F, for continuous profile simulation away from exact hkl."
+    ],
+    "computational_function": "layer_structure_factor.centrosymmetric_F_00l",
+    "dependencies": [
+      "atomic_scattering"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "97",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "3.6",
+      "quote_fragment": "F(00l) = sum fn cos"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_3_9_layer_G",
+    "equation_number": "3.9",
+    "name": "Layer structure factor as continuous theta function",
+    "latex": "G(\\theta)=\\sum_j n_j f_j(\\theta)\\cos\\left(4\\pi z_j\\sin\\theta/\\lambda\\right)",
+    "plain_text": "G(theta) is the sum of plane scattering terms with phase 4 pi z sin(theta)/lambda.",
+    "variables": [
+      {
+        "symbol": "G(θ)",
+        "name": "layer structure factor",
+        "unit": "electron scattering units",
+        "meaning": "continuous layer scattering amplitude",
+        "required": true
+      },
+      {
+        "symbol": "z_j",
+        "name": "atomic plane coordinate",
+        "unit": "angstrom",
+        "meaning": "distance along Z",
+        "required": true
+      },
+      {
+        "symbol": "λ",
+        "name": "wavelength",
+        "unit": "angstrom",
+        "meaning": "incident radiation wavelength",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "atomic_planes",
+      "theta",
+      "lambda_A"
+    ],
+    "outputs": [
+      "G_theta"
+    ],
+    "validity_conditions": [
+      "00l basal profile",
+      "centrosymmetric layer or pseudo-mirror reduction"
+    ],
+    "limitations": [
+      "Noncentrosymmetric structures require complex transform terms."
+    ],
+    "computational_function": "layer_structure_factor.layer_structure_factor",
+    "dependencies": [
+      "atomic_scattering",
+      "angle_conventions"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "97",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "3.9",
+      "quote_fragment": "G(theta) = sum ... cos"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_3_14_intensity",
+    "equation_number": "3.14",
+    "name": "00l profile intensity",
+    "latex": "I(\\theta)=G^2(\\theta)\\Phi(\\theta)Lp(\\theta)",
+    "plain_text": "Intensity equals G squared times the interference function times the Lorentz-polarization factor.",
+    "variables": [
+      {
+        "symbol": "I(θ)",
+        "name": "calculated intensity",
+        "unit": "relative_or_absolute_counts",
+        "meaning": "simulated profile intensity",
+        "required": true
+      },
+      {
+        "symbol": "Φ(θ)",
+        "name": "interference function",
+        "unit": "dimensionless",
+        "meaning": "finite stacking contribution",
+        "required": true
+      },
+      {
+        "symbol": "Lp(θ)",
+        "name": "Lorentz-polarization factor",
+        "unit": "dimensionless",
+        "meaning": "geometry/orientation correction",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "G_theta",
+      "Phi_theta",
+      "Lp_theta"
+    ],
+    "outputs": [
+      "I_theta"
+    ],
+    "validity_conditions": [
+      "00l profile simulation",
+      "theta convention validated"
+    ],
+    "limitations": [
+      "Additional absorption, multiplicity, temperature and normalization terms may be needed."
+    ],
+    "computational_function": "one_d_pattern_simulator.intensity_00l",
+    "dependencies": [
+      "layer_structure_factor",
+      "interference_function",
+      "lorentz_polarization"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "97",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "3.14",
+      "quote_fragment": "I(theta) = G squared Phi Lp"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_3_16_illite_G",
+    "equation_number": "3.16",
+    "name": "Simplified illite G and G squared",
+    "latex": "G(\\theta)=\\sum_j n_j f_j\\cos\\phi_j;\\quad |G(\\theta)|^2=\\left[\\sum_j n_j f_j\\cos\\phi_j\\right]^2",
+    "plain_text": "Illite exercise sums cosine-weighted atomic plane contributions and squares the result.",
+    "variables": [
+      {
+        "symbol": "n_j",
+        "name": "atoms in plane",
+        "unit": "atoms",
+        "meaning": "plane occupancy/count",
+        "required": true
+      },
+      {
+        "symbol": "φ_j",
+        "name": "phase angle",
+        "unit": "degree_or_radian",
+        "meaning": "phase from z/d spacing",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "Table_3_1_terms"
+    ],
+    "outputs": [
+      "G_001",
+      "G_squared_001"
+    ],
+    "validity_conditions": [
+      "10 A illite model",
+      "CuKalpha",
+      "theta near 4.4 degrees"
+    ],
+    "limitations": [
+      "Exercise ignores some correction factors and is an approximation."
+    ],
+    "computational_function": "illite_intensity_calculator.calculate_illite_001",
+    "dependencies": [
+      "layer_structure_factor"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "98",
+      "pdf_page": "3",
+      "figure": "",
+      "table": "Table 3.1",
+      "equation": "3.16",
+      "quote_fragment": "Table 3.1 shows how"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_1_general_1d_intensity",
+    "equation_number": "A.1",
+    "name": "General one-dimensional mixed-layer intensity summation",
+    "latex": "I = Lp \\sum_S \\sum_{i,j} G_i G_j^*\\sigma_{ij,S}\\left[\\cos(\\varphi S)+i\\sin(\\varphi S)\\right]",
+    "plain_text": "General formulation sums layer-transform products over spacings S with frequency terms sigma.",
+    "variables": [
+      {
+        "symbol": "G_i",
+        "name": "layer transform i",
+        "unit": "electron scattering units",
+        "meaning": "transform of layer type i",
+        "required": true
+      },
+      {
+        "symbol": "G_j*",
+        "name": "complex conjugate layer transform",
+        "unit": "electron scattering units",
+        "meaning": "conjugate transform",
+        "required": true
+      },
+      {
+        "symbol": "σ",
+        "name": "frequency term",
+        "unit": "dimensionless",
+        "meaning": "frequency of spacing sequence",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "layer_transforms",
+      "spacing_frequencies",
+      "phase"
+    ],
+    "outputs": [
+      "I_theta"
+    ],
+    "validity_conditions": [
+      "1D basal pattern",
+      "including noncentrosymmetric layers"
+    ],
+    "limitations": [
+      "OCR of symbol layout requires manual verification."
+    ],
+    "computational_function": "calculated_pattern_builder.general_1d_intensity",
+    "dependencies": [
+      "mixed_layer_sequence_generator",
+      "layer_structure_factor"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "Theory",
+      "book_page": "362",
+      "pdf_page": "12",
+      "figure": "",
+      "table": "",
+      "equation": "A.1",
+      "quote_fragment": "general formulation of the Intensity equation"
+    },
+    "validation_status": "requires_manual_verification"
+  },
+  {
+    "equation_id": "eq_A_2_phase",
+    "equation_number": "A.2",
+    "name": "Phase term for 1D pattern",
+    "latex": "\\varphi = 4\\pi\\sin\\theta/\\lambda",
+    "plain_text": "Phase coefficient equals 4 pi sin theta divided by wavelength.",
+    "variables": [
+      {
+        "symbol": "φ",
+        "name": "phase coefficient",
+        "unit": "angstrom^-1",
+        "meaning": "phase per angstrom of spacing S",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "theta",
+      "lambda_A"
+    ],
+    "outputs": [
+      "phase"
+    ],
+    "validity_conditions": [
+      "theta is Bragg angle"
+    ],
+    "limitations": [
+      "Do not use measured 2theta directly."
+    ],
+    "computational_function": "layer_structure_factor.phase_coefficient",
+    "dependencies": [
+      "geometry.angle_conventions"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "362",
+      "pdf_page": "12",
+      "figure": "",
+      "table": "",
+      "equation": "A.2",
+      "quote_fragment": "4 pi sin theta over lambda"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_3_sigma_sequence",
+    "equation_number": "A.3",
+    "name": "Frequency term from conditional probabilities",
+    "latex": "\\sigma_S = m(P_B P_{BA}P_{AA}P_{AB}P_{BA})",
+    "plain_text": "For the example sequence, sigma is multiplicity times compounded conditional probabilities.",
+    "variables": [
+      {
+        "symbol": "P_AB",
+        "name": "conditional probability",
+        "unit": "dimensionless",
+        "meaning": "probability B follows A",
+        "required": true
+      },
+      {
+        "symbol": "m",
+        "name": "fit multiplicity",
+        "unit": "count",
+        "meaning": "N+1 minus array length",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "sequence",
+      "component_proportions",
+      "conditional_probabilities",
+      "N"
+    ],
+    "outputs": [
+      "sigma_S"
+    ],
+    "validity_conditions": [
+      "R1 or higher ordered mixed-layer calculation"
+    ],
+    "limitations": [
+      "R>1 requires longer-range transitional probabilities."
+    ],
+    "computational_function": "mixed_layer_sequence_generator.sequence_frequency",
+    "dependencies": [
+      "reichweite_model"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "363",
+      "pdf_page": "13",
+      "figure": "Fig. A.1",
+      "table": "",
+      "equation": "A.3",
+      "quote_fragment": "compound the conditional probabilities"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_4_Lp",
+    "equation_number": "A.4",
+    "name": "Lorentz-polarization factor",
+    "latex": "Lp = \\frac{(1+\\cos^2 2\\theta)y}{\\sin\\theta}",
+    "plain_text": "LP uses polarization, point-by-point Lorentz term, and powder ring/orientation distribution factor y.",
+    "variables": [
+      {
+        "symbol": "y",
+        "name": "powder ring distribution factor",
+        "unit": "dimensionless",
+        "meaning": "orientation distribution term",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "theta",
+      "orientation_y"
+    ],
+    "outputs": [
+      "Lp_theta"
+    ],
+    "validity_conditions": [
+      "point-by-point diffraction profile intensity"
+    ],
+    "limitations": [
+      "Integrated intensity uses a different single-crystal Lorentz denominator."
+    ],
+    "computational_function": "lorentz_polarization.lorentz_polarization",
+    "dependencies": [
+      "preferred_orientation"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "365",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "A.4",
+      "quote_fragment": "point-by-point intensity"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_5_absolute_intensity",
+    "equation_number": "A.5",
+    "name": "Absolute intensity normalization using quartz reference",
+    "latex": "I_o = I \\times \\text{normalization}(K,d,V,\\rho,\\mu^*,\\bar{N})",
+    "plain_text": "Calculated relative intensities are put on an absolute basis using a quotient containing quartz reference intensity and sample terms.",
+    "variables": [
+      {
+        "symbol": "K",
+        "name": "instrument/reference constant",
+        "unit": "counts_per_second_factor",
+        "meaning": "includes quartz reference intensity",
+        "required": true
+      },
+      {
+        "symbol": "d",
+        "name": "weighted mean d001",
+        "unit": "angstrom",
+        "meaning": "weighted basal spacing",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "relative_intensity",
+      "quartz_reference_intensity",
+      "density",
+      "mass_absorption",
+      "mean_N"
+    ],
+    "outputs": [
+      "absolute_intensity"
+    ],
+    "validity_conditions": [
+      "same instrument operating conditions as quartz reference"
+    ],
+    "limitations": [
+      "OCR of exact quotient is not reliable; use relative comparison unless verified."
+    ],
+    "computational_function": "xrd_panel_engine.absolute_intensity_placeholder",
+    "dependencies": [
+      "instrumental_parameters"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "366",
+      "pdf_page": "16",
+      "figure": "",
+      "table": "",
+      "equation": "A.5",
+      "quote_fragment": "put on an absolute basis"
+    },
+    "validation_status": "requires_manual_verification"
+  },
+  {
+    "equation_id": "eq_A_6_long_beam_projection",
+    "equation_number": "A.6",
+    "name": "Long beam projection footprint",
+    "latex": "LB = R_o\\alpha(\\pi/180)/\\sin\\theta",
+    "plain_text": "Beam footprint length equals goniometer radius times divergence in radians divided by sin theta.",
+    "variables": [
+      {
+        "symbol": "LB",
+        "name": "beam footprint length",
+        "unit": "cm",
+        "meaning": "projected beam length on sample",
+        "required": true
+      },
+      {
+        "symbol": "R_o",
+        "name": "goniometer radius",
+        "unit": "cm",
+        "meaning": "instrument radius",
+        "required": true
+      },
+      {
+        "symbol": "α",
+        "name": "divergence slit angle",
+        "unit": "degree",
+        "meaning": "primary divergence",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "theta",
+      "goniometer_radius_cm",
+      "divergence_slit_deg"
+    ],
+    "outputs": [
+      "LB_cm",
+      "sample_length_correction"
+    ],
+    "validity_conditions": [
+      "apply only when LB exceeds sample length"
+    ],
+    "limitations": [
+      "No correction when beam footprint is shorter than sample."
+    ],
+    "computational_function": "sample_length_correction.beam_footprint_length",
+    "dependencies": [
+      "instrumental_parameters"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "366",
+      "pdf_page": "16",
+      "figure": "",
+      "table": "",
+      "equation": "A.6",
+      "quote_fragment": "only for angles at which LB exceeds"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_7_debye_waller",
+    "equation_number": "A.7",
+    "name": "Debye-Waller temperature correction",
+    "latex": "f = f_o\\exp\\left(-B\\sin^2\\theta/\\lambda^2\\right)",
+    "plain_text": "Temperature-corrected scattering factor decreases as B and sin squared theta increase.",
+    "variables": [
+      {
+        "symbol": "B",
+        "name": "temperature factor",
+        "unit": "angstrom^2",
+        "meaning": "mean-square displacement measure",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "f0",
+      "B",
+      "theta",
+      "lambda_A"
+    ],
+    "outputs": [
+      "f_corrected"
+    ],
+    "validity_conditions": [
+      "atomic vibration correction"
+    ],
+    "limitations": [
+      "Default B values are model assumptions, not universal constants."
+    ],
+    "computational_function": "debeye_waller.debye_waller_factor",
+    "dependencies": [
+      "atomic_scattering"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "367",
+      "pdf_page": "17",
+      "figure": "",
+      "table": "",
+      "equation": "A.7",
+      "quote_fragment": "higher the temperature ... less efficient the scattering"
+    },
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "equation_id": "eq_A_8_defect_broadening",
+    "equation_number": "A.8",
+    "name": "Defect-broadening crystallite-size distribution",
+    "latex": "q(N)=\\exp\\left[-(N-1)/\\delta\\right]",
+    "plain_text": "Probability of an optically coherent length N decays exponentially with mean defect-free distance delta.",
+    "variables": [
+      {
+        "symbol": "q(N)",
+        "name": "domain-size probability",
+        "unit": "dimensionless",
+        "meaning": "relative abundance of coherent length N",
+        "required": true
+      },
+      {
+        "symbol": "δ",
+        "name": "mean defect-free distance",
+        "unit": "unit_cells",
+        "meaning": "average uninterrupted thickness",
+        "required": true
+      }
+    ],
+    "inputs": [
+      "N",
+      "defect_free_distance"
+    ],
+    "outputs": [
+      "q_N"
+    ],
+    "validity_conditions": [
+      "random stacking faults along Z"
+    ],
+    "limitations": [
+      "High N cutoff is computational and model dependent."
+    ],
+    "computational_function": "defect_broadening.defect_distribution",
+    "dependencies": [
+      "crystallite_size_distribution"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "370",
+      "pdf_page": "20",
+      "figure": "",
+      "table": "",
+      "equation": "A.8",
+      "quote_fragment": "q(N) = exp"
+    },
+    "validation_status": "extracted_from_ocr"
+  }
+]

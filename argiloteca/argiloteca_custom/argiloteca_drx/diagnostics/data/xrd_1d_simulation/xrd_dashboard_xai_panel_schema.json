@@ -1,0 +1,10 @@
+{
+  "schema_id": "xrd_dashboard_xai_panel_schema",
+  "widgets": [
+    "equations_used",
+    "tables_used",
+    "figures_used",
+    "evidence_for",
+    "evidence_against"
+  ]
+}

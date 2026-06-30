@@ -1,0 +1,111 @@
+{
+  "DiffractionGeometry": {
+    "Wave": {
+      "wavelength_lambda": {},
+      "phase": {},
+      "amplitude": {},
+      "wavefront": {},
+      "path_difference": {}
+    },
+    "Scattering": {
+      "scattering_center": {},
+      "scattered_ray": {},
+      "constructive_interference": {},
+      "destructive_interference": {}
+    },
+    "BraggGeometry": {
+      "Bragg_angle_theta": {},
+      "diffraction_angle_2theta": {},
+      "incident_beam": {},
+      "diffracted_beam": {},
+      "transmitted_beam": {},
+      "diffracting_plane": {},
+      "plane_normal": {},
+      "order_n": {},
+      "d_spacing": {}
+    },
+    "LaueGeometry": {
+      "incident_direction": {},
+      "diffracted_direction": {},
+      "direction_cosines": {},
+      "Laue_equation_a": {},
+      "Laue_equation_b": {},
+      "Laue_equation_c": {}
+    },
+    "ReciprocalLattice": {
+      "reciprocal_basis_vector": {},
+      "reciprocal_lattice_point": {},
+      "scattering_vector": {},
+      "reciprocal_spacing": {},
+      "hkl": {}
+    },
+    "EwaldConstruction": {
+      "Ewald_sphere": {},
+      "limiting_sphere": {},
+      "sphere_radius": {},
+      "reciprocal_lattice_intersection": {},
+      "diffraction_condition": {}
+    },
+    "CrystalSystem": {
+      "cubic": {},
+      "tetragonal": {},
+      "orthorhombic": {},
+      "other_systems": {}
+    },
+    "DiffractionMethod": {
+      "laue_method": {},
+      "transmission_laue_method": {},
+      "back_reflection_laue_method": {},
+      "rotating_crystal_method": {},
+      "powder_method": {},
+      "hull_debye_scherrer_method": {},
+      "diffractometer_method": {},
+      "xray_spectrometer": {},
+      "tem_reciprocal_lattice": {}
+    },
+    "ExperimentalGeometry": {
+      "detector": {},
+      "film": {},
+      "receiving_slit": {},
+      "sample_holder": {},
+      "source": {},
+      "rotation_axis": {}
+    },
+    "UnitSystem": {
+      "angstrom": {},
+      "kX": {},
+      "angstrom_star": {},
+      "inverse_angstrom": {},
+      "degree": {},
+      "radian": {}
+    },
+    "NonidealCondition": {
+      "beam_divergence": {},
+      "finite_spectral_width": {},
+      "finite_crystallite_size": {},
+      "strain": {},
+      "dislocation": {},
+      "imperfect_crystal": {},
+      "multiple_scattering": {}
+    },
+    "Rule": {},
+    "Equation": {},
+    "FigureEvidence": {},
+    "Calculation": {},
+    "Explanation": {}
+  },
+  "source": {
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "chapter": "3",
+    "chapter_title": "Diffraction I: Geometry",
+    "section": "3-1",
+    "book_page": "89",
+    "pdf_page": "1",
+    "figure": "",
+    "table": "",
+    "equation": "",
+    "problem": "",
+    "quote_fragment": "Diffraction I: Geometry",
+    "validation_status": "valid"
+  }
+}

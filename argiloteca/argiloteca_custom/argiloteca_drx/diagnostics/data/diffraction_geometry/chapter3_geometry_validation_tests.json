@@ -1,0 +1,109 @@
+[
+  {
+    "test_id": "problem_3_1_transmission_laue",
+    "source_problem": "3-1",
+    "test_type": "laue_wavelength_and_film_position",
+    "inputs": {
+      "crystal_system": "cubic",
+      "a_A": 4.0,
+      "hkl": [
+        3,
+        1,
+        0
+      ],
+      "film_distance_cm": 5.0
+    },
+    "expected_outputs": [
+      "wavelength",
+      "film_position"
+    ],
+    "modules_tested": [
+      "laue_equations",
+      "geometry_engine"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "Problems",
+      "book_page": "121",
+      "pdf_page": "33",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "3-1",
+      "quote_fragment": "",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "test_id": "problem_3_3_powder_first_three_lines",
+    "source_problem": "3-3",
+    "test_type": "powder_diffraction_indexing",
+    "inputs": {
+      "radiation": "Cu Kalpha",
+      "structures": [
+        "simple cubic",
+        "simple tetragonal",
+        "simple rhombohedral"
+      ]
+    },
+    "expected_outputs": [
+      "ordered_two_theta_values",
+      "hkl_indices"
+    ],
+    "modules_tested": [
+      "bragg",
+      "d_spacing",
+      "hkl_indexer"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "Problems",
+      "book_page": "121",
+      "pdf_page": "33",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "3-3",
+      "quote_fragment": "",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "test_id": "problem_3_6_diffractometer_limit",
+    "source_problem": "3-6",
+    "test_type": "limiting_angle_reflection_search",
+    "inputs": {
+      "two_theta_max_deg": 165,
+      "radiations": [
+        "Ag Kalpha",
+        "Cu Kalpha",
+        "Cr Kalpha"
+      ]
+    },
+    "expected_outputs": [
+      "highest_angle_reflection"
+    ],
+    "modules_tested": [
+      "diffraction_direction_predictor",
+      "limiting_sphere"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "Problems",
+      "book_page": "121",
+      "pdf_page": "34",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "3-6",
+      "quote_fragment": "",
+      "validation_status": "valid"
+    }
+  }
+]

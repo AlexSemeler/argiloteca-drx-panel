@@ -1,0 +1,166 @@
+[
+  {
+    "rule_id": "line_broadening_Q_minor_component",
+    "type": "chapter8_rule",
+    "rule_type": "line_broadening",
+    "title": "line broadening Q minor component",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "minor_component_percent",
+        "operator": "<=",
+        "value": "few",
+        "unit": "percent"
+      }
+    ],
+    "output": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+    "diagnostic_implication": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "267",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.2",
+      "equation": "",
+      "quote_fragment": "few percent or less",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "line_broadening_instrumental_correction",
+    "type": "chapter8_rule",
+    "rule_type": "line_broadening",
+    "title": "line broadening instrumental correction",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "orders_to_0010",
+        "operator": "used",
+        "value": true
+      }
+    ],
+    "output": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+    "diagnostic_implication": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "267",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "correct the experimental data for instrumental effects",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "line_broadening_not_alone",
+    "type": "chapter8_rule",
+    "rule_type": "line_broadening",
+    "title": "line broadening not alone",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "broad_peak_only",
+        "operator": "present",
+        "value": true
+      }
+    ],
+    "output": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+    "diagnostic_implication": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+    "confidence_weight": 0.75,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "267",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "absolute line breadths ... correctly modeled",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "line_broadening_SC_odd_even",
+    "type": "chapter8_rule",
+    "rule_type": "line_broadening",
+    "title": "line broadening SC odd even",
+    "target": "serpentine_chlorite",
+    "mineral_system": "serpentine_chlorite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "odd_chlorite_reflections",
+        "shape": "broad"
+      },
+      {
+        "feature": "even_chlorite_reflections",
+        "shape": "sharp"
+      }
+    ],
+    "output": "Odd chlorite reflections broaden while even reflections remain relatively sharp in serpentine/chlorite.",
+    "diagnostic_implication": "Odd chlorite reflections broaden while even reflections remain relatively sharp in serpentine/chlorite.",
+    "confidence_weight": 0.9,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "odd-numbered peaks ... broad",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

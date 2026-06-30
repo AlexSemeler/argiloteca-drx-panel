@@ -1,0 +1,47 @@
+[
+  {
+    "id": "xray_density_unit_cell",
+    "rule_id": "xray_density_unit_cell",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_density",
+    "title": "X-ray density from unit-cell contents",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "inputs": [
+          "sum_atomic_weights",
+          "unit_cell_volume"
+        ]
+      }
+    ],
+    "outputs": [
+      "rho"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-13",
+      "problem": "",
+      "quote_fragment": "x-ray density ... volume of a single unit cell",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

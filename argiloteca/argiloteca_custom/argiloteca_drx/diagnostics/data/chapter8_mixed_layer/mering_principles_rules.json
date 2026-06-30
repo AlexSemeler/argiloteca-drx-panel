@@ -1,0 +1,207 @@
+[
+  {
+    "rule_id": "mering_composite_reflection_between_end_members",
+    "type": "chapter8_rule",
+    "rule_type": "mering_principle",
+    "title": "mering composite reflection between end members",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "composite_reflection_position",
+        "operator": "between",
+        "value": "end_member_reflections",
+        "unit": "deg2theta_or_A"
+      }
+    ],
+    "output": "Composite 00l reflections should migrate between the corresponding end-member reflections as composition changes.",
+    "diagnostic_implication": "Composite 00l reflections should migrate between the corresponding end-member reflections as composition changes.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "264",
+      "section": "",
+      "figure": "Fig. 8.1",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Figure 8.1 demonstrates Mering's principles",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "mering_broad_when_end_member_reflections_separated",
+    "type": "chapter8_rule",
+    "rule_type": "mering_principle",
+    "title": "mering broad when end member reflections separated",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "end_member_reflection_separation",
+        "operator": "large",
+        "value": true,
+        "unit": ""
+      }
+    ],
+    "output": "Large separation of component reflections predicts broad mixed-layer peaks.",
+    "diagnostic_implication": "Large separation of component reflections predicts broad mixed-layer peaks.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "peaks are broad if end-member reflections are widely separated",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "mering_sharp_when_end_member_reflections_close",
+    "type": "chapter8_rule",
+    "rule_type": "mering_principle",
+    "title": "mering sharp when end member reflections close",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "end_member_reflection_separation",
+        "operator": "small",
+        "value": true,
+        "unit": ""
+      }
+    ],
+    "output": "Close juxtaposition of component reflections predicts relatively sharp peaks.",
+    "diagnostic_implication": "Close juxtaposition of component reflections predicts relatively sharp peaks.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "sharp peaks indicate the close juxtaposition",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "mering_superstructure_ordered",
+    "type": "chapter8_rule",
+    "rule_type": "mering_principle",
+    "title": "mering superstructure ordered",
+    "target": "ordered_interstratification",
+    "mineral_system": "ordered_interstratification",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "superstructure_reflections",
+        "operator": "present",
+        "value": true,
+        "unit": ""
+      }
+    ],
+    "output": "Superstructure reflections support ordered interstratification and help separate R1 from R0.",
+    "diagnostic_implication": "Superstructure reflections support ordered interstratification and help separate R1 from R0.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "262",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "convenient to designate their spacings as d(00l)*",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "mering_irrationality_randomness",
+    "type": "chapter8_rule",
+    "rule_type": "mering_principle",
+    "title": "mering irrationality randomness",
+    "target": "mixed_layer_clay_minerals",
+    "mineral_system": "mixed_layer_clay_minerals",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "00l_series",
+        "operator": "irrational",
+        "value": true,
+        "unit": ""
+      }
+    ],
+    "output": "An irrational basal series is evidence for randomness in interstratification.",
+    "diagnostic_implication": "An irrational basal series is evidence for randomness in interstratification.",
+    "confidence_weight": 0.9,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "262",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Irrationality is evidence of some randomness",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

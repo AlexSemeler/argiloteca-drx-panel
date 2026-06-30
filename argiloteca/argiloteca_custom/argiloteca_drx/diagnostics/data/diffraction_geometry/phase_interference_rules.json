@@ -1,0 +1,134 @@
+[
+  {
+    "id": "constructive_interference_path_difference_integer_lambda",
+    "rule_id": "constructive_interference_path_difference_integer_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Constructive interference from integer path difference",
+    "chapter": "3",
+    "section": "3-2",
+    "concepts": [
+      "phase",
+      "path_difference"
+    ],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "path_difference": "m*lambda",
+        "m": "integer"
+      }
+    ],
+    "outputs": [
+      "diffracted beam can form when scattered rays reinforce"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-2",
+      "book_page": "90",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "path difference ... integral multiple of wavelengths",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "destructive_interference_non_bragg_directions",
+    "rule_id": "destructive_interference_non_bragg_directions",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Cancellation outside Bragg directions",
+    "chapter": "3",
+    "section": "3-2",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "path_difference": "not_integer_multiple_of_lambda"
+      }
+    ],
+    "outputs": [
+      "destructive_interference_or_cancellation"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Most directions from a periodic crystal do not produce observable diffraction."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-2",
+      "book_page": "90",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "only diffracted beam is that shown; others cancel",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffraction_requires_periodic_scattering_centers",
+    "rule_id": "diffraction_requires_periodic_scattering_centers",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Diffraction requires repeat spacing comparable to wavelength",
+    "chapter": "3",
+    "section": "3-1",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "wavelength": "same_order_as_scatterer_repeat_distance"
+      }
+    ],
+    "outputs": [
+      "diffraction_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-1",
+      "book_page": "89",
+      "pdf_page": "1",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "regularly spaced scattering objects",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

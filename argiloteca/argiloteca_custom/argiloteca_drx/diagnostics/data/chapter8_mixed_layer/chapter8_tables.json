@@ -1,0 +1,546 @@
+[
+  {
+    "table_id": "table_8_1",
+    "title": "Coefficient of variation for 00l diffraction patterns of EG-corrensite and randomly interstratified chlorite/EG-smectite containing 70% chlorite",
+    "chapter": "8",
+    "page": "262",
+    "mineral_system": "corrensite; R0 chlorite/EG-smectite",
+    "preparation": "ethylene_glycol_solvated",
+    "radiation": "CuKalpha",
+    "columns": [
+      "reflection",
+      "corrensite_d_A",
+      "corrensite_d001_calc_A",
+      "chlorite_EG_smectite_d_A",
+      "chlorite_EG_smectite_d001_calc_A"
+    ],
+    "rows": [],
+    "notes": [
+      "OCR of numeric body is degraded; table identity and diagnostic use are extracted, numeric rows require manual validation."
+    ],
+    "diagnostic_use": "Quantifies rationality/irrationality by coefficient of variation of apparent d(001) values.",
+    "source_quote_fragment": "Coefficient of variation",
+    "validation_status": "needs_manual_numeric_validation"
+  },
+  {
+    "table_id": "table_8_2",
+    "title": "Calculation of the broadening descriptor, Q",
+    "chapter": "8",
+    "page": "267",
+    "mineral_system": "line broadening; Mering principle",
+    "preparation": "not_treatment_specific",
+    "radiation": "CuKalpha",
+    "columns": [
+      "order",
+      "order_times_0_714",
+      "Q"
+    ],
+    "rows": [
+      {
+        "order": 1,
+        "order_times_0_714": 0.704,
+        "Q": 0.296
+      },
+      {
+        "order": 2,
+        "order_times_0_714": 1.408,
+        "Q": 0.408
+      },
+      {
+        "order": 3,
+        "order_times_0_714": 2.113,
+        "Q": 0.113
+      },
+      {
+        "order": 4,
+        "order_times_0_714": 2.817,
+        "Q": 0.183
+      },
+      {
+        "order": 5,
+        "order_times_0_714": 3.521,
+        "Q": 0.479
+      },
+      {
+        "order": 6,
+        "order_times_0_714": 4.225,
+        "Q": 0.225
+      },
+      {
+        "order": 7,
+        "order_times_0_714": 4.93,
+        "Q": 0.07
+      },
+      {
+        "order": 8,
+        "order_times_0_714": 5.634,
+        "Q": 0.366
+      },
+      {
+        "order": 9,
+        "order_times_0_714": 6.338,
+        "Q": 0.338
+      },
+      {
+        "order": 10,
+        "order_times_0_714": 7.042,
+        "Q": 0.042
+      }
+    ],
+    "notes": [
+      "OCR reads heading as Order x 0.714; values preserved from scan."
+    ],
+    "diagnostic_use": "Predicts relative broadening from fractional order mismatch.",
+    "source_quote_fragment": "Calculation of the broadening descriptor, Q",
+    "validation_status": "valid"
+  },
+  {
+    "table_id": "table_8_3",
+    "title": "The positions (CuKalpha) of useful reflections for estimating percent illite in illite/EG-smectite",
+    "chapter": "8",
+    "page": "273",
+    "mineral_system": "illite/EG-smectite",
+    "preparation": "ethylene_glycol_solvated",
+    "radiation": "CuKalpha",
+    "columns": [
+      "percent_illite",
+      "reichweite",
+      "low_angle_d_A",
+      "low_angle_deg2theta",
+      "high_angle_d_A",
+      "high_angle_deg2theta",
+      "delta_deg2theta"
+    ],
+    "rows": [
+      {
+        "percent_illite": 10,
+        "reichweite": "R0",
+        "low_angle_d_A": 8.58,
+        "low_angle_deg2theta": 10.31,
+        "high_angle_d_A": 5.49,
+        "high_angle_deg2theta": 15.88,
+        "delta_deg2theta": 5.57
+      },
+      {
+        "percent_illite": 20,
+        "reichweite": "R0",
+        "low_angle_d_A": 8.67,
+        "low_angle_deg2theta": 10.28,
+        "high_angle_d_A": 5.53,
+        "high_angle_deg2theta": 16.03,
+        "delta_deg2theta": 5.94
+      },
+      {
+        "percent_illite": 30,
+        "reichweite": "R0",
+        "low_angle_d_A": 8.77,
+        "low_angle_deg2theta": 10.09,
+        "high_angle_d_A": 5.8,
+        "high_angle_deg2theta": 16.1,
+        "delta_deg2theta": 6.16
+      },
+      {
+        "percent_illite": 40,
+        "reichweite": "R0",
+        "low_angle_d_A": 8.89,
+        "low_angle_deg2theta": 9.94,
+        "high_angle_d_A": 5.44,
+        "high_angle_deg2theta": 16.29,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_illite": 50,
+        "reichweite": "R0",
+        "low_angle_d_A": 9.05,
+        "low_angle_deg2theta": null,
+        "high_angle_d_A": 5.34,
+        "high_angle_deg2theta": 16.6,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_illite": 60,
+        "reichweite": "R1",
+        "low_angle_d_A": 9.22,
+        "low_angle_deg2theta": 9.59,
+        "high_angle_d_A": 5.28,
+        "high_angle_deg2theta": 16.79,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_illite": 70,
+        "reichweite": "R1",
+        "low_angle_d_A": 9.4,
+        "low_angle_deg2theta": 9.41,
+        "high_angle_d_A": 5.2,
+        "high_angle_deg2theta": 17.05,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_illite": 80,
+        "reichweite": "R3",
+        "low_angle_d_A": 9.64,
+        "low_angle_deg2theta": 9.17,
+        "high_angle_d_A": 5.1,
+        "high_angle_deg2theta": null,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_illite": 90,
+        "reichweite": "R3",
+        "low_angle_d_A": 9.82,
+        "low_angle_deg2theta": 9.0,
+        "high_angle_d_A": null,
+        "high_angle_deg2theta": null,
+        "delta_deg2theta": null
+      }
+    ],
+    "notes": [
+      "Several OCR cells are uncertain; use delta_deg2theta interpolation only after manual validation against scan."
+    ],
+    "diagnostic_use": "Estimate percent illite and ordering from EG-solvated I/S reflections.",
+    "source_quote_fragment": "estimating percent illite",
+    "validation_status": "needs_manual_numeric_validation"
+  },
+  {
+    "table_id": "table_8_4",
+    "title": "The positions (CuKalpha) of useful reflections for estimating percent chlorite in R0 chlorite/EG-smectite",
+    "chapter": "8",
+    "page": "281",
+    "mineral_system": "R0 chlorite/EG-smectite",
+    "preparation": "ethylene_glycol_solvated",
+    "radiation": "CuKalpha",
+    "columns": [
+      "percent_chlorite",
+      "low_angle_d_A",
+      "low_angle_deg2theta",
+      "high_angle_d_A",
+      "high_angle_deg2theta",
+      "delta_deg2theta"
+    ],
+    "rows": [
+      {
+        "percent_chlorite": 10,
+        "low_angle_d_A": 6.39,
+        "low_angle_deg2theta": 10.54,
+        "high_angle_d_A": 3.39,
+        "high_angle_deg2theta": 26.29,
+        "delta_deg2theta": 13.75
+      },
+      {
+        "percent_chlorite": 20,
+        "low_angle_d_A": 8.29,
+        "low_angle_deg2theta": 10.68,
+        "high_angle_d_A": 3.4,
+        "high_angle_deg2theta": 26.21,
+        "delta_deg2theta": 15.54
+      },
+      {
+        "percent_chlorite": 30,
+        "low_angle_d_A": 8.15,
+        "low_angle_deg2theta": 10.86,
+        "high_angle_d_A": 3.42,
+        "high_angle_deg2theta": 26.05,
+        "delta_deg2theta": 15.19
+      },
+      {
+        "percent_chlorite": 40,
+        "low_angle_d_A": 7.98,
+        "low_angle_deg2theta": 11.09,
+        "high_angle_d_A": 3.43,
+        "high_angle_deg2theta": 25.98,
+        "delta_deg2theta": 14.89
+      },
+      {
+        "percent_chlorite": 50,
+        "low_angle_d_A": 7.8,
+        "low_angle_deg2theta": 11.34,
+        "high_angle_d_A": 3.45,
+        "high_angle_deg2theta": 25.82,
+        "delta_deg2theta": 14.48
+      },
+      {
+        "percent_chlorite": 60,
+        "low_angle_d_A": 7.59,
+        "low_angle_deg2theta": 11.66,
+        "high_angle_d_A": 3.47,
+        "high_angle_deg2theta": 25.67,
+        "delta_deg2theta": 14.01
+      },
+      {
+        "percent_chlorite": 80,
+        "low_angle_d_A": 7.4,
+        "low_angle_deg2theta": 11.96,
+        "high_angle_d_A": 3.5,
+        "high_angle_deg2theta": 25.45,
+        "delta_deg2theta": 13.49
+      },
+      {
+        "percent_chlorite": 90,
+        "low_angle_d_A": 7.18,
+        "low_angle_deg2theta": 12.33,
+        "high_angle_d_A": 3.53,
+        "high_angle_deg2theta": 25.23,
+        "delta_deg2theta": 12.9
+      }
+    ],
+    "notes": [
+      "First low-angle cell may be OCR-sensitive; table retained with validation note."
+    ],
+    "diagnostic_use": "Estimate percent chlorite in R0 chlorite/EG-smectite; delta 2theta preferred.",
+    "source_quote_fragment": "estimating percent chlorite",
+    "validation_status": "needs_manual_numeric_validation"
+  },
+  {
+    "table_id": "table_8_5",
+    "title": "Characterization of corrensite, 0.8 Fe per 3 octahedral sites",
+    "chapter": "8",
+    "page": "283",
+    "mineral_system": "corrensite",
+    "preparation": "dehydrated",
+    "radiation": "CuKalpha",
+    "columns": [
+      "reflection",
+      "observed_integrated_intensity",
+      "calculated_integrated_intensity"
+    ],
+    "rows": [
+      {
+        "reflection": "001*",
+        "observed_integrated_intensity": null,
+        "calculated_integrated_intensity": 2,
+        "note": "not detected"
+      },
+      {
+        "reflection": "002*",
+        "observed_integrated_intensity": 125,
+        "calculated_integrated_intensity": 113
+      },
+      {
+        "reflection": "003*",
+        "observed_integrated_intensity": 173,
+        "calculated_integrated_intensity": 183
+      },
+      {
+        "reflection": "004*",
+        "observed_integrated_intensity": 26,
+        "calculated_integrated_intensity": 26
+      },
+      {
+        "reflection": "006*",
+        "observed_integrated_intensity": 19,
+        "calculated_integrated_intensity": 34
+      },
+      {
+        "reflection": "007*",
+        "observed_integrated_intensity": 115,
+        "calculated_integrated_intensity": 1
+      },
+      {
+        "reflection": "008*",
+        "observed_integrated_intensity": 39,
+        "calculated_integrated_intensity": 53
+      }
+    ],
+    "notes": [
+      "OCR makes 007 calculated value uncertain; compare against source before quantitative use."
+    ],
+    "diagnostic_use": "Compare observed and calculated integrated intensities for corrensite characterization.",
+    "source_quote_fragment": "Data for the dehydrated preparation",
+    "validation_status": "needs_manual_numeric_validation"
+  },
+  {
+    "table_id": "table_8_6",
+    "title": "The positions (CuKalpha) of useful reflections for estimating percent kaolinite in R0 kaolinite/EG-smectite",
+    "chapter": "8",
+    "page": "288",
+    "mineral_system": "R0 kaolinite/EG-smectite",
+    "preparation": "ethylene_glycol_solvated",
+    "radiation": "CuKalpha",
+    "columns": [
+      "percent_kaolinite",
+      "low_angle_d_A",
+      "low_angle_deg2theta",
+      "high_angle_d_A",
+      "high_angle_deg2theta",
+      "delta_deg2theta"
+    ],
+    "rows": [
+      {
+        "percent_kaolinite": 10,
+        "low_angle_d_A": 8.46,
+        "low_angle_deg2theta": 10.46,
+        "high_angle_d_A": 3.39,
+        "high_angle_deg2theta": 26.29,
+        "delta_deg2theta": 15.83
+      },
+      {
+        "percent_kaolinite": 20,
+        "low_angle_d_A": 8.38,
+        "low_angle_deg2theta": 10.56,
+        "high_angle_d_A": 3.39,
+        "high_angle_deg2theta": 26.29,
+        "delta_deg2theta": 15.73
+      },
+      {
+        "percent_kaolinite": 30,
+        "low_angle_d_A": 8.31,
+        "low_angle_deg2theta": 10.65,
+        "high_angle_d_A": 3.4,
+        "high_angle_deg2theta": 26.21,
+        "delta_deg2theta": 15.56
+      },
+      {
+        "percent_kaolinite": 40,
+        "low_angle_d_A": 8.23,
+        "low_angle_deg2theta": 10.75,
+        "high_angle_d_A": 3.41,
+        "high_angle_deg2theta": 26.13,
+        "delta_deg2theta": 15.38
+      },
+      {
+        "percent_kaolinite": 50,
+        "low_angle_d_A": 8.1,
+        "low_angle_deg2theta": 10.92,
+        "high_angle_d_A": 3.43,
+        "high_angle_deg2theta": 25.98,
+        "delta_deg2theta": 15.06
+      },
+      {
+        "percent_kaolinite": 60,
+        "low_angle_d_A": 7.98,
+        "low_angle_deg2theta": 11.1,
+        "high_angle_d_A": 3.44,
+        "high_angle_deg2theta": 25.9,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_kaolinite": 70,
+        "low_angle_d_A": 7.9,
+        "low_angle_deg2theta": 11.19,
+        "high_angle_d_A": 3.47,
+        "high_angle_deg2theta": 25.67,
+        "delta_deg2theta": null
+      },
+      {
+        "percent_kaolinite": 80,
+        "low_angle_d_A": 7.65,
+        "low_angle_deg2theta": 11.57,
+        "high_angle_d_A": 3.5,
+        "high_angle_deg2theta": 25.45,
+        "delta_deg2theta": 13.88
+      },
+      {
+        "percent_kaolinite": 90,
+        "low_angle_d_A": 7.43,
+        "low_angle_deg2theta": 11.91,
+        "high_angle_d_A": 3.54,
+        "high_angle_deg2theta": 25.16,
+        "delta_deg2theta": 13.25
+      }
+    ],
+    "notes": [
+      "Rows transcribed from readable OCR/image; two delta cells are not legible."
+    ],
+    "diagnostic_use": "Estimate percent kaolinite in R0 kaolinite/EG-smectite.",
+    "source_quote_fragment": "estimating percent kaolinite",
+    "validation_status": "valid_with_gaps"
+  },
+  {
+    "table_id": "table_8_7",
+    "title": "The positions (CuKalpha) of useful reflections for estimating percent vermiculite in trioctahedral mica/vermiculite (air dried)",
+    "chapter": "8",
+    "page": "294",
+    "mineral_system": "trioctahedral mica/vermiculite",
+    "preparation": "air_dried",
+    "radiation": "CuKalpha",
+    "columns": [
+      "percent_vermiculite",
+      "R0_001_002_d_A",
+      "R0_001_002_deg2theta",
+      "R0_003_004_d_A",
+      "R0_003_004_deg2theta",
+      "R1_001_002_star_d_A",
+      "R1_001_002_star_deg2theta"
+    ],
+    "rows": [
+      {
+        "percent_vermiculite": 10,
+        "R0_001_002_d_A": 10.27,
+        "R0_001_002_deg2theta": 8.61,
+        "R0_003_004_d_A": 3.35,
+        "R0_003_004_deg2theta": 26.61,
+        "R1_001_002_star_d_A": 10.38,
+        "R1_001_002_star_deg2theta": null
+      },
+      {
+        "percent_vermiculite": 20,
+        "R0_001_002_d_A": 10.9,
+        "R0_001_002_deg2theta": 8.11,
+        "R0_003_004_d_A": 3.38,
+        "R0_003_004_deg2theta": 26.37,
+        "R1_001_002_star_d_A": 11.13,
+        "R1_001_002_star_deg2theta": 7.94
+      },
+      {
+        "percent_vermiculite": 40,
+        "R0_001_002_d_A": 12.53,
+        "R0_001_002_deg2theta": 7.05,
+        "R0_003_004_d_A": 3.45,
+        "R0_003_004_deg2theta": 25.82,
+        "R1_001_002_star_d_A": 11.97,
+        "R1_001_002_star_deg2theta": 7.39
+      },
+      {
+        "percent_vermiculite": 50,
+        "R0_001_002_d_A": 13.02,
+        "R0_001_002_deg2theta": 6.79,
+        "R0_003_004_d_A": 3.48,
+        "R0_003_004_deg2theta": 25.6,
+        "R1_001_002_star_d_A": 12.15,
+        "R1_001_002_star_deg2theta": 7.28
+      },
+      {
+        "percent_vermiculite": 60,
+        "R0_001_002_d_A": 13.43,
+        "R0_001_002_deg2theta": 6.58,
+        "R0_003_004_d_A": 3.51,
+        "R0_003_004_deg2theta": 25.37,
+        "R1_001_002_star_d_A": null,
+        "R1_001_002_star_deg2theta": null
+      },
+      {
+        "percent_vermiculite": 70,
+        "R0_001_002_d_A": 13.75,
+        "R0_001_002_deg2theta": 6.43,
+        "R0_003_004_d_A": 3.53,
+        "R0_003_004_deg2theta": 25.23,
+        "R1_001_002_star_d_A": null,
+        "R1_001_002_star_deg2theta": null
+      },
+      {
+        "percent_vermiculite": 80,
+        "R0_001_002_d_A": 13.97,
+        "R0_001_002_deg2theta": 6.33,
+        "R0_003_004_d_A": 3.55,
+        "R0_003_004_deg2theta": 25.08,
+        "R1_001_002_star_d_A": null,
+        "R1_001_002_star_deg2theta": null
+      },
+      {
+        "percent_vermiculite": 90,
+        "R0_001_002_d_A": 14.17,
+        "R0_001_002_deg2theta": 6.24,
+        "R0_003_004_d_A": 3.57,
+        "R0_003_004_deg2theta": 24.94,
+        "R1_001_002_star_d_A": null,
+        "R1_001_002_star_deg2theta": null
+      }
+    ],
+    "notes": [
+      "Asterisk indicates 002 is a basal spacing for a superstructure."
+    ],
+    "diagnostic_use": "Estimate percent vermiculite in air-dried trioctahedral mica/vermiculite.",
+    "source_quote_fragment": "estimating percent vermiculite",
+    "validation_status": "valid_with_partial_R1_column"
+  }
+]

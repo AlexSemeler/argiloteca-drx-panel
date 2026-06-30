@@ -1,0 +1,122 @@
+[
+  {
+    "rule_id": "superstructure_corrensite_00l_star",
+    "type": "chapter8_rule",
+    "rule_type": "superstructure",
+    "title": "superstructure corrensite 00l star",
+    "target": "corrensite",
+    "mineral_system": "corrensite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "00l_star_series",
+        "operator": "present",
+        "value": true
+      }
+    ],
+    "output": "Rational d(00l)* series supports corrensite as R1 chlorite/smectite.",
+    "diagnostic_implication": "Rational d(00l)* series supports corrensite as R1 chlorite/smectite.",
+    "confidence_weight": 0.9,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "283",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.5",
+      "equation": "",
+      "quote_fragment": "002* to the 008* reflections",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "superstructure_rectorite_R1_50_50",
+    "type": "chapter8_rule",
+    "rule_type": "superstructure",
+    "title": "superstructure rectorite R1 50 50",
+    "target": "rectorite",
+    "mineral_system": "rectorite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "R1_50_50_illite_smectite",
+        "operator": "present",
+        "value": true
+      }
+    ],
+    "output": "K-rectorite is treated as R1 illite(0.5)/EG-smectite with superstructure behavior.",
+    "diagnostic_implication": "K-rectorite is treated as R1 illite(0.5)/EG-smectite with superstructure behavior.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "265",
+      "section": "",
+      "figure": "Fig. 8.2",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "EG-K-rectorite",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "superstructure_mica_vermiculite_shoulder",
+    "type": "chapter8_rule",
+    "rule_type": "superstructure",
+    "title": "superstructure mica vermiculite shoulder",
+    "target": "mica_vermiculite",
+    "mineral_system": "mica_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "high_angle_shoulder_on_001_001",
+        "operator": "present",
+        "value": true
+      }
+    ],
+    "output": "A subtle high-angle shoulder can identify R1 mica/vermiculite at high mica content.",
+    "diagnostic_implication": "A subtle high-angle shoulder can identify R1 mica/vermiculite at high mica content.",
+    "confidence_weight": 0.75,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "294",
+      "section": "",
+      "figure": "Fig. 8.27",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "subtle high-angle shoulder",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

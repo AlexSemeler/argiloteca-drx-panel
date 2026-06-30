@@ -1,0 +1,251 @@
+[
+  {
+    "entity_id": "illite_smectite",
+    "entity_type": "mineral_system",
+    "name": "illite/smectite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: illite, smectite; ordering: R0, R1, R3"
+  },
+  {
+    "entity_id": "rectorite",
+    "entity_type": "mineral_system",
+    "name": "rectorite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: illite, smectite; ordering: R1"
+  },
+  {
+    "entity_id": "chlorite_smectite",
+    "entity_type": "mineral_system",
+    "name": "chlorite/smectite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: chlorite, smectite; ordering: R0, R1"
+  },
+  {
+    "entity_id": "corrensite",
+    "entity_type": "mineral_system",
+    "name": "corrensite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: chlorite, smectite; ordering: R1"
+  },
+  {
+    "entity_id": "chlorite_vermiculite",
+    "entity_type": "mineral_system",
+    "name": "chlorite/vermiculite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: chlorite, vermiculite; ordering: R0, R1, unknown"
+  },
+  {
+    "entity_id": "kaolinite_smectite",
+    "entity_type": "mineral_system",
+    "name": "kaolinite/smectite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: kaolinite, smectite; ordering: R0, R1"
+  },
+  {
+    "entity_id": "serpentine_chlorite",
+    "entity_type": "mineral_system",
+    "name": "serpentine/chlorite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: serpentine, chlorite; ordering: R0"
+  },
+  {
+    "entity_id": "mica_vermiculite",
+    "entity_type": "mineral_system",
+    "name": "mica/vermiculite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: mica, vermiculite; ordering: R0, R1"
+  },
+  {
+    "entity_id": "hydrobioite",
+    "entity_type": "mineral_system",
+    "name": "hydrobioite",
+    "aliases": [],
+    "chapter": "8",
+    "page": "",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 two-component mixed-layer clay systems.",
+    "source_quote_fragment": "two-component systems",
+    "notes": "Components: biotite, vermiculite; ordering: R1"
+  },
+  {
+    "entity_id": "treatment_air_dried",
+    "entity_type": "treatment_state",
+    "name": "air_dried",
+    "aliases": [
+      "natural",
+      "air-dried",
+      "air dried"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_ethylene_glycol_solvated",
+    "entity_type": "treatment_state",
+    "name": "ethylene_glycol_solvated",
+    "aliases": [
+      "EG",
+      "glycolated",
+      "ethylene glycol",
+      "ethylene glycol solvated"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_heated_250C",
+    "entity_type": "treatment_state",
+    "name": "heated_250C",
+    "aliases": [
+      "heated for 1 h at 250C",
+      "dehydrated at 250C"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_heated_375C",
+    "entity_type": "treatment_state",
+    "name": "heated_375C",
+    "aliases": [
+      "heated 375C",
+      "heated to 375C"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_dehydrated",
+    "entity_type": "treatment_state",
+    "name": "dehydrated",
+    "aliases": [
+      "dehydrated preparation",
+      "Na-saturated dehydrated",
+      "dry nitrogen dehydrated"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_Mg_glycerol_solvated",
+    "entity_type": "treatment_state",
+    "name": "Mg_glycerol_solvated",
+    "aliases": [
+      "Mg saturation and glycerol solvation",
+      "glycerol solvation"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  },
+  {
+    "entity_id": "treatment_K_saturated_heated",
+    "entity_type": "treatment_state",
+    "name": "K_saturated_heated",
+    "aliases": [
+      "K-saturated",
+      "collapsed K-saturated preparation"
+    ],
+    "chapter": "8",
+    "page": "",
+    "section": "treatments",
+    "figure": "",
+    "table": "",
+    "paragraph_context": "Chapter 8 uses multiple analyses, heat treatments, water/EG solvation and dehydrated preparations.",
+    "source_quote_fragment": "heat treatments and solvation",
+    "notes": "Standardized Argiloteca treatment state."
+  }
+]

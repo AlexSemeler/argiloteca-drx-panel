@@ -1,0 +1,160 @@
+[
+  {
+    "rule_id": "ordering_R0_no_superstructure",
+    "type": "chapter8_rule",
+    "rule_type": "ordering",
+    "title": "ordering R0 no superstructure",
+    "target": "R0",
+    "mineral_system": "R0",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "superstructure_reflection",
+        "presence": false
+      }
+    ],
+    "output": "Absence of superstructure components supports random R0 when other mixed-layer evidence exists.",
+    "diagnostic_implication": "Absence of superstructure components supports random R0 when other mixed-layer evidence exists.",
+    "confidence_weight": 0.65,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "293",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "RO are simpler than those for R1",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "ordering_R1_superstructure_present",
+    "type": "chapter8_rule",
+    "rule_type": "ordering",
+    "title": "ordering R1 superstructure present",
+    "target": "R1",
+    "mineral_system": "R1",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "superstructure_reflection",
+        "presence": true
+      }
+    ],
+    "output": "Superstructure reflections support R1 ordered interstratification.",
+    "diagnostic_implication": "Superstructure reflections support R1 ordered interstratification.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "293",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "superstructure reflection",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "ordering_IS_low_angle_EG",
+    "type": "chapter8_rule",
+    "rule_type": "ordering",
+    "title": "ordering IS low angle EG",
+    "target": "illite_smectite",
+    "mineral_system": "illite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "EG_reflection_between_5_and_8_5_deg2theta",
+        "presence": true
+      }
+    ],
+    "output": "Position of the 5-8.5 deg2theta reflection in EG-solvated I/S determines Reichweite.",
+    "diagnostic_implication": "Position of the 5-8.5 deg2theta reflection in EG-solvated I/S determines Reichweite.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.3",
+      "equation": "",
+      "quote_fragment": "Reichweite ... determined by the position",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "ordering_mica_vermiculite_high_mica_ambiguous",
+    "type": "chapter8_rule",
+    "rule_type": "ordering",
+    "title": "ordering mica vermiculite high mica ambiguous",
+    "target": "mica_vermiculite",
+    "mineral_system": "mica_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "mica_percent",
+        "operator": ">",
+        "value": 80,
+        "unit": "percent"
+      }
+    ],
+    "output": "R0 versus R1 mica/vermiculite is difficult above about 80 percent mica.",
+    "diagnostic_implication": "R0 versus R1 mica/vermiculite is difficult above about 80 percent mica.",
+    "confidence_weight": 0.5,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "294",
+      "section": "",
+      "figure": "Fig. 8.27",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "difficult if the mica content is greater",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

@@ -1,0 +1,453 @@
+[
+  {
+    "figure_id": "fig_8_1",
+    "caption": "R0 illite(0.5)/EG-smectite and locations of 00l reflections",
+    "chapter": "8",
+    "page": "264",
+    "mineral_system": "illite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 illite(0.5)/EG-smectite and locations of 00l reflections",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 illite(0.5)/EG-smectite and locations of 00l reflections",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_2",
+    "caption": "R1 illite(0.7)/EG-smectite, EG-K-rectorite and illite",
+    "chapter": "8",
+    "page": "265",
+    "mineral_system": "illite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 illite(0.7)/EG-smectite, EG-K-rectorite and illite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 illite(0.7)/EG-smectite, EG-K-rectorite and illite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_3",
+    "caption": "Correlation between Q and line breadth from NEWMOD",
+    "chapter": "8",
+    "page": "267",
+    "mineral_system": "line_broadening",
+    "preparations": [],
+    "labeled_peaks": [],
+    "diagnostic_message": "Correlation between Q and line breadth from NEWMOD",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Correlation between Q and line breadth from NEWMOD",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_4",
+    "caption": "Experimental diffraction patterns for preparations of a chloritic mineral",
+    "chapter": "8",
+    "page": "269",
+    "mineral_system": "chloritic_mineral",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated",
+      "heated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Experimental diffraction patterns for preparations of a chloritic mineral",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Experimental diffraction patterns for preparations of a chloritic mineral",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_5",
+    "caption": "R0 illite/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "271",
+    "mineral_system": "illite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 illite/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 illite/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_6",
+    "caption": "R1 illite/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "274",
+    "mineral_system": "illite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 illite/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 illite/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_7",
+    "caption": "R3 illite/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "274",
+    "mineral_system": "illite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R3 illite/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R3 illite/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_8",
+    "caption": "R1 illite/smectite mixed with discrete illite and noise",
+    "chapter": "8",
+    "page": "275",
+    "mineral_system": "physical_mixture_vs_interstratification",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 illite/smectite mixed with discrete illite and noise",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 illite/smectite mixed with discrete illite and noise",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_9",
+    "caption": "Trioctahedral low-charge corrensite",
+    "chapter": "8",
+    "page": "278",
+    "mineral_system": "corrensite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Trioctahedral low-charge corrensite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Trioctahedral low-charge corrensite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_10",
+    "caption": "Trioctahedral corrensite heated/dehydrated",
+    "chapter": "8",
+    "page": "278",
+    "mineral_system": "corrensite",
+    "preparations": [
+      "heated_250C",
+      "dehydrated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Trioctahedral corrensite heated/dehydrated",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Trioctahedral corrensite heated/dehydrated",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_11",
+    "caption": "High-charge corrensite",
+    "chapter": "8",
+    "page": "279",
+    "mineral_system": "corrensite",
+    "preparations": [
+      "air_dried",
+      "heated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "High-charge corrensite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "High-charge corrensite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_12",
+    "caption": "R0 chlorite/smectite",
+    "chapter": "8",
+    "page": "279",
+    "mineral_system": "chlorite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 chlorite/smectite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 chlorite/smectite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_13",
+    "caption": "R0 chlorite(0.8)/smectite, glycol solvated and heated to 375C",
+    "chapter": "8",
+    "page": "281",
+    "mineral_system": "chlorite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "heated_375C"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 chlorite(0.8)/smectite, glycol solvated and heated to 375C",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 chlorite(0.8)/smectite, glycol solvated and heated to 375C",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_14",
+    "caption": "Natural mixture of smectite, chlorite and corrensite",
+    "chapter": "8",
+    "page": "282",
+    "mineral_system": "physical_mixture_vs_interstratification",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "dehydrated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Natural mixture of smectite, chlorite and corrensite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Natural mixture of smectite, chlorite and corrensite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_15",
+    "caption": "Same natural mixture with noise",
+    "chapter": "8",
+    "page": "284",
+    "mineral_system": "physical_mixture_vs_interstratification",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "dehydrated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Same natural mixture with noise",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Same natural mixture with noise",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_16",
+    "caption": "R0 kaolinite(0.7)/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "285",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 kaolinite(0.7)/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 kaolinite(0.7)/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_17",
+    "caption": "R0 kaolinite(0.7)/smectite, EG and heated 375C",
+    "chapter": "8",
+    "page": "286",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "heated_375C"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 kaolinite(0.7)/smectite, EG and heated 375C",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 kaolinite(0.7)/smectite, EG and heated 375C",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_18",
+    "caption": "R0 kaolinite(0.3)/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "287",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 kaolinite(0.3)/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 kaolinite(0.3)/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_19",
+    "caption": "R0 kaolinite(0.3)/smectite, EG and heated 375C",
+    "chapter": "8",
+    "page": "287",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "heated_375C"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R0 kaolinite(0.3)/smectite, EG and heated 375C",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R0 kaolinite(0.3)/smectite, EG and heated 375C",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_20",
+    "caption": "Kaolinite/smectite compared with fine kaolinite",
+    "chapter": "8",
+    "page": "288",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated",
+      "heated_375C"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Kaolinite/smectite compared with fine kaolinite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Kaolinite/smectite compared with fine kaolinite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_21",
+    "caption": "R1 kaolinite(0.5)/smectite, EG and air-dried",
+    "chapter": "8",
+    "page": "290",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "air_dried",
+      "ethylene_glycol_solvated"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 kaolinite(0.5)/smectite, EG and air-dried",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 kaolinite(0.5)/smectite, EG and air-dried",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_22",
+    "caption": "R1 kaolinite(0.5)/smectite, EG and heated 375C",
+    "chapter": "8",
+    "page": "290",
+    "mineral_system": "kaolinite_smectite",
+    "preparations": [
+      "ethylene_glycol_solvated",
+      "heated_375C"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 kaolinite(0.5)/smectite, EG and heated 375C",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 kaolinite(0.5)/smectite, EG and heated 375C",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_23",
+    "caption": "Trioctahedral R0 serpentine(0.2)/chlorite",
+    "chapter": "8",
+    "page": "292",
+    "mineral_system": "serpentine_chlorite",
+    "preparations": [
+      "air_dried"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Trioctahedral R0 serpentine(0.2)/chlorite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Trioctahedral R0 serpentine(0.2)/chlorite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_24",
+    "caption": "Hydrobiotite, R1 biotite(0.5)/vermiculite",
+    "chapter": "8",
+    "page": "293",
+    "mineral_system": "hydrobioite",
+    "preparations": [
+      "air_dried"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Hydrobiotite, R1 biotite(0.5)/vermiculite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Hydrobiotite, R1 biotite(0.5)/vermiculite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_25",
+    "caption": "Trioctahedral R1 mica(0.65)/vermiculite",
+    "chapter": "8",
+    "page": "294",
+    "mineral_system": "mica_vermiculite",
+    "preparations": [
+      "air_dried"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Trioctahedral R1 mica(0.65)/vermiculite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Trioctahedral R1 mica(0.65)/vermiculite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_26",
+    "caption": "Trioctahedral R1 mica(0.2)/vermiculite",
+    "chapter": "8",
+    "page": "295",
+    "mineral_system": "mica_vermiculite",
+    "preparations": [
+      "air_dried"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "Trioctahedral R1 mica(0.2)/vermiculite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "Trioctahedral R1 mica(0.2)/vermiculite",
+    "validation_status": "valid"
+  },
+  {
+    "figure_id": "fig_8_27",
+    "caption": "R1 and R0 trioctahedral mica(0.8)/vermiculite",
+    "chapter": "8",
+    "page": "295",
+    "mineral_system": "mica_vermiculite",
+    "preparations": [
+      "air_dried"
+    ],
+    "labeled_peaks": [],
+    "diagnostic_message": "R1 and R0 trioctahedral mica(0.8)/vermiculite",
+    "rules_supported": [],
+    "limitations": [],
+    "source_quote_fragment": "R1 and R0 trioctahedral mica(0.8)/vermiculite",
+    "validation_status": "valid"
+  }
+]

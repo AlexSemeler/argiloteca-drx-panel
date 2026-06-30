@@ -1,0 +1,66 @@
+[
+  {
+    "simulation_id": "xai_illite_001_example",
+    "candidate_model": "illite_001",
+    "diagnostic_status": "possible",
+    "confidence": 0.0,
+    "input_summary": {
+      "requires": [
+        "lambda",
+        "theta",
+        "d001",
+        "Table 3.1 terms"
+      ]
+    },
+    "fixed_parameters": [
+      "lambda",
+      "d001",
+      "atomic_planes"
+    ],
+    "fitted_parameters": [],
+    "equations_used": [
+      "eq_3_16_illite_G",
+      "eq_3_14_intensity"
+    ],
+    "tables_used": [
+      "table_3_1"
+    ],
+    "figures_used": [
+      "fig_3_20",
+      "fig_3_21"
+    ],
+    "evidence_for": [
+      {
+        "evidence": "G(001) reproduces the worked example term sum.",
+        "metric": "G",
+        "rule_id": "illite_001_use_10A_layer_model",
+        "source": {
+          "source_document": "capitulo3-ilita.pdf",
+          "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+          "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+          "section": "",
+          "book_page": "100",
+          "pdf_page": "5",
+          "figure": "",
+          "table": "Table 3.1",
+          "equation": "",
+          "quote_fragment": "G(001) = 35.3"
+        }
+      }
+    ],
+    "evidence_against": [],
+    "ambiguous_evidence": [
+      "LP and absolute normalization may be omitted or unverified."
+    ],
+    "missing_data": [
+      "instrument profile for absolute intensity"
+    ],
+    "warnings": [
+      "not a standalone diagnostic confirmation"
+    ],
+    "next_best_tests": [
+      "compare full 00l profile",
+      "check width and asymmetry"
+    ]
+  }
+]

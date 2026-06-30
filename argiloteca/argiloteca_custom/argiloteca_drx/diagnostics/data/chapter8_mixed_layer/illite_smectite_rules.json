@@ -1,0 +1,1800 @@
+{
+  "mineral_system": "illite_smectite",
+  "components": [
+    "illite",
+    "smectite"
+  ],
+  "known_ordering_types": [
+    "R0",
+    "R1",
+    "R3"
+  ],
+  "diagnostic_rules": [
+    {
+      "rule_id": "mering_composite_reflection_between_end_members",
+      "type": "chapter8_rule",
+      "rule_type": "mering_principle",
+      "title": "mering composite reflection between end members",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "composite_reflection_position",
+          "operator": "between",
+          "value": "end_member_reflections",
+          "unit": "deg2theta_or_A"
+        }
+      ],
+      "output": "Composite 00l reflections should migrate between the corresponding end-member reflections as composition changes.",
+      "diagnostic_implication": "Composite 00l reflections should migrate between the corresponding end-member reflections as composition changes.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "264",
+        "section": "",
+        "figure": "Fig. 8.1",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Figure 8.1 demonstrates Mering's principles",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mering_broad_when_end_member_reflections_separated",
+      "type": "chapter8_rule",
+      "rule_type": "mering_principle",
+      "title": "mering broad when end member reflections separated",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "end_member_reflection_separation",
+          "operator": "large",
+          "value": true,
+          "unit": ""
+        }
+      ],
+      "output": "Large separation of component reflections predicts broad mixed-layer peaks.",
+      "diagnostic_implication": "Large separation of component reflections predicts broad mixed-layer peaks.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "291",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "peaks are broad if end-member reflections are widely separated",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mering_sharp_when_end_member_reflections_close",
+      "type": "chapter8_rule",
+      "rule_type": "mering_principle",
+      "title": "mering sharp when end member reflections close",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "end_member_reflection_separation",
+          "operator": "small",
+          "value": true,
+          "unit": ""
+        }
+      ],
+      "output": "Close juxtaposition of component reflections predicts relatively sharp peaks.",
+      "diagnostic_implication": "Close juxtaposition of component reflections predicts relatively sharp peaks.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "291",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "sharp peaks indicate the close juxtaposition",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mering_superstructure_ordered",
+      "type": "chapter8_rule",
+      "rule_type": "mering_principle",
+      "title": "mering superstructure ordered",
+      "target": "ordered_interstratification",
+      "mineral_system": "ordered_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "superstructure_reflections",
+          "operator": "present",
+          "value": true,
+          "unit": ""
+        }
+      ],
+      "output": "Superstructure reflections support ordered interstratification and help separate R1 from R0.",
+      "diagnostic_implication": "Superstructure reflections support ordered interstratification and help separate R1 from R0.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "262",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "convenient to designate their spacings as d(00l)*",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mering_irrationality_randomness",
+      "type": "chapter8_rule",
+      "rule_type": "mering_principle",
+      "title": "mering irrationality randomness",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "00l_series",
+          "operator": "irrational",
+          "value": true,
+          "unit": ""
+        }
+      ],
+      "output": "An irrational basal series is evidence for randomness in interstratification.",
+      "diagnostic_implication": "An irrational basal series is evidence for randomness in interstratification.",
+      "confidence_weight": 0.9,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "262",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Irrationality is evidence of some randomness",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "ordering_R0_no_superstructure",
+      "type": "chapter8_rule",
+      "rule_type": "ordering",
+      "title": "ordering R0 no superstructure",
+      "target": "R0",
+      "mineral_system": "R0",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "superstructure_reflection",
+          "presence": false
+        }
+      ],
+      "output": "Absence of superstructure components supports random R0 when other mixed-layer evidence exists.",
+      "diagnostic_implication": "Absence of superstructure components supports random R0 when other mixed-layer evidence exists.",
+      "confidence_weight": 0.65,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "293",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "RO are simpler than those for R1",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "ordering_R1_superstructure_present",
+      "type": "chapter8_rule",
+      "rule_type": "ordering",
+      "title": "ordering R1 superstructure present",
+      "target": "R1",
+      "mineral_system": "R1",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "superstructure_reflection",
+          "presence": true
+        }
+      ],
+      "output": "Superstructure reflections support R1 ordered interstratification.",
+      "diagnostic_implication": "Superstructure reflections support R1 ordered interstratification.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "293",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "superstructure reflection",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "ordering_IS_low_angle_EG",
+      "type": "chapter8_rule",
+      "rule_type": "ordering",
+      "title": "ordering IS low angle EG",
+      "target": "illite_smectite",
+      "mineral_system": "illite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "EG_reflection_between_5_and_8_5_deg2theta",
+          "presence": true
+        }
+      ],
+      "output": "Position of the 5-8.5 deg2theta reflection in EG-solvated I/S determines Reichweite.",
+      "diagnostic_implication": "Position of the 5-8.5 deg2theta reflection in EG-solvated I/S determines Reichweite.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.3",
+        "equation": "",
+        "quote_fragment": "Reichweite ... determined by the position",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "ordering_mica_vermiculite_high_mica_ambiguous",
+      "type": "chapter8_rule",
+      "rule_type": "ordering",
+      "title": "ordering mica vermiculite high mica ambiguous",
+      "target": "mica_vermiculite",
+      "mineral_system": "mica_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "mica_percent",
+          "operator": ">",
+          "value": 80,
+          "unit": "percent"
+        }
+      ],
+      "output": "R0 versus R1 mica/vermiculite is difficult above about 80 percent mica.",
+      "diagnostic_implication": "R0 versus R1 mica/vermiculite is difficult above about 80 percent mica.",
+      "confidence_weight": 0.5,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "294",
+        "section": "",
+        "figure": "Fig. 8.27",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "difficult if the mica content is greater",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "superstructure_corrensite_00l_star",
+      "type": "chapter8_rule",
+      "rule_type": "superstructure",
+      "title": "superstructure corrensite 00l star",
+      "target": "corrensite",
+      "mineral_system": "corrensite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "00l_star_series",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "Rational d(00l)* series supports corrensite as R1 chlorite/smectite.",
+      "diagnostic_implication": "Rational d(00l)* series supports corrensite as R1 chlorite/smectite.",
+      "confidence_weight": 0.9,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "283",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.5",
+        "equation": "",
+        "quote_fragment": "002* to the 008* reflections",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "superstructure_rectorite_R1_50_50",
+      "type": "chapter8_rule",
+      "rule_type": "superstructure",
+      "title": "superstructure rectorite R1 50 50",
+      "target": "rectorite",
+      "mineral_system": "rectorite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "R1_50_50_illite_smectite",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "K-rectorite is treated as R1 illite(0.5)/EG-smectite with superstructure behavior.",
+      "diagnostic_implication": "K-rectorite is treated as R1 illite(0.5)/EG-smectite with superstructure behavior.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "265",
+        "section": "",
+        "figure": "Fig. 8.2",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "EG-K-rectorite",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "superstructure_mica_vermiculite_shoulder",
+      "type": "chapter8_rule",
+      "rule_type": "superstructure",
+      "title": "superstructure mica vermiculite shoulder",
+      "target": "mica_vermiculite",
+      "mineral_system": "mica_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "high_angle_shoulder_on_001_001",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "A subtle high-angle shoulder can identify R1 mica/vermiculite at high mica content.",
+      "diagnostic_implication": "A subtle high-angle shoulder can identify R1 mica/vermiculite at high mica content.",
+      "confidence_weight": 0.75,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "294",
+        "section": "",
+        "figure": "Fig. 8.27",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "subtle high-angle shoulder",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_IS_EG_then_heated_confirmation",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior IS EG then heated confirmation",
+      "target": "illite_smectite",
+      "mineral_system": "illite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "ethylene_glycol_solvated",
+          "feature": "air_dried_pattern_altered"
+        },
+        {
+          "preparation": "heated_375C",
+          "feature": "illite_like_pattern"
+        }
+      ],
+      "output": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+      "diagnostic_implication": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+      "confidence_weight": 0.9,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Heating to 375C for 1 h provides confirmation",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_CS_EG_expansion_favors_smectite_component",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior CS EG expansion favors smectite component",
+      "target": "chlorite_smectite",
+      "mineral_system": "chlorite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "ethylene_glycol_solvated",
+          "feature": "expansion",
+          "presence": true
+        }
+      ],
+      "output": "Expansion with EG favors chlorite/smectite over chlorite/vermiculite.",
+      "diagnostic_implication": "Expansion with EG favors chlorite/smectite over chlorite/vermiculite.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "280",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "migration of the 001/001 peak",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_CS_no_EG_ambiguous_CV",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior CS no EG ambiguous CV",
+      "target": "chlorite_smectite_vs_chlorite_vermiculite",
+      "mineral_system": "chlorite_smectite_vs_chlorite_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "ethylene_glycol_solvated",
+          "feature": "expansion",
+          "presence": false
+        }
+      ],
+      "output": "If EG does not cause apparent expansion, C/S versus C/V remains indeterminate without additional evidence.",
+      "diagnostic_implication": "If EG does not cause apparent expansion, C/S versus C/V remains indeterminate without additional evidence.",
+      "confidence_weight": 0.55,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "280",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "possible misidentification of vermiculite/smectite",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_CV_heated_collapse_to_10A",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior CV heated collapse to 10A",
+      "target": "chlorite_vermiculite",
+      "mineral_system": "chlorite_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "heated",
+          "feature": "collapse_to_about_10_A",
+          "presence": true
+        }
+      ],
+      "output": "Heat collapse toward 10 A favors vermiculite-bearing interstratification over C/S.",
+      "diagnostic_implication": "Heat collapse toward 10 A favors vermiculite-bearing interstratification over C/S.",
+      "confidence_weight": 0.7,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "280",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "heat treatment would have collapsed",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_corrensite_dehydrated_resolves_mixture",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior corrensite dehydrated resolves mixture",
+      "target": "corrensite",
+      "mineral_system": "corrensite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "dehydrated",
+          "feature": "expandable_layers_collapsed_to_about_9_6_A"
+        }
+      ],
+      "output": "Na-saturated dehydrated analysis can resolve corrensite/chlorite/smectite mixtures that EG or air-dried patterns cannot.",
+      "diagnostic_implication": "Na-saturated dehydrated analysis can resolve corrensite/chlorite/smectite mixtures that EG or air-dried patterns cannot.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "281",
+        "section": "",
+        "figure": "Fig. 8.14",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Little can be learned from EG and air-dried",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_KS_requires_three_treatments",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior KS requires three treatments",
+      "target": "kaolinite_smectite",
+      "mineral_system": "kaolinite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "air_dried"
+        },
+        {
+          "preparation": "ethylene_glycol_solvated"
+        },
+        {
+          "preparation": "heated_375C"
+        }
+      ],
+      "output": "Compare air-dried, EG and 375C patterns before rejecting K/S as kaolinite or halloysite.",
+      "diagnostic_implication": "Compare air-dried, EG and 375C patterns before rejecting K/S as kaolinite or halloysite.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "285",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Heat treatments are necessary",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_SC_unaffected_by_solvation_heating",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior SC unaffected by solvation heating",
+      "target": "serpentine_chlorite",
+      "mineral_system": "serpentine_chlorite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "liquid_solvation",
+          "feature": "no_effect"
+        },
+        {
+          "preparation": "moderate_heating",
+          "feature": "no_effect"
+        }
+      ],
+      "output": "Serpentine/chlorite is not diagnosed by solvation response; use odd/even peak broadening and equations.",
+      "diagnostic_implication": "Serpentine/chlorite is not diagnosed by solvation response; use odd/even peak broadening and equations.",
+      "confidence_weight": 0.75,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "292",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "unaffected by liquid solvation",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "behavior_MV_Mg_glycerol_proves_vermiculite",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior MV Mg glycerol proves vermiculite",
+      "target": "mica_vermiculite",
+      "mineral_system": "mica_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "Mg_glycerol_solvated",
+          "feature": "essentially_unchanged_from_air_dried"
+        }
+      ],
+      "output": "Mg saturation plus glycerol with little change is proof of a vermiculite component in mica/vermiculite context.",
+      "diagnostic_implication": "Mg saturation plus glycerol with little change is proof of a vermiculite component in mica/vermiculite context.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "293",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Proof of a vermiculite component requires",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_Q_minor_component",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening Q minor component",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "minor_component_percent",
+          "operator": "<=",
+          "value": "few",
+          "unit": "percent"
+        }
+      ],
+      "output": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+      "diagnostic_implication": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.2",
+        "equation": "",
+        "quote_fragment": "few percent or less",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_instrumental_correction",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening instrumental correction",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "orders_to_0010",
+          "operator": "used",
+          "value": true
+        }
+      ],
+      "output": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+      "diagnostic_implication": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "correct the experimental data for instrumental effects",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_not_alone",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening not alone",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "broad_peak_only",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+      "diagnostic_implication": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+      "confidence_weight": 0.75,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "absolute line breadths ... correctly modeled",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_SC_odd_even",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening SC odd even",
+      "target": "serpentine_chlorite",
+      "mineral_system": "serpentine_chlorite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "odd_chlorite_reflections",
+          "shape": "broad"
+        },
+        {
+          "feature": "even_chlorite_reflections",
+          "shape": "sharp"
+        }
+      ],
+      "output": "Odd chlorite reflections broaden while even reflections remain relatively sharp in serpentine/chlorite.",
+      "diagnostic_implication": "Odd chlorite reflections broaden while even reflections remain relatively sharp in serpentine/chlorite.",
+      "confidence_weight": 0.9,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "291",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "odd-numbered peaks ... broad",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "composition_IS_table_8_3_delta",
+      "type": "chapter8_rule",
+      "rule_type": "composition_estimation",
+      "title": "composition IS table 8 3 delta",
+      "target": "illite_smectite",
+      "mineral_system": "illite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "delta_2theta",
+          "table": "Table 8.3"
+        },
+        {
+          "preparation": "ethylene_glycol_solvated"
+        }
+      ],
+      "output": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+      "diagnostic_implication": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.3",
+        "equation": "",
+        "quote_fragment": "better way is ... A2theta",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "composition_CS_table_8_4_delta",
+      "type": "chapter8_rule",
+      "rule_type": "composition_estimation",
+      "title": "composition CS table 8 4 delta",
+      "target": "chlorite_smectite",
+      "mineral_system": "chlorite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "delta_2theta",
+          "table": "Table 8.4"
+        },
+        {
+          "preparation": "ethylene_glycol_solvated"
+        }
+      ],
+      "output": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+      "diagnostic_implication": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "280",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.4",
+        "equation": "",
+        "quote_fragment": "recommend the A2theta parameter",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "composition_KS_table_8_6_delta",
+      "type": "chapter8_rule",
+      "rule_type": "composition_estimation",
+      "title": "composition KS table 8 6 delta",
+      "target": "kaolinite_smectite",
+      "mineral_system": "kaolinite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "delta_2theta",
+          "table": "Table 8.6"
+        },
+        {
+          "preparation": "ethylene_glycol_solvated"
+        }
+      ],
+      "output": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+      "diagnostic_implication": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "289",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.6",
+        "equation": "",
+        "quote_fragment": "go to Table 8.6",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "composition_MV_table_8_7_low_angle",
+      "type": "chapter8_rule",
+      "rule_type": "composition_estimation",
+      "title": "composition MV table 8 7 low angle",
+      "target": "mica_vermiculite",
+      "mineral_system": "mica_vermiculite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "001_002_or_001_002_star_position",
+          "table": "Table 8.7"
+        },
+        {
+          "preparation": "air_dried"
+        }
+      ],
+      "output": "Estimate percent vermiculite in trioctahedral mica/vermiculite from Table 8.7.",
+      "diagnostic_implication": "Estimate percent vermiculite in trioctahedral mica/vermiculite from Table 8.7.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "293",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.7",
+        "equation": "",
+        "quote_fragment": "Table 8.7 shows the position",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mixture_fixed_discrete_peaks",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "mixture fixed discrete peaks",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "peaks",
+          "behavior": "fixed_independent_between_treatments"
+        }
+      ],
+      "output": "Fixed independent peaks support a physical mixture more than true interstratification.",
+      "diagnostic_implication": "Fixed independent peaks support a physical mixture more than true interstratification.",
+      "confidence_weight": 0.7,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "Fig. 8.8",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Mixtures of discrete ... illite with I/S",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "interstratification_migrating_composite_peaks",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "interstratification migrating composite peaks",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "composite_peaks",
+          "behavior": "migrate_between_end_members"
+        }
+      ],
+      "output": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+      "diagnostic_implication": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "296",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "identifying the whole",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mixture_noise_preserve_ambiguity",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "mixture noise preserve ambiguity",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "noise_or_poor_pattern",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+      "diagnostic_implication": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "Fig. 8.8",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "poor patterns from mineral mixtures",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "corrensite_mixture_dehydrated_resolution",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "corrensite mixture dehydrated resolution",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "chlorite_smectite_corrensite_mixture"
+        },
+        {
+          "preparation": "dehydrated"
+        }
+      ],
+      "output": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+      "diagnostic_implication": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "281",
+        "section": "",
+        "figure": "Fig. 8.14",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "power of the dehydration",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "intensity_corrensite_integrated_areas",
+      "type": "chapter8_rule",
+      "rule_type": "intensity",
+      "title": "intensity corrensite integrated areas",
+      "target": "corrensite",
+      "mineral_system": "corrensite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "reflection": "chlorite_002_smectite_001_corrensite_003_star",
+          "intensity_type": "integrated_area",
+          "preparation": "dehydrated"
+        }
+      ],
+      "output": "Integrated areas in dehydrated patterns can support quantitative chlorite/smectite/corrensite mixture analysis with mineral intensity factors.",
+      "diagnostic_implication": "Integrated areas in dehydrated patterns can support quantitative chlorite/smectite/corrensite mixture analysis with mineral intensity factors.",
+      "confidence_weight": 0.7,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "283",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.5",
+        "equation": "",
+        "quote_fragment": "integrated areas were measured",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "intensity_preparation_particle_size_limitation",
+      "type": "chapter8_rule",
+      "rule_type": "intensity",
+      "title": "intensity preparation particle size limitation",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "pipetted_glass_slide",
+          "operator": "used",
+          "value": true
+        }
+      ],
+      "output": "Quantitative intensity analysis is suspect if preparation emphasizes finer particle sizes.",
+      "diagnostic_implication": "Quantitative intensity analysis is suspect if preparation emphasizes finer particle sizes.",
+      "confidence_weight": 0.7,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "283",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "sample preparation method ... finer particle sizes",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    }
+  ],
+  "behavior_rules": [
+    {
+      "rule_id": "behavior_IS_EG_then_heated_confirmation",
+      "type": "chapter8_rule",
+      "rule_type": "treatment_behavior",
+      "title": "behavior IS EG then heated confirmation",
+      "target": "illite_smectite",
+      "mineral_system": "illite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "preparation": "ethylene_glycol_solvated",
+          "feature": "air_dried_pattern_altered"
+        },
+        {
+          "preparation": "heated_375C",
+          "feature": "illite_like_pattern"
+        }
+      ],
+      "output": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+      "diagnostic_implication": "EG alteration gives provisional I/S; heating to 375C for 1 h confirms by illite-like collapse.",
+      "confidence_weight": 0.9,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Heating to 375C for 1 h provides confirmation",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    }
+  ],
+  "composition_rules": [
+    {
+      "rule_id": "composition_IS_table_8_3_delta",
+      "type": "chapter8_rule",
+      "rule_type": "composition_estimation",
+      "title": "composition IS table 8 3 delta",
+      "target": "illite_smectite",
+      "mineral_system": "illite_smectite",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "delta_2theta",
+          "table": "Table 8.3"
+        },
+        {
+          "preparation": "ethylene_glycol_solvated"
+        }
+      ],
+      "output": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+      "diagnostic_implication": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.3",
+        "equation": "",
+        "quote_fragment": "better way is ... A2theta",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    }
+  ],
+  "line_broadening_rules": [
+    {
+      "rule_id": "line_broadening_Q_minor_component",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening Q minor component",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "minor_component_percent",
+          "operator": "<=",
+          "value": "few",
+          "unit": "percent"
+        }
+      ],
+      "output": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+      "diagnostic_implication": "Q/line-broadening can identify small minor-component proportions that peak positions alone miss.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "Table 8.2",
+        "equation": "",
+        "quote_fragment": "few percent or less",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_instrumental_correction",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening instrumental correction",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "orders_to_0010",
+          "operator": "used",
+          "value": true
+        }
+      ],
+      "output": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+      "diagnostic_implication": "High-order line breadth work must correct instrumental effects, especially CuKalpha doublet broadening.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "correct the experimental data for instrumental effects",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "line_broadening_not_alone",
+      "type": "chapter8_rule",
+      "rule_type": "line_broadening",
+      "title": "line broadening not alone",
+      "target": "mixed_layer_clay_minerals",
+      "mineral_system": "mixed_layer_clay_minerals",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "broad_peak_only",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+      "diagnostic_implication": "Broad peaks alone are not sufficient because crystallite thickness and preparation can also broaden lines.",
+      "confidence_weight": 0.75,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "267",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "absolute line breadths ... correctly modeled",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    }
+  ],
+  "superstructure_rules": [],
+  "differential_diagnosis": [
+    {
+      "rule_id": "mixture_fixed_discrete_peaks",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "mixture fixed discrete peaks",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "peaks",
+          "behavior": "fixed_independent_between_treatments"
+        }
+      ],
+      "output": "Fixed independent peaks support a physical mixture more than true interstratification.",
+      "diagnostic_implication": "Fixed independent peaks support a physical mixture more than true interstratification.",
+      "confidence_weight": 0.7,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "Fig. 8.8",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "Mixtures of discrete ... illite with I/S",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "interstratification_migrating_composite_peaks",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "interstratification migrating composite peaks",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "composite_peaks",
+          "behavior": "migrate_between_end_members"
+        }
+      ],
+      "output": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+      "diagnostic_implication": "Systematic migration, irrational series and treatment-linked changes support interstratification.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "296",
+        "section": "",
+        "figure": "",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "identifying the whole",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "mixture_noise_preserve_ambiguity",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "mixture noise preserve ambiguity",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "noise_or_poor_pattern",
+          "operator": "present",
+          "value": true
+        }
+      ],
+      "output": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+      "diagnostic_implication": "Poor/noisy patterns from mixtures must remain ambiguous unless multi-treatment evidence is coherent.",
+      "confidence_weight": 0.8,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "273",
+        "section": "",
+        "figure": "Fig. 8.8",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "poor patterns from mineral mixtures",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    },
+    {
+      "rule_id": "corrensite_mixture_dehydrated_resolution",
+      "type": "chapter8_rule",
+      "rule_type": "differential_diagnosis",
+      "title": "corrensite mixture dehydrated resolution",
+      "target": "physical_mixture_or_interstratification",
+      "mineral_system": "physical_mixture_or_interstratification",
+      "components": [],
+      "ordering": "",
+      "treatment_state": "",
+      "input_features": [],
+      "conditions": [
+        {
+          "feature": "chlorite_smectite_corrensite_mixture"
+        },
+        {
+          "preparation": "dehydrated"
+        }
+      ],
+      "output": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+      "diagnostic_implication": "Dehydrated preparations can separate chlorite, smectite and corrensite better than EG/air-dried patterns.",
+      "confidence_weight": 0.85,
+      "limitations": [],
+      "differential_diagnosis": [],
+      "source": {
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "chapter": "8",
+        "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+        "page": "281",
+        "section": "",
+        "figure": "Fig. 8.14",
+        "table": "",
+        "equation": "",
+        "quote_fragment": "power of the dehydration",
+        "validation_status": "valid"
+      },
+      "version": "chapter8_mixed_layer.v1",
+      "created_at": "2026-06-25T17:51:47+00:00",
+      "updated_at": "2026-06-25T17:51:47+00:00",
+      "validation_status": "valid"
+    }
+  ],
+  "known_interferences": [
+    "physical mixtures",
+    "overlapping basal reflections",
+    "noise",
+    "crystallite thickness",
+    "particle-size/preparation bias"
+  ],
+  "known_false_positives": [
+    "single broad peak",
+    "single migrated peak",
+    "unvalidated OCR/table value"
+  ],
+  "known_false_negatives": [
+    "minor component detectable only by line broadening",
+    "poor EG/dehydrated preparation"
+  ],
+  "references": [
+    {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "296",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "modeling of their 00l diffraction tracings",
+      "validation_status": "valid"
+    }
+  ]
+}

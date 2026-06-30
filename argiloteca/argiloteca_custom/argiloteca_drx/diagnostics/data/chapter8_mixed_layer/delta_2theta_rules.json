@@ -1,0 +1,128 @@
+[
+  {
+    "rule_id": "composition_IS_table_8_3_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition IS table 8 3 delta",
+    "target": "illite_smectite",
+    "mineral_system": "illite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.3"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+    "diagnostic_implication": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.3",
+      "equation": "",
+      "quote_fragment": "better way is ... A2theta",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "composition_CS_table_8_4_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition CS table 8 4 delta",
+    "target": "chlorite_smectite",
+    "mineral_system": "chlorite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.4"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+    "diagnostic_implication": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "280",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.4",
+      "equation": "",
+      "quote_fragment": "recommend the A2theta parameter",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "composition_KS_table_8_6_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition KS table 8 6 delta",
+    "target": "kaolinite_smectite",
+    "mineral_system": "kaolinite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.6"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+    "diagnostic_implication": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "289",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.6",
+      "equation": "",
+      "quote_fragment": "go to Table 8.6",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

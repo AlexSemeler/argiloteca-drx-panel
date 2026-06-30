@@ -1,0 +1,101 @@
+[
+  {
+    "rule_id": "reichweite_0_random",
+    "rule_type": "mixed_layer_sequence",
+    "target": "R0",
+    "formal_statement": "If Reichweite = 0, stacking is random and sequence probability follows component proportions.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "363",
+      "pdf_page": "13",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "interstratification is random"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "components": [
+      "A",
+      "B"
+    ],
+    "ordering": "R0",
+    "Reichweite": 0,
+    "probabilities": {
+      "P_sequence": "P_A^countA * P_B^countB"
+    }
+  },
+  {
+    "rule_id": "reichweite_gt0_conditional",
+    "rule_type": "mixed_layer_sequence",
+    "target": "R1_R2_R3",
+    "formal_statement": "If Reichweite > 0, conditional probabilities must constrain layer sequences.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "363",
+      "pdf_page": "13",
+      "figure": "",
+      "table": "",
+      "equation": "A.3",
+      "quote_fragment": "conditional or transitional probabilities"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "components": [
+      "A",
+      "B"
+    ],
+    "ordering": "ordered",
+    "Reichweite": ">0"
+  },
+  {
+    "rule_id": "R1_BB_forbidden_when_A_gt_50",
+    "rule_type": "mixed_layer_sequence",
+    "target": "R1",
+    "formal_statement": "For R=1 and A component greater than 50%, B cannot follow B in the example ordering model.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "364",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "B-type layer cannot follow a B-type layer"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "components": [
+      "A",
+      "B"
+    ],
+    "ordering": "R1",
+    "Reichweite": 1,
+    "forbidden_sequences": [
+      "BB"
+    ]
+  }
+]

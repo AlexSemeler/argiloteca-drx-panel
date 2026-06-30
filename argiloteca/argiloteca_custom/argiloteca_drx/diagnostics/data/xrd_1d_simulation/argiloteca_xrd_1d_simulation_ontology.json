@@ -1,0 +1,115 @@
+{
+  "ontology_id": "argiloteca_xrd_1d_simulation_ontology",
+  "version": "xrd_1d_simulation.v1",
+  "root": "XRDOneDimensionalSimulation",
+  "classes": {
+    "ObservedPattern": [
+      "raw_counts",
+      "background",
+      "corrected_intensity",
+      "two_theta_axis",
+      "d_spacing_axis",
+      "peak_list"
+    ],
+    "CalculatedPattern": [
+      "simulated_intensity",
+      "calculated_peak_position",
+      "calculated_peak_width",
+      "calculated_peak_shape",
+      "residual"
+    ],
+    "LayerStructure": [
+      "tetrahedral_sheet",
+      "octahedral_sheet",
+      "interlayer",
+      "atomic_coordinate_z",
+      "atomic_occupancy",
+      "layer_charge"
+    ],
+    "LayerStructureFactor": [
+      "G_theta",
+      "atomic_scattering_factor",
+      "phase_angle",
+      "centrosymmetric_layer",
+      "noncentrosymmetric_layer"
+    ],
+    "InterferenceFunction": [
+      "Phi_theta",
+      "coherent_domain_size",
+      "defect_free_distance",
+      "crystallite_thickness",
+      "stacking_periodicity"
+    ],
+    "CorrectionFactor": [
+      "Lorentz_polarization",
+      "preferred_orientation",
+      "long_beam_projection",
+      "instrumental_broadening",
+      "sample_length_correction",
+      "Debye_Waller"
+    ],
+    "InstrumentModel": [
+      "wavelength",
+      "divergence_slit",
+      "receiving_slit",
+      "Soller_slit_1",
+      "Soller_slit_2",
+      "goniometer_radius",
+      "sample_length",
+      "detector_geometry"
+    ],
+    "ClayMineralModel": [
+      "mineral_type",
+      "layer_type",
+      "exchange_capacity",
+      "exchange_cation",
+      "interlayer_complex",
+      "Fe_content",
+      "K_content",
+      "water_layer_count",
+      "glycol_layer_count"
+    ],
+    "MixedLayerModel": [
+      "component_A",
+      "component_B",
+      "component_fraction",
+      "conditional_probability",
+      "Reichweite",
+      "ordering",
+      "stacking_sequence",
+      "superstructure"
+    ],
+    "BroadeningModel": [
+      "defect_broadening",
+      "particle_size_distribution",
+      "finite_crystallite_size",
+      "strain_like_effect",
+      "instrumental_contribution"
+    ],
+    "CalibrationReference": [
+      "quartz_reference",
+      "reference_intensity",
+      "operating_conditions",
+      "normalization_factor"
+    ],
+    "Rule": [],
+    "Equation": [],
+    "Parameter": [],
+    "Constraint": [],
+    "ValidationTest": [],
+    "DashboardComponent": [],
+    "Explanation": []
+  },
+  "source": {
+    "source_document": "capitulo3-ilita.pdf",
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+    "section": "",
+    "book_page": "96",
+    "pdf_page": "1",
+    "figure": "",
+    "table": "",
+    "equation": "",
+    "quote_fragment": "diffraction pattern for illite"
+  }
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "kx_to_angstrom_star_conversion",
+    "rule_id": "kx_to_angstrom_star_conversion",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "unit_conversion",
+    "title": "kX to Angstrom-star conversion",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "unit_from": "kX",
+        "unit_to": "angstrom_star"
+      }
+    ],
+    "outputs": [
+      "1 kX = 1.002056 A*"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Historical/legacy unit; precise legacy wavelength tables may mix kX and Angstrom."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-16",
+      "problem": "",
+      "quote_fragment": "1 kX = 1.002056 A*",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

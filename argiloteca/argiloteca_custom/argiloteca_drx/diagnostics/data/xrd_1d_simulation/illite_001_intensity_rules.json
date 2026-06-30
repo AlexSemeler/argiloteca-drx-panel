@@ -1,0 +1,63 @@
+[
+  {
+    "rule_id": "illite_001_use_10A_layer_model",
+    "rule_type": "illite_intensity_calculation",
+    "target": "illite_001",
+    "formal_statement": "Use the 10 A illite/mica layer model and pseudo-mirror coordinates for the simplified 001 calculation.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "97",
+      "pdf_page": "2",
+      "figure": "Fig. 3.20",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "10 A from the center of the K atom"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "calculation_steps": [
+      "load Table 3.1 atomic planes",
+      "calculate phase from z/d001",
+      "sum n f cos(phi)",
+      "square G",
+      "multiply by Phi and LP"
+    ]
+  },
+  {
+    "rule_id": "illite_001_bragg_precision_warning",
+    "rule_type": "illite_intensity_calculation",
+    "target": "illite_001",
+    "formal_statement": "If intensity is evaluated exactly at the Bragg angle, Phi may be numerically unstable or rounding-sensitive.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "100",
+      "pdf_page": "5",
+      "figure": "",
+      "table": "",
+      "equation": "3.10",
+      "quote_fragment": "very sensitive to errors"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "warnings": [
+      "document theta precision",
+      "document lambda and d001 units"
+    ]
+  }
+]

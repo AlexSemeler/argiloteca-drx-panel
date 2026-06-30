@@ -1,0 +1,127 @@
+[
+  {
+    "entity_id": "entity_layer_structure_factor_G",
+    "entity_type": "physical_quantity",
+    "name": "layer structure factor",
+    "symbol": "G(theta)",
+    "definition": "Continuous layer scattering amplitude used for 00l diffraction simulation.",
+    "aliases": [
+      "layer scattering factor",
+      "layer transform"
+    ],
+    "related_entities": [
+      "atomic_scattering_factor",
+      "atomic_coordinate_z",
+      "G_squared"
+    ],
+    "chapter_or_appendix": "Chapter 3",
+    "section": "Exercise: Calculation of the Intensity from d(001) for Illite",
+    "book_page": "97-102",
+    "pdf_page": "2-7",
+    "figure": "Fig. 3.21",
+    "table": "Table 3.1",
+    "equation": "3.9, 3.16",
+    "source_quote_fragment": "G is the layer structure factor",
+    "notes": "Use G rather than F for continuous theta functions."
+  },
+  {
+    "entity_id": "entity_interference_function_phi",
+    "entity_type": "physical_quantity",
+    "name": "interference function",
+    "symbol": "Phi(theta)",
+    "definition": "Finite-domain stacking term controlling 00l peak maxima, width and shape.",
+    "aliases": [
+      "interference function",
+      "Phi"
+    ],
+    "related_entities": [
+      "coherent_domain_size",
+      "N_layers",
+      "d001"
+    ],
+    "chapter_or_appendix": "Chapter 3",
+    "section": "Illite 001 intensity exercise",
+    "book_page": "100-102",
+    "pdf_page": "5-7",
+    "figure": "Fig. 3.19",
+    "table": "",
+    "equation": "3.10",
+    "source_quote_fragment": "very sensitive to errors",
+    "notes": "Numerically sensitive at exact Bragg maxima."
+  },
+  {
+    "entity_id": "entity_lorentz_polarization_factor",
+    "entity_type": "correction_factor",
+    "name": "Lorentz-polarization factor",
+    "symbol": "Lp(theta)",
+    "definition": "Angle- and orientation-dependent intensity correction.",
+    "aliases": [
+      "LP",
+      "Lorentz factor"
+    ],
+    "related_entities": [
+      "preferred_orientation",
+      "Soller_slits"
+    ],
+    "chapter_or_appendix": "Appendix",
+    "section": "Theory",
+    "book_page": "365",
+    "pdf_page": "15",
+    "figure": "",
+    "table": "Table A.1",
+    "equation": "A.4",
+    "source_quote_fragment": "Lorentz-polarization factor is given by",
+    "notes": "Dashboard separates point-by-point profile intensity from integrated intensity."
+  },
+  {
+    "entity_id": "entity_reichweite",
+    "entity_type": "stacking_parameter",
+    "name": "Reichweite",
+    "symbol": "R",
+    "definition": "Range of ordering used to constrain mixed-layer stacking sequences.",
+    "aliases": [
+      "ordering range",
+      "R0",
+      "R1",
+      "R2",
+      "R3"
+    ],
+    "related_entities": [
+      "conditional_probability",
+      "mixed_layer_sequence"
+    ],
+    "chapter_or_appendix": "Appendix",
+    "section": "Theory",
+    "book_page": "362-365",
+    "pdf_page": "12-15",
+    "figure": "Fig. A.1",
+    "table": "Table A.2",
+    "equation": "A.3",
+    "source_quote_fragment": "Reichweite values ... are 0, 1, 2, and 3",
+    "notes": "R0 uses component proportions; R>0 uses conditional probabilities."
+  },
+  {
+    "entity_id": "entity_defect_broadening",
+    "entity_type": "broadening_model",
+    "name": "defect broadening",
+    "symbol": "q(N)",
+    "definition": "Line broadening from random stacking faults along Z.",
+    "aliases": [
+      "stacking fault broadening",
+      "defect-free distance"
+    ],
+    "related_entities": [
+      "crystallite_size_distribution",
+      "mean_defect_free_distance"
+    ],
+    "chapter_or_appendix": "Appendix",
+    "section": "Defect Broadening",
+    "book_page": "370",
+    "pdf_page": "20",
+    "figure": "",
+    "table": "Table A.2",
+    "equation": "A.8",
+    "source_quote_fragment": "randomly distributed stacking faults along the Z direction",
+    "notes": "Can mimic broadening that might otherwise be misread as mixed-layering."
+  }
+]

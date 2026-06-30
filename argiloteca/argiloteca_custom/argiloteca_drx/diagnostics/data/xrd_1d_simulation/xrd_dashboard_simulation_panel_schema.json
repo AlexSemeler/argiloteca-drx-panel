@@ -1,0 +1,8 @@
+{
+  "schema_id": "xrd_dashboard_simulation_panel_schema",
+  "widgets": [
+    "observed_pattern",
+    "calculated_pattern",
+    "difference_curve"
+  ]
+}

@@ -1,0 +1,105 @@
+[
+  {
+    "layer_model_id": "illite_10A_table_3_1",
+    "mineral_or_interlayer_type": "illite",
+    "d001_A": 10.0,
+    "atomic_planes": [
+      {
+        "z_A": 5.0,
+        "species": "1.6 K",
+        "occupancy": 1.6
+      },
+      {
+        "z_A": 3.3,
+        "species": "6 O",
+        "occupancy": 6
+      },
+      {
+        "z_A": 2.68,
+        "species": "3.4 Si; 0.6 Al",
+        "occupancy": "3.4;0.6"
+      },
+      {
+        "z_A": 1.07,
+        "species": "4 O; 2 OH",
+        "occupancy": "4;2"
+      },
+      {
+        "z_A": 0.0,
+        "species": "3.6 Al; 0.4 Mg",
+        "occupancy": "3.6;0.4"
+      }
+    ],
+    "valid_treatments": [
+      "air_dried",
+      "K_saturated_heated"
+    ],
+    "calculation_use": [
+      "G_theta",
+      "intensity_simulation"
+    ],
+    "limitations": [
+      "simplified stylized model"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "98",
+      "pdf_page": "3",
+      "figure": "Fig. 3.20",
+      "table": "Table 3.1",
+      "equation": "",
+      "quote_fragment": "planes of atoms"
+    }
+  },
+  {
+    "layer_model_id": "di_silicate_2_1_table_A_3",
+    "mineral_or_interlayer_type": "2:1 dioctahedral silicate",
+    "d001_A": "",
+    "atomic_planes": [
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 3.3,
+        "species": "6 O"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 2.72,
+        "species": "4 Si"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 1.065,
+        "species": "4 O + 2 OH"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 0.0,
+        "species": "1.7(Fe,Al)+0.3Mg"
+      }
+    ],
+    "valid_treatments": [
+      "model_dependent"
+    ],
+    "calculation_use": [
+      "G_theta"
+    ],
+    "limitations": [
+      "interlayer must be added separately"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "368",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "Table A.3",
+      "equation": "",
+      "quote_fragment": "silicate layers"
+    }
+  }
+]

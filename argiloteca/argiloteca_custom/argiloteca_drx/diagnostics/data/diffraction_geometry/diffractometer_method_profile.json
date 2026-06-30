@@ -1,0 +1,65 @@
+{
+  "profile_id": "diffractometer_method_profile",
+  "name": "Powder diffractometer",
+  "class": "diffraction_method",
+  "sample_requirement": "powder_sample",
+  "radiation_requirement": "fixed",
+  "variable_parameters": [
+    "theta"
+  ],
+  "fixed_parameters": [
+    "lambda"
+  ],
+  "geometry": {
+    "observable_pattern": [
+      "receiving slit",
+      "narrow angular window"
+    ]
+  },
+  "observable_pattern": "receiving slit, narrow angular window",
+  "mathematical_rules": [
+    "Bragg law",
+    "Ewald construction"
+  ],
+  "figures": [
+    "fig_3_9",
+    "fig_3_10",
+    "fig_3_11",
+    "fig_3_12",
+    "fig_3_13",
+    "fig_3_14",
+    "fig_3_15",
+    "fig_3_16",
+    "fig_3_17",
+    "fig_3_18",
+    "fig_3_19",
+    "fig_3_20",
+    "fig_3_21"
+  ],
+  "limitations": [
+    "Intensity interpretation outside Chapter 3 geometry scope."
+  ],
+  "typical_uses": [
+    "receiving slit",
+    "narrow angular window"
+  ],
+  "not_for": [
+    "intensity interpretation in Chapter 3 geometry module"
+  ],
+  "references": [
+    {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "detector intercepts and measures only a short arc",
+      "validation_status": "valid"
+    }
+  ]
+}

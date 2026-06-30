@@ -1,0 +1,42 @@
+[
+  {
+    "rule_id": "auxiliary_060_dioctahedral_trioctahedral",
+    "type": "chapter8_rule",
+    "rule_type": "auxiliary_060",
+    "title": "auxiliary 060 dioctahedral trioctahedral",
+    "target": "mica_vermiculite",
+    "mineral_system": "mica_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "060_reflection",
+        "operator": "used_only_if_cited",
+        "value": true
+      }
+    ],
+    "output": "Use 060 only as auxiliary evidence for dioctahedral/trioctahedral type where Chapter 8 cites Chapter 7.",
+    "diagnostic_implication": "Use 060 only as auxiliary evidence for dioctahedral/trioctahedral type where Chapter 8 cites Chapter 7.",
+    "confidence_weight": 0.5,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "296",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "060 reflection (Chapter 7)",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  }
+]

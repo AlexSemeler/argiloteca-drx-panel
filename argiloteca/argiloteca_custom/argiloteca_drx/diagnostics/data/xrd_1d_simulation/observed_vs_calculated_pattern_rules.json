@@ -1,0 +1,44 @@
+[
+  {
+    "rule_id": "positions_only_not_confirmation",
+    "rule_type": "observed_calculated_comparison",
+    "target": "candidate_model",
+    "formal_statement": "If calculated pattern matches positions but fails intensities and widths, retain candidate as possible rather than confirmed.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "102",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "G provides useful information"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "comparison_features": [
+      "peak_position",
+      "relative_intensity",
+      "peak_width",
+      "peak_shape"
+    ],
+    "acceptance_criteria": [
+      "position, intensity, width and treatment behavior jointly compatible"
+    ],
+    "rejection_criteria": [
+      "systematic position/intensity/width mismatch"
+    ],
+    "ambiguous_conditions": [
+      "overlap",
+      "noise",
+      "mixed physical phases"
+    ]
+  }
+]

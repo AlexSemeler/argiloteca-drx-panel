@@ -1,0 +1,52 @@
+[
+  {
+    "rule_id": "coherent_domain_controls_width",
+    "rule_type": "interference_function",
+    "target": "00l_peak_width",
+    "formal_statement": "If coherent domain size decreases, basal reflections broaden and peak maxima become less sharply defined.",
+    "conditions": [],
+    "input_features": [],
+    "output": "peak_broadening",
+    "diagnostic_implication": "Broad 00l peaks may reflect finite N rather than mixed-layering.",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "102",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "breadths ... inversely proportional to N"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "G_slope_can_shift_apparent_peak",
+    "rule_type": "interference_function",
+    "target": "peak_asymmetry",
+    "formal_statement": "A steep G squared slope across Phi can produce asymmetric tails and apparent peak displacement.",
+    "conditions": [],
+    "input_features": [],
+    "output": "asymmetric_peak_shape",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "102",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "Peak asymmetry is caused by steep slopes"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid"
+  }
+]

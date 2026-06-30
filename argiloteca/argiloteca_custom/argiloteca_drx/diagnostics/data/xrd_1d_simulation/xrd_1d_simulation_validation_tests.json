@@ -1,0 +1,68 @@
+[
+  {
+    "test_id": "test_illite_G_001_table_3_1",
+    "test_type": "layer_structure_factor",
+    "input": {
+      "table": "table_3_1"
+    },
+    "expected_output": {
+      "G": 35.3,
+      "G_squared": 1246.09
+    },
+    "tolerance": {
+      "G": 0.5
+    },
+    "modules_tested": [
+      "illite_intensity_calculator",
+      "layer_structure_factor"
+    ],
+    "source": {
+      "document": "capitulo3-ilita.pdf",
+      "page": "5",
+      "table": "Table 3.1",
+      "figure": "Fig. 3.20",
+      "equation": "3.16"
+    }
+  },
+  {
+    "test_id": "test_LP_positive",
+    "test_type": "lorentz_polarization",
+    "input": {
+      "theta_deg": 4.4
+    },
+    "expected_output": {
+      "Lp": ">0"
+    },
+    "tolerance": {},
+    "modules_tested": [
+      "lorentz_polarization"
+    ],
+    "source": {
+      "document": "capitulo3-ilita.pdf",
+      "page": "15",
+      "equation": "A.4"
+    }
+  },
+  {
+    "test_id": "test_defect_qN",
+    "test_type": "defect_broadening",
+    "input": {
+      "N": 10,
+      "delta": 10
+    },
+    "expected_output": {
+      "qN": "exp(-0.9)"
+    },
+    "tolerance": {
+      "absolute": 1e-12
+    },
+    "modules_tested": [
+      "defect_broadening"
+    ],
+    "source": {
+      "document": "capitulo3-ilita.pdf",
+      "page": "20",
+      "equation": "A.8"
+    }
+  }
+]

@@ -1,0 +1,215 @@
+[
+  {
+    "id": "scattering_vector_definition",
+    "rule_id": "scattering_vector_definition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "scattering_vector",
+    "title": "Scattering vector definition",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "definition": "s=(S-S0)/lambda"
+      }
+    ],
+    "outputs": [
+      "s has reciprocal-space units"
+    ],
+    "units": [
+      "angstrom^-1"
+    ],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-8",
+      "problem": "",
+      "quote_fragment": "termed the scattering vector",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "reciprocal_lattice_diffraction_condition",
+    "rule_id": "reciprocal_lattice_diffraction_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "reciprocal_lattice_diffraction",
+    "title": "Scattering vector terminates at reciprocal lattice point",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "s": "h*b1+k*b2+l*b3",
+        "hkl": "integers"
+      }
+    ],
+    "outputs": [
+      "reflection_hkl_geometrically_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-10",
+      "problem": "",
+      "quote_fragment": "must start and end on points of the reciprocal lattice",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "ewald_intersection_condition",
+    "rule_id": "ewald_intersection_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "reciprocal_lattice_diffraction",
+    "title": "Ewald sphere intersection condition",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "ewald_sphere": "intersects reciprocal_lattice_point_hkl"
+      }
+    ],
+    "outputs": [
+      "reflection_hkl_observable_geometrically"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-6",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Ewald sphere must intersect a reciprocal lattice point hkl",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "ewald_radius_one_over_lambda",
+    "rule_id": "ewald_radius_one_over_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "ewald_sphere",
+    "title": "Ewald sphere radius",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "radius": "1/lambda"
+      }
+    ],
+    "outputs": [
+      "locus_of_possible_diffracted_directions"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-6",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "sphere ... with radius 1/lambda",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "limiting_sphere_radius_two_over_lambda",
+    "rule_id": "limiting_sphere_radius_two_over_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "ewald_sphere",
+    "title": "Limiting sphere radius",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "radius": "2/lambda"
+      }
+    ],
+    "outputs": [
+      "reciprocal_points_inside_can_be_excited_with_orientation"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-7",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "limiting sphere ... radius 2/lambda",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

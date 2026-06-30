@@ -1,0 +1,53 @@
+{
+  "profile_id": "tem_reciprocal_lattice_profile",
+  "name": "TEM reciprocal-lattice visualization",
+  "class": "diffraction_method",
+  "sample_requirement": "thin_crystalline_sample",
+  "radiation_requirement": "fixed_electron_wavelength",
+  "variable_parameters": [
+    "lambda"
+  ],
+  "fixed_parameters": [
+    "theta"
+  ],
+  "geometry": {
+    "observable_pattern": [
+      "reciprocal lattice plane imaged"
+    ]
+  },
+  "observable_pattern": "reciprocal lattice plane imaged",
+  "mathematical_rules": [
+    "Bragg law",
+    "Ewald construction"
+  ],
+  "figures": [
+    "fig_3_22",
+    "fig_3_23",
+    "fig_3_24"
+  ],
+  "limitations": [
+    "Intensity interpretation outside Chapter 3 geometry scope."
+  ],
+  "typical_uses": [
+    "reciprocal lattice plane imaged"
+  ],
+  "not_for": [
+    "intensity interpretation in Chapter 3 geometry module"
+  ],
+  "references": [
+    {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-9",
+      "book_page": "118",
+      "pdf_page": "30",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Ewald sphere is essentially a plane",
+      "validation_status": "valid"
+    }
+  ]
+}

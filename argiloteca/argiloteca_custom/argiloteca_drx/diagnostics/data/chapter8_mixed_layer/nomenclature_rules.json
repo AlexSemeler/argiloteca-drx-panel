@@ -1,0 +1,120 @@
+[
+  {
+    "rule_id": "nomenclature_mixed_layer_complete_description",
+    "rule_type": "nomenclature",
+    "target": "mixed-layered clay mineral",
+    "meaning": {
+      "requires": [
+        "layer_types",
+        "component_proportions",
+        "stacking_order_or_lack_of_order"
+      ],
+      "ordering_axis": "Z direction",
+      "ordering_name": "Reichweite"
+    },
+    "conditions": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "261",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "types of layers involved",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "rule_id": "nomenclature_R0_random",
+    "rule_type": "nomenclature",
+    "target": "R0",
+    "meaning": {
+      "ordering": "random interstratification",
+      "reichweite": 0
+    },
+    "conditions": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "262",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "randomness occurs in the stacking sequences",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "rule_id": "nomenclature_R1_ordered",
+    "rule_type": "nomenclature",
+    "target": "R1",
+    "meaning": {
+      "ordering": "nearest-neighbor ordered interstratification",
+      "reichweite": 1
+    },
+    "conditions": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "262",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "stacked in perfect alternation (R1)",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "rule_id": "nomenclature_R3_ordered",
+    "rule_type": "nomenclature",
+    "target": "R3",
+    "meaning": {
+      "ordering": "longer-range ordered I/S sequence",
+      "reichweite": 3
+    },
+    "conditions": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "274",
+      "section": "",
+      "figure": "Fig. 8.7",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "R3 illite(0.9)/smectite",
+      "validation_status": "valid"
+    }
+  },
+  {
+    "rule_id": "nomenclature_fraction_example",
+    "rule_type": "nomenclature",
+    "target": "R1 illite(0.7)/smectite",
+    "meaning": {
+      "ordering": "R1",
+      "component_1": "illite",
+      "component_1_fraction_mol": 0.7,
+      "component_2": "smectite",
+      "component_2_fraction_mol": 0.3
+    },
+    "conditions": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "265",
+      "section": "",
+      "figure": "Fig. 8.2",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "R1 illite(0.7)/EG-smectite",
+      "validation_status": "valid"
+    }
+  }
+]

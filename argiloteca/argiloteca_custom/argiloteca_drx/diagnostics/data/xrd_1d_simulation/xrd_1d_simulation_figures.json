@@ -1,0 +1,122 @@
+[
+  {
+    "figure_id": "fig_3_19",
+    "caption": "Diffraction pattern for illite",
+    "chapter_or_appendix": "Chapter 3",
+    "book_page": "96",
+    "pdf_page": "1",
+    "concepts": [
+      "illite_pattern",
+      "defect_free_distance",
+      "peak_asymmetry"
+    ],
+    "variables_shown": [
+      "001",
+      "002",
+      "004",
+      "delta"
+    ],
+    "mineral_system": "illite",
+    "computational_message": "Small coherent domains broaden and may shift apparent peak maxima away from ideal Bragg positions.",
+    "rules_supported": [
+      "broad_peaks_not_automatically_mixed_layering"
+    ],
+    "equations_supported": [
+      "eq_3_14_intensity"
+    ],
+    "limitations": [
+      "Figure is qualitative reference, not a numeric fitting target."
+    ],
+    "source_quote_fragment": "Defect-free distance = 6 unit cells"
+  },
+  {
+    "figure_id": "fig_3_20",
+    "caption": "Illite/mica layer structure with z coordinates",
+    "chapter_or_appendix": "Chapter 3",
+    "book_page": "98",
+    "pdf_page": "3",
+    "concepts": [
+      "atomic_coordinate_z",
+      "pseudo_mirror",
+      "interlayer_K"
+    ],
+    "variables_shown": [
+      "z_A",
+      "atomic_planes",
+      "10_A_spacing"
+    ],
+    "mineral_system": "illite",
+    "computational_message": "Atomic z coordinates feed the cosine terms of G(theta).",
+    "rules_supported": [
+      "centrosymmetric_cosine_summation"
+    ],
+    "equations_supported": [
+      "eq_3_16_illite_G"
+    ],
+    "limitations": [
+      "Stylized simplified illite unit cell."
+    ],
+    "source_quote_fragment": "fractional position in relation to the 10 A spacing"
+  },
+  {
+    "figure_id": "fig_3_21",
+    "caption": "Layer structure factor G for dioctahedral illite versus 2theta",
+    "chapter_or_appendix": "Chapter 3",
+    "book_page": "101",
+    "pdf_page": "6",
+    "concepts": [
+      "G_theta",
+      "G_squared",
+      "not_a_diffraction_tracing"
+    ],
+    "variables_shown": [
+      "G",
+      "2theta_CuKalpha"
+    ],
+    "mineral_system": "illite",
+    "computational_message": "G(theta) must be multiplied by the interference function and LP to simulate a diffraction tracing.",
+    "rules_supported": [
+      "G_alone_is_not_pattern"
+    ],
+    "equations_supported": [
+      "eq_3_9_layer_G",
+      "eq_3_14_intensity"
+    ],
+    "limitations": [
+      "Graph readout is approximate."
+    ],
+    "source_quote_fragment": "This does not model a diffraction tracing"
+  },
+  {
+    "figure_id": "fig_A_1",
+    "caption": "Spacing S formed by A/B layer sequence",
+    "chapter_or_appendix": "Appendix",
+    "book_page": "364",
+    "pdf_page": "14",
+    "concepts": [
+      "mixed_layer_sequence",
+      "spacing_S",
+      "conditional_probability"
+    ],
+    "variables_shown": [
+      "A",
+      "B",
+      "S",
+      "d001_A",
+      "d001_B"
+    ],
+    "mineral_system": "mixed-layer clay minerals",
+    "computational_message": "Sequence frequencies sigma_S depend on component proportions and Reichweite/conditional probabilities.",
+    "rules_supported": [
+      "R0_random",
+      "R1_conditional_probability"
+    ],
+    "equations_supported": [
+      "eq_A_3_sigma_sequence"
+    ],
+    "limitations": [
+      "One displayed sequence is only one of many possible arrays."
+    ],
+    "source_quote_fragment": "one of the possible spacings S"
+  }
+]

@@ -1,0 +1,1572 @@
+[
+  {
+    "id": "constructive_interference_path_difference_integer_lambda",
+    "rule_id": "constructive_interference_path_difference_integer_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Constructive interference from integer path difference",
+    "chapter": "3",
+    "section": "3-2",
+    "concepts": [
+      "phase",
+      "path_difference"
+    ],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "path_difference": "m*lambda",
+        "m": "integer"
+      }
+    ],
+    "outputs": [
+      "diffracted beam can form when scattered rays reinforce"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-2",
+      "book_page": "90",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "path difference ... integral multiple of wavelengths",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "destructive_interference_non_bragg_directions",
+    "rule_id": "destructive_interference_non_bragg_directions",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Cancellation outside Bragg directions",
+    "chapter": "3",
+    "section": "3-2",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "path_difference": "not_integer_multiple_of_lambda"
+      }
+    ],
+    "outputs": [
+      "destructive_interference_or_cancellation"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Most directions from a periodic crystal do not produce observable diffraction."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-2",
+      "book_page": "90",
+      "pdf_page": "2",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "only diffracted beam is that shown; others cancel",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffraction_requires_periodic_scattering_centers",
+    "rule_id": "diffraction_requires_periodic_scattering_centers",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "phase_interference",
+    "title": "Diffraction requires repeat spacing comparable to wavelength",
+    "chapter": "3",
+    "section": "3-1",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "wavelength": "same_order_as_scatterer_repeat_distance"
+      }
+    ],
+    "outputs": [
+      "diffraction_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-1",
+      "book_page": "89",
+      "pdf_page": "1",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "regularly spaced scattering objects",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "theta_two_theta_convention",
+    "rule_id": "theta_two_theta_convention",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "angle_convention",
+    "title": "Measured diffraction angle is 2theta",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "measured_quantity": "diffraction_angle"
+      }
+    ],
+    "outputs": [
+      "theta=two_theta/2"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Do not insert measured 2theta directly into Bragg law as theta."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "angle between the diffracted beam and the transmitted beam is always 2theta",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_observability_lambda_less_than_2d",
+    "rule_id": "bragg_observability_lambda_less_than_2d",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "Bragg observability condition",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "wavelength": "<2*d_prime"
+      }
+    ],
+    "outputs": [
+      "diffraction_possible_at_observable_angle"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-3",
+      "problem": "",
+      "quote_fragment": "condition for diffraction at any observable angle",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_n_zero_transmitted_unobserved",
+    "rule_id": "bragg_n_zero_transmitted_unobserved",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "n=0 is transmitted beam direction",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "order_n": 0
+      }
+    ],
+    "outputs": [
+      "not_observable_as_diffracted_beam"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "n = 0 corresponds to the beam diffracted in the same direction as the transmitted beam",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_nth_order_as_first_order_hkl",
+    "rule_id": "bragg_nth_order_as_first_order_hkl",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "nth order hkl as first order nh nk nl",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "order_n": ">1"
+      }
+    ],
+    "outputs": [
+      "use d=d_prime/n and indices nh,nk,nl"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "Figure 3-3",
+      "table": "",
+      "equation": "3-4",
+      "problem": "",
+      "quote_fragment": "nth-order diffraction from (hkl) ... first-order diffraction from (nh nk nl)",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_coplanarity",
+    "rule_id": "bragg_coplanarity",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "Incident beam normal and diffracted beam are coplanar",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "geometry": "Bragg reflection"
+      }
+    ],
+    "outputs": [
+      "incident_beam plane_normal diffracted_beam coplanar"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "incident beam, the normal ... and the diffracted beam are always coplanar",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_three_dimensional_condition",
+    "rule_id": "laue_three_dimensional_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "Three simultaneous Laue equations",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [
+      "3-6a",
+      "3-6b",
+      "3-6c"
+    ],
+    "input_features": [],
+    "conditions": [
+      {
+        "equations": [
+          "3-6a",
+          "3-6b",
+          "3-6c"
+        ]
+      }
+    ],
+    "outputs": [
+      "constructive_interference_in_3D_periodic_lattice"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "collectively known as Laue's Equations",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_one_dimensional_cones",
+    "rule_id": "laue_one_dimensional_cones",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "One-dimensional Laue equation generates cones",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "array_dimension": 1
+      }
+    ],
+    "outputs": [
+      "series_of_cones_about_scatterer_row"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "satisfied for a series of cones",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_bragg_equivalence",
+    "rule_id": "laue_bragg_equivalence",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "Laue Bragg and Ewald equivalence",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "model": "periodic_lattice"
+      }
+    ],
+    "outputs": [
+      "equivalent_geometric_conditions"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Bragg's law is more convenient ... reciprocal lattice",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "scattering_vector_definition",
+    "rule_id": "scattering_vector_definition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "scattering_vector",
+    "title": "Scattering vector definition",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "definition": "s=(S-S0)/lambda"
+      }
+    ],
+    "outputs": [
+      "s has reciprocal-space units"
+    ],
+    "units": [
+      "angstrom^-1"
+    ],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-8",
+      "problem": "",
+      "quote_fragment": "termed the scattering vector",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "reciprocal_lattice_diffraction_condition",
+    "rule_id": "reciprocal_lattice_diffraction_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "reciprocal_lattice_diffraction",
+    "title": "Scattering vector terminates at reciprocal lattice point",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "s": "h*b1+k*b2+l*b3",
+        "hkl": "integers"
+      }
+    ],
+    "outputs": [
+      "reflection_hkl_geometrically_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "3-10",
+      "problem": "",
+      "quote_fragment": "must start and end on points of the reciprocal lattice",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "ewald_intersection_condition",
+    "rule_id": "ewald_intersection_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "reciprocal_lattice_diffraction",
+    "title": "Ewald sphere intersection condition",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "ewald_sphere": "intersects reciprocal_lattice_point_hkl"
+      }
+    ],
+    "outputs": [
+      "reflection_hkl_observable_geometrically"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-6",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Ewald sphere must intersect a reciprocal lattice point hkl",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "ewald_radius_one_over_lambda",
+    "rule_id": "ewald_radius_one_over_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "ewald_sphere",
+    "title": "Ewald sphere radius",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "radius": "1/lambda"
+      }
+    ],
+    "outputs": [
+      "locus_of_possible_diffracted_directions"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-6",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "sphere ... with radius 1/lambda",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "limiting_sphere_radius_two_over_lambda",
+    "rule_id": "limiting_sphere_radius_two_over_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "ewald_sphere",
+    "title": "Limiting sphere radius",
+    "chapter": "3",
+    "section": "3-5",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "radius": "2/lambda"
+      }
+    ],
+    "outputs": [
+      "reciprocal_points_inside_can_be_excited_with_orientation"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-5",
+      "book_page": "98",
+      "pdf_page": "10",
+      "figure": "Figure 3-7",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "limiting sphere ... radius 2/lambda",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "cubic_diffraction_direction",
+    "rule_id": "cubic_diffraction_direction",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_direction",
+    "title": "Cubic 2theta prediction",
+    "chapter": "3",
+    "section": "3-6",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "crystal_system": "cubic",
+        "equation": "3-11"
+      }
+    ],
+    "outputs": [
+      "theta",
+      "two_theta"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-6",
+      "book_page": "102",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "3-11",
+      "problem": "",
+      "quote_fragment": "predicts ... all possible Bragg angles",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "tetragonal_diffraction_direction",
+    "rule_id": "tetragonal_diffraction_direction",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_direction",
+    "title": "Tetragonal 2theta prediction",
+    "chapter": "3",
+    "section": "3-6",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "crystal_system": "tetragonal",
+        "equation": "3-12"
+      }
+    ],
+    "outputs": [
+      "theta",
+      "two_theta"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-6",
+      "book_page": "102",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "3-12",
+      "problem": "",
+      "quote_fragment": "if the crystal is tetragonal",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "geometry_does_not_guarantee_intensity",
+    "rule_id": "geometry_does_not_guarantee_intensity",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "scope_limitation",
+    "title": "Geometric position does not guarantee intensity",
+    "chapter": "3",
+    "section": "3-6",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "reflection": "geometrically_possible"
+      }
+    ],
+    "outputs": [
+      "position_predicted_but_intensity_not_guaranteed"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Intensity rules belong to Diffraction II and are not imported into this module."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-6",
+      "book_page": "102",
+      "pdf_page": "14",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "atomic arrangements ... reduce intensities ... to zero",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "largest_d_lowest_two_theta_powder",
+    "rule_id": "largest_d_lowest_two_theta_powder",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_direction",
+    "title": "Largest d gives lowest 2theta",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "bragg_law": "fixed_lambda"
+      }
+    ],
+    "outputs": [
+      "powder_lines_order_by_increasing_two_theta"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "3-3",
+      "quote_fragment": "first three lines ... lowest 2theta values",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "spectrometer_known_d_unknown_lambda",
+    "rule_id": "spectrometer_known_d_unknown_lambda",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_spectroscopy",
+    "title": "Known d unknown wavelength",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "known": [
+          "d_spacing",
+          "theta"
+        ]
+      }
+    ],
+    "outputs": [
+      "lambda=2*d*sin(theta)"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "crystal with planes of known spacing d ... determine wavelength",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffractometer_known_lambda_unknown_d",
+    "rule_id": "diffractometer_known_lambda_unknown_d",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_spectroscopy",
+    "title": "Known wavelength unknown d",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "known": [
+          "lambda",
+          "theta"
+        ]
+      }
+    ],
+    "outputs": [
+      "d=lambda/(2*sin(theta))"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "using x-rays of known wavelength and measuring theta, the spacing d ... determined",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "kx_to_angstrom_star_conversion",
+    "rule_id": "kx_to_angstrom_star_conversion",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "unit_conversion",
+    "title": "kX to Angstrom-star conversion",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "unit_from": "kX",
+        "unit_to": "angstrom_star"
+      }
+    ],
+    "outputs": [
+      "1 kX = 1.002056 A*"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Historical/legacy unit; precise legacy wavelength tables may mix kX and Angstrom."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-16",
+      "problem": "",
+      "quote_fragment": "1 kX = 1.002056 A*",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "xray_density_unit_cell",
+    "rule_id": "xray_density_unit_cell",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "xray_density",
+    "title": "X-ray density from unit-cell contents",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "inputs": [
+          "sum_atomic_weights",
+          "unit_cell_volume"
+        ]
+      }
+    ],
+    "outputs": [
+      "rho"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "3-13",
+      "problem": "",
+      "quote_fragment": "x-ray density ... volume of a single unit cell",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_method_rule",
+    "rule_id": "laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "method_lambda_theta_summary",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Laue Variable Fixed",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "transmission_laue_method_rule",
+    "rule_id": "transmission_laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Transmission Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "film ... behind the crystal",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "back_reflection_laue_method_rule",
+    "rule_id": "back_reflection_laue_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Back-reflection Laue method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "variable",
+        "theta_behavior": "fixed"
+      }
+    ],
+    "outputs": [
+      "fixed_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "film is placed between the crystal and the x-ray source",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "rotating_crystal_method_rule",
+    "rule_id": "rotating_crystal_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Rotating-crystal method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable_in_part"
+      }
+    ],
+    "outputs": [
+      "rotating_single_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "crystal is rotated about the chosen direction",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "powder_method_rule",
+    "rule_id": "powder_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Powder method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "randomly_oriented_polycrystalline_powder"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "every set of lattice planes will be capable of diffraction",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "hull_debye_scherrer_method_rule",
+    "rule_id": "hull_debye_scherrer_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Hull/Debye-Scherrer method",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "powder_in_capillary_or_holder"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Hull/Debye-Scherrer powder method",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "diffractometer_method_rule",
+    "rule_id": "diffractometer_method_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "Powder diffractometer",
+    "chapter": "3",
+    "section": "3-8",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "powder_sample"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-8",
+      "book_page": "106",
+      "pdf_page": "18",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "detector intercepts and measures only a short arc",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "xray_spectrometer_rule",
+    "rule_id": "xray_spectrometer_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "X-ray spectrometer",
+    "chapter": "3",
+    "section": "3-7",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "unknown_or_scanned",
+        "theta_behavior": "variable"
+      }
+    ],
+    "outputs": [
+      "known_analyzer_crystal"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "essential features of an x-ray spectrometer",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "tem_reciprocal_lattice_rule",
+    "rule_id": "tem_reciprocal_lattice_rule",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "diffraction_method",
+    "title": "TEM reciprocal-lattice visualization",
+    "chapter": "3",
+    "section": "3-9",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "lambda_behavior": "fixed_electron_wavelength",
+        "theta_behavior": "near_planar_ewald_section"
+      }
+    ],
+    "outputs": [
+      "thin_crystalline_sample"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-9",
+      "book_page": "118",
+      "pdf_page": "30",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Ewald sphere is essentially a plane",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_law_strict_validity_requires_ideal_conditions",
+    "rule_id": "bragg_law_strict_validity_requires_ideal_conditions",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "validity_constraint",
+    "title": "Strict Bragg law needs ideal conditions",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "ideal_assumptions": [
+          "perfect crystal",
+          "parallel beam",
+          "monochromatic radiation"
+        ]
+      }
+    ],
+    "outputs": [
+      "exact Bragg condition only idealized"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Real peaks have finite width and intensity away from exact Bragg angle."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "perfect crystal and an incident beam composed of perfectly parallel and strictly monochromatic radiation",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "nonideal_conditions_peak_broadening",
+    "rule_id": "nonideal_conditions_peak_broadening",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "nonideal_condition",
+    "title": "Nonideal conditions broaden peaks",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "conditions": [
+          "finite_crystallite_size",
+          "strain",
+          "dislocations",
+          "beam_divergence",
+          "finite_spectral_width"
+        ]
+      }
+    ],
+    "outputs": [
+      "peak_broadening_or_shape_change"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Imperfections ... can broaden the diffraction peaks",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "kinematical_theory_thick_perfect_exception",
+    "rule_id": "kinematical_theory_thick_perfect_exception",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "nonideal_condition",
+    "title": "Kinematical assumption exception",
+    "chapter": "3",
+    "section": "3-10",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "sample": "thick_highly_perfect_crystal"
+      }
+    ],
+    "outputs": [
+      "multiple_scattering_possible"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-10",
+      "book_page": "120",
+      "pdf_page": "32",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "holds except for diffraction from thick, highly perfect crystals",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

@@ -1,0 +1,239 @@
+[
+  {
+    "rule_id": "composition_IS_table_8_3_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition IS table 8 3 delta",
+    "target": "illite_smectite",
+    "mineral_system": "illite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.3"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+    "diagnostic_implication": "Estimate percent illite from Table 8.3, preferably using delta 2theta.",
+    "confidence_weight": 0.85,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "273",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.3",
+      "equation": "",
+      "quote_fragment": "better way is ... A2theta",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "composition_CS_table_8_4_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition CS table 8 4 delta",
+    "target": "chlorite_smectite",
+    "mineral_system": "chlorite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.4"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+    "diagnostic_implication": "Estimate percent chlorite in R0 C/S from Table 8.4; delta 2theta is preferred.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "280",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.4",
+      "equation": "",
+      "quote_fragment": "recommend the A2theta parameter",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "composition_KS_table_8_6_delta",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition KS table 8 6 delta",
+    "target": "kaolinite_smectite",
+    "mineral_system": "kaolinite_smectite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "delta_2theta",
+        "table": "Table 8.6"
+      },
+      {
+        "preparation": "ethylene_glycol_solvated"
+      }
+    ],
+    "output": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+    "diagnostic_implication": "Estimate percent kaolinite in R0 K/S from Table 8.6 after confirming K/S behavior.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "289",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.6",
+      "equation": "",
+      "quote_fragment": "go to Table 8.6",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "rule_id": "composition_MV_table_8_7_low_angle",
+    "type": "chapter8_rule",
+    "rule_type": "composition_estimation",
+    "title": "composition MV table 8 7 low angle",
+    "target": "mica_vermiculite",
+    "mineral_system": "mica_vermiculite",
+    "components": [],
+    "ordering": "",
+    "treatment_state": "",
+    "input_features": [],
+    "conditions": [
+      {
+        "feature": "001_002_or_001_002_star_position",
+        "table": "Table 8.7"
+      },
+      {
+        "preparation": "air_dried"
+      }
+    ],
+    "output": "Estimate percent vermiculite in trioctahedral mica/vermiculite from Table 8.7.",
+    "diagnostic_implication": "Estimate percent vermiculite in trioctahedral mica/vermiculite from Table 8.7.",
+    "confidence_weight": 0.8,
+    "limitations": [],
+    "differential_diagnosis": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "293",
+      "section": "",
+      "figure": "",
+      "table": "Table 8.7",
+      "equation": "",
+      "quote_fragment": "Table 8.7 shows the position",
+      "validation_status": "valid"
+    },
+    "version": "chapter8_mixed_layer.v1",
+    "created_at": "2026-06-25T17:51:47+00:00",
+    "updated_at": "2026-06-25T17:51:47+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_8_1",
+    "rule_id": "eq_8_1_beta_r_serpentine_chlorite",
+    "rule_type": "beta_width",
+    "target": "serpentine/chlorite",
+    "estimates": "relative_broadening_beta_r",
+    "formula": "beta_r = (beta_005**1.25 - beta_004**1.25)**(1/1.25)",
+    "input_variables": [
+      "beta_005",
+      "beta_004"
+    ],
+    "valid_range": "empirical; not for very low serpentine proportions without caution",
+    "instrumental_requirements": [
+      "two 2deg Soller slits",
+      "1deg beam slit",
+      "0.05deg detector slit"
+    ],
+    "limitations": [
+      "004 must represent baseline breadth without mixed-layer broadening",
+      "empirical equation"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "8.1",
+      "quote_fragment": "using the 004 and 005 chlorite reflections",
+      "validation_status": "valid"
+    },
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_8_2",
+    "rule_id": "eq_8_2_percent_serpentine",
+    "rule_type": "composition_estimation",
+    "target": "serpentine/chlorite",
+    "estimates": "percent_serpentine",
+    "formula": "percent_serpentine = -0.51 + 24.27 * beta_r",
+    "input_variables": [
+      "beta_r"
+    ],
+    "valid_range": "empirical calibration from Reynolds et al. 1992",
+    "instrumental_requirements": [
+      "two 2deg Soller slits",
+      "1deg beam slit",
+      "0.05deg detector slit"
+    ],
+    "limitations": [
+      "negative intercept means zero broadening is not physically reported as negative serpentine",
+      "requires baseline correction"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "8.2",
+      "quote_fragment": "% Serpentine = -0.51 + 24.27 beta_r",
+      "validation_status": "valid"
+    },
+    "validation_status": "valid"
+  }
+]

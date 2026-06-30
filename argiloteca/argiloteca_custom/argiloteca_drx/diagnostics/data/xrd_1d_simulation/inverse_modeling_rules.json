@@ -1,0 +1,61 @@
+[
+  {
+    "fit_model_id": "xrd_1d_default_inverse_fit",
+    "target_pattern": "00l_observed_pattern",
+    "free_parameters": [
+      "scale",
+      "background",
+      "zero_shift",
+      "d001",
+      "component_fraction",
+      "Reichweite",
+      "defect_free_distance",
+      "preferred_orientation"
+    ],
+    "fixed_parameters": [
+      "lambda_when_experimental",
+      "instrument_geometry_when_profile_locked"
+    ],
+    "bounds": {
+      "scale": [
+        0,
+        null
+      ],
+      "component_fraction": [
+        0,
+        1
+      ],
+      "defect_free_distance": [
+        1,
+        200
+      ]
+    },
+    "objective_function": "weighted_residual_between_observed_and_calculated_profile",
+    "residual_metrics": [
+      "global_rmse",
+      "peak_position_error",
+      "intensity_error",
+      "width_error"
+    ],
+    "stopping_criteria": [
+      "max_iterations",
+      "residual_tolerance"
+    ],
+    "uncertainty_estimation": "mark non-unique when multiple parameter sets give similar residuals",
+    "warnings": [
+      "exploratory until exact equations A.5 and full atom tables are verified"
+    ],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "365",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "multiple variables control intensity"
+    }
+  }
+]

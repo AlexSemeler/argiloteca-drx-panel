@@ -1,0 +1,214 @@
+[
+  {
+    "id": "theta_two_theta_convention",
+    "rule_id": "theta_two_theta_convention",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "angle_convention",
+    "title": "Measured diffraction angle is 2theta",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "measured_quantity": "diffraction_angle"
+      }
+    ],
+    "outputs": [
+      "theta=two_theta/2"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [
+      "Do not insert measured 2theta directly into Bragg law as theta."
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "angle between the diffracted beam and the transmitted beam is always 2theta",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_observability_lambda_less_than_2d",
+    "rule_id": "bragg_observability_lambda_less_than_2d",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "Bragg observability condition",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "wavelength": "<2*d_prime"
+      }
+    ],
+    "outputs": [
+      "diffraction_possible_at_observable_angle"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "3-3",
+      "problem": "",
+      "quote_fragment": "condition for diffraction at any observable angle",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_n_zero_transmitted_unobserved",
+    "rule_id": "bragg_n_zero_transmitted_unobserved",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "n=0 is transmitted beam direction",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "order_n": 0
+      }
+    ],
+    "outputs": [
+      "not_observable_as_diffracted_beam"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "n = 0 corresponds to the beam diffracted in the same direction as the transmitted beam",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_nth_order_as_first_order_hkl",
+    "rule_id": "bragg_nth_order_as_first_order_hkl",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "nth order hkl as first order nh nk nl",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "order_n": ">1"
+      }
+    ],
+    "outputs": [
+      "use d=d_prime/n and indices nh,nk,nl"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "Figure 3-3",
+      "table": "",
+      "equation": "3-4",
+      "problem": "",
+      "quote_fragment": "nth-order diffraction from (hkl) ... first-order diffraction from (nh nk nl)",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "bragg_coplanarity",
+    "rule_id": "bragg_coplanarity",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "bragg_geometry",
+    "title": "Incident beam normal and diffracted beam are coplanar",
+    "chapter": "3",
+    "section": "3-3",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "geometry": "Bragg reflection"
+      }
+    ],
+    "outputs": [
+      "incident_beam plane_normal diffracted_beam coplanar"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-3",
+      "book_page": "95",
+      "pdf_page": "7",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "incident beam, the normal ... and the diffracted beam are always coplanar",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

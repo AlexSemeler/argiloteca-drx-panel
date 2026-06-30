@@ -1,0 +1,136 @@
+[
+  {
+    "id": "laue_three_dimensional_condition",
+    "rule_id": "laue_three_dimensional_condition",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "Three simultaneous Laue equations",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [
+      "3-6a",
+      "3-6b",
+      "3-6c"
+    ],
+    "input_features": [],
+    "conditions": [
+      {
+        "equations": [
+          "3-6a",
+          "3-6b",
+          "3-6c"
+        ]
+      }
+    ],
+    "outputs": [
+      "constructive_interference_in_3D_periodic_lattice"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "collectively known as Laue's Equations",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_one_dimensional_cones",
+    "rule_id": "laue_one_dimensional_cones",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "One-dimensional Laue equation generates cones",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "array_dimension": 1
+      }
+    ],
+    "outputs": [
+      "series_of_cones_about_scatterer_row"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "satisfied for a series of cones",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  },
+  {
+    "id": "laue_bragg_equivalence",
+    "rule_id": "laue_bragg_equivalence",
+    "type": "diffraction_geometry_rule",
+    "rule_type": "laue_geometry",
+    "title": "Laue Bragg and Ewald equivalence",
+    "chapter": "3",
+    "section": "3-4",
+    "concepts": [],
+    "equations": [],
+    "input_features": [],
+    "conditions": [
+      {
+        "model": "periodic_lattice"
+      }
+    ],
+    "outputs": [
+      "equivalent_geometric_conditions"
+    ],
+    "units": [],
+    "validity_conditions": [],
+    "limitations": [],
+    "warnings": [],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-4",
+      "book_page": "96",
+      "pdf_page": "8",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "Bragg's law is more convenient ... reciprocal lattice",
+      "validation_status": "valid"
+    },
+    "version": "argiloteca.diffraction_geometry.chapter3.v1",
+    "created_at": "2026-06-25T18:44:35+00:00",
+    "updated_at": "2026-06-25T18:44:35+00:00",
+    "validation_status": "valid"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "schema_id": "xrd_dashboard_comparison_panel_schema",
+  "widgets": [
+    "residuals",
+    "peak_position_error",
+    "intensity_error",
+    "width_error"
+  ]
+}

@@ -1,0 +1,409 @@
+[
+  {
+    "table_id": "table_3_1",
+    "title": "Evaluation of terms for Fig. 3.20 and Eq. (3.16) for a 10 A spacing using CuKalpha radiation",
+    "chapter_or_appendix": "Chapter 3",
+    "book_page": "100",
+    "pdf_page": "5",
+    "context": "Illite 001 intensity exercise",
+    "mineral_system": "illite",
+    "radiation": "CuKalpha",
+    "columns": [
+      "atoms",
+      "phase_expression",
+      "phase_deg",
+      "f_theta",
+      "n_f_theta",
+      "cos_phi",
+      "contribution"
+    ],
+    "rows": [
+      {
+        "atoms": "1.6 K",
+        "phase_expression": "(5.00/10)(360)",
+        "phase_deg": 180.0,
+        "f_theta": 17.9,
+        "n_f_theta": 28.6,
+        "cos_phi": -1.0,
+        "contribution": -28.6
+      },
+      {
+        "atoms": "6 O",
+        "phase_expression": "(3.30/10)(360)",
+        "phase_deg": 118.8,
+        "f_theta": 7.6,
+        "n_f_theta": 45.6,
+        "cos_phi": -0.481,
+        "contribution": -43.8
+      },
+      {
+        "atoms": "3.4 Si; 0.6 Al",
+        "phase_expression": "(2.68/10)(360)",
+        "phase_deg": 96.5,
+        "f_theta": "13.2; 12.1",
+        "n_f_theta": 52.1,
+        "cos_phi": -0.113,
+        "contribution": -11.8
+      },
+      {
+        "atoms": "4 O; 2 OH",
+        "phase_expression": "(1.07/10)(360)",
+        "phase_deg": 38.5,
+        "f_theta": 7.6,
+        "n_f_theta": 45.6,
+        "cos_phi": 0.783,
+        "contribution": 71.4
+      },
+      {
+        "atoms": "3.6 Al; 0.4 Mg",
+        "phase_expression": "(0.00/10)(360)",
+        "phase_deg": 0.0,
+        "f_theta": "12.1; 11.25",
+        "n_f_theta": 48.1,
+        "cos_phi": 1.0,
+        "contribution": 48.1
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree",
+      "electron scattering units"
+    ],
+    "notes": [
+      "OCR sign around some doubled terms was checked against final G(001)=35.3."
+    ],
+    "computational_use": "Input terms for illite_001 layer structure factor.",
+    "related_equations": [
+      "eq_3_16_illite_G"
+    ],
+    "source_quote_fragment": "G(001) = 35.3",
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "table_id": "table_A_1",
+    "title": "Instrumental variables",
+    "chapter_or_appendix": "Appendix",
+    "book_page": "360",
+    "pdf_page": "10",
+    "context": "Simulating the Instrument",
+    "mineral_system": "all simulated 00l patterns",
+    "radiation": "default CuKalpha",
+    "columns": [
+      "parameter",
+      "default_value",
+      "unit",
+      "computational_role"
+    ],
+    "rows": [
+      {
+        "parameter": "Lambda",
+        "default_value": 1.5418,
+        "unit": "angstrom",
+        "computational_role": "peak positions, phase and intensity terms"
+      },
+      {
+        "parameter": "Divergence slit",
+        "default_value": 1.0,
+        "unit": "degree",
+        "computational_role": "beam footprint and low-angle correction"
+      },
+      {
+        "parameter": "Goniometer radius",
+        "default_value": 20.0,
+        "unit": "cm",
+        "computational_role": "beam footprint correction"
+      },
+      {
+        "parameter": "Soller slit 1",
+        "default_value": 6.6,
+        "unit": "degree",
+        "computational_role": "Lorentz/preferred orientation computation"
+      },
+      {
+        "parameter": "Soller slit 2",
+        "default_value": 2.0,
+        "unit": "degree",
+        "computational_role": "Lorentz/preferred orientation computation"
+      },
+      {
+        "parameter": "Sample length",
+        "default_value": 3.6,
+        "unit": "cm",
+        "computational_role": "sample length correction"
+      },
+      {
+        "parameter": "Quartz reference intensity",
+        "default_value": 25000,
+        "unit": "counts_per_second",
+        "computational_role": "absolute intensity normalization"
+      }
+    ],
+    "units": [
+      "angstrom",
+      "degree",
+      "cm",
+      "counts_per_second"
+    ],
+    "notes": [
+      "Quartz reference must be measured under same operating conditions."
+    ],
+    "computational_use": "Default instrument profile for simulation panel.",
+    "related_equations": [
+      "eq_A_4_Lp",
+      "eq_A_5_absolute_intensity",
+      "eq_A_6_long_beam_projection"
+    ],
+    "source_quote_fragment": "same operating conditions",
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "table_id": "table_A_2",
+    "title": "Default chemical, structural, and sample variables",
+    "chapter_or_appendix": "Appendix",
+    "book_page": "362",
+    "pdf_page": "12",
+    "context": "Describing the Clay Mineral",
+    "mineral_system": "clay minerals and mixed-layer clay minerals",
+    "radiation": "",
+    "columns": [
+      "parameter",
+      "default_value",
+      "unit_or_range",
+      "category"
+    ],
+    "rows": [
+      {
+        "parameter": "Exchange capacity",
+        "default_value": 0.35,
+        "unit_or_range": "model units",
+        "category": "chemical"
+      },
+      {
+        "parameter": "Exchange cation",
+        "default_value": "Ca",
+        "unit_or_range": "categorical",
+        "category": "chemical"
+      },
+      {
+        "parameter": "Fe atoms per octahedral sites",
+        "default_value": "0-2 or 0-3",
+        "unit_or_range": "atoms",
+        "category": "chemical"
+      },
+      {
+        "parameter": "K per 12-fold site",
+        "default_value": "0-1",
+        "unit_or_range": "atoms/site",
+        "category": "chemical"
+      },
+      {
+        "parameter": "Interlayer complex",
+        "default_value": "1-water, 2-glycol layers, etc.",
+        "unit_or_range": "categorical",
+        "category": "interlayer"
+      },
+      {
+        "parameter": "mu_star",
+        "default_value": 45,
+        "unit_or_range": "model variable",
+        "category": "sample"
+      },
+      {
+        "parameter": "sigma_star",
+        "default_value": 12,
+        "unit_or_range": "degree-like model parameter",
+        "category": "orientation"
+      },
+      {
+        "parameter": "Low N",
+        "default_value": 3,
+        "unit_or_range": "layers",
+        "category": "sample"
+      },
+      {
+        "parameter": "High N",
+        "default_value": 14,
+        "unit_or_range": "layers",
+        "category": "sample"
+      },
+      {
+        "parameter": "q(N)",
+        "default_value": "variable",
+        "unit_or_range": "distribution",
+        "category": "sample"
+      },
+      {
+        "parameter": "delta",
+        "default_value": "variable",
+        "unit_or_range": "unit cells",
+        "category": "defect_broadening"
+      },
+      {
+        "parameter": "Proportion of component 1",
+        "default_value": "0-1",
+        "unit_or_range": "fraction",
+        "category": "mixed_layer"
+      }
+    ],
+    "units": [
+      "fraction",
+      "layers",
+      "unit_cells"
+    ],
+    "notes": [
+      "Mixed-layered clay minerals require composition and Reichweite parameters."
+    ],
+    "computational_use": "Dashboard parameter defaults and validation.",
+    "related_equations": [
+      "eq_A_3_sigma_sequence",
+      "eq_A_8_defect_broadening"
+    ],
+    "source_quote_fragment": "Mixed-layered clay minerals require two parameters",
+    "validation_status": "extracted_from_ocr"
+  },
+  {
+    "table_id": "table_A_3",
+    "title": "One-dimensional atomic structures of silicate layers",
+    "chapter_or_appendix": "Appendix",
+    "book_page": "368",
+    "pdf_page": "18",
+    "context": "Structures of the Component Layers",
+    "mineral_system": "2:1 and 1:1 silicate layers",
+    "radiation": "",
+    "columns": [
+      "layer_type",
+      "z_A",
+      "species"
+    ],
+    "rows": [
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 3.3,
+        "species": "6 O"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 2.72,
+        "species": "4 Si"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 1.065,
+        "species": "4 O + 2 OH"
+      },
+      {
+        "layer_type": "2:1 di-silicate",
+        "z_A": 0.0,
+        "species": "1.7(Fe,Al)+0.3Mg"
+      },
+      {
+        "layer_type": "di-smectite",
+        "z_A": 3.27,
+        "species": "6 O"
+      },
+      {
+        "layer_type": "di-smectite",
+        "z_A": 2.7,
+        "species": "4 Si"
+      },
+      {
+        "layer_type": "di-smectite",
+        "z_A": 1.06,
+        "species": "4 O + 2 OH"
+      },
+      {
+        "layer_type": "di-smectite",
+        "z_A": 0.0,
+        "species": "0.7(Fe,Al)+0.3Mg"
+      },
+      {
+        "layer_type": "2:1 tri-silicate",
+        "z_A": 3.27,
+        "species": "6 O"
+      },
+      {
+        "layer_type": "2:1 tri-silicate",
+        "z_A": 2.75,
+        "species": "4 Si"
+      },
+      {
+        "layer_type": "2:1 tri-silicate",
+        "z_A": 1.06,
+        "species": "4 O + 2 OH"
+      },
+      {
+        "layer_type": "2:1 tri-silicate",
+        "z_A": 0.0,
+        "species": "3(Fe,Mg)"
+      }
+    ],
+    "units": [
+      "angstrom"
+    ],
+    "notes": [
+      "Kaolinite and serpentine rows are OCR-noisy and require manual verification before numeric use."
+    ],
+    "computational_use": "Atomic plane models for layer_structure_factor.",
+    "related_equations": [
+      "eq_3_9_layer_G",
+      "eq_A_1_general_1d_intensity"
+    ],
+    "source_quote_fragment": "coordinates are in Angstroms",
+    "validation_status": "partial_requires_manual_verification"
+  },
+  {
+    "table_id": "table_A_4",
+    "title": "One-dimensional atomic structure of interlayer material",
+    "chapter_or_appendix": "Appendix",
+    "book_page": "369",
+    "pdf_page": "19",
+    "context": "Interlayer structures used by NEWMOD-like modeling",
+    "mineral_system": "illite, smectite, chlorite, interlayer complexes",
+    "radiation": "",
+    "columns": [
+      "interlayer_type",
+      "z_A",
+      "species_or_occupancy"
+    ],
+    "rows": [
+      {
+        "interlayer_type": "mica_illite_K",
+        "z_A": 0.0,
+        "species_or_occupancy": "0-1 K"
+      },
+      {
+        "interlayer_type": "ethylene_glycol_two_layer",
+        "z_A": 2.33,
+        "species_or_occupancy": "1.7 CH2OH"
+      },
+      {
+        "interlayer_type": "ethylene_glycol_two_layer",
+        "z_A": 1.38,
+        "species_or_occupancy": "1.7 CH2OH"
+      },
+      {
+        "interlayer_type": "one_water_smectite",
+        "z_A": 0.0,
+        "species_or_occupancy": "2 H2O + nM+"
+      },
+      {
+        "interlayer_type": "two_water_vermiculite",
+        "z_A": 1.06,
+        "species_or_occupancy": "4.32 H2O"
+      }
+    ],
+    "units": [
+      "angstrom"
+    ],
+    "notes": [
+      "OCR table layout is damaged; use only as searchable provenance until manual verification."
+    ],
+    "computational_use": "Interlayer model candidates and dashboard widgets.",
+    "related_equations": [
+      "eq_3_9_layer_G",
+      "eq_A_1_general_1d_intensity"
+    ],
+    "source_quote_fragment": "atomic coordinates ... interlayer structures",
+    "validation_status": "requires_manual_verification"
+  }
+]

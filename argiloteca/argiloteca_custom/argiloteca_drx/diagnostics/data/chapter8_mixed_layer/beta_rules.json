@@ -1,0 +1,71 @@
+[
+  {
+    "equation_id": "eq_8_1",
+    "rule_id": "eq_8_1_beta_r_serpentine_chlorite",
+    "rule_type": "beta_width",
+    "target": "serpentine/chlorite",
+    "estimates": "relative_broadening_beta_r",
+    "formula": "beta_r = (beta_005**1.25 - beta_004**1.25)**(1/1.25)",
+    "input_variables": [
+      "beta_005",
+      "beta_004"
+    ],
+    "valid_range": "empirical; not for very low serpentine proportions without caution",
+    "instrumental_requirements": [
+      "two 2deg Soller slits",
+      "1deg beam slit",
+      "0.05deg detector slit"
+    ],
+    "limitations": [
+      "004 must represent baseline breadth without mixed-layer broadening",
+      "empirical equation"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "8.1",
+      "quote_fragment": "using the 004 and 005 chlorite reflections",
+      "validation_status": "valid"
+    },
+    "validation_status": "valid"
+  },
+  {
+    "equation_id": "eq_8_2",
+    "rule_id": "eq_8_2_percent_serpentine",
+    "rule_type": "composition_estimation",
+    "target": "serpentine/chlorite",
+    "estimates": "percent_serpentine",
+    "formula": "percent_serpentine = -0.51 + 24.27 * beta_r",
+    "input_variables": [
+      "beta_r"
+    ],
+    "valid_range": "empirical calibration from Reynolds et al. 1992",
+    "instrumental_requirements": [
+      "two 2deg Soller slits",
+      "1deg beam slit",
+      "0.05deg detector slit"
+    ],
+    "limitations": [
+      "negative intercept means zero broadening is not physically reported as negative serpentine",
+      "requires baseline correction"
+    ],
+    "source": {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "8",
+      "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+      "page": "291",
+      "section": "",
+      "figure": "",
+      "table": "",
+      "equation": "8.2",
+      "quote_fragment": "% Serpentine = -0.51 + 24.27 beta_r",
+      "validation_status": "valid"
+    },
+    "validation_status": "valid"
+  }
+]

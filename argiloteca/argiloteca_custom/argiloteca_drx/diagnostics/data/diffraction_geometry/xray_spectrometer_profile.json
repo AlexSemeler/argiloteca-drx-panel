@@ -1,0 +1,51 @@
+{
+  "profile_id": "xray_spectrometer_profile",
+  "name": "X-ray spectrometer",
+  "class": "diffraction_method",
+  "sample_requirement": "known_analyzer_crystal",
+  "radiation_requirement": "unknown_or_scanned",
+  "variable_parameters": [
+    "theta"
+  ],
+  "fixed_parameters": [
+    "theta"
+  ],
+  "geometry": {
+    "observable_pattern": [
+      "known d determines lambda"
+    ]
+  },
+  "observable_pattern": "known d determines lambda",
+  "mathematical_rules": [
+    "Bragg law",
+    "Ewald construction"
+  ],
+  "figures": [
+    "fig_3_8"
+  ],
+  "limitations": [
+    "Intensity interpretation outside Chapter 3 geometry scope."
+  ],
+  "typical_uses": [
+    "known d determines lambda"
+  ],
+  "not_for": [
+    "intensity interpretation in Chapter 3 geometry module"
+  ],
+  "references": [
+    {
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter": "3",
+      "chapter_title": "Diffraction I: Geometry",
+      "section": "3-7",
+      "book_page": "103",
+      "pdf_page": "15",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "problem": "",
+      "quote_fragment": "essential features of an x-ray spectrometer",
+      "validation_status": "valid"
+    }
+  ]
+}

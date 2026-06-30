@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "argiloteca:argiloteca_bragg_calculation_schema",
+  "title": "argiloteca_bragg_calculation_schema",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "chapter",
+    "section",
+    "concepts",
+    "equations",
+    "input_features",
+    "conditions",
+    "outputs",
+    "units",
+    "validity_conditions",
+    "limitations",
+    "warnings",
+    "source",
+    "version",
+    "created_at",
+    "updated_at",
+    "validation_status"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,9 @@
+{
+  "schema_id": "xrd_dashboard_parameter_panel_schema",
+  "widgets": [
+    "layer_model",
+    "interlayer_complex",
+    "Reichweite",
+    "defect_free_distance"
+  ]
+}

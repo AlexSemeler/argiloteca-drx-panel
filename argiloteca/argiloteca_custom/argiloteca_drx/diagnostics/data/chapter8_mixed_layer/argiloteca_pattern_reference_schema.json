@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "argiloteca:argiloteca_pattern_reference_schema",
+  "title": "argiloteca_pattern_reference_schema",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "mineral_system",
+    "components",
+    "ordering",
+    "treatment_state",
+    "input_features",
+    "conditions",
+    "output",
+    "confidence_weight",
+    "limitations",
+    "differential_diagnosis",
+    "source",
+    "version",
+    "created_at",
+    "updated_at",
+    "validation_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "mineral_system": {
+      "type": "string"
+    },
+    "components": {
+      "type": "array"
+    },
+    "ordering": {
+      "type": "string"
+    },
+    "treatment_state": {
+      "type": "string"
+    },
+    "input_features": {
+      "type": "array"
+    },
+    "conditions": {
+      "type": "array"
+    },
+    "output": {},
+    "confidence_weight": {},
+    "limitations": {
+      "type": "array"
+    },
+    "differential_diagnosis": {
+      "type": "array"
+    },
+    "source": {
+      "type": "object"
+    },
+    "version": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "validation_status": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

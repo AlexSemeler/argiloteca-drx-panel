@@ -1,0 +1,110 @@
+{
+  "MixedLayerClayMineral": {
+    "Component": {},
+    "EndMember": {},
+    "Interstratification": {},
+    "Ordering": {
+      "R0": {
+        "reichweite": 0
+      },
+      "R1": {
+        "reichweite": 1
+      },
+      "R3": {
+        "reichweite": 3
+      }
+    },
+    "Reichweite": {
+      "definition": "range of ordering in stacking sequence along Z"
+    },
+    "Superstructure": {},
+    "Reflection": {
+      "basal_00l": {},
+      "composite_reflection": {},
+      "superstructure_reflection": {},
+      "auxiliary_reflection": {}
+    },
+    "TreatmentState": {
+      "air_dried": {
+        "aliases": [
+          "natural",
+          "air-dried",
+          "air dried"
+        ]
+      },
+      "ethylene_glycol_solvated": {
+        "aliases": [
+          "EG",
+          "glycolated",
+          "ethylene glycol",
+          "ethylene glycol solvated"
+        ]
+      },
+      "heated_250C": {
+        "aliases": [
+          "heated for 1 h at 250C",
+          "dehydrated at 250C"
+        ]
+      },
+      "heated_375C": {
+        "aliases": [
+          "heated 375C",
+          "heated to 375C"
+        ]
+      },
+      "dehydrated": {
+        "aliases": [
+          "dehydrated preparation",
+          "Na-saturated dehydrated",
+          "dry nitrogen dehydrated"
+        ]
+      },
+      "Mg_glycerol_solvated": {
+        "aliases": [
+          "Mg saturation and glycerol solvation",
+          "glycerol solvation"
+        ]
+      },
+      "K_saturated_heated": {
+        "aliases": [
+          "K-saturated",
+          "collapsed K-saturated preparation"
+        ]
+      }
+    },
+    "PeakBehavior": {
+      "shift": {},
+      "broadening": {},
+      "sharpening": {},
+      "collapse": {},
+      "expansion": {},
+      "disappearance": {},
+      "emergence": {}
+    },
+    "CompositionEstimator": {
+      "delta_2theta": {},
+      "peak_position": {},
+      "Q_descriptor": {},
+      "beta_width": {}
+    },
+    "DiagnosticRule": {},
+    "DifferentialDiagnosis": {},
+    "PhysicalMixture": {},
+    "CalculatedPattern": {},
+    "ExperimentalPattern": {},
+    "Evidence": {},
+    "Explanation": {}
+  },
+  "source": {
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "chapter": "8",
+    "chapter_title": "Identification of Mixed-Layered Clay Minerals",
+    "page": "261",
+    "section": "",
+    "figure": "",
+    "table": "",
+    "equation": "",
+    "quote_fragment": "complete description of a mixed-layered clay mineral",
+    "validation_status": "valid"
+  }
+}

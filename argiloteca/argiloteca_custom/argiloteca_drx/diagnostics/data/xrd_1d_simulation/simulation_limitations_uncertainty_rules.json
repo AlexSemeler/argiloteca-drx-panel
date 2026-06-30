@@ -1,0 +1,58 @@
+[
+  {
+    "rule_id": "missing_metadata_exploratory_only",
+    "rule_type": "limitation_or_uncertainty",
+    "target": "simulation",
+    "formal_statement": "If input pattern lacks wavelength or treatment state, simulation may proceed only in exploratory mode.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "360",
+      "pdf_page": "10",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "specify all the important mineral structural data"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "risk": "insufficiently constrained simulation",
+    "effect_on_simulation": "positions/intensities not fully auditable",
+    "effect_on_diagnosis": "confidence cannot be confirmed",
+    "recommended_action": "provide wavelength, treatment and instrument profile"
+  },
+  {
+    "rule_id": "interlayer_guess_uncertainty",
+    "rule_type": "limitation_or_uncertainty",
+    "target": "interlayer_model",
+    "formal_statement": "Some interlayer structures are educated guesses, so high-angle intensity results require caution.",
+    "conditions": [],
+    "input_features": [],
+    "output": "",
+    "diagnostic_implication": "",
+    "limitations": [],
+    "source": {
+      "source_document": "capitulo3-ilita.pdf",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "chapter_or_appendix": "Chapter 3 / Appendix: Modeling One-Dimensional X-Ray Patterns",
+      "section": "",
+      "book_page": "367",
+      "pdf_page": "17",
+      "figure": "",
+      "table": "",
+      "equation": "",
+      "quote_fragment": "only educated guesses"
+    },
+    "version": "xrd_1d_simulation.v1",
+    "validation_status": "valid",
+    "risk": "wrong intensities",
+    "recommended_action": "manual verification and reference pattern comparison"
+  }
+]
