@@ -34,6 +34,22 @@ Como a logica de Meunier esta aplicada neste arquivo:
     - K/S e T/S usam a familia magnesiana talco-kerolita-estevensita como
       hipotese contextual auxiliar.
 
+Capitulo 8 aplicado:
+    Identification of Mixed-Layered Clay Minerals, da obra
+    X-Ray Diffraction and the Identification and Analysis of Clay Minerals.
+
+Como a logica do Capitulo 8 esta aplicada:
+    - respostas N/G/C parciais, bandas largas, ombros e deslocamentos
+      intermediarios geram candidatos interestratificados, nao mineral puro;
+    - corrensita e tratada como chlorite/smectite ordenado quando ha reflexao
+      longa em ~29 A, expansao com glicol para ~31-32 A e suporte termico;
+    - I/S, C/S, K/S e T/S sao mantidos como hipoteses com `order` R1,
+      R0|unknown ou unknown, porque o painel ainda nao faz modelagem 00l
+      NEWMOD-like suficiente para resolver Reichweite por completo;
+    - mistura fisica e interestratificacao permanecem separadas por alerta:
+      a engine retorna hipotese e evidencia, mas nao confirma sequencia
+      estrutural sem padrao 00l completo e comparacao observado-calculado.
+
 Padrao de engenharia:
     modulo puro, sem estado global mutavel e sem loop residente. A funcao
     percorre apenas listas de picos da amostra recebida e retorna JSON
@@ -77,6 +93,12 @@ def detect_mixed_layers(peaks_by_preparation, behaviors=None, metadata=None):
     Returns:
         list[dict]: Candidatos de interestratificados, cada um com ordem,
         componentes, evidencias, explicacao e confianca.
+
+    Aplicacao direta do Capitulo 8:
+        a funcao materializa a regra "nao identificar interestratificados por
+        pico isolado". Ela exige comportamento entre preparos, reflexoes de
+        baixa angulacao, ombros/largura ou coexistencia de componentes antes de
+        emitir uma hipotese mixed-layer.
 
     Objetos onde Lanson & Bouchet 1995 esta materializado:
         - mixed_layer_candidate: evita colapsar banda complexa em mineral puro;

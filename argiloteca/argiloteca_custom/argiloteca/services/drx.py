@@ -75,6 +75,7 @@ from argiloteca.drx_core.curves import (
     parse_raw_bytes as core_parse_raw_bytes,
     parse_text_curve_bytes as core_parse_text_curve_bytes,
 )
+from argiloteca.drx_core.diffractogram import Diffractogram
 from argiloteca_drx.diagnostics.diagnostic_peak_rules import (
     mapped_ranges,
     named_range,
@@ -756,7 +757,14 @@ def _smooth_savgol_compatible(values, window=5, polyorder=2):
 
 
 def _d_spacing_to_two_theta(d_spacing, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
-    """Convert d-spacing to 2theta with Bragg's law for the configured wavelength."""
+    """Converte d-spacing para 2θ pela Lei de Bragg.
+
+    Regra geométrica aplicada do capítulo "Diffraction I: Geometry":
+    a equação nλ = 2d sen θ usa θ, não o ângulo medido 2θ. Para o painel, os
+    difratogramas chegam no eixo experimental 2θ; por isso o cálculo inverte a
+    relação como 2θ = 2 arcsen(λ / 2d), assumindo primeira ordem e radiação
+    configurada no metadado, com Cu Kα como padrão operacional.
+    """
     value = _finite_float(d_spacing)
     if value is None or value <= 0:
         return None
@@ -967,7 +975,13 @@ def _normalize_positive(values):
 
 
 def _two_theta_to_d_spacing(two_theta, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
-    """Convert 2theta to d-spacing with Bragg's law."""
+    """Converte o eixo experimental 2θ em d-spacing pela Lei de Bragg.
+
+    Regra geométrica aplicada do capítulo "Diffraction I: Geometry":
+    antes de aplicar nλ = 2d sen θ, o ângulo medido pelo difratômetro é dividido
+    por dois. A saída em Å permite comparar picos basais de argilominerais entre
+    equipamentos e tratamentos, mas não confirma mineral isoladamente.
+    """
     theta = math.radians(float(two_theta) / 2.0)
     sine = math.sin(theta)
     if sine <= 0:
@@ -1093,7 +1107,14 @@ def _select_advanced_peaks_with_engine(two_theta, corrected, normalized, max_pea
 
 
 def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU, detection_method="local_maxima_after_als"):
-    """Build peak and fit-result rows consumed by the package/similarity UI."""
+    """Monta linhas de pico usadas pelo painel e pela comparação de similaridade.
+
+    Cada índice de pico vem da curva corrigida por ALS. Aqui o painel materializa
+    a ponte entre geometria e visualização: centro em 2θ, d-spacing via Bragg,
+    intensidade corrigida, intensidade relativa, FWHM e área. FWHM é mantido em
+    graus 2θ e sem correção instrumental; portanto é evidência de forma/largura,
+    não medida final de tamanho de cristalito ou diagnóstico mineralógico.
+    """
     peaks = []
     fits = []
     for number, index in enumerate(peak_indices, start=1):
@@ -1258,11 +1279,17 @@ def targeted_basal_peak_scan(
     wavelength=ADVANCED_ALS_WAVELENGTH_CU,
     ranges=None,
 ):
-    """Scan diagnostic basal windows for weak clay-mineral peaks.
+    """Varre janelas basais diagnósticas definidas em d-spacing.
 
-    This complements the global peak picking. Each row is auxiliary evidence and
-    can be `weak` or `shoulder`; downstream code must not treat it as
-    confirmatory mineral identification.
+    As regras mineralógicas são descritas em Å porque reflexões basais de
+    argilominerais são comparadas por espaçamento interplanar. O eixo observado,
+    porém, chega como 2θ. Por isso cada janela `d_min/d_max` é convertida para
+    intervalo 2θ pela Lei de Bragg antes de procurar o máximo local na curva
+    corrigida por ALS.
+
+    A rotina complementa a detecção global de picos. Cada linha é evidência
+    auxiliar e pode sair como `weak` ou `shoulder`; código downstream não deve
+    tratar esse resultado como confirmação mineralógica.
     """
     pairs = []
     raw_values = list(intensity_raw or [])
@@ -1291,6 +1318,9 @@ def targeted_basal_peak_scan(
         if d_min is None or d_max is None or d_min <= 0 or d_max <= 0:
             continue
         d_low, d_high = sorted((d_min, d_max))
+        # Capítulo 3 aplicado: uma janela ampla em d-spacing vira uma janela
+        # invertida em 2θ, porque d e 2θ variam em sentidos opostos pela Lei de
+        # Bragg. O maior d define o menor 2θ; o menor d define o maior 2θ.
         theta_min = _d_spacing_to_two_theta(d_high, wavelength=wavelength)
         theta_max = _d_spacing_to_two_theta(d_low, wavelength=wavelength)
         center_d = (d_low + d_high) / 2.0
@@ -1388,10 +1418,18 @@ def process_advanced_als_curve(
     max_peaks=40,
     wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU,
 ):
-    """Build the advanced ALS processing payload used by the DRX comparator.
+    """Constrói o payload de processamento avançado usado pelo comparador DRX.
 
-    A saida e evidencia auxiliar: picos, baseline, FWHM e metadados de metodo.
-    Ela nao altera classificacao mineralogica derivada nem substitui curadoria.
+    Fluxo científico:
+    1. ordena pares 2θ/intensidade;
+    2. suaviza o sinal;
+    3. estima e remove background por ALS;
+    4. detecta máximos na curva corrigida;
+    5. calcula d-spacing por Bragg, FWHM e área;
+    6. varre janelas basais direcionadas em d-spacing.
+
+    A saída é evidência auxiliar: picos, baseline, FWHM e metadados de método.
+    Ela não altera classificação mineralógica derivada nem substitui curadoria.
     """
     pairs = _finite_curve_pairs(two_theta, intensity)
     if len(pairs) < MIN_POINTS:
@@ -3108,6 +3146,35 @@ def load_drx_index():
     return _load_index()
 
 
+def _diffractogram_visualization_response(metadata, two_theta, intensity, diffractogram_id=None):
+    """Monta resposta de curva com metadados de visualizacao auditaveis.
+
+    A resposta preserva as chaves historicas `two_theta` e `intensity`, mas
+    passa a anexar `metadata.visualization` calculado por `Diffractogram`. Esse
+    resumo permite ao painel enquadrar melhor o grafico, exibir o numero real
+    de pontos e rastrear a regra geometrica do Capitulo 3 usada para d-spacing.
+    """
+    curve = Diffractogram(
+        two_theta=list(two_theta or []),
+        intensity=list(intensity or []),
+        metadata={
+            **dict(metadata or {}),
+            "visualization_payload_mode": "classified_display_curve",
+        },
+        curve_id=diffractogram_id or (metadata or {}).get("diffractogram_id") or (metadata or {}).get("id"),
+    )
+    payload = curve.to_visualization_payload(
+        max_points=MAX_RENDER_POINTS,
+        include_d_spacing=False,
+        include_normalized=False,
+    )
+    return {
+        "metadata": payload["metadata"],
+        "two_theta": payload["two_theta"],
+        "intensity": payload["intensity"],
+    }
+
+
 def load_diffractogram_data(diffractogram_id):
     """Load curve data for either snapshot-backed or locally imported DRX ids."""
     snapshot_row = _snapshot_row_by_id(diffractogram_id)
@@ -3153,11 +3220,7 @@ def load_diffractogram_data(diffractogram_id):
                 }
                 if advanced_curve:
                     metadata["advanced_curve"] = advanced_curve
-                return {
-                    "metadata": metadata,
-                    "two_theta": parsed.two_theta,
-                    "intensity": parsed.intensity,
-                }
+                return _diffractogram_visualization_response(metadata, parsed.two_theta, parsed.intensity, diffractogram_id)
             except Exception as exc:
                 return {
                     "metadata": {**item, "error_message": str(exc)},
@@ -3217,23 +3280,25 @@ def load_diffractogram_data(diffractogram_id):
                 ).get("type"),
                 manual_corrections=load_two_theta_axis_corrections(),
             )
-            return {
-                "metadata": {
+            return _diffractogram_visualization_response(
+                {
                     **metadata,
                     "resolved_raw_path": str(resolved_raw_path),
                     **parsed.metadata,
                 },
-                "two_theta": parsed.two_theta,
-                "intensity": parsed.intensity,
-            }
+                parsed.two_theta,
+                parsed.intensity,
+                diffractogram_id,
+            )
         except Exception:
             pass
 
-    return {
-        "metadata": {**metadata, "curve_source": "data_path_pre_importado"},
-        "two_theta": data.get("two_theta") or [],
-        "intensity": data.get("intensity") or [],
-    }
+    return _diffractogram_visualization_response(
+        {**metadata, "curve_source": "data_path_pre_importado"},
+        data.get("two_theta") or [],
+        data.get("intensity") or [],
+        diffractogram_id,
+    )
 
 
 def list_raw_snapshot_items(filters=None, limit=80, offset=0):

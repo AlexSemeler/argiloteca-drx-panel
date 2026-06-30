@@ -28,6 +28,7 @@ from __future__ import annotations
 import json
 import csv
 import hashlib
+import math
 import os
 import re
 import sys
@@ -347,6 +348,122 @@ def _persist_drx_temp_upload(content, original_filename, raw_sha256):
     path = temp_dir / f"{raw_sha256[:16]}_{safe_name}"
     path.write_bytes(content)
     return path
+
+
+def _peak_d_angstrom(peak):
+    """Extrai d-spacing de um pico usando os nomes aceitos pelo painel DRX."""
+    for key in ("d_angstrom", "d", "d_spacing", "center_d_angstrom", "d_A"):
+        try:
+            value = float((peak or {}).get(key))
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(value) and value > 0:
+            return value
+    return None
+
+
+def _peak_intensity_value(peak):
+    """Extrai intensidade comparável para ordenar candidatos auxiliares."""
+    for key in ("relative_intensity", "intensity", "i_abs", "height", "amplitude"):
+        try:
+            value = float((peak or {}).get(key))
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(value):
+            return value
+    return 0.0
+
+
+def _infer_external_curve_d060(peaks):
+    """Infere d060 de curva externa apenas como evidência auxiliar rastreável."""
+    candidates = []
+    for peak in peaks or []:
+        d_value = _peak_d_angstrom(peak)
+        if d_value is None or not 1.485 <= d_value <= 1.555:
+            continue
+        centers = (1.50, 1.52, 1.54)
+        candidates.append(
+            {
+                "d060": round(d_value, 5),
+                "two_theta": (peak or {}).get("two_theta") or (peak or {}).get("center_2theta"),
+                "intensity": _peak_intensity_value(peak),
+                "source": "inferred_from_external_curve_peak_window",
+                "status": "inferred_auxiliary",
+                "distance_to_reference_centers": round(min(abs(d_value - center) for center in centers), 5),
+                "warning": "d060 inferido de amostra externa; evidência auxiliar. Verificar montagem em pó aleatório e interferência de quartzo perto de 1.541 Å.",
+            }
+        )
+    if not candidates:
+        return {
+            "status": "unavailable",
+            "reason": "no_peak_in_060_window",
+            "warning": "Nenhum pico detectado entre 1.485 e 1.555 Å; classificação 060 permanece indisponível.",
+        }
+    candidates.sort(key=lambda row: (row["distance_to_reference_centers"], -row["intensity"]))
+    return candidates[0]
+
+
+def _infer_external_raw_d060(peaks):
+    """Alias compatível: inferência d060 para entradas externas legadas."""
+    return _infer_external_curve_d060(peaks)
+
+
+def _external_curve_preclassification_item(
+    *,
+    original_filename,
+    sample_code,
+    treatment,
+    raw_sha256,
+    temp_upload_path,
+    parsed,
+    advanced_processing,
+    identification,
+):
+    """Monta item temporário compatível com `build_ngc_workflow`."""
+    peaks = advanced_processing.get("peaks") or identification.get("peaks") or []
+    d060 = _infer_external_curve_d060(peaks)
+    metadata = {
+        **(parsed.metadata or {}),
+        "source": "external_curve_preclassification",
+        "source_sha256": raw_sha256,
+        "temporary_upload_path": str(temp_upload_path),
+        "sample_code": sample_code,
+        "original_filename": original_filename,
+        "preparation": treatment.get("type"),
+        "curve_points": len(parsed.two_theta),
+        "d060_status": d060.get("status"),
+        "d060_warning": d060.get("warning"),
+    }
+    if d060.get("status") == "inferred_auxiliary":
+        metadata["d060"] = d060.get("d060")
+        metadata["d060_source"] = d060.get("source")
+        metadata["d060_two_theta"] = d060.get("two_theta")
+        metadata["d060_intensity"] = d060.get("intensity")
+    item = {
+        "id": f"external_curve:{raw_sha256[:16]}",
+        "filename": original_filename,
+        "sample_code": sample_code,
+        "sample_base": infer_diffractogram_sample_base(sample_code, original_filename),
+        "preparation": treatment.get("type"),
+        "peaks": peaks,
+        "advanced_peaks": advanced_processing.get("peaks") or [],
+        "targeted_basal_peaks": advanced_processing.get("targeted_basal_peaks") or [],
+        "fit_results": advanced_processing.get("fit_results") or [],
+        "metadata": metadata,
+        "warnings": [d060.get("warning")] if d060.get("warning") else [],
+    }
+    return {
+        "available": True,
+        "schema_version": "argiloteca.drx.external_curve_preclassification.v1",
+        "policy": "argiloteca_rule_based_diagnostic",
+        "item": item,
+        "d060": d060,
+    }
+
+
+def _external_raw_preclassification_item(**kwargs):
+    """Alias compatível para consumidores que ainda esperam RAW externo."""
+    return _external_curve_preclassification_item(**kwargs)
 
 def _load_points_snapshot():
     """Load georeferenced point snapshot when no runtime filters are active."""
@@ -2694,12 +2811,24 @@ def create_blueprint(app):
                 max_points=max_points,
                 stored=False,
                 wavelength_angstrom=_bounded_float_arg("wavelength_angstrom", 1.5406),
+                source_filepath=temp_upload_path if suffix in {".csv", ".txt", ".tsv"} else None,
             )
             advanced_processing = analysis_payload["advanced_processing"]
             advanced_summary = analysis_payload["advanced_summary"]
             advanced_curve = analysis_payload["advanced_curve"]
             analysis_run = analysis_payload["analysis_run"]
             diagnostic_evidence = analysis_payload["diagnostic_evidence"]
+            external_curve_preclassification = _external_curve_preclassification_item(
+                original_filename=original_filename,
+                sample_code=sample_code,
+                treatment=treatment,
+                raw_sha256=raw_sha256,
+                temp_upload_path=temp_upload_path,
+                parsed=parsed,
+                advanced_processing=advanced_processing,
+                identification=identification,
+            )
+            external_raw_preclassification = external_curve_preclassification
             technical_report = build_drx_technical_report(
                 analysis_run=analysis_run,
                 advanced_processing=advanced_processing,
@@ -2755,10 +2884,19 @@ def create_blueprint(app):
                 "peak_processing": advanced_processing.get("peak_processing") or {},
                 "xrd_method": advanced_processing.get("xrd_method") or {},
                 "qc_flags": advanced_processing.get("qc_flags") or [],
+                "external_curve_preclassification": external_curve_preclassification,
+                "external_raw_preclassification": external_raw_preclassification,
             }
+            d060_payload = external_curve_preclassification.get("d060") or {}
+            if d060_payload.get("status") == "inferred_auxiliary":
+                metadata["d060"] = d060_payload.get("d060")
+                metadata["d060_source"] = d060_payload.get("source")
+                metadata["d060_warning"] = d060_payload.get("warning")
+                metadata["d060_two_theta"] = d060_payload.get("two_theta")
             metadata["analysis_run"] = analysis_run
             metadata["diagnostic_evidence"] = diagnostic_evidence
             metadata["technical_report"] = technical_report
+            metadata["explainable_peak_detection"] = analysis_payload.get("explainable_peak_detection")
             return jsonify(
                 {
                     "success": True,
@@ -2778,6 +2916,8 @@ def create_blueprint(app):
                     "advanced_summary": advanced_summary,
                     "advanced_curve": advanced_curve,
                     "mineral_candidates": identification.get("candidates") or [],
+                    "external_curve_preclassification": external_curve_preclassification,
+                    "external_raw_preclassification": external_raw_preclassification,
                     "package_similarity": package_similarity,
                     "gsas2_validation": gsas2_validation,
                     "two_theta": two_theta,

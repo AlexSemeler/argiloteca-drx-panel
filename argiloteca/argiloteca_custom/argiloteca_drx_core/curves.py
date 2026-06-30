@@ -296,7 +296,11 @@ def normalize_area(x_values, y_values):
 
 
 def calculate_d_spacing(two_theta, wavelength=CU_K_ALPHA_WAVELENGTH):
-    """Convert 2theta to d-spacing with Bragg's law."""
+    """Converte 2θ para d-spacing pela Lei de Bragg.
+
+    Regra do Capitulo 3: o difratometro mede 2θ, mas a equacao usa θ. A funcao
+    divide o eixo experimental por dois antes de aplicar `d = λ/(2 sen θ)`.
+    """
     theta = math.radians(float(two_theta) / 2.0)
     sine = math.sin(theta)
     if sine <= 0:
@@ -305,7 +309,11 @@ def calculate_d_spacing(two_theta, wavelength=CU_K_ALPHA_WAVELENGTH):
 
 
 def calculate_two_theta(d_spacing, wavelength=CU_K_ALPHA_WAVELENGTH):
-    """Convert d-spacing to 2theta with Bragg's law."""
+    """Converte d-spacing para 2θ pela Lei de Bragg.
+
+    Regra do Capitulo 3: a reflexao so e geometricamente possivel quando
+    `λ/(2d) <= 1`. A funcao retorna `None` quando essa condicao falha.
+    """
     value = float(d_spacing)
     if value <= 0:
         return None

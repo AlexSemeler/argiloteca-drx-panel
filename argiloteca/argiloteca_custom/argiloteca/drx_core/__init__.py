@@ -50,3 +50,20 @@ from .curves import (  # noqa: E402,F401
     normalize_max,
     parse_curve_bytes,
 )
+from .diffractogram import Diffractogram  # noqa: E402,F401
+from .geometry import (  # noqa: E402,F401
+    BraggCalculation,
+    bragg_from_two_theta,
+    geometry_explanation,
+    two_theta_from_d_spacing,
+)
+from .knowledge import (  # noqa: E402,F401
+    get_rule_indexes,
+    get_scientific_knowledge,
+    scientific_source_summary,
+)
+from .peaks import (  # noqa: E402,F401
+    group_peaks_for_ngc,
+    normalize_peak,
+    normalize_peaks,
+)

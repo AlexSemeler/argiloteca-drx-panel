@@ -1,0 +1,46 @@
+{
+  "argiloteca_diffraction_geometry_rule_schema": {
+    "properties": {
+      "calculation": {
+        "type": "string"
+      },
+      "conditions": {
+        "type": [
+          "array",
+          "object"
+        ]
+      },
+      "outputs": {
+        "type": "array"
+      },
+      "rule_id": {
+        "type": "string"
+      },
+      "rule_type": {
+        "type": "string"
+      },
+      "source": {
+        "type": "object"
+      },
+      "target": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "rule_id",
+      "rule_type",
+      "target",
+      "source"
+    ],
+    "type": "object"
+  },
+  "argiloteca_equation_schema": {
+    "required": [
+      "equation_id",
+      "name",
+      "latex",
+      "source"
+    ],
+    "type": "object"
+  }
+}

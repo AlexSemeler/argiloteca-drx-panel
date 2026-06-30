@@ -367,7 +367,13 @@ def _item_from_payload(item):
             if isinstance(candidate, dict)
         ][:8],
         "metadata": {
+            "source": (item or {}).get("source") or metadata.get("source"),
+            "source_sha256": (item or {}).get("source_sha256") or metadata.get("source_sha256"),
+            "temporary_upload_path": (item or {}).get("temporary_upload_path") or metadata.get("temporary_upload_path"),
             "d060": (item or {}).get("d060") or metadata.get("d060"),
+            "d060_status": (item or {}).get("d060_status") or metadata.get("d060_status"),
+            "d060_source": (item or {}).get("d060_source") or metadata.get("d060_source"),
+            "d060_warning": (item or {}).get("d060_warning") or metadata.get("d060_warning"),
             "morphology": (item or {}).get("morphology") or metadata.get("morphology") or [],
             "chemistry": (item or {}).get("chemistry") or metadata.get("chemistry") or {},
             "context": (item or {}).get("context") or metadata.get("context") or [],
@@ -2006,6 +2012,20 @@ def _interpret_group(sample_base, items):
         "glycolated_001": _range_peak(glycolated or {}, "smectite_glycolated_17a") or _range_peak(glycolated or {}, "illite_10a"),
         "calcined_001": _range_peak(calcined or {}, "smectite_calcined_10a") or _range_peak(calcined or {}, "illite_10a"),
     }
+    external_items = [
+        item for item in items or []
+        if ((item.get("metadata") or {}).get("source") in {"external_raw_preclassification", "external_curve_preclassification"})
+    ]
+    external_d060 = [
+        {
+            "filename": item.get("filename"),
+            "preparation": item.get("preparation"),
+            "d060": (item.get("metadata") or {}).get("d060"),
+            "status": (item.get("metadata") or {}).get("d060_status"),
+            "warning": (item.get("metadata") or {}).get("d060_warning"),
+        }
+        for item in external_items
+    ]
     candidates = sorted(candidates, key=lambda row: row.get("score") or 0.0, reverse=True)
     return {
         "sample_base": sample_base,
@@ -2025,6 +2045,22 @@ def _interpret_group(sample_base, items):
         "companion_peaks": companion_peaks,
         "ngc_behavior": ngc_behavior,
         "mixed_layer_warnings": mixed_layer_warnings,
+        "external_curve_preclassification": {
+            "available": bool(external_items),
+            "schema_version": "argiloteca.drx.external_curve_preclassification_group.v1",
+            "status": "trio_completo" if complete_trio else "trio_incompleto",
+            "file_count": len(external_items),
+            "d060": external_d060,
+            "policy": POLICY,
+        },
+        "external_raw_preclassification": {
+            "available": bool(external_items),
+            "schema_version": "argiloteca.drx.external_raw_preclassification_group.v1",
+            "status": "trio_completo" if complete_trio else "trio_incompleto",
+            "file_count": len(external_items),
+            "d060": external_d060,
+            "policy": POLICY,
+        },
         "warnings": warnings,
     }
 

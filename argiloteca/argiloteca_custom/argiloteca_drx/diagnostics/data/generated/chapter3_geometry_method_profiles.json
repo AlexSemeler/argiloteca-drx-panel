@@ -1,0 +1,61 @@
+{
+  "laue_method": {
+    "lambda_behavior": "variable",
+    "method_id": "laue_method",
+    "observable_pattern": "spot pattern",
+    "sample_type": "single_crystal",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": null,
+      "figure": "3-9",
+      "page": null,
+      "quote_fragment": "Laue",
+      "section": "3-8",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "theta_behavior": "fixed"
+  },
+  "powder_diffraction": {
+    "lambda_behavior": "fixed",
+    "method_id": "powder_diffraction",
+    "observable_pattern": "cones/rings converted to peaks in diffractometer scan",
+    "sample_type": "randomly_oriented_polycrystalline_powder",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": null,
+      "figure": "3-17",
+      "page": null,
+      "quote_fragment": "powder cone",
+      "section": "3-8",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "theta_behavior": "variable"
+  },
+  "xray_spectrometer": {
+    "calculation": "lambda = 2*d*sin(theta)",
+    "known": [
+      "d_spacing",
+      "theta"
+    ],
+    "method_id": "xray_spectrometer",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": null,
+      "figure": "3-8",
+      "page": null,
+      "quote_fragment": "spectrometer",
+      "section": "3-7",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "unknown": "wavelength"
+  }
+}

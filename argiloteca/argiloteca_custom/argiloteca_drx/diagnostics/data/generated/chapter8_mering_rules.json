@@ -1,0 +1,71 @@
+[
+  {
+    "diagnostic_implication": "peak migration supports interstratification more than fixed independent peaks",
+    "formal_statement": "Composite 00l reflections occur between end-member positions and migrate systematically with composition.",
+    "limitations": [
+      "requires full 00l pattern and treatment comparison"
+    ],
+    "principle": "composite_reflection_position",
+    "rule_id": "chapter8_mering_composite_reflection_between_end_members",
+    "rule_type": "mering_principle",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "between end members",
+      "section": "Mering principles",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "mixed_layer_00l_pattern"
+  },
+  {
+    "diagnostic_implication": "broad peaks or shoulders can support mixed-layer hypotheses but are not diagnostic alone",
+    "formal_statement": "Reflections broaden when end-member layer spacings differ, especially at intermediate compositions.",
+    "limitations": [
+      "crystallite size, defects and instrument broadening can also broaden peaks"
+    ],
+    "principle": "line_broadening",
+    "rule_id": "chapter8_mering_broadening_intermediate_composition",
+    "rule_type": "mering_principle",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "broadening",
+      "section": "Mering principles",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "line_broadening"
+  },
+  {
+    "diagnostic_implication": "superstructure reflections support R1/R3 ordering when coherent with the 00l pattern",
+    "formal_statement": "Ordered interstratifications can produce superstructure reflections.",
+    "limitations": [
+      "absence of superstructure does not by itself prove R0"
+    ],
+    "principle": "superstructure",
+    "rule_id": "chapter8_ordered_superstructure_reflections",
+    "rule_type": "mering_principle",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "superstructure",
+      "section": "Ordering",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "ordered_interstratification"
+  }
+]

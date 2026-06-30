@@ -113,6 +113,29 @@
   const form = root.querySelector('[data-role="filters-form"]');
   const recordListEl = root.querySelector('[data-role="record-list"]');
   const statusEl = root.querySelector('[data-role="status"]');
+  let statusProgressTimer = null;
+  let statusProgressTick = 0;
+  function stopStatusProgress(finalMessage) {
+    if (statusProgressTimer) {
+      window.clearInterval(statusProgressTimer);
+      statusProgressTimer = null;
+    }
+    statusProgressTick = 0;
+    if (finalMessage && statusEl) statusEl.textContent = finalMessage;
+  }
+  function startStatusProgress(baseMessage, steps) {
+    if (!statusEl) return;
+    stopStatusProgress();
+    const progressSteps = steps && steps.length ? steps : ["processando dados"];
+    const render = function () {
+      const step = progressSteps[statusProgressTick % progressSteps.length];
+      const dots = ".".repeat((statusProgressTick % 3) + 1);
+      statusEl.textContent = baseMessage + " · " + step + dots;
+      statusProgressTick += 1;
+    };
+    render();
+    statusProgressTimer = window.setInterval(render, 900);
+  }
   const chartEl = root.querySelector('[data-role="chart"]');
   const tooltipEl = root.querySelector('[data-role="tooltip"]');
   const modeEl = root.querySelector('[data-role="view-mode"]');
@@ -402,16 +425,16 @@
          * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
          */
         if (request.status < 200 || request.status >= 300 || payload.success === false) {
-          reject(new Error(payload.error || "Falha ao carregar RAW externo. HTTP " + request.status + "."));
+      reject(new Error(payload.error || "Falha ao carregar amostra externa. HTTP " + request.status + "."));
           return;
         }
         resolve(payload);
       };
       request.onerror = function () {
-        reject(new Error("Falha no envio do RAW externo para a Argiloteca local. Recarregue a página e tente novamente."));
+        reject(new Error("Falha no envio da amostra externa para a Argiloteca local. Recarregue a página e tente novamente."));
       };
       request.ontimeout = function () {
-        reject(new Error("Tempo esgotado ao enviar o RAW externo."));
+        reject(new Error("Tempo esgotado ao enviar a amostra externa."));
       };
       request.timeout = uploadOptions.timeout || EXTERNAL_RAW_UPLOAD_TIMEOUT_MS;
       request.send(formData);
@@ -526,15 +549,15 @@
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
     if (/(^|[-_\s()])(g|gly|glicol|glicolado|glicolada|etileno|ethylene)([-_\s()]|$)/.test(normalized)) {
-      return { type: "glicolado", label: "Glicolado", evidence: "Preparo inferido pelo nome do arquivo RAW externo." };
+      return { type: "glicolado", label: "Glicolado", evidence: "Preparo inferido pelo nome do arquivo externo." };
     }
     if (/(^|[-_\s()])(c|cal|calc|calcinado|calcinada|aquecido|heated)([-_\s()]|$)/.test(normalized)) {
-      return { type: "calcinado", label: "Calcinado", evidence: "Preparo inferido pelo nome do arquivo RAW externo." };
+      return { type: "calcinado", label: "Calcinado", evidence: "Preparo inferido pelo nome do arquivo externo." };
     }
     if (/(^|[-_\s()])(n|nat|natural|orientada|airdry|air-dry)([-_\s()]|$)/.test(normalized)) {
-      return { type: "natural", label: "Natural", evidence: "Preparo inferido pelo nome do arquivo RAW externo." };
+      return { type: "natural", label: "Natural", evidence: "Preparo inferido pelo nome do arquivo externo." };
     }
-    return { type: "indeterminado", label: "Indeterminado", evidence: "Preparo não identificado pelo nome do arquivo RAW externo." };
+    return { type: "indeterminado", label: "Indeterminado", evidence: "Preparo não identificado pelo nome do arquivo externo." };
   }
 
   /**
@@ -1245,6 +1268,15 @@
    */
   function ngcWorkflowItemPayload(item) {
     const metadata = item.metadata || {};
+    const preclassification = item.externalCurvePreclassification || metadata.external_curve_preclassification || item.externalRawPreclassification || metadata.external_raw_preclassification || {};
+    const preclassificationItem = item.externalRawPreclassificationItem || preclassification.item || {};
+    const preclassificationMetadata = preclassificationItem.metadata || {};
+    const d060Payload = preclassification.d060 || {};
+    const d060Value = metadata.d060 !== undefined && metadata.d060 !== null
+      ? metadata.d060
+      : (preclassificationMetadata.d060 !== undefined && preclassificationMetadata.d060 !== null
+        ? preclassificationMetadata.d060
+        : (d060Payload.status === "inferred_auxiliary" ? d060Payload.d060 : null));
     return {
       id: item.id,
       filename: metadata.original_filename || metadata.filename || item.id,
@@ -1267,7 +1299,15 @@
         original_filename: metadata.original_filename || metadata.filename || item.id,
         sample_code: metadata.sample_code || item.sampleCode || sampleLabel(item),
         preparation: metadata.preparation || item.treatment || "indeterminado",
+        source: metadata.source || preclassificationMetadata.source,
+        source_sha256: metadata.source_sha256 || preclassificationMetadata.source_sha256,
+        temporary_upload_path: metadata.temporary_upload_path || preclassificationMetadata.temporary_upload_path,
+        d060: d060Value,
+        d060_status: metadata.d060_status || preclassificationMetadata.d060_status || d060Payload.status,
+        d060_source: metadata.d060_source || preclassificationMetadata.d060_source || d060Payload.source,
+        d060_warning: metadata.d060_warning || preclassificationMetadata.d060_warning || d060Payload.warning,
       },
+      warnings: [].concat(item.warnings || [], preclassificationItem.warnings || []).filter(Boolean),
     };
   }
 
@@ -1281,6 +1321,7 @@
         item.id,
         item.treatment,
         item.metadata && item.metadata.original_filename,
+        item.metadata && item.metadata.d060,
         compactNgcPeaks(item).map(function (peak) {
           return [peak.d_angstrom, peak.two_theta, peak.relative_intensity].join(":");
         }).join(","),
@@ -1307,7 +1348,16 @@
     const key = ngcWorkflowSelectionKey(items);
     if (key === ngcWorkflowKey && (ngcWorkflowPayload || ngcWorkflowPromise)) return;
     ngcWorkflowKey = key;
-    ngcWorkflowPayload = { loading: true };
+    ngcWorkflowPayload = {
+      loading: true,
+      stage: "external_curve_preclassification",
+      process_steps: [
+        "Agrupar amostras externas por amostra-base.",
+        "Conferir preparos Natural, Glicolado e Calcinado.",
+        "Enviar picos e metadados ao workflow N/G/C backend.",
+        "Aplicar regras dos Capítulos 7 e 8 sem alterar a curva original.",
+      ],
+    };
     ngcWorkflowPromise = fetchJson(ngcWorkflowUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1852,16 +1902,23 @@
     const query = new URLSearchParams();
     query.set("max_points", "3000");
     query.set("similarity_scope", "all");
-    statusEl.textContent = "Convertendo RAW externo e procurando similares na Argiloteca: " + file.name;
+    startStatusProgress("Convertendo amostra externa e procurando similares na Argiloteca: " + file.name, [
+      "lendo curva 2θ/intensidade",
+      "detectando picos",
+      "inferindo preparo N/G/C",
+      "montando pré-classificação",
+      "comparando com a Argiloteca",
+    ]);
     return uploadRawFormData(externalRawUrl + "?" + query.toString(), formData, { timeout: EXTERNAL_RAW_UPLOAD_TIMEOUT_MS })
       .then(function (payload) {
+        stopStatusProgress();
         const metadata = payload.metadata || {};
         const id = "external:" + Date.now() + ":" + (batchIndex || 0) + ":" + (payload.filename || file.name);
         selected.set(id, {
           id: id,
           record: {
             id: "arquivo-externo",
-            title: "Arquivo RAW externo",
+            title: "Amostra externa",
             sample_locality: "Comparação temporária",
             formacao_geologica: "",
             ambiente_formacao: "",
@@ -1894,6 +1951,9 @@
           analysisRun: payload.analysis_run || metadata.analysis_run || null,
           technicalReport: payload.technical_report || metadata.technical_report || null,
           diagnosticEvidence: payload.diagnostic_evidence || metadata.diagnostic_evidence || [],
+          externalCurvePreclassification: payload.external_curve_preclassification || metadata.external_curve_preclassification || payload.external_raw_preclassification || metadata.external_raw_preclassification || null,
+          externalRawPreclassification: payload.external_raw_preclassification || metadata.external_raw_preclassification || payload.external_curve_preclassification || metadata.external_curve_preclassification || null,
+          externalRawPreclassificationItem: (payload.external_curve_preclassification || metadata.external_curve_preclassification || payload.external_raw_preclassification || metadata.external_raw_preclassification || {}).item || null,
           gsas2Validation: payload.gsas2_validation || metadata.gsas2_validation || null,
           mineralClassification: {
             source: metadata.mineral_classification_source || "classificacao_temporaria",
@@ -1912,6 +1972,7 @@
         return { success: true, file: file.name, selectedId: id, treatment: inferredTreatment.type, similarity: payload.package_similarity || null };
       })
       .catch(function (error) {
+        stopStatusProgress();
         const message = error && error.message === "Load failed"
           ? "falha de conexão com o servidor local; recarregue a página e tente novamente"
           : (error && error.message ? error.message : "falha desconhecida no upload");
@@ -1925,10 +1986,10 @@
    */
   function addExternalRawFiles(fileList) {
     const files = Array.from(fileList || []).filter(function (file) {
-      return /\.raw$/i.test(file.name || "");
+      return /\.(raw|csv|txt|xy|dat)$/i.test(file.name || "");
     });
     if (!files.length) {
-      statusEl.textContent = "Selecione um arquivo .raw ou até três arquivos .raw externos.";
+      statusEl.textContent = "Selecione um arquivo externo .raw, .csv, .txt, .xy ou .dat.";
       return;
     }
     /**
@@ -1936,7 +1997,7 @@
      * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
      */
     if (files.length > 3) {
-      statusEl.textContent = "Selecione no máximo três RAW externos: natural, glicolado e calcinado.";
+      statusEl.textContent = "Selecione no máximo três amostras externas: natural, glicolada e calcinada.";
       return;
     }
     const treatments = files.map(function (file) { return inferExternalTreatment(file.name).type; });
@@ -1948,12 +2009,23 @@
     const hints = [];
     if (duplicated) hints.push("há preparos repetidos inferidos pelos nomes");
     if (files.length === 3 && indeterminateCount) hints.push("nem todos os três preparos foram inferidos pelo nome");
-    statusEl.textContent = "Convertendo " + files.length + " RAW externo(s)...";
+    startStatusProgress("Convertendo " + files.length + " amostra(s) externa(s)", [
+      "preparando fila de arquivos",
+      "lendo curvas externas",
+      "extraindo picos",
+      "classificando conjunto N/G/C",
+    ]);
     const results = [];
     let queue = Promise.resolve();
     files.forEach(function (file, index) {
       queue = queue.then(function () {
-        statusEl.textContent = "Convertendo RAW externo " + (index + 1) + "/" + files.length + ": " + file.name;
+        startStatusProgress("Convertendo amostra externa " + (index + 1) + "/" + files.length + ": " + file.name, [
+          "lendo curva 2θ/intensidade",
+          "detectando picos",
+          "inferindo preparo N/G/C",
+          "montando pré-classificação",
+          "comparando com a Argiloteca",
+        ]);
         return addExternalRaw(file, index).then(function (result) {
           results.push(result);
           return result;
@@ -1961,6 +2033,7 @@
       });
     });
     queue.then(function () {
+      stopStatusProgress();
       const ok = results.filter(function (result) { return result && result.success; });
       const failed = results.filter(function (result) { return result && !result.success; });
       applyExternalNgcAxisAlignment(ok);
@@ -1983,8 +2056,9 @@
         }
         return "";
       }).filter(Boolean);
-      statusEl.textContent = [
-        ok.length + " RAW externo(s) adicionado(s)",
+      stopStatusProgress([
+        ok.length + " amostra(s) externa(s) adicionada(s)",
+        ok.length ? "pré-classificação N/G/C acionada no painel" : "",
         treatmentText ? "preparos: " + treatmentText : "",
         similarityNotes.length ? similarityNotes.join("; ") : "",
         hints.length ? "atenção: " + hints.join("; ") : "",
@@ -1992,7 +2066,9 @@
           return result.file + (result.error ? " (" + result.error + ")" : "");
         }).join(", ") : "",
         "Use CSV ou PDF para exportar o resultado.",
-      ].filter(Boolean).join(". ");
+      ].filter(Boolean).join(". "));
+    }).catch(function (error) {
+      stopStatusProgress(error && error.message ? error.message : "Falha ao converter amostras externas.");
     });
   }
 
@@ -4667,7 +4743,203 @@
     return null;
   }
 
-  function renderDiagnosticV3Block(group) {
+  function ngcCandidateDisplayName(candidate) {
+    return candidate && (
+      candidate.mineral
+      || candidate.mineral_candidate
+      || candidate.candidateLabelPt
+      || candidate.candidateId
+      || candidate.label
+    ) || "";
+  }
+
+  function ngcCandidateScore(candidate) {
+    const values = [
+      candidate && candidate.ngc_group_score,
+      candidate && candidate.basal_diagnostic_score,
+      candidate && candidate.score,
+      candidate && candidate.evidence_weight,
+    ];
+    for (let index = 0; index < values.length; index += 1) {
+      const value = Number(values[index]);
+      if (Number.isFinite(value)) return value;
+    }
+    return null;
+  }
+
+  function ngcCandidateStatus(candidate) {
+    return candidate && (
+      candidate.candidate_status
+      || candidate.status
+      || candidate.role
+      || candidate.confidence
+    ) || "";
+  }
+
+  function rankedNgcCandidates(group) {
+    const explicit = []
+      .concat(group && group.candidates || [])
+      .concat(group && group.probable_minerals || [])
+      .concat(group && group.possible_minerals || [])
+      .concat(group && group.accessory_minerals || []);
+    if (explicit.length) {
+      const seen = new Set();
+      return explicit.filter(function (candidate) {
+        const name = ngcCandidateDisplayName(candidate);
+        if (!name) return false;
+        const key = name.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).sort(function (a, b) {
+        return (ngcCandidateScore(b) || 0) - (ngcCandidateScore(a) || 0);
+      });
+    }
+    const diagnostic = group && group.diagnostic_interpretation || {};
+    return (diagnostic.combined_candidates || []).filter(function (candidate) {
+      return Boolean(ngcCandidateDisplayName(candidate));
+    });
+  }
+
+  function ngcCandidateDiagnosticText(candidate) {
+    return [
+      ngcCandidateDisplayName(candidate),
+      candidate && candidate.family,
+      candidate && candidate.group,
+      candidate && candidate.label,
+      candidate && candidate.mineral_candidate,
+      candidate && candidate.candidateId,
+    ].filter(Boolean).join(" ").toLowerCase();
+  }
+
+  function ngcCandidatePeakWindows(candidate) {
+    const text = ngcCandidateDiagnosticText(candidate);
+    if (/illite|ilita|mica/.test(text)) return [[9.7, 10.4, "Cap. 7 ilita/mica 001"]];
+    if (/kaolin|caulin|halloy|halois/.test(text)) return [[6.9, 7.4, "Cap. 7 caulinita 001"], [3.5, 3.65, "Cap. 7 caulinita 002"]];
+    if (/smectite|esmect|montmor|expans/.test(text)) return [[13.0, 15.5, "Cap. 7 esmectita natural"], [16.1, 18.3, "Cap. 7 esmectita glicolada"], [9.7, 10.4, "Cap. 7 colapso térmico"]];
+    if (/chlorite|clorit/.test(text)) return [[13.5, 14.9, "Cap. 7 clorita 001"], [7.0, 7.35, "Cap. 7 clorita 002"], [4.65, 4.85, "Cap. 7 clorita 003"], [3.48, 3.6, "Cap. 7 clorita 004"]];
+    if (/corrensite|mixed|interstrat|interestrat/.test(text)) return [[24.0, 31.5, "Cap. 8 superestrutura/00l*"], [13.5, 17.5, "Cap. 8 componente expansível/clorítico"], [9.7, 10.5, "Cap. 8 colapso/desidratação"]];
+    if (/sepiolite|palygorskite|fibrous|channel/.test(text)) return [[11.8, 12.6, "Cap. 7 sepiolita/paligorsquita"]];
+    if (/quartz|quartzo/.test(text)) return [[4.2, 4.35, "Cap. 7 quartzo 100"], [3.32, 3.37, "Cap. 7 quartzo 101"]];
+    return [];
+  }
+
+  function formatNgcPeakObservation(label, peak, ruleLabel) {
+    peak = peak || {};
+    const d = Number(peak.d_angstrom || peak.observed_d_angstrom || peak.d || peak.d_spacing);
+    const theta = Number(peak.two_theta || peak.observed_two_theta);
+    const intensity = Number(peak.intensity_abs || peak.i_abs || peak.intensity);
+    if (!Number.isFinite(d)) return "";
+    return [
+      label ? label + ": " : "",
+      "d ", formatNumber(d, 2), " Å",
+      Number.isFinite(theta) ? " / 2θ " + formatNumber(theta, 2) + "°" : "",
+      Number.isFinite(intensity) ? " / int. " + formatNumber(intensity, 0) : "",
+      ruleLabel ? " · " + ruleLabel : "",
+    ].join("");
+  }
+
+  function diagnosticMatchesCandidate(diagnostic, candidate) {
+    const candidateText = ngcCandidateDiagnosticText(candidate);
+    const mineral = String(diagnostic && diagnostic.mineral || "").toLowerCase();
+    if (!candidateText || !mineral) return false;
+    return candidateText.indexOf(mineral) >= 0 || mineral.indexOf(candidateText) >= 0
+      || (/illite|ilita|mica/.test(candidateText) && /illite|ilita|mica/.test(mineral))
+      || (/kaolin|caulin/.test(candidateText) && /kaolin|caulin/.test(mineral))
+      || (/smectite|esmect/.test(candidateText) && /smectite|esmect/.test(mineral))
+      || (/chlorite|clorit/.test(candidateText) && /chlorite|clorit/.test(mineral))
+      || (/quartz|quartzo/.test(candidateText) && /quartz|quartzo/.test(mineral))
+      || (/corrensite|mixed|interstrat/.test(candidateText) && /corrensite|mixed|interstrat/.test(mineral));
+  }
+
+  function ngcCandidateRulePeaks(group, candidate) {
+    const rows = [];
+    const diagnostics = []
+      .concat(group && group.interval_diagnostics || [])
+      .concat(group && group.diagnoses || [])
+      .concat(group && group.script_report && group.script_report.diagnostics || []);
+    diagnostics.filter(function (diagnostic) {
+      return diagnosticMatchesCandidate(diagnostic, candidate);
+    }).forEach(function (diagnostic) {
+      const observations = diagnostic.observations || {};
+      Object.keys(observations).forEach(function (key) {
+        const row = formatNgcPeakObservation(key, (observations[key] || {}).observed_peak || observations[key], "");
+        if (row) rows.push(row);
+      });
+      if (!Object.keys(observations).length && diagnostic.message) rows.push(diagnostic.message);
+    });
+    const windows = ngcCandidatePeakWindows(candidate);
+    const supporting = group && group.supporting_peaks || {};
+    Object.keys(supporting).forEach(function (preparation) {
+      (supporting[preparation] || []).forEach(function (peak) {
+        const d = Number(peak.d || peak.d_spacing || peak.observed_d_angstrom);
+        const window = windows.find(function (range) {
+          return Number.isFinite(d) && d >= range[0] && d <= range[1];
+        });
+        if (!window) return;
+        const row = formatNgcPeakObservation(preparation, peak, window[2]);
+        if (row) rows.push(row);
+      });
+    });
+    const diagnostic = group && group.diagnostic_interpretation || {};
+    (diagnostic.behavior_candidates || []).forEach(function (behavior) {
+      const values = (behavior && (behavior.values || behavior.relations)) || [];
+      const text = [behavior && behavior.behavior].concat(values).join(" ").toLowerCase();
+      const candidateText = ngcCandidateDiagnosticText(candidate);
+      if (!/mixed|interstrat|corrensite|smectite|esmect|chlorite|clorit/.test(candidateText + " " + text)) return;
+      values.slice(0, 2).forEach(function (value) {
+        if (typeof value === "string") rows.push(value + " · Cap. 7/8 comportamento N/G/C");
+      });
+    });
+    const unique = [];
+    rows.forEach(function (row) {
+      if (row && unique.indexOf(row) < 0) unique.push(row);
+    });
+    return unique.slice(0, 4);
+  }
+
+  function renderNgcPrincipalRanking(group) {
+    const ranked = rankedNgcCandidates(group).slice(0, 8);
+    if (!ranked.length) return "";
+    const rows = ranked.map(function (candidate, index) {
+      const name = ngcCandidateDisplayName(candidate);
+      const peaks = ngcCandidateRulePeaks(group, candidate).map(function (row) {
+        return "<li>" + escapeHtml(row) + "</li>";
+      }).join("");
+      return [
+        "<li>",
+        index === 0 ? "<strong>" : "",
+        mineralLink(name),
+        index === 0 ? "</strong>" : "",
+        peaks ? "<ul>" + peaks + "</ul>" : '<ul><li class="argilo-drx__mini-note">Picos diagnósticos não vinculados no payload; revisar faixas e evidências abaixo.</li></ul>',
+        "</li>",
+      ].join("");
+    }).join("");
+    return [
+      '<div class="argilo-drx__ngc-found">',
+      "<strong>Ranking mineralógico N/G/C desta seleção</strong>",
+      '<p class="argilo-drx__mini-note">Lista ordenada pelo resultado estruturado do workflow. Não representa fase única; use as evidências N/G/C e os picos abaixo para revisar coexistência, mistura ou interestratificação.</p>',
+      "<ol>", rows, "</ol>",
+      "</div>",
+    ].join("");
+  }
+
+  function renderNgcCompactRanking(group) {
+    const rankingSummary = rankedNgcCandidates(group).slice(0, 5).map(function (candidate, index) {
+      const name = ngcCandidateDisplayName(candidate);
+      return [
+        index === 0 ? "<strong>" : "",
+        escapeHtml(name || "candidato"),
+        index === 0 ? "</strong>" : "",
+      ].join("");
+    }).join(" · ");
+    return rankingSummary
+      ? "<p><strong>Ranking auxiliar N/G/C:</strong> " + rankingSummary + "</p>"
+      : '<p class="argilo-drx__mini-note">Sem candidato N/G/C com evidência suficiente.</p>';
+  }
+
+  function renderDiagnosticV3Block(group, options) {
+    options = options || {};
     const diagnostic = group && group.diagnostic_interpretation || null;
     if (!diagnostic) return "";
     const behaviorLabels = {
@@ -4773,6 +5045,62 @@
       if (family === "fibrous_channel") targets.push("sepiolite_palygorskite_halloysite");
       return targets.filter(Boolean);
     }
+    function normalizeSourceTableId(value) {
+      const raw = String(value || "").trim().toLowerCase();
+      if (!raw) return "";
+      return raw.replace(/^table[_\s-]*/i, "").replace(/\s+/g, "").replace(/[_.-]/g, "");
+    }
+    function sourceTableForReference(tableRef) {
+      const tables = diagnostic.source_reflection_tables || {};
+      const wanted = normalizeSourceTableId(tableRef);
+      if (!wanted) return null;
+      const key = Object.keys(tables).find(function (tableId) {
+        const table = tables[tableId] || {};
+        return normalizeSourceTableId(tableId).indexOf(wanted) >= 0
+          || normalizeSourceTableId(table.reference && table.reference.table) === wanted;
+      });
+      return key ? tables[key] : null;
+    }
+    function formatSourceTableCell(value) {
+      if (value === null || value === undefined || value === "") return "—";
+      if (typeof value === "number" && Number.isFinite(value)) return String(Math.round(value * 1000) / 1000);
+      if (Array.isArray(value)) return value.join(", ");
+      if (typeof value === "object") return Object.keys(value).map(function (key) {
+        return key + ": " + value[key];
+      }).join("; ");
+      return String(value);
+    }
+    function renderSourceTablePreview(table) {
+      if (!table || !(table.rows || []).length) return "";
+      const rows = (table.rows || []).slice(0, 8).map(function (row) {
+        return [
+          "<tr>",
+          "<td>", escapeHtml(formatSourceTableCell(row.mineral || row.source_mineral || row.product)), "</td>",
+          "<td>", escapeHtml(formatSourceTableCell(row.reflection || row.role || row.octahedral_type)), "</td>",
+          "<td>", escapeHtml(formatSourceTableCell(row.d || row.d060_min || row.d_min)), "</td>",
+          "<td>", escapeHtml(formatSourceTableCell(row.d060_max || row.d_max || row.tolerance)), "</td>",
+          "<td>", escapeHtml(formatSourceTableCell(row.two_theta)), "</td>",
+          "<td>", escapeHtml(formatSourceTableCell(row.intensity)), "</td>",
+          "</tr>",
+        ].join("");
+      }).join("");
+      const reference = table.reference || {};
+      const title = table.title || reference.table || "Tabela estruturada";
+      const notes = (table.notes || []).slice(0, 2).map(function (note) {
+        return "<li>" + escapeHtml(note) + "</li>";
+      }).join("");
+      return [
+        '<div class="argilo-drx__source-table-preview">',
+        "<p><strong>", escapeHtml(title), "</strong>",
+        table.page ? " <span>(p. " + escapeHtml(table.page) + ")</span>" : "",
+        "</p>",
+        '<div class="argilo-drx__table-scroll"><table class="ui very compact celled table">',
+        "<thead><tr><th>Mineral</th><th>Ref./papel</th><th>d inicial Å</th><th>d final/tol. Å</th><th>2θ</th><th>Int.</th></tr></thead>",
+        "<tbody>", rows, "</tbody></table></div>",
+        notes ? "<ul>" + notes + "</ul>" : "",
+        "</div>",
+      ].join("");
+    }
     function renderSourceRulePanel(candidate) {
       // Renderiza a secao recolhivel "Regra-fonte". Ela usa os objetos
       // source_rule_index e source_mineral_profiles injetados pela engine
@@ -4812,24 +5140,34 @@
           "</li>",
         ].join("");
       }).join("");
-      if (!profileRefs && !ruleRows) return "";
+      const tablePreviews = [];
+      const seenTables = new Set();
+      function addTablePreview(tableRef) {
+        const table = sourceTableForReference(tableRef);
+        const tableKey = table && ((table.reference && table.reference.table) || table.title || tableRef);
+        if (!table || seenTables.has(tableKey)) return;
+        seenTables.add(tableKey);
+        tablePreviews.push(renderSourceTablePreview(table));
+      }
+      rows.forEach(function (rule) {
+        addTablePreview(rule && rule.source && rule.source.table);
+      });
+      if (profile && (profile.references || []).length) {
+        (profile.references || []).slice(0, 2).forEach(function (ref) {
+          addTablePreview(ref && ref.table);
+        });
+      }
+      if (!profileRefs && !ruleRows && !tablePreviews.length) return "";
       return [
         "<details class='argilo-drx__source-rule'>",
         "<summary>Regra-fonte</summary>",
         profileRefs ? "<p><strong>Perfil mineralógico</strong></p><ul>" + profileRefs + "</ul>" : "",
         ruleRows ? "<p><strong>Regras aplicadas</strong></p><ul>" + ruleRows + "</ul>" : "",
+        tablePreviews.length ? "<p><strong>Dados das tabelas</strong></p>" + tablePreviews.join("") : "",
         "</details>",
       ].join("");
     }
-    const bestNgcCandidate = bestNgcDiagnosticCandidate(group);
-    const bestNgcLine = bestNgcCandidate && bestNgcCandidate.label
-      ? [
-          '<p class="argilo-drx__ngc-found">',
-          "<strong>Argilomineral encontrado nos picos N/G/C</strong>",
-          mineralLink(bestNgcCandidate.label),
-          "</p>",
-        ].join("")
-      : "";
+    const bestNgcLine = options.showRanking === false ? "" : renderNgcPrincipalRanking(group);
     const candidates = (diagnostic.combined_candidates || []).slice(0, 5).map(function (candidate) {
       const evidences = (candidate.evidences || []).slice(0, 4).map(function (row) {
         return "<li>" + escapeHtml(row.message || row.kind || "Evidência") + "</li>";
@@ -4848,18 +5186,13 @@
         "</article>",
       ].join("");
     }).join("");
-    const behavior = renderBehaviorCards(diagnostic.behavior_candidates || []) + renderRangeDiagnosticCard();
-    const peakSets = (diagnostic.peak_set_candidates || []).slice(0, 5).map(function (row) {
-      return "<li>" + mineralLink(row.label || "conjunto") + "</li>";
-    }).join("");
+    const behavior = renderBehaviorCards(diagnostic.behavior_candidates || [])
+      + (options.showRangeDiagnostics === false ? "" : renderRangeDiagnosticCard());
     const mixed = (diagnostic.mixed_layer_candidates || []).slice(0, 4).map(function (row) {
       return "<li>" + mineralLink(row.mixed_layer_candidate || "interestratificado") + " · " + escapeHtml(row.explanation || "") + "</li>";
     }).join("");
     const ambiguities = (diagnostic.ambiguities || []).slice(0, 5).map(function (row) {
       return "<li>" + escapeHtml(row.window || "janela") + ": " + escapeHtml((row.candidates || []).join(", ")) + "</li>";
-    }).join("");
-    const tests = (diagnostic.recommended_next_tests || []).slice(0, 6).map(function (row) {
-      return "<li>" + escapeHtml(row) + "</li>";
     }).join("");
     const oct = diagnostic.octahedral_classification || {};
     const octDetails = oct.octahedral_type ? [
@@ -4879,13 +5212,11 @@
       "<h4>Interpretação Mineralógica Assistida</h4>",
       '<p class="argilo-drx__mini-note">Resultado auxiliar. Não substitui interpretação mineralógica completa, refinamento estrutural, modelagem de difratogramas, análise química ou validação por especialista.</p>',
       bestNgcLine,
-      candidates ? "<h5>Candidatos por comportamento N-G-C</h5>" + candidates : "",
+      options.showCandidates === false ? "" : (candidates ? "<h5>Candidatos por comportamento N-G-C</h5>" + candidates : ""),
       behavior ? "<h5>Resumo das evidências N-G-C</h5><div class='argilo-drx__ngc-evidence-grid'>" + behavior + "</div>" : "",
-      peakSets ? "<h5>Candidatos por conjunto de picos</h5><ul>" + peakSets + "</ul>" : "",
       octDetails ? "<h5>Classificação 060</h5><p>" + octDetails + "</p>" : "",
       mixed ? "<h5>Interestratificados</h5><ul>" + mixed + "</ul>" : "",
       ambiguities ? "<h5>Ambiguidades</h5><ul>" + ambiguities + "</ul>" : "",
-      tests ? "<h5>Próximos testes recomendados</h5><ul>" + tests + "</ul>" : "",
       warnings ? "<h5>Proveniência e limitações</h5><ul>" + warnings + "</ul>" : "",
       "</div>",
     ].join("");
@@ -4937,7 +5268,7 @@
         "<h3>Leitura N/G/C principal · ", escapeHtml(group.sample_base || "amostra"), "</h3>",
         "<p><strong>Tratamentos:</strong> Natural, Glicolado, Calcinado</p>",
         "<p><strong>Minerais sinalizados:</strong> ", escapeHtml(minerals), "</p>",
-        best.mineral_candidate ? "<p><strong>Melhor hipótese auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + "</p>" : "",
+        renderNgcCompactRanking(group),
         renderDiagnosticV3Block(group),
         diagnostics ? "<p><strong>Diagnóstico por faixas:</strong></p><ul>" + diagnostics + "</ul>" : "",
         screenings ? "<p><strong>Triagem mineralógica:</strong></p><ul>" + screenings + "</ul>" : "",
@@ -4962,14 +5293,41 @@
   function renderExternalRawFileRows(items) {
     return (items || []).map(function (item) {
       const filename = (item.metadata || {}).original_filename || item.sampleCode || item.id;
+      const preclassification = item.externalCurvePreclassification || (item.metadata && item.metadata.external_curve_preclassification) || item.externalRawPreclassification || (item.metadata && item.metadata.external_raw_preclassification) || {};
+      const d060 = (item.metadata || {}).d060 || (preclassification.d060 && preclassification.d060.d060);
+      const d060Status = (item.metadata || {}).d060_status || (preclassification.d060 && preclassification.d060.status);
+      const d060Text = d060
+        ? "d060 " + formatNumber(Number(d060), 3) + " Å (" + (d060Status === "inferred_auxiliary" ? "inferido" : "informado") + ")"
+        : "d060 indisponível";
       return [
         "<tr>",
-        "<td>", escapeHtml(filename || "RAW externo"), "</td>",
+        "<td>", escapeHtml(filename || "amostra externa"), "</td>",
         "<td>", treatmentBadge(item), "</td>",
-        "<td>", escapeHtml(item.treatment_evidence || "N/D"), "</td>",
+        "<td>", escapeHtml(item.treatment_evidence || "N/D"), "<br><span class='argilo-drx__mini-note'>", escapeHtml(d060Text), "</span></td>",
         "</tr>",
       ].join("");
     }).join("");
+  }
+
+  function renderExternalPreclassificationProcess(items, backendLoading) {
+    const steps = [
+      "1. Ler arquivo externo e preservar eixo 2θ/intensidade.",
+      "2. Inferir preparo pelo nome do arquivo: N, G ou C.",
+      "3. Converter a curva em item temporário com picos, metadados e SHA-256.",
+      "4. Procurar d060 apenas como evidência auxiliar quando houver pico entre 1.485 e 1.555 Å.",
+      "5. Agrupar as amostras por amostra-base e enviar ao workflow N/G/C já usado nos dados internos.",
+      "6. Renderizar interpretação, ambiguidades, interestratificados e regra-fonte sem modificar o difratograma.",
+    ];
+    const loaded = (items || []).length;
+    return [
+      '<div class="argilo-drx__external-preclassification-process">',
+      "<p><strong>Processo de pré-classificação</strong>",
+      backendLoading ? " <span class='argilo-drx__mini-note'>em andamento</span>" : " <span class='argilo-drx__mini-note'>executado</span>",
+      "</p>",
+      "<p class='argilo-drx__mini-note'>Amostras externas carregadas: ", escapeHtml(loaded), ". A classificação usa o conjunto temporário; a curva plotada permanece a curva lida.</p>",
+      "<ol><li>", steps.map(escapeHtml).join("</li><li>"), "</li></ol>",
+      "</div>",
+    ].join("");
   }
 
   function externalSimilarityEntries(items) {
@@ -5020,21 +5378,11 @@
   }
 
   function renderExternalNgcCandidateEvidenceFromBackend(group) {
-    const screeningRows = (group && group.target_screening || [])
-      .filter(function (row) { return row.status && row.status !== "not_observed"; })
-      .slice(0, 6)
-      .map(function (row) {
-        return [
-          "<li>",
-          "<strong>", mineralLink(row.mineral || "Mineral"), ":</strong> ",
-          escapeHtml(row.status || "N/D"),
-          row.message ? "<br><span class='argilo-drx__mini-note'>" + escapeHtml(row.message) + "</span>" : "",
-          "</li>",
-        ].join("");
-      }).join("");
     return [
-      renderDiagnosticV3Block(group),
-      screeningRows ? "<p><strong>Triagem mineralógica:</strong></p><ul>" + screeningRows + "</ul>" : "",
+      renderDiagnosticV3Block(group, {
+        showCandidates: false,
+        showRangeDiagnostics: false,
+      }),
     ].join("");
   }
 
@@ -5104,21 +5452,43 @@
       return preps.indexOf("natural") >= 0 && preps.indexOf("glicolado") >= 0 && preps.indexOf("calcinado") >= 0;
     });
     const backendGroup = completeGroups[0] || groups[0] || null;
+    const localGroups = buildNgcGroups(items || []);
+    const localComplete = localGroups.some(function (group) {
+      return group.natural.length && group.glicolada.length && group.calcinada.length;
+    });
+    const statusText = localComplete ? "trio N/G/C completo" : "conjunto N/G/C incompleto";
     const backendLoading = ngcWorkflowPayload && ngcWorkflowPayload.loading;
     const backendError = ngcWorkflowPayload && ngcWorkflowPayload.success === false ? ngcWorkflowPayload.error : "";
+    const preclassification = backendGroup && (backendGroup.external_curve_preclassification || backendGroup.external_raw_preclassification) || null;
+    const d060Rows = preclassification && (preclassification.d060 || []).length
+      ? (preclassification.d060 || []).map(function (row) {
+          return [
+            "<li>",
+            escapeHtml(row.filename || "amostra externa"),
+            row.preparation ? " · " + escapeHtml(treatmentLabel(row.preparation)) : "",
+            row.d060 ? " · d060 " + escapeHtml(formatNumber(Number(row.d060), 3)) + " Å" : " · d060 indisponível",
+            row.status ? " · " + escapeHtml(row.status) : "",
+            row.warning ? "<br><span class='argilo-drx__mini-note'>" + escapeHtml(row.warning) + "</span>" : "",
+            "</li>",
+          ].join("");
+        }).join("")
+      : "";
     const sourceBlock = backendLoading
       ? '<p class="argilo-drx__mini-note">Calculando análise N/G/C do conjunto externo...</p>'
       : (backendGroup ? renderExternalNgcCandidateEvidenceFromBackend(backendGroup) : renderExternalNgcCandidateEvidenceLocal(items));
     return [
       '<section class="argilo-drx__selected-ngc-summary">',
       '<article class="argilo-drx__selected-card argilo-drx__selected-card--ngc">',
-      "<h3>Leitura N/G/C do RAW externo</h3>",
-      "<p>Os RAWs externos selecionados foram mesclados em uma única leitura para evitar cards separados por arquivo. A hipótese mineral abaixo usa os preparos Natural, Glicolado e Calcinado quando disponíveis.</p>",
+      "<h3>Pré-classificação de amostras externas N/G/C</h3>",
+      "<p>Pré-classificação auxiliar baseada nas amostras externas carregadas. Não substitui revisão mineralógica.</p>",
+      "<p><strong>Status do conjunto:</strong> ", escapeHtml(statusText), "</p>",
+      renderExternalPreclassificationProcess(items, backendLoading),
       '<div class="argilo-drx__table-scroll"><table class="ui very compact celled table">',
       "<thead><tr><th>Arquivo</th><th>Preparo</th><th>Critério</th></tr></thead><tbody>",
-      renderExternalRawFileRows(items) || "<tr><td colspan='3'>Nenhum RAW externo selecionado.</td></tr>",
+      renderExternalRawFileRows(items) || "<tr><td colspan='3'>Nenhuma amostra externa selecionada.</td></tr>",
       "</tbody></table></div>",
       backendError ? '<p class="argilo-drx__mini-note">Workflow N/G/C backend indisponível: ' + escapeHtml(backendError) + '</p>' : "",
+      d060Rows ? "<p><strong>Classificação 060 preliminar</strong></p><ul>" + d060Rows + "</ul>" : "",
       sourceBlock,
       renderExternalSimilarityLinks(items),
       '<p class="argilo-drx__mini-note">Leitura auxiliar para curadoria: o argilomineral resulta da combinação de tratamento N/G/C e picos basais/companheiros.</p>',
@@ -5570,7 +5940,7 @@
         "<h3>Workflow N/G/C backend · ", escapeHtml(group.sample_base || "amostra"), "</h3>",
         "<p><strong>Status:</strong> ", escapeHtml(group.status || "N/D"),
         " · <strong>preparos:</strong> ", escapeHtml((group.available_preparations || []).map(treatmentLabel).join(", ") || "N/D"), "</p>",
-        best.mineral_candidate ? "<p><strong>Melhor candidato auxiliar:</strong> " + escapeHtml(best.mineral_candidate) + "</p>" : '<p class="argilo-drx__mini-note">Sem candidato N/G/C com evidência suficiente.</p>',
+        renderNgcCompactRanking(group),
         renderDiagnosticV3Block(group),
         clayInterpretationBlock,
         scriptReport.title ? "<p><strong>" + escapeHtml(scriptReport.title) + ":</strong></p>" + scriptMinerals + (scriptDiagnostics ? "<ul>" + scriptDiagnostics + "</ul>" : "") + scriptPeakTables : "",

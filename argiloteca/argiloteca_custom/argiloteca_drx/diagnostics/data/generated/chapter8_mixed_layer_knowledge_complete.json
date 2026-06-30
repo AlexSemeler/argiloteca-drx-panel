@@ -1,0 +1,659 @@
+{
+  "differential_rules": [
+    {
+      "ambiguous_conditions": [
+        "noise",
+        "poor crystallinity",
+        "overlap",
+        "missing preparations"
+      ],
+      "conditions_supporting_interstratification": [
+        "systematic peak migration",
+        "broad/asymmetric 00l reflections",
+        "treatment-dependent shift",
+        "superstructure reflection"
+      ],
+      "conditions_supporting_physical_mixture": [
+        "fixed independent end-member peaks",
+        "no systematic migration",
+        "separate discrete mineral series"
+      ],
+      "question": "mixed_layer_or_single_peak_match",
+      "rule_id": "chapter8_no_single_peak_mixed_layer_diagnosis",
+      "rule_type": "differential_diagnosis",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "not isolated peaks",
+        "section": "General principles",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "mixed_layer_diagnosis"
+    },
+    {
+      "conditions_supporting_interstratification": [
+        "composite reflections",
+        "coherent 00l sequence",
+        "migration between end members"
+      ],
+      "conditions_supporting_physical_mixture": [
+        "two independent peak sets remain fixed through treatments"
+      ],
+      "question": "physical_mixture_or_interstratification",
+      "required_additional_tests": [
+        "full 00l pattern",
+        "ethylene glycol",
+        "heating/dehydration",
+        "calculated pattern comparison"
+      ],
+      "rule_id": "chapter8_physical_mixture_vs_interstratification",
+      "rule_type": "differential_diagnosis",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "physical mixture",
+        "section": "General principles",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "physical_mixture_vs_interstratification"
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "mixed_layered_clay_mineral",
+      "entity_type": "concept",
+      "name": "mixed-layered clay mineral",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "interstratification",
+      "entity_type": "concept",
+      "name": "interstratification",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "reichweite",
+      "entity_type": "ordering_parameter",
+      "name": "Reichweite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "R0",
+      "entity_type": "ordering",
+      "name": "random interstratification",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "R1",
+      "entity_type": "ordering",
+      "name": "ordered nearest-neighbor interstratification",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "R3",
+      "entity_type": "ordering",
+      "name": "longer-range ordered interstratification",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "superstructure_reflection",
+      "entity_type": "reflection",
+      "name": "superstructure reflection",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "physical_mixture",
+      "entity_type": "diagnostic_alternative",
+      "name": "physical mixture of discrete minerals",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "illite_smectite",
+      "entity_type": "mineral_system",
+      "name": "illite/smectite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "chlorite_smectite",
+      "entity_type": "mineral_system",
+      "name": "chlorite/smectite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "corrensite",
+      "entity_type": "mineral_system",
+      "name": "corrensite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "kaolinite_smectite",
+      "entity_type": "mineral_system",
+      "name": "kaolinite/smectite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    },
+    {
+      "entity_id": "mica_vermiculite",
+      "entity_type": "mineral_system",
+      "name": "mica/vermiculite",
+      "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+    }
+  ],
+  "mering_rules": [
+    {
+      "diagnostic_implication": "peak migration supports interstratification more than fixed independent peaks",
+      "formal_statement": "Composite 00l reflections occur between end-member positions and migrate systematically with composition.",
+      "limitations": [
+        "requires full 00l pattern and treatment comparison"
+      ],
+      "principle": "composite_reflection_position",
+      "rule_id": "chapter8_mering_composite_reflection_between_end_members",
+      "rule_type": "mering_principle",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "between end members",
+        "section": "Mering principles",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "mixed_layer_00l_pattern"
+    },
+    {
+      "diagnostic_implication": "broad peaks or shoulders can support mixed-layer hypotheses but are not diagnostic alone",
+      "formal_statement": "Reflections broaden when end-member layer spacings differ, especially at intermediate compositions.",
+      "limitations": [
+        "crystallite size, defects and instrument broadening can also broaden peaks"
+      ],
+      "principle": "line_broadening",
+      "rule_id": "chapter8_mering_broadening_intermediate_composition",
+      "rule_type": "mering_principle",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "broadening",
+        "section": "Mering principles",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "line_broadening"
+    },
+    {
+      "diagnostic_implication": "superstructure reflections support R1/R3 ordering when coherent with the 00l pattern",
+      "formal_statement": "Ordered interstratifications can produce superstructure reflections.",
+      "limitations": [
+        "absence of superstructure does not by itself prove R0"
+      ],
+      "principle": "superstructure",
+      "rule_id": "chapter8_ordered_superstructure_reflections",
+      "rule_type": "mering_principle",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "superstructure",
+        "section": "Ordering",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "ordered_interstratification"
+    }
+  ],
+  "mixed_layer_profiles": {
+    "chlorite_smectite": {
+      "components": [
+        "chlorite",
+        "smectite"
+      ],
+      "diagnostic_reflections": [
+        "14 A chlorite-like component",
+        "expandable smectite-like component"
+      ],
+      "known_ordering": [
+        "R0",
+        "R1"
+      ],
+      "minimum_required_evidence": [
+        "treatment behavior",
+        "distinguish from chlorite/vermiculite"
+      ],
+      "profile_id": "chlorite_smectite_profile",
+      "rules": [
+        "chapter8_chlorite_smectite_vs_chlorite_vermiculite_ambiguity"
+      ],
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": "8.12-8.15",
+        "page": null,
+        "quote_fragment": "chlorite/smectite",
+        "section": "",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      }
+    },
+    "corrensite": {
+      "components": [
+        "chlorite",
+        "smectite"
+      ],
+      "diagnostic_reflections": [
+        "N ~29 A",
+        "G ~31-32 A",
+        "heated ~24 A"
+      ],
+      "known_ordering": [
+        "R1"
+      ],
+      "minimum_required_evidence": [
+        "long-spacing reflection",
+        "treatment behavior",
+        "exclude simple mixture"
+      ],
+      "profile_id": "corrensite_profile",
+      "rules": [
+        "chapter8_corrensite_ngc_sequence",
+        "chapter8_R1_ordered_interstratification"
+      ],
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": "8.9-8.11",
+        "page": null,
+        "quote_fragment": "corrensite",
+        "section": "",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      }
+    },
+    "illite_smectite": {
+      "components": [
+        "illite",
+        "smectite"
+      ],
+      "diagnostic_reflections": [
+        "EG low-angle 00l shifts",
+        "broad intermediate reflections",
+        "possible superstructure"
+      ],
+      "known_ordering": [
+        "R0",
+        "R1",
+        "R3"
+      ],
+      "minimum_required_evidence": [
+        "EG preparation",
+        "00l pattern",
+        "exclude illite+smectite discrete mixture"
+      ],
+      "profile_id": "illite_smectite_profile",
+      "rules": [
+        "chapter8_partial_expansion_mixed_layer_warning",
+        "chapter8_mering_broadening_intermediate_composition"
+      ],
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": "8.1-8.8",
+        "page": null,
+        "quote_fragment": "illite/smectite",
+        "section": "",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      }
+    },
+    "kaolinite_smectite": {
+      "components": [
+        "kaolinite",
+        "smectite"
+      ],
+      "diagnostic_reflections": [
+        "7 A component",
+        "expandable component",
+        "heated 375 C behavior"
+      ],
+      "known_ordering": [
+        "R0",
+        "R1"
+      ],
+      "minimum_required_evidence": [
+        "air-dried",
+        "ethylene glycol",
+        "heated pattern"
+      ],
+      "profile_id": "kaolinite_smectite_profile",
+      "rules": [
+        "chapter8_no_single_peak_mixed_layer_diagnosis"
+      ],
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": "8.16-8.22",
+        "page": null,
+        "quote_fragment": "kaolinite/smectite",
+        "section": "",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      }
+    }
+  },
+  "nomenclature_rules": [
+    {
+      "example": "R1 illite(0.7)/smectite",
+      "meaning": "name must preserve components, component proportion when known, and ordering type",
+      "rule_id": "chapter8_mixed_layer_name_components_ordering",
+      "rule_type": "nomenclature",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "R1 illite/smectite",
+        "section": "Nomenclature",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "mixed_layer_mineral"
+    },
+    {
+      "meaning": "range of ordering relationships among layers; R0 random, R1 nearest-neighbor, R3 longer-range",
+      "rule_id": "chapter8_reichweite_ordering_definition",
+      "rule_type": "nomenclature",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "Reichweite",
+        "section": "Ordering",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "Reichweite"
+    }
+  ],
+  "ontology": {
+    "DiagnosticRule": {
+      "children": [
+        "mering_principle",
+        "ordering",
+        "treatment_behavior",
+        "differential_diagnosis"
+      ]
+    },
+    "MixedLayerClayMineral": {
+      "children": [
+        "Component",
+        "Ordering",
+        "Superstructure",
+        "TreatmentState",
+        "DifferentialDiagnosis"
+      ]
+    },
+    "Ordering": {
+      "children": [
+        "R0",
+        "R1",
+        "R3",
+        "Reichweite"
+      ]
+    },
+    "Reflection": {
+      "children": [
+        "basal_00l",
+        "composite_reflection",
+        "superstructure_reflection"
+      ]
+    },
+    "TreatmentState": {
+      "examples": [
+        "air_dried",
+        "ethylene_glycol_solvated",
+        "heated",
+        "dehydrated",
+        "Mg_glycerol_solvated"
+      ]
+    }
+  },
+  "ordering_rules": [
+    {
+      "conditions": [
+        {
+          "feature": "superstructure_reflection",
+          "presence": false
+        },
+        {
+          "feature": "peak_series",
+          "value": "non-rational_or_broad"
+        }
+      ],
+      "diagnostic_implication": "random or unresolved ordering; report as R0|unknown when evidence is incomplete",
+      "rule_id": "chapter8_R0_random_interstratification",
+      "rule_type": "ordering",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "R0",
+        "section": "Ordering",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "R0",
+      "target_ordering": "R0"
+    },
+    {
+      "conditions": [
+        {
+          "feature": "superstructure_reflection",
+          "presence": true
+        },
+        {
+          "feature": "sequence",
+          "value": "regular_or_nearest_neighbor"
+        }
+      ],
+      "diagnostic_implication": "ordered mixed-layer candidate such as corrensite or rectorite",
+      "rule_id": "chapter8_R1_ordered_interstratification",
+      "rule_type": "ordering",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "R1",
+        "section": "Ordering",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "R1",
+      "target_ordering": "R1"
+    },
+    {
+      "conditions": [
+        {
+          "feature": "long_range_superstructure",
+          "presence": true
+        }
+      ],
+      "diagnostic_implication": "longer-range ordered interstratification; requires stronger pattern evidence",
+      "rule_id": "chapter8_R3_long_range_ordering",
+      "rule_type": "ordering",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "R3",
+        "section": "Ordering",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "R3",
+      "target_ordering": "R3"
+    }
+  ],
+  "schemas": {
+    "argiloteca_mixed_layer_profile_schema": {
+      "required": [
+        "profile_id",
+        "components",
+        "known_ordering",
+        "rules"
+      ],
+      "type": "object"
+    },
+    "argiloteca_mixed_layer_rule_schema": {
+      "properties": {
+        "conditions": {
+          "type": [
+            "array",
+            "object"
+          ]
+        },
+        "diagnostic_implication": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "rule_type": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_type",
+        "target",
+        "source"
+      ],
+      "type": "object"
+    }
+  },
+  "source": {
+    "chapter": "Identification of Mixed-Layered Clay Minerals",
+    "copyright_note": "Only short source locators are stored; consult local PDF/OCR for full text.",
+    "local_pdf": "/home/invenio/invenio-project/textos/capitulo8.pdf",
+    "policy": "argiloteca_rule_based_diagnostic",
+    "scope": "mixed-layered/interstratified clay minerals by 00l patterns and treatment behavior",
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+    "source_id": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  "treatment_behavior_rules": [
+    {
+      "behavior": {
+        "ethylene_glycol": "~31-32 A",
+        "heated": "~24 A support",
+        "natural": "~29 A"
+      },
+      "diagnostic_implication": "ordered chlorite/smectite sequence rather than simple chlorite plus smectite when coherent",
+      "rule_id": "chapter8_corrensite_ngc_sequence",
+      "rule_type": "treatment_behavior",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": "8.9-8.11",
+        "page": null,
+        "quote_fragment": "corrensite",
+        "section": "Chlorite/smectite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "corrensite"
+    },
+    {
+      "behavior": {
+        "ethylene_glycol": "partial expansion or intermediate displacement",
+        "heated": "partial collapse or broad residual"
+      },
+      "diagnostic_implication": "favor mixed-layer hypothesis over pure discrete mineral assignment",
+      "rule_id": "chapter8_partial_expansion_mixed_layer_warning",
+      "rule_type": "treatment_behavior",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "partial expansion",
+        "section": "Illite/smectite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "illite_smectite_or_mixed_layer"
+    },
+    {
+      "conditions": [
+        {
+          "feature": "ethylene_glycol_expansion",
+          "presence": "unclear_or_absent"
+        }
+      ],
+      "diagnostic_implication": "retain ambiguity and recommend Mg/glycerol or K/heating context",
+      "rule_id": "chapter8_chlorite_smectite_vs_chlorite_vermiculite_ambiguity",
+      "rule_type": "differential_diagnosis",
+      "source": {
+        "chapter": "Identification of Mixed-Layered Clay Minerals",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "glycerol",
+        "section": "Chlorite/smectite",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+        "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+        "table": null
+      },
+      "target": "chlorite_smectite_vs_chlorite_vermiculite"
+    }
+  ]
+}

@@ -1,0 +1,514 @@
+{
+  "entities": [
+    {
+      "entity_id": "two_theta",
+      "entity_type": "angle",
+      "name": "diffraction angle 2theta",
+      "source": "diffraction_geometry_chapter3_pdf",
+      "symbol": "2θ",
+      "unit": "degree"
+    },
+    {
+      "entity_id": "theta",
+      "entity_type": "angle",
+      "name": "Bragg angle theta",
+      "source": "diffraction_geometry_chapter3_pdf",
+      "symbol": "θ",
+      "unit": "degree_or_radian"
+    },
+    {
+      "entity_id": "wavelength_lambda",
+      "entity_type": "physical_quantity",
+      "name": "wavelength",
+      "source": "diffraction_geometry_chapter3_pdf",
+      "symbol": "λ",
+      "unit": "angstrom"
+    },
+    {
+      "entity_id": "d_spacing",
+      "entity_type": "physical_quantity",
+      "name": "interplanar spacing",
+      "source": "diffraction_geometry_chapter3_pdf",
+      "symbol": "d",
+      "unit": "angstrom"
+    },
+    {
+      "entity_id": "bragg_law",
+      "entity_type": "equation",
+      "name": "Bragg law",
+      "source": "diffraction_geometry_chapter3_pdf",
+      "symbol": "nλ = 2d sinθ"
+    },
+    {
+      "entity_id": "laue_equations",
+      "entity_type": "equation_set",
+      "name": "Laue equations",
+      "source": "diffraction_geometry_chapter3_pdf"
+    },
+    {
+      "entity_id": "reciprocal_lattice",
+      "entity_type": "geometric_model",
+      "name": "reciprocal lattice",
+      "source": "diffraction_geometry_chapter3_pdf"
+    },
+    {
+      "entity_id": "ewald_sphere",
+      "entity_type": "geometric_model",
+      "name": "Ewald sphere",
+      "source": "diffraction_geometry_chapter3_pdf"
+    },
+    {
+      "entity_id": "powder_diffraction",
+      "entity_type": "method",
+      "name": "powder diffraction method",
+      "source": "diffraction_geometry_chapter3_pdf"
+    },
+    {
+      "entity_id": "nonideal_peak_broadening",
+      "entity_type": "uncertainty_source",
+      "name": "nonideal peak broadening",
+      "source": "diffraction_geometry_chapter3_pdf"
+    }
+  ],
+  "equations": [
+    {
+      "computational_use": [
+        "two_theta_to_d_spacing",
+        "d_spacing_to_two_theta"
+      ],
+      "equation_id": "chapter3_bragg_law",
+      "latex": "n\\lambda = 2d\\sin\\theta",
+      "name": "Bragg law",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "Bragg law",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "n lambda = 2 d sin theta",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "variables": [
+        "n",
+        "lambda",
+        "d",
+        "theta"
+      ]
+    },
+    {
+      "computational_use": [
+        "braggDSpacing",
+        "_two_theta_to_d_spacing"
+      ],
+      "equation_id": "chapter3_first_order_bragg",
+      "latex": "\\lambda = 2d\\sin\\theta",
+      "name": "First-order Bragg form",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "first-order Bragg",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "lambda = 2 d sin theta",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "variables": [
+        "lambda",
+        "d",
+        "theta"
+      ]
+    },
+    {
+      "computational_use": [
+        "braggTwoTheta",
+        "_d_spacing_to_two_theta"
+      ],
+      "equation_id": "chapter3_observability",
+      "latex": "\\lambda < 2d",
+      "name": "Bragg observability condition",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "observability",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "sin theta < 1",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "variables": [
+        "lambda",
+        "d"
+      ]
+    },
+    {
+      "computational_use": [
+        "future_hkl_indexer",
+        "future_reciprocal_lattice_validator"
+      ],
+      "equation_id": "chapter3_laue_equations",
+      "latex": "a(cos\\alpha-cos\\alpha_0)=h\\lambda; b(cos\\beta-cos\\beta_0)=k\\lambda; c(cos\\gamma-cos\\gamma_0)=l\\lambda",
+      "name": "Laue equations",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "Laue equations",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "cos",
+        "section": "3-4",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "variables": [
+        "a",
+        "b",
+        "c",
+        "alpha",
+        "beta",
+        "gamma",
+        "h",
+        "k",
+        "l",
+        "lambda"
+      ]
+    },
+    {
+      "computational_use": [
+        "future_hkl_indexer"
+      ],
+      "equation_id": "chapter3_cubic_direction",
+      "latex": "\\sin^2\\theta = \\lambda^2(h^2+k^2+l^2)/(4a^2)",
+      "name": "Cubic diffraction direction",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "cubic sin2theta",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "cubic",
+        "section": "3-6",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "variables": [
+        "theta",
+        "lambda",
+        "h",
+        "k",
+        "l",
+        "a"
+      ]
+    }
+  ],
+  "geometry_rules": [
+    {
+      "conditions": [
+        {
+          "feature": "measured_axis",
+          "value": "two_theta"
+        }
+      ],
+      "result": {
+        "theta": "two_theta / 2"
+      },
+      "rule_id": "chapter3_theta_two_theta_convention",
+      "rule_type": "angle_convention",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "Bragg law",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "theta is Bragg angle",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "target": "bragg_calculation",
+      "warning": "Do not insert measured 2theta directly into Bragg law as theta."
+    },
+    {
+      "calculation": "d = lambda / (2 * sin(two_theta / 2))",
+      "conditions": [
+        {
+          "feature": "two_theta",
+          "operator": ">",
+          "value": 0
+        },
+        {
+          "feature": "lambda",
+          "operator": ">",
+          "value": 0
+        }
+      ],
+      "outputs": [
+        "d_spacing_angstrom"
+      ],
+      "rule_id": "chapter3_two_theta_to_d_spacing",
+      "rule_type": "bragg_geometry",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "Bragg law",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "lambda = 2d sin theta",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "target": "d_spacing_calculation"
+    },
+    {
+      "calculation": "two_theta = 2 * asin(lambda / (2*d))",
+      "conditions": [
+        {
+          "feature": "lambda/(2*d)",
+          "operator": "<=",
+          "value": 1
+        }
+      ],
+      "outputs": [
+        "two_theta_degree"
+      ],
+      "rule_id": "chapter3_d_spacing_to_two_theta",
+      "rule_type": "bragg_geometry",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": "Bragg law",
+        "figure": null,
+        "page": null,
+        "quote_fragment": "sin theta < 1",
+        "section": "3-3",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "target": "expected_peak_position"
+    },
+    {
+      "conditions": [
+        {
+          "feature": "reflection",
+          "value": "geometrically_possible"
+        }
+      ],
+      "result": "position can be predicted but intensity is not guaranteed",
+      "rule_id": "chapter3_geometry_does_not_guarantee_intensity",
+      "rule_type": "scope_limitation",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "directions not intensities",
+        "section": "3-6",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "target": "hkl_or_peak_candidate",
+      "warning": "Intensity, systematic absences and structure factors are outside the geometry-only rule."
+    },
+    {
+      "conditions": [
+        "finite_crystallite_size",
+        "strain",
+        "beam_divergence",
+        "finite_spectral_width",
+        "imperfect_crystal"
+      ],
+      "result": "peak width can increase independently of mineral identity",
+      "rule_id": "chapter3_nonideal_peak_broadening",
+      "rule_type": "uncertainty",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": null,
+        "figure": null,
+        "page": null,
+        "quote_fragment": "nonideal conditions",
+        "section": "3-10",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "target": "peak_width"
+    }
+  ],
+  "method_profiles": {
+    "laue_method": {
+      "lambda_behavior": "variable",
+      "method_id": "laue_method",
+      "observable_pattern": "spot pattern",
+      "sample_type": "single_crystal",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": null,
+        "figure": "3-9",
+        "page": null,
+        "quote_fragment": "Laue",
+        "section": "3-8",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "theta_behavior": "fixed"
+    },
+    "powder_diffraction": {
+      "lambda_behavior": "fixed",
+      "method_id": "powder_diffraction",
+      "observable_pattern": "cones/rings converted to peaks in diffractometer scan",
+      "sample_type": "randomly_oriented_polycrystalline_powder",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": null,
+        "figure": "3-17",
+        "page": null,
+        "quote_fragment": "powder cone",
+        "section": "3-8",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "theta_behavior": "variable"
+    },
+    "xray_spectrometer": {
+      "calculation": "lambda = 2*d*sin(theta)",
+      "known": [
+        "d_spacing",
+        "theta"
+      ],
+      "method_id": "xray_spectrometer",
+      "source": {
+        "chapter": "Diffraction I: Geometry",
+        "equation": null,
+        "figure": "3-8",
+        "page": null,
+        "quote_fragment": "spectrometer",
+        "section": "3-7",
+        "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+        "source_full_title": "Diffraction I: Geometry",
+        "source_id": "diffraction_geometry_chapter3_pdf",
+        "table": null
+      },
+      "unknown": "wavelength"
+    }
+  },
+  "ontology": {
+    "BraggGeometry": {
+      "children": [
+        "two_theta",
+        "theta",
+        "lambda",
+        "d_spacing",
+        "order_n"
+      ]
+    },
+    "Calculation": {
+      "examples": [
+        "two_theta_to_d_spacing",
+        "d_spacing_to_two_theta"
+      ]
+    },
+    "DiffractionGeometry": {
+      "children": [
+        "Wave",
+        "BraggGeometry",
+        "LaueGeometry",
+        "ReciprocalLattice",
+        "EwaldConstruction",
+        "DiffractionMethod"
+      ]
+    },
+    "Rule": {
+      "children": [
+        "angle_convention",
+        "bragg_geometry",
+        "scope_limitation",
+        "uncertainty"
+      ]
+    },
+    "Uncertainty": {
+      "examples": [
+        "finite_crystallite_size",
+        "strain",
+        "beam_divergence",
+        "finite_spectral_width"
+      ]
+    }
+  },
+  "schemas": {
+    "argiloteca_diffraction_geometry_rule_schema": {
+      "properties": {
+        "calculation": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": [
+            "array",
+            "object"
+          ]
+        },
+        "outputs": {
+          "type": "array"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "rule_type": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_type",
+        "target",
+        "source"
+      ],
+      "type": "object"
+    },
+    "argiloteca_equation_schema": {
+      "required": [
+        "equation_id",
+        "name",
+        "latex",
+        "source"
+      ],
+      "type": "object"
+    }
+  },
+  "source": {
+    "chapter": "Diffraction I: Geometry",
+    "copyright_note": "Only short source locators are stored; consult local PDF/OCR for full text.",
+    "local_pdf": "/home/invenio/invenio-project/textos/difracao-geomentria.pdf",
+    "policy": "argiloteca_rule_based_diagnostic",
+    "scope": "geometria de difracao; nao inclui regras de intensidade do capitulo seguinte",
+    "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+    "source_full_title": "Diffraction I: Geometry",
+    "source_id": "diffraction_geometry_chapter3_pdf"
+  }
+}

@@ -148,6 +148,99 @@ class DrxV3EngineTest(unittest.TestCase):
         for table_id in required_tables:
             self.assertGreater(len(knowledge["tables"][table_id]["rows"]), 0)
 
+    def test_interpretation_exposes_source_tables_for_panel(self):
+        payload = interpret_ngc({"N": [(12.0, 100)], "G": [(12.0, 95)], "C": [(12.0, 90)]}, {})
+        interpretation = payload["diagnostic_interpretation"]
+        self.assertIn("source_reflection_tables", interpretation)
+        self.assertIn("table_7_3_sepiolite_palygorskite", interpretation["source_reflection_tables"])
+        serialized = serialize_for_invenio(interpretation)["argiloteca:d_rx_diagnostic"]
+        self.assertIn("source_reflection_tables", serialized)
+        self.assertGreater(len(serialized["source_reflection_tables"]["table_7_3_sepiolite_palygorskite"]["rows"]), 0)
+
+    def test_panel_source_rule_can_render_table_rows(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        self.assertIn("source_reflection_tables", source)
+        self.assertIn("Dados das tabelas", source)
+        self.assertIn("renderSourceTablePreview", source)
+        self.assertIn("d inicial Å", source)
+
+    def test_external_curve_preclassification_group_preserves_d060(self):
+        items = [
+            {
+                "filename": "AM-01 (N).raw",
+                "sample_code": "AM-01 (N)",
+                "sample_base": "AM-01",
+                "preparation": "natural",
+                "peaks": [{"d_angstrom": 10.0, "two_theta": 8.84, "relative_intensity": 80}],
+                "metadata": {"source": "external_curve_preclassification"},
+            },
+            {
+                "filename": "AM-01 (G).raw",
+                "sample_code": "AM-01 (G)",
+                "sample_base": "AM-01",
+                "preparation": "glicolado",
+                "peaks": [{"d_angstrom": 17.0, "two_theta": 5.2, "relative_intensity": 95}],
+                "metadata": {"source": "external_curve_preclassification"},
+            },
+            {
+                "filename": "AM-01 (C).raw",
+                "sample_code": "AM-01 (C)",
+                "sample_base": "AM-01",
+                "preparation": "calcinado",
+                "peaks": [
+                    {"d_angstrom": 10.0, "two_theta": 8.84, "relative_intensity": 90},
+                    {"d_angstrom": 1.541, "two_theta": 60.0, "relative_intensity": 22},
+                ],
+                "metadata": {
+                    "source": "external_curve_preclassification",
+                    "d060": 1.541,
+                    "d060_status": "inferred_auxiliary",
+                    "d060_warning": "d060 inferido de RAW externo",
+                },
+            },
+        ]
+        payload = build_ngc_workflow(items)
+        group = payload["groups"][0]
+        self.assertEqual(group["status"], "trio completo")
+        self.assertTrue(group["external_curve_preclassification"]["available"])
+        self.assertTrue(group["external_raw_preclassification"]["available"])
+        self.assertEqual(group["external_raw_preclassification"]["status"], "trio_completo")
+        self.assertEqual(group["diagnostic_interpretation"]["policy"], "argiloteca_rule_based_diagnostic")
+        self.assertEqual(group["diagnostic_interpretation"]["octahedral_classification"]["octahedral_type"], "trioctahedral")
+
+    def test_external_curve_without_060_keeps_unknown_octahedral(self):
+        payload = build_ngc_workflow([
+            {
+                "filename": "AM-02 (N).raw",
+                "sample_code": "AM-02 (N)",
+                "sample_base": "AM-02",
+                "preparation": "natural",
+                "peaks": [{"d_angstrom": 10.0, "two_theta": 8.84, "relative_intensity": 80}],
+                "metadata": {"source": "external_curve_preclassification"},
+            }
+        ])
+        group = payload["groups"][0]
+        self.assertTrue(group["external_curve_preclassification"]["available"])
+        self.assertTrue(group["external_raw_preclassification"]["available"])
+        self.assertEqual(group["diagnostic_interpretation"]["octahedral_classification"]["octahedral_type"], "unknown")
+
+    def test_external_curve_preclassification_panel_contract(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        views = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/views.py")
+        self.assertIn("Pré-classificação de amostras externas N/G/C", source)
+        self.assertIn("externalCurvePreclassification", source)
+        self.assertIn("externalRawPreclassification", source)
+        self.assertIn("external_curve_preclassification", source)
+        self.assertIn("external_raw_preclassification", source)
+        self.assertIn("Classificação 060 preliminar", source)
+        self.assertIn("Processo de pré-classificação", source)
+        self.assertIn("A classificação usa o conjunto temporário; a curva plotada permanece a curva lida.", source)
+        self.assertIn("pré-classificação N/G/C acionada no painel", source)
+        self.assertIn("_external_curve_preclassification_item", views)
+        self.assertIn("_external_raw_preclassification_item", views)
+        self.assertIn("_infer_external_curve_d060", views)
+        self.assertIn("_infer_external_raw_d060", views)
+
     def test_panel_bragg_requires_explicit_wavelength(self):
         source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
         bragg_start = source.index("function braggDSpacing(twoTheta, wavelength)")
@@ -182,6 +275,22 @@ class DrxV3EngineTest(unittest.TestCase):
         self.assertIn("offset aplicado", source)
         self.assertIn("Intensidade normalizada + deslocamento artificial", source)
         self.assertIn("axis_mode", source)
+
+    def test_panel_ngc_summary_uses_ranked_structured_candidates(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        ranking_start = source.index("function renderNgcPrincipalRanking")
+        ranking_end = source.index("function renderNgcCompactRanking", ranking_start)
+        ranking_source = source[ranking_start:ranking_end]
+        self.assertIn("function rankedNgcCandidates", source)
+        self.assertIn("function ngcCandidateRulePeaks", source)
+        self.assertIn("Ranking mineralógico N/G/C desta seleção", source)
+        self.assertIn("Ranking auxiliar N/G/C", source)
+        self.assertIn("Não representa fase única", source)
+        self.assertIn("Cap. 7", source)
+        self.assertIn("Cap. 8", source)
+        self.assertIn("Picos diagnósticos não vinculados", source)
+        self.assertNotIn("score ", ranking_source)
+        self.assertNotIn("Argilomineral encontrado nos picos N/G/C", source)
 
     def test_drx_endpoint_reports_unambiguous_point_counts(self):
         source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/views.py")

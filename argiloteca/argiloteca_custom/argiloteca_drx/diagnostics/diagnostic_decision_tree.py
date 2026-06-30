@@ -100,8 +100,11 @@ Politica de interpretacao:
 from __future__ import annotations
 
 from .ambiguity_rules import evaluate_ambiguities
+from .chapter3_geometry_knowledge import chapter3_equation_index, chapter3_rule_index, get_chapter3_geometry_knowledge
 from .chapter7_knowledge import SOURCE_ID as CHAPTER7_SOURCE_ID
 from .chapter7_knowledge import chapter7_profile, chapter7_rule_index, get_chapter7_knowledge
+from .chapter8_mixed_layer_knowledge import SOURCE_ID as CHAPTER8_SOURCE_ID
+from .chapter8_mixed_layer_knowledge import chapter8_profile, chapter8_rule_index, get_chapter8_mixed_layer_knowledge
 from .confidence_engine import score_candidate
 from .diagnostic_behavior_rules import ENGINE_VERSION, POLICY
 from .diagnostic_graph import build_diagnostic_graph
@@ -613,9 +616,11 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
     # Camada 5: compara referencias. Os registros com meunier_2005 trazem
     # estrutura, d060 e expansibilidade, mas match de faixa continua hipotese.
     range_comparison = compare_ranges(behavior["peaks"], empirical=empirical_ranges or {})
-    # Camada 6: Meunier fornece componentes estruturais e Lanson trata ordem;
-    # interestratificados entram como candidatos proprios, nao como soma simples
-    # de minerais puros.
+    # Camada 6: Capitulo 8 aplicado no fluxo decisorio. Meunier fornece os
+    # componentes estruturais, Lanson ajuda a tratar bandas largas/defeitos, e
+    # o Capitulo 8 impede forcar um mineral puro quando o padrao 00l e o
+    # comportamento N/G/C sugerem interestratificacao. Os candidatos entram como
+    # objetos proprios, nao como soma simples de minerais discretos.
     mixed_layers = detect_mixed_layers(behavior["peaks"], behavior["behaviors"], metadata)
     candidates = _build_candidates(behavior, peak_sets, octahedral, metadata)
     # Loop finito sobre interestratificados detectados para inseri-los na mesma
@@ -667,6 +672,21 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
         for candidate in combined
         if chapter7_profile(candidate["label"])
     }
+    # Capitulos 3 e 8 organizados no mesmo padrao do Capitulo 7:
+    # - Capitulo 3 fornece regras geometricas e equacoes usadas para explicar
+    #   2θ, θ, d-spacing e limites de observabilidade;
+    # - Capitulo 8 fornece regras de interestratificacao, ordenamento,
+    #   comportamento entre tratamentos e diferenciacao de mistura fisica.
+    chapter3_knowledge = get_chapter3_geometry_knowledge()
+    chapter8_knowledge = get_chapter8_mixed_layer_knowledge()
+    chapter3_rules = chapter3_rule_index()
+    chapter3_equations = chapter3_equation_index()
+    chapter8_rules = chapter8_rule_index()
+    chapter8_profiles = {
+        candidate["label"]: chapter8_profile(candidate["label"])
+        for candidate in combined
+        if chapter8_profile(candidate["label"])
+    }
     # Contrato publico da engine. Esta estrutura e consumida pelo painel,
     # exportadores JSON e serializador InvenioRDM.
     interpretation = {
@@ -694,6 +714,7 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
             "references": REFERENCES,
             "presalt_reference_source": PRESALT_REFERENCE_DATASET["source"],
             "chapter7_source_id": CHAPTER7_SOURCE_ID,
+            "chapter8_source_id": CHAPTER8_SOURCE_ID,
             "chapter7_knowledge_counts": {
                 "entities": len(chapter7_knowledge["entities"]),
                 "diagnostic_rules": len(chapter7_knowledge["diagnostic_rules"]),
@@ -702,13 +723,31 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
                 "intensity_rules": len(chapter7_knowledge["intensity_rules"]),
                 "mineral_profiles": len(chapter7_knowledge["mineral_profiles"]),
             },
+            "chapter3_geometry_counts": {
+                "entities": len(chapter3_knowledge["entities"]),
+                "equations": len(chapter3_knowledge["equations"]),
+                "geometry_rules": len(chapter3_knowledge["geometry_rules"]),
+                "method_profiles": len(chapter3_knowledge["method_profiles"]),
+            },
+            "chapter8_mixed_layer_counts": {
+                "entities": len(chapter8_knowledge["entities"]),
+                "nomenclature_rules": len(chapter8_knowledge["nomenclature_rules"]),
+                "mering_rules": len(chapter8_knowledge["mering_rules"]),
+                "ordering_rules": len(chapter8_knowledge["ordering_rules"]),
+                "treatment_behavior_rules": len(chapter8_knowledge["treatment_behavior_rules"]),
+                "differential_rules": len(chapter8_knowledge["differential_rules"]),
+                "mixed_layer_profiles": len(chapter8_knowledge["mixed_layer_profiles"]),
+            },
         },
         "references": list(REFERENCES.values()),
         # Estruturas consumidas pela secao "Regra-fonte" da interface e pelo
         # exportador InvenioRDM. Elas preservam titulo da obra, capitulo,
         # pagina, tabela/figura e explicacao curta da regra.
-        "source_rule_index": chapter7_rules,
-        "source_mineral_profiles": chapter7_profiles,
+        "source_rule_index": {**chapter7_rules, **chapter8_rules},
+        "source_mineral_profiles": {**chapter7_profiles, **chapter8_profiles},
+        "source_reflection_tables": chapter7_knowledge.get("tables", {}),
+        "source_geometry_rule_index": chapter3_rules,
+        "source_geometry_equation_index": chapter3_equations,
         "range_comparison": range_comparison,
         "behavior_interpretation": behavior,
         "diagnostic_graph": build_diagnostic_graph(behavior["relations"], combined),

@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "differential_rules": 2,
+    "entities": 13,
+    "mering_rules": 3,
+    "mixed_layer_profiles": 4,
+    "nomenclature_rules": 2,
+    "ordering_rules": 3,
+    "treatment_behavior_rules": 3
+  },
+  "files": [
+    "chapter8_differential_rules.json",
+    "chapter8_mering_rules.json",
+    "chapter8_mixed_layer_entities.json",
+    "chapter8_mixed_layer_knowledge_complete.json",
+    "chapter8_mixed_layer_ontology.json",
+    "chapter8_mixed_layer_profiles.json",
+    "chapter8_mixed_layer_schemas.json",
+    "chapter8_nomenclature_rules.json",
+    "chapter8_ordering_rules.json",
+    "chapter8_treatment_behavior_rules.json"
+  ],
+  "output_dir": "/home/invenio/invenio-project/argiloteca-drx-panel-upload/argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/data/generated",
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+  "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+  "source_pdf": "/home/invenio/invenio-project/textos/capitulo8.pdf",
+  "version": "argiloteca.drx.chapter8.mixed_layer.knowledge.export.v1"
+}

@@ -1,0 +1,85 @@
+[
+  {
+    "conditions": [
+      {
+        "feature": "superstructure_reflection",
+        "presence": false
+      },
+      {
+        "feature": "peak_series",
+        "value": "non-rational_or_broad"
+      }
+    ],
+    "diagnostic_implication": "random or unresolved ordering; report as R0|unknown when evidence is incomplete",
+    "rule_id": "chapter8_R0_random_interstratification",
+    "rule_type": "ordering",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "R0",
+      "section": "Ordering",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "R0",
+    "target_ordering": "R0"
+  },
+  {
+    "conditions": [
+      {
+        "feature": "superstructure_reflection",
+        "presence": true
+      },
+      {
+        "feature": "sequence",
+        "value": "regular_or_nearest_neighbor"
+      }
+    ],
+    "diagnostic_implication": "ordered mixed-layer candidate such as corrensite or rectorite",
+    "rule_id": "chapter8_R1_ordered_interstratification",
+    "rule_type": "ordering",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "R1",
+      "section": "Ordering",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "R1",
+    "target_ordering": "R1"
+  },
+  {
+    "conditions": [
+      {
+        "feature": "long_range_superstructure",
+        "presence": true
+      }
+    ],
+    "diagnostic_implication": "longer-range ordered interstratification; requires stronger pattern evidence",
+    "rule_id": "chapter8_R3_long_range_ordering",
+    "rule_type": "ordering",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "R3",
+      "section": "Ordering",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "R3",
+    "target_ordering": "R3"
+  }
+]

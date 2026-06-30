@@ -47,5 +47,6 @@ def serialize_for_invenio(diagnostic_interpretation):
             "provenance": data.get("provenance", {}),
             "source_rule_index": data.get("source_rule_index", {}),
             "source_mineral_profiles": data.get("source_mineral_profiles", {}),
+            "source_reflection_tables": data.get("source_reflection_tables", {}),
         }
     }

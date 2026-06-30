@@ -1,0 +1,146 @@
+{
+  "chlorite_smectite": {
+    "components": [
+      "chlorite",
+      "smectite"
+    ],
+    "diagnostic_reflections": [
+      "14 A chlorite-like component",
+      "expandable smectite-like component"
+    ],
+    "known_ordering": [
+      "R0",
+      "R1"
+    ],
+    "minimum_required_evidence": [
+      "treatment behavior",
+      "distinguish from chlorite/vermiculite"
+    ],
+    "profile_id": "chlorite_smectite_profile",
+    "rules": [
+      "chapter8_chlorite_smectite_vs_chlorite_vermiculite_ambiguity"
+    ],
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": "8.12-8.15",
+      "page": null,
+      "quote_fragment": "chlorite/smectite",
+      "section": "",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    }
+  },
+  "corrensite": {
+    "components": [
+      "chlorite",
+      "smectite"
+    ],
+    "diagnostic_reflections": [
+      "N ~29 A",
+      "G ~31-32 A",
+      "heated ~24 A"
+    ],
+    "known_ordering": [
+      "R1"
+    ],
+    "minimum_required_evidence": [
+      "long-spacing reflection",
+      "treatment behavior",
+      "exclude simple mixture"
+    ],
+    "profile_id": "corrensite_profile",
+    "rules": [
+      "chapter8_corrensite_ngc_sequence",
+      "chapter8_R1_ordered_interstratification"
+    ],
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": "8.9-8.11",
+      "page": null,
+      "quote_fragment": "corrensite",
+      "section": "",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    }
+  },
+  "illite_smectite": {
+    "components": [
+      "illite",
+      "smectite"
+    ],
+    "diagnostic_reflections": [
+      "EG low-angle 00l shifts",
+      "broad intermediate reflections",
+      "possible superstructure"
+    ],
+    "known_ordering": [
+      "R0",
+      "R1",
+      "R3"
+    ],
+    "minimum_required_evidence": [
+      "EG preparation",
+      "00l pattern",
+      "exclude illite+smectite discrete mixture"
+    ],
+    "profile_id": "illite_smectite_profile",
+    "rules": [
+      "chapter8_partial_expansion_mixed_layer_warning",
+      "chapter8_mering_broadening_intermediate_composition"
+    ],
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": "8.1-8.8",
+      "page": null,
+      "quote_fragment": "illite/smectite",
+      "section": "",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    }
+  },
+  "kaolinite_smectite": {
+    "components": [
+      "kaolinite",
+      "smectite"
+    ],
+    "diagnostic_reflections": [
+      "7 A component",
+      "expandable component",
+      "heated 375 C behavior"
+    ],
+    "known_ordering": [
+      "R0",
+      "R1"
+    ],
+    "minimum_required_evidence": [
+      "air-dried",
+      "ethylene glycol",
+      "heated pattern"
+    ],
+    "profile_id": "kaolinite_smectite_profile",
+    "rules": [
+      "chapter8_no_single_peak_mixed_layer_diagnosis"
+    ],
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": "8.16-8.22",
+      "page": null,
+      "quote_fragment": "kaolinite/smectite",
+      "section": "",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    }
+  }
+}

@@ -1,0 +1,69 @@
+[
+  {
+    "ambiguous_conditions": [
+      "noise",
+      "poor crystallinity",
+      "overlap",
+      "missing preparations"
+    ],
+    "conditions_supporting_interstratification": [
+      "systematic peak migration",
+      "broad/asymmetric 00l reflections",
+      "treatment-dependent shift",
+      "superstructure reflection"
+    ],
+    "conditions_supporting_physical_mixture": [
+      "fixed independent end-member peaks",
+      "no systematic migration",
+      "separate discrete mineral series"
+    ],
+    "question": "mixed_layer_or_single_peak_match",
+    "rule_id": "chapter8_no_single_peak_mixed_layer_diagnosis",
+    "rule_type": "differential_diagnosis",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "not isolated peaks",
+      "section": "General principles",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "mixed_layer_diagnosis"
+  },
+  {
+    "conditions_supporting_interstratification": [
+      "composite reflections",
+      "coherent 00l sequence",
+      "migration between end members"
+    ],
+    "conditions_supporting_physical_mixture": [
+      "two independent peak sets remain fixed through treatments"
+    ],
+    "question": "physical_mixture_or_interstratification",
+    "required_additional_tests": [
+      "full 00l pattern",
+      "ethylene glycol",
+      "heating/dehydration",
+      "calculated pattern comparison"
+    ],
+    "rule_id": "chapter8_physical_mixture_vs_interstratification",
+    "rule_type": "differential_diagnosis",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "physical mixture",
+      "section": "General principles",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "physical_mixture_vs_interstratification"
+  }
+]

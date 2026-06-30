@@ -1,0 +1,43 @@
+{
+  "DiagnosticRule": {
+    "children": [
+      "mering_principle",
+      "ordering",
+      "treatment_behavior",
+      "differential_diagnosis"
+    ]
+  },
+  "MixedLayerClayMineral": {
+    "children": [
+      "Component",
+      "Ordering",
+      "Superstructure",
+      "TreatmentState",
+      "DifferentialDiagnosis"
+    ]
+  },
+  "Ordering": {
+    "children": [
+      "R0",
+      "R1",
+      "R3",
+      "Reichweite"
+    ]
+  },
+  "Reflection": {
+    "children": [
+      "basal_00l",
+      "composite_reflection",
+      "superstructure_reflection"
+    ]
+  },
+  "TreatmentState": {
+    "examples": [
+      "air_dried",
+      "ethylene_glycol_solvated",
+      "heated",
+      "dehydrated",
+      "Mg_glycerol_solvated"
+    ]
+  }
+}

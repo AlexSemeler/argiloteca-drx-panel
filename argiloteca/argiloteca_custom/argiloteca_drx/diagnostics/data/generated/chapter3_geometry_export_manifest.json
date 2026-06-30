@@ -1,0 +1,23 @@
+{
+  "counts": {
+    "entities": 10,
+    "equations": 5,
+    "geometry_rules": 5,
+    "method_profiles": 3
+  },
+  "files": [
+    "chapter3_geometry_entities.json",
+    "chapter3_geometry_equations.json",
+    "chapter3_geometry_knowledge_complete.json",
+    "chapter3_geometry_method_profiles.json",
+    "chapter3_geometry_ontology.json",
+    "chapter3_geometry_rules.json",
+    "chapter3_geometry_schemas.json"
+  ],
+  "output_dir": "/home/invenio/invenio-project/argiloteca-drx-panel-upload/argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/data/generated",
+  "policy": "argiloteca_rule_based_diagnostic",
+  "source_full_title": "Diffraction I: Geometry",
+  "source_id": "diffraction_geometry_chapter3_pdf",
+  "source_pdf": "/home/invenio/invenio-project/textos/difracao-geomentria.pdf",
+  "version": "argiloteca.drx.chapter3.geometry.knowledge.export.v1"
+}

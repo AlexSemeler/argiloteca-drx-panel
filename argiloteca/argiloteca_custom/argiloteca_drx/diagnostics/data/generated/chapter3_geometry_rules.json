@@ -1,0 +1,140 @@
+[
+  {
+    "conditions": [
+      {
+        "feature": "measured_axis",
+        "value": "two_theta"
+      }
+    ],
+    "result": {
+      "theta": "two_theta / 2"
+    },
+    "rule_id": "chapter3_theta_two_theta_convention",
+    "rule_type": "angle_convention",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "Bragg law",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "theta is Bragg angle",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "target": "bragg_calculation",
+    "warning": "Do not insert measured 2theta directly into Bragg law as theta."
+  },
+  {
+    "calculation": "d = lambda / (2 * sin(two_theta / 2))",
+    "conditions": [
+      {
+        "feature": "two_theta",
+        "operator": ">",
+        "value": 0
+      },
+      {
+        "feature": "lambda",
+        "operator": ">",
+        "value": 0
+      }
+    ],
+    "outputs": [
+      "d_spacing_angstrom"
+    ],
+    "rule_id": "chapter3_two_theta_to_d_spacing",
+    "rule_type": "bragg_geometry",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "Bragg law",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "lambda = 2d sin theta",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "target": "d_spacing_calculation"
+  },
+  {
+    "calculation": "two_theta = 2 * asin(lambda / (2*d))",
+    "conditions": [
+      {
+        "feature": "lambda/(2*d)",
+        "operator": "<=",
+        "value": 1
+      }
+    ],
+    "outputs": [
+      "two_theta_degree"
+    ],
+    "rule_id": "chapter3_d_spacing_to_two_theta",
+    "rule_type": "bragg_geometry",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "Bragg law",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "sin theta < 1",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "target": "expected_peak_position"
+  },
+  {
+    "conditions": [
+      {
+        "feature": "reflection",
+        "value": "geometrically_possible"
+      }
+    ],
+    "result": "position can be predicted but intensity is not guaranteed",
+    "rule_id": "chapter3_geometry_does_not_guarantee_intensity",
+    "rule_type": "scope_limitation",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "directions not intensities",
+      "section": "3-6",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "target": "hkl_or_peak_candidate",
+    "warning": "Intensity, systematic absences and structure factors are outside the geometry-only rule."
+  },
+  {
+    "conditions": [
+      "finite_crystallite_size",
+      "strain",
+      "beam_divergence",
+      "finite_spectral_width",
+      "imperfect_crystal"
+    ],
+    "result": "peak width can increase independently of mineral identity",
+    "rule_id": "chapter3_nonideal_peak_broadening",
+    "rule_type": "uncertainty",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "nonideal conditions",
+      "section": "3-10",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "target": "peak_width"
+  }
+]

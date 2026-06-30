@@ -1,0 +1,80 @@
+[
+  {
+    "entity_id": "mixed_layered_clay_mineral",
+    "entity_type": "concept",
+    "name": "mixed-layered clay mineral",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "interstratification",
+    "entity_type": "concept",
+    "name": "interstratification",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "reichweite",
+    "entity_type": "ordering_parameter",
+    "name": "Reichweite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "R0",
+    "entity_type": "ordering",
+    "name": "random interstratification",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "R1",
+    "entity_type": "ordering",
+    "name": "ordered nearest-neighbor interstratification",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "R3",
+    "entity_type": "ordering",
+    "name": "longer-range ordered interstratification",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "superstructure_reflection",
+    "entity_type": "reflection",
+    "name": "superstructure reflection",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "physical_mixture",
+    "entity_type": "diagnostic_alternative",
+    "name": "physical mixture of discrete minerals",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "illite_smectite",
+    "entity_type": "mineral_system",
+    "name": "illite/smectite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "chlorite_smectite",
+    "entity_type": "mineral_system",
+    "name": "chlorite/smectite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "corrensite",
+    "entity_type": "mineral_system",
+    "name": "corrensite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "kaolinite_smectite",
+    "entity_type": "mineral_system",
+    "name": "kaolinite/smectite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  },
+  {
+    "entity_id": "mica_vermiculite",
+    "entity_type": "mineral_system",
+    "name": "mica/vermiculite",
+    "source": "moore_reynolds_chapter8_mixed_layer_pdf"
+  }
+]

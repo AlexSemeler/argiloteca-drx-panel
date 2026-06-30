@@ -1,0 +1,43 @@
+{
+  "argiloteca_mixed_layer_profile_schema": {
+    "required": [
+      "profile_id",
+      "components",
+      "known_ordering",
+      "rules"
+    ],
+    "type": "object"
+  },
+  "argiloteca_mixed_layer_rule_schema": {
+    "properties": {
+      "conditions": {
+        "type": [
+          "array",
+          "object"
+        ]
+      },
+      "diagnostic_implication": {
+        "type": "string"
+      },
+      "rule_id": {
+        "type": "string"
+      },
+      "rule_type": {
+        "type": "string"
+      },
+      "source": {
+        "type": "object"
+      },
+      "target": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "rule_id",
+      "rule_type",
+      "target",
+      "source"
+    ],
+    "type": "object"
+  }
+}

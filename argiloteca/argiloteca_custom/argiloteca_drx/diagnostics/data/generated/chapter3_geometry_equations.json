@@ -1,0 +1,141 @@
+[
+  {
+    "computational_use": [
+      "two_theta_to_d_spacing",
+      "d_spacing_to_two_theta"
+    ],
+    "equation_id": "chapter3_bragg_law",
+    "latex": "n\\lambda = 2d\\sin\\theta",
+    "name": "Bragg law",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "Bragg law",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "n lambda = 2 d sin theta",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "variables": [
+      "n",
+      "lambda",
+      "d",
+      "theta"
+    ]
+  },
+  {
+    "computational_use": [
+      "braggDSpacing",
+      "_two_theta_to_d_spacing"
+    ],
+    "equation_id": "chapter3_first_order_bragg",
+    "latex": "\\lambda = 2d\\sin\\theta",
+    "name": "First-order Bragg form",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "first-order Bragg",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "lambda = 2 d sin theta",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "variables": [
+      "lambda",
+      "d",
+      "theta"
+    ]
+  },
+  {
+    "computational_use": [
+      "braggTwoTheta",
+      "_d_spacing_to_two_theta"
+    ],
+    "equation_id": "chapter3_observability",
+    "latex": "\\lambda < 2d",
+    "name": "Bragg observability condition",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "observability",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "sin theta < 1",
+      "section": "3-3",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "variables": [
+      "lambda",
+      "d"
+    ]
+  },
+  {
+    "computational_use": [
+      "future_hkl_indexer",
+      "future_reciprocal_lattice_validator"
+    ],
+    "equation_id": "chapter3_laue_equations",
+    "latex": "a(cos\\alpha-cos\\alpha_0)=h\\lambda; b(cos\\beta-cos\\beta_0)=k\\lambda; c(cos\\gamma-cos\\gamma_0)=l\\lambda",
+    "name": "Laue equations",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "Laue equations",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "cos",
+      "section": "3-4",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "variables": [
+      "a",
+      "b",
+      "c",
+      "alpha",
+      "beta",
+      "gamma",
+      "h",
+      "k",
+      "l",
+      "lambda"
+    ]
+  },
+  {
+    "computational_use": [
+      "future_hkl_indexer"
+    ],
+    "equation_id": "chapter3_cubic_direction",
+    "latex": "\\sin^2\\theta = \\lambda^2(h^2+k^2+l^2)/(4a^2)",
+    "name": "Cubic diffraction direction",
+    "source": {
+      "chapter": "Diffraction I: Geometry",
+      "equation": "cubic sin2theta",
+      "figure": null,
+      "page": null,
+      "quote_fragment": "cubic",
+      "section": "3-6",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Diffraction I: Geometry",
+      "source_id": "diffraction_geometry_chapter3_pdf",
+      "table": null
+    },
+    "variables": [
+      "theta",
+      "lambda",
+      "h",
+      "k",
+      "l",
+      "a"
+    ]
+  }
+]

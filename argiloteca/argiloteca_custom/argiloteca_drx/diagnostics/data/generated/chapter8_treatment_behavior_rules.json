@@ -1,0 +1,71 @@
+[
+  {
+    "behavior": {
+      "ethylene_glycol": "~31-32 A",
+      "heated": "~24 A support",
+      "natural": "~29 A"
+    },
+    "diagnostic_implication": "ordered chlorite/smectite sequence rather than simple chlorite plus smectite when coherent",
+    "rule_id": "chapter8_corrensite_ngc_sequence",
+    "rule_type": "treatment_behavior",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": "8.9-8.11",
+      "page": null,
+      "quote_fragment": "corrensite",
+      "section": "Chlorite/smectite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "corrensite"
+  },
+  {
+    "behavior": {
+      "ethylene_glycol": "partial expansion or intermediate displacement",
+      "heated": "partial collapse or broad residual"
+    },
+    "diagnostic_implication": "favor mixed-layer hypothesis over pure discrete mineral assignment",
+    "rule_id": "chapter8_partial_expansion_mixed_layer_warning",
+    "rule_type": "treatment_behavior",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "partial expansion",
+      "section": "Illite/smectite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "illite_smectite_or_mixed_layer"
+  },
+  {
+    "conditions": [
+      {
+        "feature": "ethylene_glycol_expansion",
+        "presence": "unclear_or_absent"
+      }
+    ],
+    "diagnostic_implication": "retain ambiguity and recommend Mg/glycerol or K/heating context",
+    "rule_id": "chapter8_chlorite_smectite_vs_chlorite_vermiculite_ambiguity",
+    "rule_type": "differential_diagnosis",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "glycerol",
+      "section": "Chlorite/smectite",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "chlorite_smectite_vs_chlorite_vermiculite"
+  }
+]

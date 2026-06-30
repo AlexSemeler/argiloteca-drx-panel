@@ -1,0 +1,43 @@
+{
+  "BraggGeometry": {
+    "children": [
+      "two_theta",
+      "theta",
+      "lambda",
+      "d_spacing",
+      "order_n"
+    ]
+  },
+  "Calculation": {
+    "examples": [
+      "two_theta_to_d_spacing",
+      "d_spacing_to_two_theta"
+    ]
+  },
+  "DiffractionGeometry": {
+    "children": [
+      "Wave",
+      "BraggGeometry",
+      "LaueGeometry",
+      "ReciprocalLattice",
+      "EwaldConstruction",
+      "DiffractionMethod"
+    ]
+  },
+  "Rule": {
+    "children": [
+      "angle_convention",
+      "bragg_geometry",
+      "scope_limitation",
+      "uncertainty"
+    ]
+  },
+  "Uncertainty": {
+    "examples": [
+      "finite_crystallite_size",
+      "strain",
+      "beam_divergence",
+      "finite_spectral_width"
+    ]
+  }
+}

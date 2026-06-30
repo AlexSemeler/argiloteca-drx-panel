@@ -1,0 +1,39 @@
+[
+  {
+    "example": "R1 illite(0.7)/smectite",
+    "meaning": "name must preserve components, component proportion when known, and ordering type",
+    "rule_id": "chapter8_mixed_layer_name_components_ordering",
+    "rule_type": "nomenclature",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "R1 illite/smectite",
+      "section": "Nomenclature",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "mixed_layer_mineral"
+  },
+  {
+    "meaning": "range of ordering relationships among layers; R0 random, R1 nearest-neighbor, R3 longer-range",
+    "rule_id": "chapter8_reichweite_ordering_definition",
+    "rule_type": "nomenclature",
+    "source": {
+      "chapter": "Identification of Mixed-Layered Clay Minerals",
+      "equation": null,
+      "figure": null,
+      "page": null,
+      "quote_fragment": "Reichweite",
+      "section": "Ordering",
+      "source_book": "X-Ray Diffraction and the Identification and Analysis of Clay Minerals",
+      "source_full_title": "Identification of Mixed-Layered Clay Minerals",
+      "source_id": "moore_reynolds_chapter8_mixed_layer_pdf",
+      "table": null
+    },
+    "target": "Reichweite"
+  }
+]

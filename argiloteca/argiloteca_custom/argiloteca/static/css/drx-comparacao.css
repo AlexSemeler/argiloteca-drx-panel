@@ -1079,6 +1079,51 @@
   margin: .55rem 0 .75rem;
 }
 
+.argilo-drx__ngc-matrix-wrap {
+  grid-column: 1 / -1;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.argilo-drx__ngc-matrix {
+  background: #fff;
+  border: 1px solid var(--arg-drx-line);
+  border-collapse: collapse;
+  border-radius: 7px;
+  font-size: .78rem;
+  min-width: 980px;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.argilo-drx__ngc-matrix th,
+.argilo-drx__ngc-matrix td {
+  border: 1px solid rgba(72, 91, 79, .14);
+  line-height: 1.35;
+  padding: .45rem .5rem;
+  text-align: left;
+  vertical-align: top;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.argilo-drx__ngc-matrix th {
+  background: #eef6f2;
+  color: #243c37;
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+
+.argilo-drx__ngc-matrix td:nth-child(1) {
+  width: 12%;
+}
+
+.argilo-drx__ngc-matrix td:nth-child(5),
+.argilo-drx__ngc-matrix td:nth-child(6),
+.argilo-drx__ngc-matrix td:nth-child(8) {
+  color: var(--arg-drx-muted);
+}
+
 .argilo-drx__ngc-evidence-card {
   background: #fff;
   border: 1px solid var(--arg-drx-line);

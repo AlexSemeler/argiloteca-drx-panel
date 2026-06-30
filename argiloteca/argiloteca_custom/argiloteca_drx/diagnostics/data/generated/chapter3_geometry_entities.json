@@ -1,0 +1,71 @@
+[
+  {
+    "entity_id": "two_theta",
+    "entity_type": "angle",
+    "name": "diffraction angle 2theta",
+    "source": "diffraction_geometry_chapter3_pdf",
+    "symbol": "2θ",
+    "unit": "degree"
+  },
+  {
+    "entity_id": "theta",
+    "entity_type": "angle",
+    "name": "Bragg angle theta",
+    "source": "diffraction_geometry_chapter3_pdf",
+    "symbol": "θ",
+    "unit": "degree_or_radian"
+  },
+  {
+    "entity_id": "wavelength_lambda",
+    "entity_type": "physical_quantity",
+    "name": "wavelength",
+    "source": "diffraction_geometry_chapter3_pdf",
+    "symbol": "λ",
+    "unit": "angstrom"
+  },
+  {
+    "entity_id": "d_spacing",
+    "entity_type": "physical_quantity",
+    "name": "interplanar spacing",
+    "source": "diffraction_geometry_chapter3_pdf",
+    "symbol": "d",
+    "unit": "angstrom"
+  },
+  {
+    "entity_id": "bragg_law",
+    "entity_type": "equation",
+    "name": "Bragg law",
+    "source": "diffraction_geometry_chapter3_pdf",
+    "symbol": "nλ = 2d sinθ"
+  },
+  {
+    "entity_id": "laue_equations",
+    "entity_type": "equation_set",
+    "name": "Laue equations",
+    "source": "diffraction_geometry_chapter3_pdf"
+  },
+  {
+    "entity_id": "reciprocal_lattice",
+    "entity_type": "geometric_model",
+    "name": "reciprocal lattice",
+    "source": "diffraction_geometry_chapter3_pdf"
+  },
+  {
+    "entity_id": "ewald_sphere",
+    "entity_type": "geometric_model",
+    "name": "Ewald sphere",
+    "source": "diffraction_geometry_chapter3_pdf"
+  },
+  {
+    "entity_id": "powder_diffraction",
+    "entity_type": "method",
+    "name": "powder diffraction method",
+    "source": "diffraction_geometry_chapter3_pdf"
+  },
+  {
+    "entity_id": "nonideal_peak_broadening",
+    "entity_type": "uncertainty_source",
+    "name": "nonideal peak broadening",
+    "source": "diffraction_geometry_chapter3_pdf"
+  }
+]

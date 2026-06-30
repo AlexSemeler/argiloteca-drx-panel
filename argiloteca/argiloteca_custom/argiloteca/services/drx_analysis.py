@@ -151,6 +151,37 @@ def _diagnostic_peak_matches(peaks, preparation=None):
     return rows
 
 
+def _explainable_peak_detection(source_filepath):
+    """Executa o detector explicável de picos quando o ambiente suporta.
+
+    A rotina é opcional para não quebrar o painel principal em ambientes sem
+    numpy/scipy/pandas/pybaselines. Quando disponível, retorna o contrato
+    `argiloteca.drx.peaks.v1` e o bloco de explainability correspondente.
+    """
+    if not source_filepath:
+        return {
+            "available": False,
+            "reason": "source_filepath_not_provided",
+        }
+    try:
+        from argiloteca_drx_core.peak_detector import DEFAULT_PARAMS, detect_peaks, export_explainability
+
+        result = detect_peaks(str(source_filepath), DEFAULT_PARAMS)
+        peaks = ((result.get("metadata") or {}).get("arg") or {}).get("peaks") or []
+        return {
+            "available": True,
+            "schema_version": result.get("version"),
+            "result": result,
+            "explainability": export_explainability(result.get("metadata") or {}, peaks),
+        }
+    except Exception as exc:
+        return {
+            "available": False,
+            "reason": exc.__class__.__name__,
+            "message": str(exc),
+        }
+
+
 def build_drx_analysis_run(
     *,
     filename,
@@ -162,9 +193,11 @@ def build_drx_analysis_run(
     max_points=3000,
     stored=False,
     wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU,
+    source_filepath=None,
 ):
     """Run reusable DRX processing and return a versioned analysis contract."""
     identification = identification or {}
+    explainable_peak_detection = _explainable_peak_detection(source_filepath)
     advanced_processing = process_advanced_als_curve(
         parsed.two_theta,
         parsed.intensity,
@@ -196,6 +229,11 @@ def build_drx_analysis_run(
         "diagnostic_rule_count": len(DIAGNOSTIC_D_RANGES),
         "mineral_classification_source": identification.get("reference_source"),
         "mineral_classification_error": identification.get("classification_error"),
+        "explainable_peak_detector": {
+            "available": bool(explainable_peak_detection.get("available")),
+            "schema_version": explainable_peak_detection.get("schema_version"),
+            "reason": explainable_peak_detection.get("reason"),
+        },
     }
     input_payload = {
         "filename": filename,
@@ -227,6 +265,10 @@ def build_drx_analysis_run(
             "targeted_basal_peak_count": len(targeted_basal_peaks),
             "targeted_basal_peak_found_count": len(targeted_basal_peaks_found),
             "diagnostic_evidence_count": len(diagnostic_evidence),
+            "explainable_peak_detection_available": bool(explainable_peak_detection.get("available")),
+            "explainable_peak_count": len(
+                (((explainable_peak_detection.get("result") or {}).get("metadata") or {}).get("arg") or {}).get("peaks") or []
+            ),
         },
         "reproducibility": {
             "methods_hash": _config_hash(methods),
@@ -240,4 +282,5 @@ def build_drx_analysis_run(
         "advanced_summary": advanced_summary,
         "advanced_curve": advanced_curve,
         "diagnostic_evidence": diagnostic_evidence,
+        "explainable_peak_detection": explainable_peak_detection,
     }
