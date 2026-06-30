@@ -1,4 +1,7 @@
 import unittest
+import json
+import subprocess
+from pathlib import Path
 
 from argiloteca.services.drx_ngc_workflow import build_ngc_workflow
 from argiloteca_drx.diagnostics.ambiguity_rules import evaluate_ambiguities
@@ -11,6 +14,13 @@ from argiloteca_drx.diagnostics.serializers import serialize_for_invenio
 
 
 class DrxV3EngineTest(unittest.TestCase):
+    @property
+    def repo_root(self):
+        return Path(__file__).resolve().parents[3]
+
+    def read_project_file(self, relative_path):
+        return (self.repo_root / relative_path).read_text(encoding="utf-8")
+
     def labels(self, payload):
         return [row["label"] for row in payload["diagnostic_interpretation"]["combined_candidates"]]
 
@@ -137,6 +147,54 @@ class DrxV3EngineTest(unittest.TestCase):
         self.assertTrue(required_tables.issubset(set(knowledge["tables"])))
         for table_id in required_tables:
             self.assertGreater(len(knowledge["tables"][table_id]["rows"]), 0)
+
+    def test_panel_bragg_requires_explicit_wavelength(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        bragg_start = source.index("function braggDSpacing(twoTheta, wavelength)")
+        bragg_end = source.index("function braggTwoTheta", bragg_start)
+        bragg_source = source[bragg_start:bragg_end]
+        self.assertIn("const lambda = Number(wavelength);", bragg_source)
+        self.assertIn("return null", bragg_source)
+        self.assertNotIn("wavelength || CU_K_ALPHA_WAVELENGTH", bragg_source)
+        self.assertIn("d: indisponível — λ não informado", source)
+        result = subprocess.run(
+            [
+                "node",
+                "-e",
+                bragg_source
+                + "\nconsole.log(JSON.stringify([braggDSpacing(10), braggDSpacing(10, 1.54056)]));",
+            ],
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        without_lambda, with_lambda = json.loads(result.stdout)
+        self.assertIsNone(without_lambda)
+        self.assertAlmostEqual(with_lambda, 8.84, delta=0.02)
+
+    def test_panel_preserves_gaps_and_stacked_offset_in_chart_contract(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        self.assertIn("function finiteNumber", source)
+        self.assertIn("function chartSeriesPoints", source)
+        self.assertIn("Math.max(xValues.length, yValues.length)", source)
+        self.assertIn("connectgaps: false", source)
+        self.assertIn("function svgLineSegments", source)
+        self.assertIn("offset aplicado", source)
+        self.assertIn("Intensidade normalizada + deslocamento artificial", source)
+        self.assertIn("axis_mode", source)
+
+    def test_drx_endpoint_reports_unambiguous_point_counts(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/views.py")
+        endpoint_start = source.index("def api_drx_difratograma")
+        endpoint_end = source.index("@blueprint.route", endpoint_start + 1)
+        endpoint_source = source[endpoint_start:endpoint_end]
+        self.assertIn('"source_points": source_points', endpoint_source)
+        self.assertIn('"payload_points": payload_points', endpoint_source)
+        self.assertIn('"backend_points": backend_points', endpoint_source)
+        self.assertIn('"rendered_points": rendered_points', endpoint_source)
+        self.assertIn("rendered_points = None", endpoint_source)
+        self.assertIn('"decimated": decimated', endpoint_source)
+        self.assertNotIn('"total_points"', endpoint_source)
 
 
 if __name__ == "__main__":

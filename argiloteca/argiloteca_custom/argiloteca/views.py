@@ -2022,15 +2022,30 @@ def create_blueprint(app):
             payload = load_diffractogram_data(diffractogram_id)
             if payload is None:
                 return jsonify({"success": False, "error": "Difratograma nao encontrado"}), 404
-            two_theta, intensity = decimate_series(payload.get("two_theta") or [], payload.get("intensity") or [])
+            source_two_theta = payload.get("two_theta") or []
+            source_intensity = payload.get("intensity") or []
+            two_theta, intensity = decimate_series(source_two_theta, source_intensity)
+            metadata = payload.get("metadata") or {}
+            visualization = metadata.get("visualization") or {}
+            source_points = visualization.get("source_points") or len(source_two_theta)
+            payload_points = len(two_theta)
+            backend_points = len(two_theta)
+            rendered_points = None
+            decimated = bool(visualization.get("decimated") or payload_points < source_points)
+            max_points = visualization.get("max_points")
             return jsonify(
                 {
                     "success": True,
-                    "metadata": payload.get("metadata") or {},
+                    "metadata": metadata,
                     "two_theta": two_theta,
                     "intensity": intensity,
-                    "render_points": len(two_theta),
-                    "total_points": len(payload.get("two_theta") or []),
+                    "source_points": source_points,
+                    "payload_points": payload_points,
+                    "backend_points": backend_points,
+                    "rendered_points": rendered_points,
+                    "render_points": backend_points,
+                    "decimated": decimated,
+                    "max_points": max_points,
                 }
             )
         except Exception as e:

@@ -553,9 +553,11 @@
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
-  function shiftPeakAxisFields(rows, offset) {
-    // Ao alinhar eixo 2theta, os campos de pico em 2theta e d-spacing precisam
-    // caminhar juntos para manter coerencia com a curva renderizada.
+  function shiftPeakAxisFields(rows, offset, item) {
+    // Capitulo 3 aplicado: se a curva recebe offset no eixo experimental 2θ,
+    // o d-spacing do pico deixa de ser o mesmo. O painel recalcula d pela
+    // Lei de Bragg depois do deslocamento para manter curva, marcador e tabela
+    // de evidencias no mesmo sistema geometrico.
     if (!Number.isFinite(offset) || Math.abs(offset) <= 1e-12) return rows || [];
     const axisKeys = [
       "two_theta",
@@ -577,7 +579,7 @@
       });
       const theta = Number(shifted.two_theta || shifted.center_2theta || shifted.observed_two_theta);
       if (Number.isFinite(theta)) {
-        const d = braggDSpacing(theta);
+        const d = braggDSpacingForItem(theta, item);
         ["d", "d_spacing", "d_angstrom", "center_d_angstrom"].forEach(function (key) {
           if (shifted[key] !== undefined && Number.isFinite(d)) shifted[key] = Number(d.toFixed(5));
         });
@@ -617,9 +619,9 @@
       return Number.isFinite(number) ? Number((number + offset).toFixed(6)) : value;
     });
     const targetStart = Number(item.twoTheta[0]);
-    item.detectedPeaks = shiftPeakAxisFields(item.detectedPeaks, offset);
-    item.advancedPeaks = shiftPeakAxisFields(item.advancedPeaks, offset);
-    item.fitResults = shiftPeakAxisFields(item.fitResults, offset);
+    item.detectedPeaks = shiftPeakAxisFields(item.detectedPeaks, offset, item);
+    item.advancedPeaks = shiftPeakAxisFields(item.advancedPeaks, offset, item);
+    item.fitResults = shiftPeakAxisFields(item.fitResults, offset, item);
     item.advancedCurve = shiftAdvancedCurveAxis(item.advancedCurve, offset);
     item.metadata = Object.assign({}, item.metadata || {}, {
       two_theta_original_start: currentStart,
@@ -3435,10 +3437,41 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function transformedSeries(item, index) {
+    return transformedSeriesInfo(item, index).display;
+  }
+
+  function finiteNumber(value) {
+    if (value === null || value === undefined || value === "") return null;
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function transformedSeriesInfo(item, index) {
     const mode = modeEl.value;
-    const max = Math.max.apply(null, item.intensity.filter(Number.isFinite)) || 1;
+    const values = item.intensity || [];
+    let max = 0;
+    values.forEach(function (value) {
+      const number = finiteNumber(value);
+      if (number !== null) max = Math.max(max, number);
+    });
+    max = max || 1;
+    const base = {
+      mode: mode,
+      display: [],
+      beforeOffset: [],
+      offset: mode === "stacked" ? index * 1.15 : 0,
+      invalidPoints: 0,
+    };
     if (mode === "normalized") {
-      return item.intensity.map(function (value) { return value / max; });
+      base.display = values.map(function (value) {
+        const number = finiteNumber(value);
+        if (number === null) {
+          base.invalidPoints += 1;
+          return NaN;
+        }
+        return number / max;
+      });
+      return base;
     }
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -3446,12 +3479,166 @@
      */
     if (mode === "area") {
       const area = curveArea(item.twoTheta, item.intensity) || 1;
-      return item.intensity.map(function (value) { return value / area; });
+      base.display = values.map(function (value) {
+        const number = finiteNumber(value);
+        if (number === null) {
+          base.invalidPoints += 1;
+          return NaN;
+        }
+        return number / area;
+      });
+      return base;
     }
     if (mode === "stacked") {
-      return item.intensity.map(function (value) { return (value / max) + index * 1.15; });
+      base.beforeOffset = values.map(function (value) {
+        const number = finiteNumber(value);
+        if (number === null) {
+          base.invalidPoints += 1;
+          return NaN;
+        }
+        return number / max;
+      });
+      base.display = base.beforeOffset.map(function (value) {
+        return Number.isFinite(value) ? value + base.offset : NaN;
+      });
+      return base;
     }
-    return item.intensity;
+    base.display = values.map(function (value) {
+      const number = finiteNumber(value);
+      if (number === null) {
+        base.invalidPoints += 1;
+        return NaN;
+      }
+      return number;
+    });
+    return base;
+  }
+
+  function intensityAxisLabel() {
+    const mode = modeEl.value;
+    if (mode === "normalized") return "Intensidade normalizada";
+    if (mode === "area") return "Intensidade normalizada por área";
+    if (mode === "stacked") return "Intensidade normalizada + deslocamento artificial";
+    return "Intensidade";
+  }
+
+  function explicitWavelengthAngstrom(item) {
+    const metadata = item && item.metadata || {};
+    const xrdMethod = metadata.xrd_method || {};
+    const candidates = [
+      metadata.wavelength_angstrom,
+      metadata.lambda_angstrom,
+      metadata.lambda_A,
+      metadata.lambda,
+      metadata.wavelength,
+      xrdMethod.wavelength_angstrom,
+      xrdMethod.lambda_angstrom,
+      xrdMethod.lambda_A,
+      xrdMethod.lambda,
+      xrdMethod.wavelength,
+    ];
+    for (let index = 0; index < candidates.length; index += 1) {
+      const value = candidates[index];
+      const number = Number(value);
+      if (Number.isFinite(number) && number > 0) return number;
+      const text = String(value || "").toLowerCase();
+      if (/cu\s*k|cuka|cu\s*kα|cu\s*kalpha/.test(text)) return CU_K_ALPHA_WAVELENGTH;
+    }
+    const radiation = String(metadata.radiation || metadata.radiation_source || xrdMethod.radiation || "").toLowerCase();
+    if (/cu\s*k|cuka|cu\s*kα|cu\s*kalpha/.test(radiation)) return CU_K_ALPHA_WAVELENGTH;
+    return null;
+  }
+
+  function braggDSpacingForItem(twoTheta, item) {
+    return braggDSpacing(twoTheta, explicitWavelengthAngstrom(item));
+  }
+
+  function dSpacingText(twoTheta, item, explicitValue) {
+    const lambda = explicitWavelengthAngstrom(item);
+    if (!Number.isFinite(lambda)) return "d: indisponível — λ não informado";
+    const explicit = Number(explicitValue);
+    if (Number.isFinite(explicit) && explicit > 0) return "d " + formatNumber(explicit, 3) + " Å";
+    const calculated = braggDSpacing(twoTheta, lambda);
+    if (Number.isFinite(calculated)) return "d " + formatNumber(calculated, 3) + " Å";
+    return "d: indisponível — λ não informado";
+  }
+
+  function axisModeForItem(item) {
+    const metadata = item && item.metadata || {};
+    const visualization = metadata.visualization || {};
+    return visualization.axis_mode || (usesClassifiedAxis(item) ? "classified_or_aligned_axis" : "loaded_axis");
+  }
+
+  function axisOffsetForItem(item) {
+    const metadata = item && item.metadata || {};
+    const value = metadata.two_theta_offset_applied;
+    return value === undefined || value === null || value === "" ? null : value;
+  }
+
+  function axisStateRequiresBadge(item) {
+    const mode = String(axisModeForItem(item) || "");
+    const metadata = item && item.metadata || {};
+    const text = [
+      mode,
+      metadata.curve_source,
+      metadata.visualization_payload_mode,
+      metadata.axis_correction_source,
+    ].join(" ").toLowerCase();
+    return Boolean(
+      usesClassifiedAxis(item)
+      || axisOffsetForItem(item) !== null
+      || /classific|aligned|alinh|corrig|ngc|quartzo|quartz|correct/.test(text)
+    );
+  }
+
+  function chartAxisAnnotation(items) {
+    return (items || []).some(axisStateRequiresBadge)
+      ? "Eixo 2θ alinhado/corrigido — não é o eixo bruto original"
+      : "";
+  }
+
+  function chartSeriesPoints(item, seriesInfo) {
+    const xValues = item.twoTheta || [];
+    const yValues = seriesInfo.display || [];
+    const length = Math.max(xValues.length, yValues.length);
+    const points = [];
+    let invalidPoints = 0;
+    for (let index = 0; index < length; index += 1) {
+      const x = finiteNumber(xValues[index]);
+      const y = finiteNumber(yValues[index]);
+      const raw = finiteNumber((item.intensity || [])[index]);
+      const beforeOffset = finiteNumber((seriesInfo.beforeOffset || [])[index]);
+      const valid = x !== null && y !== null;
+      if (!valid) invalidPoints += 1;
+      points.push({
+        x: x !== null ? x : null,
+        y: valid ? y : null,
+        raw: raw !== null ? raw : null,
+        beforeOffset: beforeOffset !== null ? beforeOffset : null,
+        offset: seriesInfo.offset || 0,
+        originalIndex: index,
+        valid: valid,
+      });
+    }
+    return { points: points, invalidPoints: invalidPoints };
+  }
+
+  function svgLineSegments(points, baseX, sx, sy) {
+    const segments = [];
+    let current = [];
+    (points || []).forEach(function (point) {
+      const x = Number(point.x);
+      const y = Number(point.y);
+      const valid = point.valid && Number.isFinite(x) && Number.isFinite(y) && x >= baseX[0] && x <= baseX[1];
+      if (!valid) {
+        if (current.length) segments.push(current);
+        current = [];
+        return;
+      }
+      current.push([svgNumber(sx(x)), svgNumber(sy(y))].join(","));
+    });
+    if (current.length) segments.push(current);
+    return segments;
   }
 
   /**
@@ -3461,11 +3648,13 @@
   function curveArea(xValues, yValues) {
     let area = 0;
     for (let index = 0; index < (xValues || []).length - 1; index += 1) {
-      const x0 = Number(xValues[index]);
-      const x1 = Number(xValues[index + 1]);
-      const y0 = Math.max(0, Number(yValues[index]));
-      const y1 = Math.max(0, Number(yValues[index + 1]));
-      if (Number.isFinite(x0) && Number.isFinite(x1) && Number.isFinite(y0) && Number.isFinite(y1)) {
+      const x0 = finiteNumber(xValues[index]);
+      const x1 = finiteNumber(xValues[index + 1]);
+      const y0Value = finiteNumber(yValues[index]);
+      const y1Value = finiteNumber(yValues[index + 1]);
+      if (x0 !== null && x1 !== null && y0Value !== null && y1Value !== null) {
+        const y0 = Math.max(0, y0Value);
+        const y1 = Math.max(0, y1Value);
         area += Math.abs(x1 - x0) * ((y0 + y1) / 2);
       }
     }
@@ -3676,11 +3865,15 @@
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
-  function mapAdvancedPeak(peak) {
+  function mapAdvancedPeak(peak, item) {
     peak = peak || {};
     const sourcePeak = peak.source_peak || {};
+    // O Python envia picos ALS/lmfit com nomes de campo diferentes conforme a
+    // origem: pico global, pico basal direcionado ou ajuste pseudo-Voigt. O JS
+    // normaliza para o contrato visual minimo: 2θ, d, intensidade, intensidade
+    // relativa, indice e fonte.
     const twoTheta = Number(peak.two_theta || peak.twoTheta || peak.center_2theta || sourcePeak.two_theta || sourcePeak.twoTheta);
-    const dSpacing = Number(peak.d || peak.d_spacing || peak.d_angstrom || peak.center_d_angstrom || sourcePeak.d || sourcePeak.d_spacing || sourcePeak.d_angstrom) || braggDSpacing(twoTheta);
+    const dSpacing = Number(peak.d || peak.d_spacing || peak.d_angstrom || peak.center_d_angstrom || sourcePeak.d || sourcePeak.d_spacing || sourcePeak.d_angstrom) || braggDSpacingForItem(twoTheta, item);
     const intensity = Number(peak.intensity || peak.height || peak.amplitude || sourcePeak.intensity || sourcePeak.height);
     const relative = Number(
       peak.relative_intensity ||
@@ -3697,6 +3890,8 @@
       relative_intensity: relative,
       index: peak.index || peak.peak_index || sourcePeak.index || sourcePeak.peak_index,
       source: peak.source || peak.detection_method || "processamento avançado ALS",
+      method: peak.method || peak.detection_method || peak.algorithm,
+      fwhm: peak.fwhm || peak.fwhm_2theta || peak.width,
     };
   }
 
@@ -3705,8 +3900,11 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function advancedScriptPeaks(item, baseX) {
+    // A visualizacao prefere picos avancados enviados pelo Python porque eles
+    // ja passaram por ALS, FWHM e conversao Bragg. Quando o item veio de eixo
+    // classificado ou nao tem pico avancado, o painel cai para observedPeaks().
     const explicit = (usesClassifiedAxis(item) ? [] : (item.advancedPeaks || (item.metadata && item.metadata.advanced_peaks) || []))
-      .map(mapAdvancedPeak)
+      .map(function (peak) { return mapAdvancedPeak(peak, item); })
       .filter(function (peak) { return Number.isFinite(peak.two_theta); });
     const peaks = explicit.length ? explicit : observedPeaks(item);
     return peaks
@@ -3818,6 +4016,9 @@
     }
 
     advancedScriptPeaks(item, baseX).forEach(function (peak) {
+      // Os marcadores sao posicionados pelo 2θ do pico e pela intensidade da
+      // curva corrigida no ponto mais proximo. Assim o marcador visual aponta
+      // para o sinal exibido, enquanto a tabela conserva d-spacing e FWHM.
       const point = nearestArrayPoint(series.xValues, series.corrected, Number(peak.two_theta));
       if (!point) return;
       const x = sx(point.x);
@@ -3875,8 +4076,12 @@
     const plotH = height - margin.top - margin.bottom;
     const allX = items.flatMap(function (item) { return item.twoTheta; });
     const baseX = xDomain || extent(allX);
-    const transformed = items.map(transformedSeries);
-    const allY = transformed.flatMap(function (series) { return series; });
+    const transformedInfo = items.map(transformedSeriesInfo);
+    const transformed = transformedInfo.map(function (series) { return series.display; });
+    const pointSets = items.map(function (item, index) { return chartSeriesPoints(item, transformedInfo[index]); });
+    const allY = pointSets.flatMap(function (series) {
+      return series.points.map(function (point) { return point.y; }).filter(Number.isFinite);
+    });
     const yExt = extent(allY);
     const yMin = modeEl.value === "absolute" ? Math.min(0, yExt[0]) : 0;
     const yMax = yExt[1] || 1;
@@ -3896,17 +4101,16 @@
     });
     nodes.push('<line class="argilo-drx__axis" x1="' + margin.left + '" y1="' + (height - margin.bottom) + '" x2="' + (width - margin.right) + '" y2="' + (height - margin.bottom) + '"></line>');
     nodes.push('<line class="argilo-drx__axis" x1="' + margin.left + '" y1="' + margin.top + '" x2="' + margin.left + '" y2="' + (height - margin.bottom) + '"></line>');
-    nodes.push('<text x="' + (width / 2) + '" y="' + (height - 4) + '" text-anchor="middle">2θ</text>');
-    nodes.push('<text x="18" y="' + (height / 2) + '" transform="rotate(-90 18 ' + (height / 2) + ')" text-anchor="middle">Intensidade</text>');
+    nodes.push('<text x="' + (width / 2) + '" y="' + (height - 4) + '" text-anchor="middle">2θ (°)</text>');
+    nodes.push('<text x="18" y="' + (height / 2) + '" transform="rotate(-90 18 ' + (height / 2) + ')" text-anchor="middle">' + escapeHtml(intensityAxisLabel()) + '</text>');
+    const axisWarning = chartAxisAnnotation(items);
+    if (axisWarning) nodes.push('<text x="' + margin.left + '" y="16" class="argilo-drx__mini-note">' + escapeHtml(axisWarning) + '</text>');
 
     items.forEach(function (item, index) {
-      const ySeries = transformed[index];
       const color = palette[index % palette.length];
-      const points = item.twoTheta.map(function (xValue, pointIndex) {
-        if (xValue < baseX[0] || xValue > baseX[1]) return null;
-        return [sx(xValue), sy(ySeries[pointIndex])].join(",");
-      }).filter(Boolean).join(" ");
-      nodes.push('<polyline class="argilo-drx__curve" data-series="' + index + '" stroke="' + color + '" points="' + points + '"></polyline>');
+      svgLineSegments(pointSets[index].points, baseX, sx, sy).forEach(function (segment) {
+        nodes.push('<polyline class="argilo-drx__curve" data-series="' + index + '" stroke="' + color + '" points="' + segment.join(" ") + '"></polyline>');
+      });
       nodes.push('<text x="' + (width - margin.right - 8) + '" y="' + (margin.top + 20 + index * 18) + '" text-anchor="end" fill="' + color + '">' + escapeHtml(sampleLabel(item)).slice(0, 42) + "</text>");
     });
     /**
@@ -3919,7 +4123,7 @@
 
     chartEl.innerHTML = nodes.join("");
     chartEl.onmousemove = function (event) {
-      showTooltip(event, items, baseX, margin, plotW);
+      showTooltip(event, items, baseX, margin, plotW, transformedInfo);
     };
     chartEl.onmouseleave = function () {
       tooltipEl.hidden = true;
@@ -3934,19 +4138,40 @@
     if (!plotlyChartEl || !window.Plotly || typeof window.Plotly.react !== "function") return false;
     const baseX = xDomain || extent(items.flatMap(function (item) { return item.twoTheta; }));
     const traces = items.map(function (item, index) {
-      const customData = (item.twoTheta || []).map(function (theta) {
-        const mineralLabel = peakMineralLabelForTheta(item, theta);
-        return [mineralLabel ? "<br>" + mineralLabel : ""];
+      const seriesInfo = transformedSeriesInfo(item, index);
+      const pointSet = chartSeriesPoints(item, seriesInfo);
+      const text = pointSet.points.map(function (point) {
+        const mineralLabel = Number.isFinite(point.x) ? peakMineralLabelForTheta(item, point.x) : "";
+        const rows = [
+          "<strong>" + escapeHtml(sampleLabel(item)) + "</strong>",
+          "2θ " + (Number.isFinite(point.x) ? formatNumber(point.x, 3) + "°" : "indisponível"),
+          dSpacingText(point.x, item),
+          "I exibida " + (Number.isFinite(point.y) ? formatNumber(point.y, 3) : "indisponível"),
+          "modo: " + intensityAxisLabel(),
+          "axis_mode: " + escapeHtml(axisModeForItem(item)),
+        ];
+        if (modeEl.value === "stacked") {
+          rows.push("I antes do offset " + (Number.isFinite(point.beforeOffset) ? formatNumber(point.beforeOffset, 3) : "indisponível"));
+          rows.push("offset aplicado " + formatNumber(point.offset || 0, 3));
+        } else if (Number.isFinite(point.raw)) {
+          rows.push("I bruta " + formatNumber(point.raw, 3));
+        }
+        const offset = axisOffsetForItem(item);
+        if (offset !== null) rows.push("two_theta_offset_applied: " + escapeHtml(offset));
+        if (pointSet.invalidPoints) rows.push("pontos inválidos/lacunas na série: " + pointSet.invalidPoints);
+        if (mineralLabel) rows.push(escapeHtml(mineralLabel));
+        return rows.join("<br>");
       });
       return {
-        x: item.twoTheta,
-        y: transformedSeries(item, index),
-        customdata: customData,
+        x: pointSet.points.map(function (point) { return point.x; }),
+        y: pointSet.points.map(function (point) { return point.y; }),
+        text: text,
         type: "scatter",
         mode: "lines",
         name: sampleLabel(item),
         line: { color: palette[index % palette.length], width: 2 },
-        hovertemplate: "%{fullData.name}<br>2θ %{x:.3f}<br>I %{y:.3f}%{customdata[0]}<extra></extra>",
+        connectgaps: false,
+        hovertemplate: "%{text}<extra></extra>",
       };
     });
     /**
@@ -3955,19 +4180,31 @@
      */
     if (showPeakMarkers) {
       items.forEach(function (item, itemIndex) {
-        const ySeries = transformedSeries(item, itemIndex);
+        const seriesInfo = transformedSeriesInfo(item, itemIndex);
+        const ySeries = seriesInfo.display;
         const peakX = [];
         const peakY = [];
         const peakText = [];
         observedPeaks(item).slice(0, 12).forEach(function (peak) {
+          // Plotly recebe os picos como uma segunda trace de marcadores. O eixo
+          // X e sempre 2θ; o texto mostra d-spacing quando disponivel, porque a
+          // interpretacao mineralogica e feita em Å.
           const theta = Number(peak.two_theta);
           const point = nearestSeriesPoint(item, ySeries, theta);
           if (!point) return;
           peakX.push(theta);
           peakY.push(point.y);
           const mineralLabel = peakMineralLabelForTheta(item, theta);
+          const source = peak.source || peak.detection_method || peak.method || "não informada";
+          const method = peak.method || peak.detection_method || peak.algorithm || "";
+          const fwhm = Number(peak.fwhm || peak.fwhm_2theta || peak.width);
           peakText.push([
-            Number.isFinite(Number(peak.d)) ? "d " + formatNumber(Number(peak.d), 3) + " A" : "2θ " + formatNumber(theta, 3),
+            "fonte: " + escapeHtml(source),
+            "2θ " + formatNumber(theta, 3) + "°",
+            dSpacingText(theta, item, peak.d),
+            "intensidade " + (Number.isFinite(Number(peak.intensity)) ? formatNumber(Number(peak.intensity), 3) : "indisponível"),
+            Number.isFinite(fwhm) ? "FWHM " + formatNumber(fwhm, 3) + "°2θ" : "",
+            method ? "método: " + escapeHtml(method) : "",
             mineralLabel || "",
           ].filter(Boolean).join("<br>"));
         });
@@ -3995,8 +4232,23 @@
     window.Plotly.react(plotlyChartEl, traces, {
       autosize: true,
       margin: { l: 58, r: 16, t: 14, b: 46 },
-      xaxis: { title: "2θ", range: xDomain || baseX, zeroline: false },
-      yaxis: { title: modeEl.value === "area" ? "Intensidade / área" : "Intensidade", rangemode: modeEl.value === "absolute" ? "tozero" : "nonnegative" },
+      xaxis: { title: "2θ (°)", range: xDomain || baseX, zeroline: false },
+      yaxis: { title: intensityAxisLabel(), rangemode: modeEl.value === "absolute" ? "tozero" : "nonnegative" },
+      annotations: chartAxisAnnotation(items) ? [{
+        xref: "paper",
+        yref: "paper",
+        x: 0,
+        y: 1.08,
+        xanchor: "left",
+        yanchor: "bottom",
+        showarrow: false,
+        text: chartAxisAnnotation(items),
+        font: { size: 11, color: "#7a5a00" },
+        bgcolor: "rgba(255, 244, 204, 0.92)",
+        bordercolor: "#d4a62a",
+        borderwidth: 1,
+        borderpad: 4,
+      }] : [],
       paper_bgcolor: "#ffffff",
       plot_bgcolor: "#fbfdfc",
       hovermode: "x unified",
@@ -4021,16 +4273,19 @@
     let bestIndex = -1;
     let bestDelta = Infinity;
     (item.twoTheta || []).forEach(function (value, index) {
-      const delta = Math.abs(Number(value) - theta);
+      const thetaValue = finiteNumber(value);
+      const delta = thetaValue === null ? NaN : Math.abs(thetaValue - theta);
       if (Number.isFinite(delta) && delta < bestDelta) {
         bestDelta = delta;
         bestIndex = index;
       }
     });
     if (bestIndex < 0) return null;
+    const y = Number(ySeries[bestIndex]);
+    if (!Number.isFinite(y)) return null;
     return {
       theta: Number(item.twoTheta[bestIndex]),
-      y: Number(ySeries[bestIndex]),
+      y: y,
       delta: bestDelta,
     };
   }
@@ -4040,6 +4295,9 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderPeakMarkers(items, transformed, baseX, sx, sy, colors) {
+    // Fallback SVG dos marcadores de pico: usa observedPeaks(), limita a faixa
+    // visivel do eixo 2θ e prioriza maior intensidade relativa para evitar que
+    // rotulos secundarios poluam a leitura da curva.
     const nodes = [];
     items.forEach(function (item, itemIndex) {
       const color = colors[itemIndex % colors.length];
@@ -4059,9 +4317,8 @@
         const x = sx(theta);
         const y = sy(point.y);
         const labelY = Math.max(18, y - 10 - ((peakIndex % 3) * 11));
-        const dValue = Number(peak.d);
-        const label = Number.isFinite(dValue)
-          ? "d " + formatNumber(dValue, 2) + " Å"
+        const label = Number.isFinite(Number(peak.d))
+          ? dSpacingText(theta, item, peak.d)
           : "2θ " + formatNumber(theta, 2) + "°";
         nodes.push('<line class="argilo-drx__peak-line" x1="' + x + '" y1="' + y + '" x2="' + x + '" y2="' + (y - 22) + '" stroke="' + color + '"></line>');
         nodes.push('<circle class="argilo-drx__peak-dot" cx="' + x + '" cy="' + y + '" r="3.5" fill="' + color + '"></circle>');
@@ -4090,7 +4347,7 @@
     if (match && match.candidate && match.candidate.mineral) {
       return "Argilomineral: " + match.candidate.mineral;
     }
-    const dValue = Number(nearestPeak.d) || braggDSpacing(thetaValue);
+    const dValue = Number(nearestPeak.d) || braggDSpacingForItem(thetaValue, item);
     const minerals = Array.from(new Set(mineralReflectionRules().filter(function (rule) {
       return Number.isFinite(dValue) && dValue >= rule.min && dValue <= rule.max;
     }).map(function (rule) {
@@ -4106,7 +4363,7 @@
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
-  function showTooltip(event, items, domain, margin, plotW) {
+  function showTooltip(event, items, domain, margin, plotW, transformedInfo) {
     const rect = chartEl.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 960;
     if (x < margin.left || x > margin.left + plotW) {
@@ -4114,25 +4371,49 @@
       return;
     }
     const theta = domain[0] + ((x - margin.left) / plotW) * (domain[1] - domain[0]);
-    const rows = items.map(function (item) {
-      let bestIndex = 0;
+    const rows = items.map(function (item, itemIndex) {
+      const seriesInfo = transformedInfo && transformedInfo[itemIndex] || transformedSeriesInfo(item, itemIndex);
+      const pointSet = chartSeriesPoints(item, seriesInfo);
+      let bestPoint = null;
       let bestDistance = Infinity;
-      item.twoTheta.forEach(function (value, index) {
-        const distance = Math.abs(value - theta);
+      pointSet.points.forEach(function (point) {
+        if (!point.valid || !Number.isFinite(point.x)) return;
+        const distance = Math.abs(point.x - theta);
         /**
          * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
          * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
          */
         if (distance < bestDistance) {
           bestDistance = distance;
-          bestIndex = index;
+          bestPoint = point;
         }
       });
-      const mineralLabel = peakMineralLabelForTheta(item, item.twoTheta[bestIndex]);
+      if (!bestPoint) return [
+        "<div><strong>", escapeHtml(sampleLabel(item)), "</strong> ",
+        "sem ponto válido próximo; lacunas/pontos inválidos: ", pointSet.invalidPoints,
+        "</div>",
+      ].join("");
+      const mineralLabel = peakMineralLabelForTheta(item, bestPoint.x);
+      const offset = axisOffsetForItem(item);
+      const stackedRows = modeEl.value === "stacked"
+        ? [
+          "<br><span class='argilo-drx__mini-note'>I antes do offset ",
+          Number.isFinite(bestPoint.beforeOffset) ? formatNumber(bestPoint.beforeOffset, 3) : "indisponível",
+          "; offset aplicado ", formatNumber(bestPoint.offset || 0, 3),
+          "</span>",
+        ].join("")
+        : "";
       return [
         "<div><strong>", escapeHtml(sampleLabel(item)), "</strong> ", treatmentBadge(item),
-        ": 2θ ", formatNumber(item.twoTheta[bestIndex], 3),
-        ", I ", formatNumber(item.intensity[bestIndex], 1),
+        ": 2θ ", formatNumber(bestPoint.x, 3), "°",
+        ", ", dSpacingText(bestPoint.x, item),
+        ", I exibida ", formatNumber(bestPoint.y, 3),
+        "<br><span class='argilo-drx__mini-note'>modo: ", escapeHtml(intensityAxisLabel()),
+        "; axis_mode: ", escapeHtml(axisModeForItem(item)),
+        offset !== null ? "; two_theta_offset_applied: " + escapeHtml(offset) : "",
+        pointSet.invalidPoints ? "; lacunas/pontos inválidos: " + pointSet.invalidPoints : "",
+        "</span>",
+        stackedRows,
         mineralLabel ? "<br><span class='argilo-drx__mini-note'>" + escapeHtml(mineralLabel) + "</span>" : "",
         "</div>",
       ].join("");
@@ -6236,15 +6517,19 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function braggDSpacing(twoTheta, wavelength) {
-    // Conversao Bragg usada so para evidencias no cliente; o backend continua
-    // sendo a fonte de classificacao/curadoria.
+    // Capitulo 3 aplicado: o difratometro mede 2θ, mas a Lei de Bragg usa θ.
+    // Esta conversao divide 2θ por dois antes de calcular d = λ/(2 sen θ).
+    // No JavaScript isso serve para renderizacao e evidencias. O cliente nao
+    // assume Cu Kα silenciosamente: λ precisa vir dos metadados do arquivo,
+    // da radiação declarada ou de parametro explicito.
     const value = Number(twoTheta);
-    const lambda = wavelength || CU_K_ALPHA_WAVELENGTH;
-    if (!Number.isFinite(value) || value <= 0) return null;
+    const lambda = Number(wavelength);
+    if (!Number.isFinite(lambda) || lambda <= 0 || !Number.isFinite(value) || value <= 0) return null;
     const thetaRadians = (value / 2) * Math.PI / 180;
     const denominator = 2 * Math.sin(thetaRadians);
     if (!Number.isFinite(denominator) || denominator <= 0) return null;
-    return lambda / denominator;
+    const result = lambda / denominator;
+    return Number.isFinite(result) && result > 0 ? result : null;
   }
 
   /**
@@ -6252,8 +6537,12 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function braggTwoTheta(dSpacing, wavelength) {
+    // Conversao inversa usada para transformar janelas mineralogicas em Å em
+    // posicoes no eixo 2θ da visualizacao. A condicao λ/(2d) <= 1 preserva a
+    // restricao geometrica de observabilidade do Capitulo 3.
     const value = Number(dSpacing);
-    const lambda = wavelength || CU_K_ALPHA_WAVELENGTH;
+    const lambda = Number(wavelength);
+    if (!Number.isFinite(lambda) || lambda <= 0) return null;
     if (!Number.isFinite(value) || value <= 0) return null;
     const ratio = lambda / (2 * value);
     if (!Number.isFinite(ratio) || ratio <= 0 || ratio > 1) return null;
@@ -6471,17 +6760,17 @@
      * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
      */
     for (let index = 1; index < intensity.length - 1; index += 1) {
-      const prev = Number(intensity[index - 1]);
-      const current = Number(intensity[index]);
-      const next = Number(intensity[index + 1]);
-      const theta = Number(twoTheta[index]);
-      if (!Number.isFinite(prev) || !Number.isFinite(current) || !Number.isFinite(next) || !Number.isFinite(theta)) continue;
+      const prev = finiteNumber(intensity[index - 1]);
+      const current = finiteNumber(intensity[index]);
+      const next = finiteNumber(intensity[index + 1]);
+      const theta = finiteNumber(twoTheta[index]);
+      if (prev === null || current === null || next === null || theta === null) continue;
       const relative = (current / maxValue) * 100;
       if (relative < settings.minRelativeIntensity) continue;
       if (current >= prev && current >= next && (current > prev || current > next)) {
         candidates.push({
           two_theta: theta,
-          d: braggDSpacing(theta),
+          d: braggDSpacingForItem(theta, item),
           intensity: current,
           relative_intensity: relative,
           index: index,
@@ -6509,11 +6798,13 @@
       const twoTheta = Number(peak.two_theta || peak.twoTheta);
       return {
         two_theta: twoTheta,
-        d: Number(peak.d || peak.d_spacing || peak.d_angstrom) || braggDSpacing(twoTheta),
+        d: Number(peak.d || peak.d_spacing || peak.d_angstrom) || braggDSpacingForItem(twoTheta, item),
+        method: peak.method || peak.detection_method || peak.algorithm,
+        fwhm: peak.fwhm || peak.fwhm_2theta || peak.width,
         intensity: Number(peak.intensity),
         relative_intensity: Number(peak.relative_intensity || peak.intensity_relative),
         index: peak.index,
-        source: "picos detectados",
+        source: peak.source || peak.detection_method || "picos detectados",
       };
     }).filter(isDiagnosticPeak);
     /**
@@ -6531,7 +6822,8 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function isDiagnosticPeak(peak) {
-    return isDiagnosticPeakTwoTheta(peak && peak.two_theta) && isDiagnosticPeakDSpacing(peak && peak.d);
+    const dValue = Number(peak && peak.d);
+    return isDiagnosticPeakTwoTheta(peak && peak.two_theta) && (!Number.isFinite(dValue) || isDiagnosticPeakDSpacing(dValue));
   }
 
   function isDiagnosticPeakDSpacing(value) {
