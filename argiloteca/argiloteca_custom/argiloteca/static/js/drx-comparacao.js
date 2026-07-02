@@ -4878,14 +4878,28 @@
 
   function ngcCandidatePeakWindows(candidate) {
     const text = ngcCandidateDiagnosticText(candidate);
-    if (/illite|ilita|mica/.test(text)) return [[9.7, 10.4, "Cap. 7 ilita/mica 001"]];
-    if (/kaolin|caulin|halloy|halois/.test(text)) return [[6.9, 7.4, "Cap. 7 caulinita 001"], [3.5, 3.65, "Cap. 7 caulinita 002"]];
-    if (/smectite|esmect|montmor|expans/.test(text)) return [[13.0, 15.5, "Cap. 7 esmectita natural"], [16.1, 18.3, "Cap. 7 esmectita glicolada"], [9.7, 10.4, "Cap. 7 colapso térmico"]];
-    if (/chlorite|clorit/.test(text)) return [[13.5, 14.9, "Cap. 7 clorita 001"], [7.0, 7.35, "Cap. 7 clorita 002"], [4.65, 4.85, "Cap. 7 clorita 003"], [3.48, 3.6, "Cap. 7 clorita 004"]];
-    if (/corrensite|mixed|interstrat|interestrat/.test(text)) return [[24.0, 31.5, "Cap. 8 superestrutura/00l*"], [13.5, 17.5, "Cap. 8 componente expansível/clorítico"], [9.7, 10.5, "Cap. 8 colapso/desidratação"]];
-    if (/sepiolite|palygorskite|fibrous|channel/.test(text)) return [[11.8, 12.6, "Cap. 7 sepiolita/paligorsquita"]];
-    if (/quartz|quartzo/.test(text)) return [[4.2, 4.35, "Cap. 7 quartzo 100"], [3.32, 3.37, "Cap. 7 quartzo 101"]];
+    if (/illite|ilita|mica/.test(text)) return [[9.7, 10.4, "Cap. 7 p.233 Fig. 7.3 · ilita/mica 001"]];
+    if (/kaolin|caulin|halloy|halois/.test(text)) return [[6.9, 7.4, "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 001"], [3.5, 3.65, "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 002"]];
+    if (/smectite|esmect|montmor|expans/.test(text)) return [[13.0, 15.5, "Cap. 7 p.241 Fig. 7.8 · esmectita natural"], [16.1, 18.3, "Cap. 7 p.241 Fig. 7.8 · esmectita glicolada"], [9.7, 10.4, "Cap. 7 p.241 Fig. 7.8 · colapso térmico"]];
+    if (/chlorite|clorit/.test(text) && /vermicul/.test(text)) return [[13.5, 14.9, "Cap. 7 p.234 Fig. 7.4; p.240 Fig. 7.7 · clorita/vermiculita 14 Å"], [9.7, 10.5, "Cap. 7 p.240 Fig. 7.7 · colapso para 10 Å"], [16.1, 18.3, "Cap. 8 regras mixed-layer · componente expansível"]];
+    if (/chlorite|clorit/.test(text)) return [[13.5, 14.9, "Cap. 7 p.234 Fig. 7.4 · clorita 001"], [7.0, 7.35, "Cap. 7 p.234 Fig. 7.4 · clorita 002"], [4.65, 4.85, "Cap. 7 p.234 Fig. 7.4 · clorita 003"], [3.48, 3.6, "Cap. 7 p.234 Fig. 7.4 · clorita 004"]];
+    if (/corrensite|mixed|interstrat|interestrat/.test(text)) return [[24.0, 31.5, "Cap. 8 regras mixed-layer · superestrutura/00l*"], [13.5, 17.5, "Cap. 8 regras mixed-layer · componente expansível/clorítico"], [9.7, 10.5, "Cap. 8 regras mixed-layer · colapso/desidratação"]];
+    if (/sepiolite|palygorskite|fibrous|channel/.test(text)) return [[11.8, 12.6, "Cap. 7 Tab. 7.3 p.244 · sepiolita/paligorsquita"]];
+    if (/quartz|quartzo/.test(text)) return [[4.2, 4.35, "Cap. 7 Tab. 7.8B p.251 · quartzo 100"], [3.32, 3.37, "Cap. 7 Tab. 7.8B p.251 · quartzo 101"]];
     return [];
+  }
+
+  function ngcBehaviorSourceLabel(candidate) {
+    const text = ngcCandidateDiagnosticText(candidate);
+    if (/chlorite|clorit/.test(text) && /vermicul/.test(text)) return "Cap. 7 p.234 Fig. 7.4; p.240 Fig. 7.7; Cap. 8 regras mixed-layer";
+    if (/illite|ilita|mica/.test(text)) return "Cap. 7 p.233 Fig. 7.3";
+    if (/kaolin|caulin|halloy|halois/.test(text)) return "Cap. 7 p.234; Tab. 7.6 p.247";
+    if (/smectite|esmect|montmor|expans/.test(text)) return "Cap. 7 p.241 Fig. 7.8";
+    if (/chlorite|clorit/.test(text)) return "Cap. 7 p.234 Fig. 7.4";
+    if (/corrensite|mixed|interstrat|interestrat/.test(text)) return "Cap. 8 regras mixed-layer";
+    if (/sepiolite|palygorskite|fibrous|channel/.test(text)) return "Cap. 7 Tab. 7.3 p.244";
+    if (/quartz|quartzo/.test(text)) return "Cap. 7 Tab. 7.8B p.251";
+    return "Cap. 7/8 comportamento N/G/C";
   }
 
   function formatNgcPeakObservation(label, peak, ruleLabel) {
@@ -4952,7 +4966,7 @@
       const candidateText = ngcCandidateDiagnosticText(candidate);
       if (!/mixed|interstrat|corrensite|smectite|esmect|chlorite|clorit/.test(candidateText + " " + text)) return;
       values.slice(0, 2).forEach(function (value) {
-        if (typeof value === "string") rows.push(value + " · Cap. 7/8 comportamento N/G/C");
+        if (typeof value === "string") rows.push(value + " · " + ngcBehaviorSourceLabel(candidate));
       });
     });
     const unique = [];
