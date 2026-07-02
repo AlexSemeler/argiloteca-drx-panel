@@ -783,6 +783,14 @@
     return (prefix ? prefix + " · " : "") + sampleLabel(item);
   }
 
+  function stackedOffsetForNgcOrder(item, index) {
+    const rank = ngcTreatmentRank(item && (item.treatment || item.preparation));
+    if (rank === 0) return 2 * 1.15;
+    if (rank === 1) return 1 * 1.15;
+    if (rank === 2) return 0;
+    return index * 1.15;
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -3573,7 +3581,7 @@
       mode: mode,
       display: [],
       beforeOffset: [],
-      offset: mode === "stacked" ? index * 1.15 : 0,
+      offset: mode === "stacked" ? stackedOffsetForNgcOrder(item, index) : 0,
       invalidPoints: 0,
     };
     if (mode === "normalized") {
