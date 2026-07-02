@@ -305,6 +305,89 @@ class DrxV3EngineTest(unittest.TestCase):
         self.assertIn('"decimated": decimated', endpoint_source)
         self.assertNotIn('"total_points"', endpoint_source)
 
+    def test_ngc_workflow_exports_backend_peak_windows_with_sources(self):
+        payload = build_ngc_workflow([
+            {
+                "filename": "AM-03 (N).raw",
+                "sample_code": "AM-03 (N)",
+                "sample_base": "AM-03",
+                "preparation": "natural",
+                "peaks": [{"d_angstrom": 10.0, "two_theta": 8.84, "relative_intensity": 80}],
+            }
+        ])
+        windows = payload["ngc_candidate_peak_windows"]
+        self.assertIn("illite_mica", windows)
+        self.assertEqual(windows["illite_mica"][0]["source"]["chapter"], 7)
+        self.assertEqual(windows["illite_mica"][0]["source"]["page"], 233)
+        self.assertIn("rule_id", windows["illite_mica"][0]["source"])
+        self.assertIn("illite", windows["illite_mica"][0]["label"].lower())
+        self.assertIn("ngc_candidate_peak_windows", payload["groups"][0])
+
+    def test_ngc_windows_are_loaded_from_rules_catalog_with_fallback(self):
+        workflow_source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/services/drx_ngc_workflow.py")
+        catalog_source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca_drx/diagnostics/rules_catalog.yaml")
+        self.assertIn("RULES_CATALOG_PATH", workflow_source)
+        self.assertIn("def _ngc_candidate_peak_windows_from_rules_catalog", workflow_source)
+        self.assertIn("_NGC_CANDIDATE_PEAK_WINDOWS_FALLBACK", workflow_source)
+        self.assertIn("named_ranges:", catalog_source)
+        self.assertIn("peak_sets:", catalog_source)
+        self.assertIn("source_locator:", catalog_source)
+
+    def test_ngc_workflow_does_not_project_two_theta_without_wavelength(self):
+        payload = build_ngc_workflow([
+            {
+                "filename": "AM-04 (N).raw",
+                "sample_code": "AM-04 (N)",
+                "sample_base": "AM-04",
+                "preparation": "natural",
+                "peaks": [{"two_theta": 8.84, "relative_intensity": 80}],
+            }
+        ])
+        peak_tables = payload["groups"][0]["script_report"]["peak_tables"]
+        self.assertEqual(peak_tables[0]["peaks"], [])
+        self.assertIsNone(payload["groups"][0]["clay_interpretation"]["wavelengthA"])
+
+    def test_panel_prefers_backend_ngc_windows_and_axis_toggle(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        views = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/views.py")
+        self.assertIn("function backendNgcPeakWindowCatalog", source)
+        self.assertIn("ngc_candidate_peak_windows", source)
+        self.assertIn("function renderAxisDisplayControl", source)
+        self.assertIn('data-axis-display-mode="raw"', source)
+        self.assertIn("eixo exibido", source)
+        self.assertIn('"schema_version": "argiloteca.drx.reference_overlay.v1"', views)
+        self.assertIn('"reference_overlay": reference_overlay', views)
+
+    def test_panel_keeps_fixed_peak_labels_short_and_details_in_tooltip(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        self.assertIn("function compactFixedPeakLabel", source)
+        self.assertIn("ngcPeakPopupForDSpacing", source)
+        self.assertIn("dynamicDetectionText", source)
+        self.assertIn("slice(0, 5)", source)
+
+    def test_panel_ranking_separates_discrete_and_mixed_layer_categories(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        self.assertIn("function ngcCandidateVisualCategory", source)
+        self.assertIn("Minerais discretos", source)
+        self.assertIn("Misturas físicas possíveis", source)
+        self.assertIn("Interestratificados / mixed-layer", source)
+        self.assertIn("Evidências auxiliares", source)
+        self.assertIn("não equivale a fase discreta confirmada", source)
+
+    def test_advanced_als_declares_central_peak_detector_adapter(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/services/drx.py")
+        self.assertIn('"peak_detector_service": "argiloteca_drx_core.peak_detector"', source)
+        self.assertIn('"peak_detector_adapter": "advanced_als_curve_adapter"', source)
+
+    def test_panel_ranking_blocks_mixed_layer_evidence_leakage(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+        matcher_start = source.index("function behaviorEvidenceMatchesCandidate")
+        matcher_end = source.index("function ngcCandidateRulePeaks", matcher_start)
+        matcher_source = source[matcher_start:matcher_end]
+        self.assertIn("23\\.\\d|24\\.\\d", matcher_source)
+        self.assertIn("28\\.\\d|29\\.\\d|30\\.\\d|31\\.\\d|32\\.\\d", matcher_source)
+        self.assertIn("corrensite|mixed|interstrat|interestrat", matcher_source)
+
 
 if __name__ == "__main__":
     unittest.main()

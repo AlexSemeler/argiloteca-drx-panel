@@ -90,6 +90,203 @@ DEFAULT_INSTANCE_PATH = Path(
         Path(__file__).resolve().parents[3] / "var" / "instance",
     )
 )
+
+
+def _dynamic_dead_zone_angstrom(d_spacing):
+    """Calcula zona-morta em Å sem carregar dependências científicas no boot."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return 2.5
+    if d_value > 18.5:
+        return 2.0
+    if d_value > 15.0:
+        return 1.8
+    if d_value > 13.5:
+        return 1.5
+    if d_value > 11.0:
+        return 1.0
+    if d_value > 9.0:
+        return 0.8
+    if d_value > 7.5:
+        return 0.5
+    if d_value > 6.5:
+        return 0.4
+    if d_value > 4.5:
+        return 0.2
+    if d_value > 3.0:
+        return 0.1
+    return 0.05
+
+
+def _dynamic_noise_multiplier(d_spacing):
+    """Calcula multiplicador de ruído sem afetar a classificação mineralógica."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return 4.0
+    if d_value > 18.5:
+        return 3.0
+    if d_value > 16.0:
+        return 2.0
+    if d_value > 15.0:
+        return 2.0
+    if d_value > 13.5:
+        return 2.0
+    if d_value > 12.5:
+        return 3.0
+    if d_value > 11.0:
+        return 4.0
+    if d_value > 10.5:
+        return 3.0
+    if d_value > 9.6:
+        return 2.0
+    if d_value > 9.0:
+        return 3.0
+    if d_value > 8.0:
+        return 4.0
+    if d_value > 7.5:
+        return 3.0
+    if d_value > 6.9:
+        return 2.0
+    if d_value > 6.0:
+        return 4.0
+    if d_value > 5.5:
+        return 4.0
+    if d_value > 4.8:
+        return 2.5
+    if d_value > 4.5:
+        return 2.5
+    if d_value > 4.1:
+        return 2.0
+    if d_value > 3.5:
+        return 2.5
+    if d_value > 3.2:
+        return 2.0
+    if d_value > 3.0:
+        return 4.0
+    return 4.0
+
+
+def _dynamic_detection_context(d_spacing):
+    """Descreve a faixa usada somente como explicação técnica do pico."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return "ruídos longos / baixa angulação"
+    if d_value > 18.5:
+        return "cauda da esmectita glicolada"
+    if d_value > 16.0:
+        return "núcleo da esmectita glicolada"
+    if d_value > 13.5:
+        return "clorita basal / esmectita natural"
+    if d_value > 12.5:
+        return "minerais interestratificados"
+    if d_value > 11.0:
+        return "zona árida"
+    if d_value > 10.5:
+        return "ombro da ilita"
+    if d_value > 9.6:
+        return "núcleo da ilita basal"
+    if d_value > 9.0:
+        return "cauda da ilita / esmectita calcinada"
+    if d_value > 8.0:
+        return "zona árida"
+    if d_value > 7.5:
+        return "ombro da caulinita"
+    if d_value > 6.9:
+        return "núcleo da caulinita basal"
+    if d_value > 6.0:
+        return "zona árida"
+    if d_value > 4.8:
+        return "ordem 002 da ilita"
+    if d_value > 4.5:
+        return "ordem 003 da clorita"
+    if d_value > 4.1:
+        return "quartzo 100"
+    if d_value > 3.5:
+        return "ordem 002 da caulinita"
+    if d_value > 3.2:
+        return "quartzo 101 / ilita 003"
+    if d_value > 3.0:
+        return "zona árida"
+    return "fim do espectro / alto ruído instrumental"
+
+
+def _dynamic_detection_metadata(d_spacing):
+    """Monta metadado explicável para picos ALS sem confirmar mineral."""
+    try:
+        d_value = float(d_spacing)
+    except (TypeError, ValueError):
+        d_value = 0.0
+    if not math.isfinite(d_value) or d_value <= 0:
+        return {
+            "applied": False,
+            "reason": "d_spacing unavailable or wavelength not explicit",
+        }
+    return {
+        "applied": True,
+        "dead_zone_A": _dynamic_dead_zone_angstrom(d_value),
+        "noise_multiplier": _dynamic_noise_multiplier(d_value),
+        "context": _dynamic_detection_context(d_value),
+    }
+
+
+def explicit_wavelength_angstrom(metadata_or_params=None):
+    """Retorna λ em Å somente quando informado explicitamente.
+
+    A política do painel evita assumir Cu Kα em dados externos. Strings de
+    radiação conhecidas são aceitas como metadado explícito; ausência de λ ou
+    radiação retorna ``None`` e bloqueia novo cálculo de d-spacing.
+    """
+    source = metadata_or_params or {}
+    if not isinstance(source, dict):
+        return None
+    nested = source.get("xrd_method") if isinstance(source.get("xrd_method"), dict) else {}
+    for container in (source, nested):
+        for key in ("wavelength_angstrom", "lambda_angstrom", "lambda_A", "lambda", "wavelength"):
+            value = container.get(key)
+            number = _finite_float(value)
+            if number is not None and number > 0:
+                return number
+            text = str(safe_text(value or "") or "").lower()
+            if re.search(r"cu\s*k|cuka|cu\s*kα|cu\s*kalpha", text):
+                return ADVANCED_ALS_WAVELENGTH_CU
+        radiation = str(safe_text(container.get("radiation") or container.get("radiation_source") or "") or "").lower()
+        if re.search(r"cu\s*k|cuka|cu\s*kα|cu\s*kalpha", radiation):
+            return ADVANCED_ALS_WAVELENGTH_CU
+    return None
+
+
+def wavelength_source(metadata_or_params=None):
+    """Classifica a origem de λ para contratos de visualização e auditoria."""
+    source = metadata_or_params or {}
+    if not isinstance(source, dict):
+        return "unavailable"
+    if explicit_wavelength_angstrom(source) is None:
+        return "unavailable"
+    return "user_param" if source.get("wavelength_angstrom") or source.get("lambda_angstrom") else "metadata"
+
+
+def safe_d_spacing_from_two_theta(two_theta, wavelength):
+    """Converte 2θ para d somente quando λ é explícito e válido."""
+    wavelength_value = _finite_float(wavelength)
+    value = _finite_float(two_theta)
+    if wavelength_value is None or wavelength_value <= 0 or value is None or value <= 0:
+        return None
+    theta = math.radians(value / 2.0)
+    sine = math.sin(theta)
+    if sine <= 0:
+        return None
+    d_value = wavelength_value / (2.0 * sine)
+    return d_value if math.isfinite(d_value) and d_value > 0 else None
+
+
+def d_spacing_unavailable_metadata():
+    """Contrato comum para picos sem d calculável por falta de λ."""
+    return {
+        "d_spacing_status": "unavailable_missing_wavelength",
+        "d_spacing_label": "d indisponível — λ não informado",
+        "d_spacing_source": "unavailable_missing_wavelength",
+        "wavelength_source": "unavailable",
+    }
 DEFAULT_WORKSPACE_PATH = Path(__file__).resolve().parents[4]
 DEFAULT_WORKSPACE_INSTANCE_PATH = DEFAULT_WORKSPACE_PATH / "var" / "instance"
 DRX_INDEX_PATH = DEFAULT_INSTANCE_PATH / "argiloteca_drx_index.json"
@@ -534,6 +731,7 @@ def align_raw_curve_for_classified_display(
     Curvas glicoladas e calcinadas devem ser comparadas no mesmo referencial da
     Natural da amostra-base; quando essa ancora nao existe, usa-se quartzo 101.
     """
+    source_two_theta = list(parsed.two_theta or [])
     inferred_treatment = infer_diffractogram_treatment(sample_code, filename, path)
     treatment_value = safe_text(treatment) or inferred_treatment.get("type")
     sample_base_value = (
@@ -553,7 +751,11 @@ def align_raw_curve_for_classified_display(
     )
     quartz_offset = None
     if not has_ngc_anchor:
-        quartz_offset = calculate_quartz_axis_offset(parsed.two_theta, parsed.intensity)
+        quartz_offset = calculate_quartz_axis_offset(
+            parsed.two_theta,
+            parsed.intensity,
+            wavelength=explicit_wavelength_angstrom(parsed.metadata),
+        )
     parsed = apply_two_theta_axis_alignment(
         parsed,
         filename=filename,
@@ -567,6 +769,11 @@ def align_raw_curve_for_classified_display(
     )
     parsed.metadata.setdefault("two_theta_alignment_sample_base", sample_base_value)
     parsed.metadata.setdefault("two_theta_alignment_treatment", treatment_value)
+    if parsed.metadata.get("two_theta_offset_applied") is not None:
+        parsed.metadata.setdefault("source_two_theta", source_two_theta)
+        parsed.metadata.setdefault("raw_two_theta", source_two_theta)
+        parsed.metadata.setdefault("aligned_two_theta", list(parsed.two_theta or []))
+        parsed.metadata.setdefault("axis_correction_source", parsed.metadata.get("two_theta_alignment_method") or "ngc_axis_alignment")
     parsed.metadata["curve_source"] = (
         "classificacao_mineralogica_raw_com_eixo_ajustado"
         if parsed.metadata.get("two_theta_offset_applied") is not None
@@ -626,11 +833,15 @@ def shift_observed_two_theta_fields(rows, offset):
             if theta_for_d is not None:
                 break
         if theta_for_d is not None:
-            d_spacing = _two_theta_to_d_spacing(theta_for_d)
+            d_spacing = _two_theta_to_d_spacing(theta_for_d, wavelength=explicit_wavelength_angstrom(shifted))
             if d_spacing is not None:
                 for key in d_keys:
                     if key in shifted:
                         shifted[key] = round(float(d_spacing), 5)
+                shifted["d_spacing_source"] = "bragg_explicit_wavelength"
+                shifted["d_spacing_status"] = "available"
+            elif not any(_finite_float(shifted.get(key)) is not None for key in d_keys):
+                shifted.update(d_spacing_unavailable_metadata())
         shifted_rows.append(shifted)
     return shifted_rows
 
@@ -756,19 +967,20 @@ def _smooth_savgol_compatible(values, window=5, polyorder=2):
     return _moving_average(values, window)
 
 
-def _d_spacing_to_two_theta(d_spacing, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
+def _d_spacing_to_two_theta(d_spacing, wavelength=None):
     """Converte d-spacing para 2θ pela Lei de Bragg.
 
     Regra geométrica aplicada do capítulo "Diffraction I: Geometry":
     a equação nλ = 2d sen θ usa θ, não o ângulo medido 2θ. Para o painel, os
     difratogramas chegam no eixo experimental 2θ; por isso o cálculo inverte a
-    relação como 2θ = 2 arcsen(λ / 2d), assumindo primeira ordem e radiação
-    configurada no metadado, com Cu Kα como padrão operacional.
+    relação como 2θ = 2 arcsen(λ / 2d). Sem λ explícito, retorna ``None``
+    para impedir conversão silenciosa.
     """
     value = _finite_float(d_spacing)
-    if value is None or value <= 0:
+    wavelength_value = _finite_float(wavelength)
+    if value is None or value <= 0 or wavelength_value is None or wavelength_value <= 0:
         return None
-    ratio = float(wavelength) / (2.0 * value)
+    ratio = wavelength_value / (2.0 * value)
     if ratio <= 0 or ratio > 1:
         return None
     return math.degrees(2.0 * math.asin(ratio))
@@ -778,6 +990,7 @@ def calculate_quartz_axis_offset(
     two_theta,
     intensity,
     *,
+    wavelength=None,
     search_d_range=DRX_QUARTZ_CALIBRATION_SEARCH_D_RANGE,
     target_d=DRX_QUARTZ_CALIBRATION_TARGET_D,
     min_relative_intensity=DRX_QUARTZ_CALIBRATION_MIN_RELATIVE_INTENSITY,
@@ -787,8 +1000,12 @@ def calculate_quartz_axis_offset(
     """Find quartz 101 and return an absolute 2theta shift for axis calibration.
 
     O pico de quartzo e usado como ancora operacional quando nao ha par N/G/C
-    com Natural confiavel; o resultado traz metadados para auditoria no painel.
+    com Natural confiavel. Sem λ explícito, a rotina retorna ``None`` para não
+    projetar d-spacing em 2θ silenciosamente.
     """
+    wavelength_value = _finite_float(wavelength)
+    if wavelength_value is None or wavelength_value <= 0:
+        return None
     pairs = _finite_curve_pairs(two_theta, intensity)
     if len(pairs) < MIN_POINTS:
         return None
@@ -800,9 +1017,9 @@ def calculate_quartz_axis_offset(
         return None
 
     d_min, d_max = sorted((float(search_d_range[0]), float(search_d_range[1])))
-    min_two_theta = _d_spacing_to_two_theta(d_max)
-    max_two_theta = _d_spacing_to_two_theta(d_min)
-    target_two_theta = _d_spacing_to_two_theta(target_d)
+    min_two_theta = _d_spacing_to_two_theta(d_max, wavelength=wavelength_value)
+    max_two_theta = _d_spacing_to_two_theta(d_min, wavelength=wavelength_value)
+    target_two_theta = _d_spacing_to_two_theta(target_d, wavelength=wavelength_value)
     if min_two_theta is None or max_two_theta is None or target_two_theta is None:
         return None
 
@@ -831,7 +1048,7 @@ def calculate_quartz_axis_offset(
             return None
 
     observed_two_theta = clean_two_theta[best_index]
-    observed_d = _two_theta_to_d_spacing(observed_two_theta)
+    observed_d = _two_theta_to_d_spacing(observed_two_theta, wavelength=wavelength_value)
     offset = target_two_theta - observed_two_theta
     if not math.isfinite(offset):
         return None
@@ -974,19 +1191,16 @@ def _normalize_positive(values):
     return [max(float(value), 0.0) / maximum for value in values], maximum
 
 
-def _two_theta_to_d_spacing(two_theta, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
+def _two_theta_to_d_spacing(two_theta, wavelength=None):
     """Converte o eixo experimental 2θ em d-spacing pela Lei de Bragg.
 
     Regra geométrica aplicada do capítulo "Diffraction I: Geometry":
     antes de aplicar nλ = 2d sen θ, o ângulo medido pelo difratômetro é dividido
     por dois. A saída em Å permite comparar picos basais de argilominerais entre
-    equipamentos e tratamentos, mas não confirma mineral isoladamente.
+    equipamentos e tratamentos, mas não confirma mineral isoladamente. Sem λ
+    explícito, retorna ``None``.
     """
-    theta = math.radians(float(two_theta) / 2.0)
-    sine = math.sin(theta)
-    if sine <= 0:
-        return None
-    return wavelength / (2.0 * sine)
+    return safe_d_spacing_from_two_theta(two_theta, wavelength)
 
 
 def _interpolate_x(left_x, left_y, right_x, right_y, target_y):
@@ -1106,7 +1320,7 @@ def _select_advanced_peaks_with_engine(two_theta, corrected, normalized, max_pea
     return fallback, "stdlib_local_maxima_fallback", engine_payload.get("error")
 
 
-def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU, detection_method="local_maxima_after_als"):
+def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavelength_angstrom=None, detection_method="local_maxima_after_als"):
     """Monta linhas de pico usadas pelo painel e pela comparação de similaridade.
 
     Cada índice de pico vem da curva corrigida por ALS. Aqui o painel materializa
@@ -1117,16 +1331,17 @@ def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavele
     """
     peaks = []
     fits = []
+    wavelength_value = _finite_float(wavelength_angstrom)
     for number, index in enumerate(peak_indices, start=1):
         center = two_theta[index]
-        d_spacing = _two_theta_to_d_spacing(center, wavelength=wavelength_angstrom)
+        d_spacing = _two_theta_to_d_spacing(center, wavelength=wavelength_value)
         fwhm, left_half, right_half = _peak_fwhm(two_theta, corrected, index)
         area, area_left, area_right = _integrated_peak_area(two_theta, corrected, index)
         theta_rad = math.radians(center / 2.0)
         crystallite_size_nm = None
-        if fwhm and fwhm > 0 and math.cos(theta_rad) > 0:
+        if wavelength_value and fwhm and fwhm > 0 and math.cos(theta_rad) > 0:
             crystallite_size_nm = (
-                ADVANCED_ALS_SCHERRER_K * (float(wavelength_angstrom) / 10.0)
+                ADVANCED_ALS_SCHERRER_K * (float(wavelength_value) / 10.0)
             ) / (math.radians(fwhm) * math.cos(theta_rad))
         relative = normalized[index]
         peak = {
@@ -1143,7 +1358,16 @@ def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavele
             "status": "detected",
             "source": "advanced_als",
             "detection_method": detection_method,
+            "dynamic_detection": _dynamic_detection_metadata(d_spacing),
         }
+        if d_spacing is None:
+            peak.update(d_spacing_unavailable_metadata())
+        else:
+            peak.update({
+                "d_spacing_status": "available",
+                "d_spacing_source": "bragg_explicit_wavelength",
+                "wavelength_source": "metadata",
+            })
         peaks.append(peak)
         fits.append(
             {
@@ -1161,7 +1385,7 @@ def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavele
                 "baseline_local": 0.0,
                 "scherrer_crystallite_size_nm": round(crystallite_size_nm, 4) if crystallite_size_nm else None,
                 "scherrer_k": ADVANCED_ALS_SCHERRER_K,
-                "wavelength_angstrom": wavelength_angstrom,
+                "wavelength_angstrom": wavelength_value,
                 "redchi": None,
                 "aic": None,
                 "bic": None,
@@ -1181,12 +1405,14 @@ def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavele
                 "source_peak": peak,
             }
         )
-    engine_payload = fit_peaks_lmfit(
-        two_theta,
-        corrected,
-        peak_indices,
-        wavelength_angstrom=wavelength_angstrom,
-    )
+    engine_payload = {}
+    if wavelength_value is not None:
+        engine_payload = fit_peaks_lmfit(
+            two_theta,
+            corrected,
+            peak_indices,
+            wavelength_angstrom=wavelength_value,
+        )
     if engine_payload.get("success") and engine_payload.get("fit_results"):
         by_peak = {
             int(row.get("peak_index")): row
@@ -1205,7 +1431,7 @@ def _advanced_fit_rows(two_theta, corrected, normalized, peak_indices, *, wavele
                 {
                     **{key: value for key, value in engine_fit.items() if key not in {"peak_index"}},
                     "peak_id": fit.get("peak_id"),
-                    "wavelength_angstrom": wavelength_angstrom,
+                    "wavelength_angstrom": wavelength_value,
                     "peak_location_method": "lmfit_pseudo_voigt_after_als",
                     "uncertainty_source": "lmfit_covariance" if engine_fit.get("center_2theta_stderr") is not None else "lmfit_no_stderr",
                     "fwhm_source": "lmfit_pseudo_voigt",
@@ -1276,7 +1502,7 @@ def targeted_basal_peak_scan(
     two_theta,
     intensity_corrected,
     intensity_raw=None,
-    wavelength=ADVANCED_ALS_WAVELENGTH_CU,
+    wavelength=None,
     ranges=None,
 ):
     """Varre janelas basais diagnósticas definidas em d-spacing.
@@ -1291,6 +1517,9 @@ def targeted_basal_peak_scan(
     auxiliar e pode sair como `weak` ou `shoulder`; código downstream não deve
     tratar esse resultado como confirmação mineralógica.
     """
+    wavelength_value = _finite_float(wavelength)
+    if wavelength_value is None or wavelength_value <= 0:
+        return []
     pairs = []
     raw_values = list(intensity_raw or [])
     for index, (theta_raw, value_raw) in enumerate(zip(two_theta or [], intensity_corrected or [])):
@@ -1321,10 +1550,10 @@ def targeted_basal_peak_scan(
         # Capítulo 3 aplicado: uma janela ampla em d-spacing vira uma janela
         # invertida em 2θ, porque d e 2θ variam em sentidos opostos pela Lei de
         # Bragg. O maior d define o menor 2θ; o menor d define o maior 2θ.
-        theta_min = _d_spacing_to_two_theta(d_high, wavelength=wavelength)
-        theta_max = _d_spacing_to_two_theta(d_low, wavelength=wavelength)
+        theta_min = _d_spacing_to_two_theta(d_high, wavelength=wavelength_value)
+        theta_max = _d_spacing_to_two_theta(d_low, wavelength=wavelength_value)
         center_d = (d_low + d_high) / 2.0
-        center_two_theta = _d_spacing_to_two_theta(center_d, wavelength=wavelength)
+        center_two_theta = _d_spacing_to_two_theta(center_d, wavelength=wavelength_value)
         indices = [
             index for index, theta in enumerate(clean_two_theta)
             if theta_min is not None and theta_max is not None and theta_min <= theta <= theta_max
@@ -1355,7 +1584,7 @@ def targeted_basal_peak_scan(
         local_contrast = local_range / maximum if maximum else 0.0
         fwhm, left_half, right_half = _peak_fwhm(clean_two_theta, corrected, peak_index)
         area, area_left, area_right = _integrated_peak_area(clean_two_theta, corrected, peak_index, threshold_fraction=0.01)
-        d_observed = _two_theta_to_d_spacing(clean_two_theta[peak_index], wavelength=wavelength)
+        d_observed = _two_theta_to_d_spacing(clean_two_theta[peak_index], wavelength=wavelength_value)
         is_local_max = _is_local_maximum(corrected, peak_index)
         quality = _targeted_quality(relative_height, local_contrast, is_local_max, fwhm)
         observed_peak = None
@@ -1416,7 +1645,7 @@ def process_advanced_als_curve(
     start_two_theta=4.0,
     peak_prominence=0.02,
     max_peaks=40,
-    wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU,
+    wavelength_angstrom=None,
 ):
     """Constrói o payload de processamento avançado usado pelo comparador DRX.
 
@@ -1460,23 +1689,24 @@ def process_advanced_als_curve(
         start_two_theta=start_two_theta,
         prominence=peak_prominence,
     )
-    try:
-        wavelength_angstrom = float(wavelength_angstrom or ADVANCED_ALS_WAVELENGTH_CU)
-    except (TypeError, ValueError):
-        wavelength_angstrom = ADVANCED_ALS_WAVELENGTH_CU
+    explicit_metadata_wavelength = explicit_wavelength_angstrom(metadata or {})
+    wavelength_value = _finite_float(wavelength_angstrom)
+    wavelength_source_value = "user_param" if wavelength_value is not None else wavelength_source(metadata or {})
+    if wavelength_value is None:
+        wavelength_value = explicit_metadata_wavelength
     peaks, fit_results = _advanced_fit_rows(
         clean_two_theta,
         corrected,
         normalized,
         peak_indices,
-        wavelength_angstrom=wavelength_angstrom,
+        wavelength_angstrom=wavelength_value,
         detection_method=peak_detection_method,
     )
     targeted_basal_peaks = targeted_basal_peak_scan(
         clean_two_theta,
         corrected,
         intensity_raw=raw_intensity,
-        wavelength=wavelength_angstrom,
+        wavelength=wavelength_value,
     )
     qc_flags = []
     if baseline_method == "als_stdlib_pentadiagonal":
@@ -1499,6 +1729,14 @@ def process_advanced_als_curve(
                 "message": "Deteccao SciPy indisponivel; fallback local usado. " + str(peak_detection_error),
             }
         )
+    if wavelength_value is None:
+        qc_flags.append(
+            {
+                "code": "missing_wavelength_d_spacing_disabled",
+                "severity": "info",
+                "message": "λ não informado explicitamente; d-spacing novo por Bragg e varredura basal direcionada foram desativados.",
+            }
+        )
 
     return {
         "success": True,
@@ -1510,13 +1748,17 @@ def process_advanced_als_curve(
         "metadata": metadata or {},
         "preparation": None,
         "xrd_method": {
-            "radiation": "Cu Kalpha",
-            "wavelength_angstrom": wavelength_angstrom,
+            "radiation": "Cu Kalpha" if wavelength_value == ADVANCED_ALS_WAVELENGTH_CU else None,
+            "wavelength_angstrom": wavelength_value,
+            "wavelength_source": wavelength_source_value if wavelength_value is not None else "unavailable",
             "scherrer_k": ADVANCED_ALS_SCHERRER_K,
             "scherrer_note": "Tamanho de cristalito estimado sem correcao de alargamento instrumental.",
         },
         "peak_processing": {
             "phase": "processamento_avancado_als",
+            "peak_detector_service": "argiloteca_drx_core.peak_detector",
+            "peak_detector_adapter": "advanced_als_curve_adapter",
+            "peak_detector_adapter_note": "Contrato de picos compatível com o detector central; ALS preservado para compatibilidade do painel.",
             "smoothing": "savgol_scipy_or_compatible",
             "window_length": window_length,
             "polyorder": polyorder,
@@ -1528,9 +1770,10 @@ def process_advanced_als_curve(
             "peak_prominence": peak_prominence,
             "max_peaks": max_peaks,
             "peak_detection_method": peak_detection_method,
-            "targeted_basal_peak_scan": "enabled",
+            "targeted_basal_peak_scan": "enabled" if wavelength_value is not None else "disabled_missing_wavelength",
             "targeted_basal_peak_range_count": len(TARGETED_BASAL_PEAK_RANGES),
-            "wavelength_angstrom": wavelength_angstrom,
+            "wavelength_angstrom": wavelength_value,
+            "wavelength_source": wavelength_source_value if wavelength_value is not None else "unavailable",
         },
         "curve": {
             "two_theta": _round_series(clean_two_theta, 6),

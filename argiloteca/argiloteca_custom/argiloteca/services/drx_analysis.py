@@ -50,7 +50,6 @@ import math
 
 from .drx import (
     ADVANCED_ALS_SCHEMA,
-    ADVANCED_ALS_WAVELENGTH_CU,
     advanced_als_summary,
     compact_advanced_als_curve,
     process_advanced_als_curve,
@@ -192,7 +191,7 @@ def build_drx_analysis_run(
     preparation=None,
     max_points=3000,
     stored=False,
-    wavelength_angstrom=ADVANCED_ALS_WAVELENGTH_CU,
+    wavelength_angstrom=None,
     source_filepath=None,
 ):
     """Run reusable DRX processing and return a versioned analysis contract."""
@@ -221,8 +220,9 @@ def build_drx_analysis_run(
         "advanced_schema": ADVANCED_ALS_SCHEMA,
         "preprocessing": advanced_processing.get("peak_processing") or {},
         "xrd_method": advanced_processing.get("xrd_method") or {
-            "radiation": "Cu Kalpha",
-            "wavelength_angstrom": ADVANCED_ALS_WAVELENGTH_CU,
+            "radiation": None,
+            "wavelength_angstrom": None,
+            "wavelength_source": "unavailable",
         },
         "advanced_summary": advanced_summary,
         "diagnostic_rules_schema": DRX_DIAGNOSTIC_RULES_SCHEMA,

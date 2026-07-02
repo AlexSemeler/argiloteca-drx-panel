@@ -63,6 +63,7 @@ from .services.drx import (
     apply_two_theta_axis_alignment,
     calculate_quartz_axis_offset,
     decimate_series,
+    explicit_wavelength_angstrom,
     infer_diffractogram_sample_base,
     infer_diffractogram_treatment,
     import_raw_path,
@@ -75,6 +76,7 @@ from .services.drx import (
     parse_raw_bytes,
     record_exists,
     record_import_error,
+    wavelength_source,
 )
 from .services.neural_evidence import neural_evidence_for_diffractogram
 from .services.analytical_packages import (
@@ -681,6 +683,85 @@ def _bounded_float_arg(name, default, minimum=0.1, maximum=5.0):
     return max(minimum, min(float(value), maximum))
 
 
+def _explicit_wavelength_arg(name="wavelength_angstrom"):
+    """Return λ only when the request explicitly sends it."""
+    raw_value = request.args.get(name)
+    if raw_value in (None, ""):
+        raw_value = request.form.get(name)
+    if raw_value in (None, ""):
+        return None
+    try:
+        value = float(str(raw_value).replace(",", "."))
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(value) or value <= 0:
+        return None
+    return max(0.1, min(value, 5.0))
+
+
+def _reference_overlay_payload(report_payload, reference_pattern, comparison, *, reference_id=None):
+    """Build an auxiliary observed/reference overlay contract for the frontend."""
+    report_payload = report_payload or {}
+    reference_pattern = reference_pattern or {}
+    comparison = comparison or {}
+    advanced = report_payload.get("advanced_processing") or {}
+    curve = advanced.get("curve") or {}
+    observed_two_theta = curve.get("two_theta") or []
+    observed_intensity = (
+        curve.get("intensity_normalized")
+        or curve.get("intensity_corrected")
+        or curve.get("intensity_raw")
+        or []
+    )
+    reference_peaks = reference_pattern.get("peaks") or []
+    reference_two_theta = [
+        peak.get("two_theta")
+        for peak in reference_peaks
+        if isinstance(peak, dict) and peak.get("two_theta") is not None
+    ]
+    reference_intensity = [
+        peak.get("relative_intensity")
+        for peak in reference_peaks
+        if isinstance(peak, dict) and peak.get("two_theta") is not None
+    ]
+    warnings = list(reference_pattern.get("warnings") or [])
+    residual = {"available": False, "two_theta": [], "delta_intensity": []}
+    if not reference_two_theta or not reference_intensity:
+        warnings.append("Referencia sem intensidade em 2θ para sobreposicao observada x referencia.")
+    analysis_run = report_payload.get("analysis_run") or {}
+    metadata = {
+        **(analysis_run.get("input") or {}),
+        **((analysis_run.get("methods") or {}).get("xrd_method") or {}),
+    }
+    return {
+        "available": bool(observed_two_theta and observed_intensity and reference_two_theta and reference_intensity),
+        "schema_version": "argiloteca.drx.reference_overlay.v1",
+        "observed": {
+            "two_theta": observed_two_theta,
+            "intensity": observed_intensity,
+            "normalization": curve.get("normalization") or "unknown",
+            "source": "observed_diffractogram",
+        },
+        "reference": {
+            "two_theta": reference_two_theta,
+            "intensity": reference_intensity,
+            "normalization": "relative_intensity_100",
+            "source": reference_pattern.get("parser_format") or reference_pattern.get("source") or "reference_pattern",
+            "reference_id": reference_id or comparison.get("reference_id") or reference_pattern.get("reference_id"),
+            "label": (reference_pattern.get("metadata") or {}).get("title") or reference_pattern.get("filename") or reference_id or "referencia",
+        },
+        "matched_peaks": comparison.get("matches") or [],
+        "residual": residual,
+        "warnings": warnings,
+        "metadata": {
+            "wavelength_angstrom": explicit_wavelength_angstrom(metadata),
+            "wavelength_source": wavelength_source(metadata),
+            "axis_mode": ((metadata.get("visualization") or {}).get("axis_mode") or metadata.get("axis_mode") or ""),
+            "comparison_policy": "auxiliary_not_confirmatory",
+        },
+    }
+
+
 def _upload_too_large_response(limit_bytes):
     """
     Carrega e valida dados de entrada usados pelo fluxo, preservando rastreabilidade e tratando formatos heterogêneos sem assumir validade científica automática.
@@ -787,6 +868,7 @@ def _build_technical_report_for_curve(diffractogram_id, curve_payload, max_point
         "reference_source": metadata.get("mineral_classification_source"),
         "classification_error": metadata.get("mineral_classification_error"),
     }
+    explicit_wavelength = explicit_wavelength_angstrom(metadata) or _explicit_wavelength_arg()
     analysis_payload = build_drx_analysis_run(
         filename=str(filename),
         sample_code=str(sample_code),
@@ -796,7 +878,7 @@ def _build_technical_report_for_curve(diffractogram_id, curve_payload, max_point
         preparation=metadata.get("preparation") or metadata.get("treatment"),
         max_points=max_points,
         stored=True,
-        wavelength_angstrom=metadata.get("wavelength_angstrom") or _bounded_float_arg("wavelength_angstrom", 1.5406),
+        wavelength_angstrom=explicit_wavelength,
     )
     report = build_drx_technical_report(
         analysis_run=analysis_payload["analysis_run"],
@@ -2613,7 +2695,7 @@ def create_blueprint(app):
             reference_content = _read_limited_upload(uploaded, DRX_REFERENCE_UPLOAD_MAX_BYTES)
             if reference_content is None:
                 return _upload_too_large_response(DRX_REFERENCE_UPLOAD_MAX_BYTES)
-            wavelength_angstrom = _bounded_float_arg("wavelength_angstrom", 1.5406)
+            wavelength_angstrom = _explicit_wavelength_arg()
             reference_pattern = parse_reference_pattern_bytes(
                 reference_content,
                 filename=original_filename,
@@ -2635,12 +2717,18 @@ def create_blueprint(app):
                 diagnostic_evidence=report_payload["diagnostic_evidence"],
                 reference_comparison=comparison,
             )
+            reference_overlay = _reference_overlay_payload(
+                report_payload,
+                reference_pattern,
+                comparison,
+            )
             return jsonify(
                 {
                     "success": True,
                     "diffractogram_id": diffractogram_id,
                     "reference_pattern": reference_pattern,
                     "reference_comparison": comparison,
+                    "reference_overlay": reference_overlay,
                     "technical_report": technical_report,
                 }
             )
@@ -2700,12 +2788,19 @@ def create_blueprint(app):
                 diagnostic_evidence=report_payload["diagnostic_evidence"],
                 reference_comparison=comparison,
             )
+            reference_overlay = _reference_overlay_payload(
+                report_payload,
+                reference_pattern,
+                comparison,
+                reference_id=reference_id,
+            )
             return jsonify(
                 {
                     "success": True,
                     "diffractogram_id": diffractogram_id,
                     "reference_pattern": reference_pattern,
                     "reference_comparison": comparison,
+                    "reference_overlay": reference_overlay,
                     "technical_report": technical_report,
                 }
             )
@@ -2782,7 +2877,12 @@ def create_blueprint(app):
             is_raw_upload = suffix == ".raw"
             if is_raw_upload and treatment.get("type") == "glicolado" and current_start is not None and abs(float(current_start) - 3.0) <= 0.25:
                 external_target_start = 2.0
-            quartz_offset = None if (not is_raw_upload or external_target_start is not None) else calculate_quartz_axis_offset(parsed.two_theta, parsed.intensity)
+            explicit_wavelength = explicit_wavelength_angstrom(parsed.metadata) or _explicit_wavelength_arg()
+            quartz_offset = None if (not is_raw_upload or external_target_start is not None) else calculate_quartz_axis_offset(
+                parsed.two_theta,
+                parsed.intensity,
+                wavelength=explicit_wavelength,
+            )
             if external_target_start is not None or quartz_offset:
                 parsed = apply_two_theta_axis_alignment(
                     parsed,
@@ -2810,7 +2910,7 @@ def create_blueprint(app):
                 preparation=treatment.get("type"),
                 max_points=max_points,
                 stored=False,
-                wavelength_angstrom=_bounded_float_arg("wavelength_angstrom", 1.5406),
+                wavelength_angstrom=explicit_wavelength,
                 source_filepath=temp_upload_path if suffix in {".csv", ".txt", ".tsv"} else None,
             )
             advanced_processing = analysis_payload["advanced_processing"]

@@ -210,6 +210,7 @@
   let ngcWorkflowKey = "";
   let ngcWorkflowPayload = null;
   let ngcWorkflowPromise = null;
+  let axisDisplayMode = "aligned";
   let rruffOdrCurves = [];
   let rruffOdrRejectedCount = 0;
   let rruffOdrTargetSlug = "";
@@ -557,8 +558,54 @@
     });
   }
 
+  function axisArrayForItem(item, mode) {
+    const metadata = item && item.metadata || {};
+    const sourceAxis = metadata.source_two_theta || metadata.raw_two_theta || item && item.sourceTwoTheta || item && item.rawTwoTheta;
+    if (mode === "raw" && Array.isArray(sourceAxis) && item && Array.isArray(item.intensity) && sourceAxis.length === item.intensity.length) {
+      return sourceAxis;
+    }
+    return item && item.twoTheta;
+  }
+
+  function axisAdjustedDisplayItem(item) {
+    const axis = axisArrayForItem(item, axisDisplayMode);
+    if (!item || axis === item.twoTheta) {
+      return item;
+    }
+    const metadata = Object.assign({}, item.metadata || {});
+    const visualization = Object.assign({}, metadata.visualization || {});
+    visualization.axis_display_mode = "raw";
+    visualization.axis_mode = visualization.axis_mode || "loaded_axis";
+    metadata.visualization = visualization;
+    metadata.axis_display_mode = "raw";
+    return Object.assign({}, item, {
+      twoTheta: axis,
+      metadata: metadata,
+    });
+  }
+
+  function hasRawAlignedAxis(items) {
+    return (items || []).some(function (item) {
+      const metadata = item && item.metadata || {};
+      const sourceAxis = metadata.source_two_theta || metadata.raw_two_theta || item && item.sourceTwoTheta || item && item.rawTwoTheta;
+      return Array.isArray(sourceAxis) && Array.isArray(item && item.twoTheta) && sourceAxis.length === item.twoTheta.length;
+    });
+  }
+
+  function renderAxisDisplayControl(items) {
+    if (!hasRawAlignedAxis(items)) return "";
+    return [
+      '<div class="argilo-drx__axis-toggle">',
+      '<strong>Eixo exibido:</strong> ',
+      '<button type="button" class="ui mini ', axisDisplayMode === "raw" ? "primary " : "", 'button" data-axis-display-mode="raw">bruto</button>',
+      '<button type="button" class="ui mini ', axisDisplayMode !== "raw" ? "primary " : "", 'button" data-axis-display-mode="aligned">alinhado</button>',
+      '<span class="argilo-drx__mini-note"> Alterna apenas a visualização; a curva carregada permanece preservada.</span>',
+      '</div>',
+    ].join("");
+  }
+
   function selectedItemsInNgcOrder() {
-    return sortItemsByNgcTreatment(Array.from(selected.values()));
+    return sortItemsByNgcTreatment(Array.from(selected.values()).map(axisAdjustedDisplayItem));
   }
 
   /**
@@ -3696,11 +3743,119 @@
     return String(mineralLabel || "").replace(/^Argilomineral:\s*/i, "").trim();
   }
 
+  function dynamicDeadZoneAngstrom(dSpacing) {
+    const d = Number(dSpacing);
+    if (!Number.isFinite(d) || d <= 0) return null;
+    if (d > 20.0) return 2.5;
+    if (d > 18.5) return 2.0;
+    if (d > 15.0) return 1.8;
+    if (d > 13.5) return 1.5;
+    if (d > 11.0) return 1.0;
+    if (d > 9.0) return 0.8;
+    if (d > 7.5) return 0.5;
+    if (d > 6.5) return 0.4;
+    if (d > 4.5) return 0.2;
+    if (d > 3.0) return 0.1;
+    return 0.05;
+  }
+
+  function dynamicNoiseMultiplier(dSpacing) {
+    const d = Number(dSpacing);
+    if (!Number.isFinite(d) || d <= 0) return null;
+    if (d > 20.0) return 4.0;
+    if (d > 18.5) return 3.0;
+    if (d > 16.0) return 2.0;
+    if (d > 15.0) return 2.0;
+    if (d > 13.5) return 2.0;
+    if (d > 12.5) return 3.0;
+    if (d > 11.0) return 4.0;
+    if (d > 10.5) return 3.0;
+    if (d > 9.6) return 2.0;
+    if (d > 9.0) return 3.0;
+    if (d > 8.0) return 4.0;
+    if (d > 7.5) return 3.0;
+    if (d > 6.9) return 2.0;
+    if (d > 6.0) return 4.0;
+    if (d > 5.5) return 4.0;
+    if (d > 4.8) return 2.5;
+    if (d > 4.5) return 2.5;
+    if (d > 4.1) return 2.0;
+    if (d > 3.5) return 2.5;
+    if (d > 3.2) return 2.0;
+    if (d > 3.0) return 4.0;
+    return 4.0;
+  }
+
+  function dynamicDetectionContext(dSpacing) {
+    const d = Number(dSpacing);
+    if (!Number.isFinite(d) || d <= 0) return "";
+    if (d > 20.0) return "ruídos longos / baixa angulação";
+    if (d > 18.5) return "cauda da esmectita glicolada";
+    if (d > 16.0) return "núcleo da esmectita glicolada";
+    if (d > 13.5) return "clorita basal / esmectita natural";
+    if (d > 12.5) return "minerais interestratificados";
+    if (d > 11.0) return "zona árida";
+    if (d > 10.5) return "ombro da ilita";
+    if (d > 9.6) return "núcleo da ilita basal";
+    if (d > 9.0) return "cauda da ilita / esmectita calcinada";
+    if (d > 8.0) return "zona árida";
+    if (d > 7.5) return "ombro da caulinita";
+    if (d > 6.9) return "núcleo da caulinita basal";
+    if (d > 6.0) return "zona árida";
+    if (d > 4.8) return "ordem 002 da ilita";
+    if (d > 4.5) return "ordem 003 da clorita";
+    if (d > 4.1) return "quartzo 100";
+    if (d > 3.5) return "ordem 002 da caulinita";
+    if (d > 3.2) return "quartzo 101 / ilita 003";
+    if (d > 3.0) return "zona árida";
+    return "fim do espectro / alto ruído instrumental";
+  }
+
+  function dynamicDetectionMetadataForD(dSpacing) {
+    const d = Number(dSpacing);
+    if (!Number.isFinite(d) || d <= 0) {
+      return { applied: false, reason: "d-spacing/λ não informado" };
+    }
+    return {
+      applied: true,
+      dead_zone_A: dynamicDeadZoneAngstrom(d),
+      noise_multiplier: dynamicNoiseMultiplier(d),
+      context: dynamicDetectionContext(d),
+    };
+  }
+
+  function dynamicDetectionForPeak(peak, item, theta) {
+    const provided = peak && (peak.dynamic_detection || peak.dynamicDetection);
+    if (provided && typeof provided === "object") return provided;
+    const dValue = Number(peak && peak.d) || braggDSpacingForItem(theta, item);
+    return dynamicDetectionMetadataForD(dValue);
+  }
+
+  function dynamicDetectionText(peak, item, theta) {
+    const metadata = dynamicDetectionForPeak(peak, item, theta);
+    if (!metadata || metadata.applied === false) {
+      return "Detecção dinâmica: indisponível — d-spacing/λ não informado";
+    }
+    const deadZone = Number(metadata.dead_zone_A);
+    const noise = Number(metadata.noise_multiplier);
+    return [
+      "Detecção: zona ±", Number.isFinite(deadZone) ? formatNumber(deadZone, 2) : "N/D", " Å",
+      " · ruído ×", Number.isFinite(noise) ? formatNumber(noise, 1) : "N/D",
+      metadata.context ? " · " + metadata.context : "",
+    ].join("");
+  }
+
   function visiblePeakLabel(theta, item, peak, mineralLabel, separator) {
     const rows = [conciseDSpacingText(theta, item, peak && peak.d)];
     const mineral = conciseMineralLabel(mineralLabel);
     if (mineral) rows.push(mineral);
     return rows.join(separator || "<br>");
+  }
+
+  function compactFixedPeakLabel(label) {
+    const text = String(label || "").replace(/\s+/g, " ").trim();
+    if (!text) return "";
+    return text.length > 42 ? text.slice(0, 39) + "..." : text;
   }
 
   function axisModeForItem(item) {
@@ -4032,6 +4187,7 @@
       source: peak.source || peak.detection_method || "processamento avançado ALS",
       method: peak.method || peak.detection_method || peak.algorithm,
       fwhm: peak.fwhm || peak.fwhm_2theta || peak.width,
+      dynamic_detection: peak.dynamic_detection || peak.dynamicDetection || sourcePeak.dynamic_detection || sourcePeak.dynamicDetection,
     };
   }
 
@@ -4289,6 +4445,8 @@
           "2θ " + (Number.isFinite(point.x) ? formatNumber(point.x, 3) + "°" : "indisponível"),
           dSpacingText(point.x, item),
           "I exibida " + (Number.isFinite(point.y) ? formatNumber(point.y, 3) : "indisponível"),
+          "axis_mode: " + escapeHtml(axisModeForItem(item)),
+          "eixo exibido: " + (axisDisplayMode === "raw" ? "bruto" : "alinhado"),
         ];
         if (modeEl.value === "stacked") {
           rows.push("I antes do deslocamento " + (Number.isFinite(point.beforeOffset) ? formatNumber(point.beforeOffset, 3) : "indisponível"));
@@ -4324,7 +4482,7 @@
         const peakHoverText = [];
         observedPeaks(item).slice().sort(function (left, right) {
           return (Number(right.relative_intensity || right.intensity) || 0) - (Number(left.relative_intensity || left.intensity) || 0);
-        }).slice(0, 8).forEach(function (peak) {
+        }).slice(0, 5).forEach(function (peak) {
           // Plotly recebe os picos como uma segunda trace de marcadores. O eixo
           // X e sempre 2θ. O texto visivel fica curto para nao encobrir o
           // difratograma; detalhes completos permanecem apenas no hover.
@@ -4335,14 +4493,13 @@
           peakY.push(point.y);
           const mineralLabel = peakMineralLabelForTheta(item, theta);
           const dValue = Number(peak.d) || braggDSpacingForItem(theta, item);
-          peakText.push([
-            visiblePeakLabel(theta, item, peak, mineralLabel),
-          ].filter(Boolean).join("<br>"));
-          peakHoverText.push(ngcPeakPopupForDSpacing(dValue, theta, item) || [
+          peakText.push(compactFixedPeakLabel(visiblePeakLabel(theta, item, peak, mineralLabel, " · ")));
+          peakHoverText.push(ngcPeakPopupForDSpacing(dValue, theta, item, peak) || [
             "<strong>Pico observado</strong>",
             "2θ " + formatNumber(theta, 2) + "°",
             dSpacingText(theta, item, peak.d),
             conciseMineralLabel(mineralLabel) ? escapeHtml(conciseMineralLabel(mineralLabel)) : "",
+            "<span class='argilo-drx__mini-note'>" + escapeHtml(dynamicDetectionText(peak, item, theta)) + "</span>",
           ].filter(Boolean).join("<br>"));
         });
         /**
@@ -4448,7 +4605,7 @@
         .sort(function (left, right) {
           return (Number(right.relative_intensity) || 0) - (Number(left.relative_intensity) || 0);
         })
-        .slice(0, 8);
+        .slice(0, 5);
       peaks.forEach(function (peak, peakIndex) {
         const theta = Number(peak.two_theta);
         const point = nearestSeriesPoint(item, transformed[itemIndex] || [], theta);
@@ -4456,7 +4613,7 @@
         const x = sx(theta);
         const y = sy(point.y);
         const labelY = Math.max(18, y - 10 - ((peakIndex % 3) * 11));
-        const label = visiblePeakLabel(theta, item, peak, peakMineralLabelForTheta(item, theta), " · ");
+        const label = compactFixedPeakLabel(visiblePeakLabel(theta, item, peak, peakMineralLabelForTheta(item, theta), " · "));
         nodes.push('<line class="argilo-drx__peak-line" x1="' + x + '" y1="' + y + '" x2="' + x + '" y2="' + (y - 22) + '" stroke="' + color + '"></line>');
         nodes.push('<circle class="argilo-drx__peak-dot" cx="' + x + '" cy="' + y + '" r="3.5" fill="' + color + '"></circle>');
         nodes.push('<text class="argilo-drx__peak-label" x="' + Math.min(900, x + 5) + '" y="' + labelY + '">' + escapeHtml(label) + '</text>');
@@ -4550,6 +4707,7 @@
         ", I exibida ", formatNumber(bestPoint.y, 3),
         "<br><span class='argilo-drx__mini-note'>modo: ", escapeHtml(intensityAxisLabel()),
         "; axis_mode: ", escapeHtml(axisModeForItem(item)),
+        "; eixo exibido: ", axisDisplayMode === "raw" ? "bruto" : "alinhado",
         offset !== null ? "; two_theta_offset_applied: " + escapeHtml(offset) : "",
         pointSet.invalidPoints ? "; lacunas/pontos inválidos: " + pointSet.invalidPoints : "",
         "</span>",
@@ -4876,7 +5034,49 @@
     ].filter(Boolean).join(" ").toLowerCase();
   }
 
+  function backendNgcPeakWindowCatalog() {
+    const rootCatalog = ngcWorkflowPayload && ngcWorkflowPayload.ngc_candidate_peak_windows;
+    if (rootCatalog && typeof rootCatalog === "object") return rootCatalog;
+    const groups = ngcWorkflowPayload && ngcWorkflowPayload.groups || [];
+    for (let index = 0; index < groups.length; index += 1) {
+      const catalog = groups[index] && groups[index].ngc_candidate_peak_windows;
+      if (catalog && typeof catalog === "object") return catalog;
+    }
+    return {};
+  }
+
+  function backendNgcWindowKeys(candidate) {
+    const text = ngcCandidateDiagnosticText(candidate);
+    const keys = [];
+    if (/chlorite|clorit/.test(text) && /vermicul/.test(text)) keys.push("chlorite_vermiculite");
+    if (/corrensite|mixed|interstrat|interestrat/.test(text)) keys.push("mixed_layer", "corrensite");
+    if (/illite|ilita|mica/.test(text)) keys.push("illite_mica");
+    if (/kaolin|caulin|halloy|halois/.test(text)) keys.push("kaolin_group");
+    if (/smectite|esmect|montmor|expans/.test(text)) keys.push("smectite_group");
+    if (/chlorite|clorit/.test(text)) keys.push("chlorite");
+    if (/sepiolite|palygorskite|fibrous|channel/.test(text)) keys.push("sepiolite");
+    if (/quartz|quartzo/.test(text)) keys.push("quartz");
+    return keys;
+  }
+
+  function backendNgcCandidatePeakWindows(candidate) {
+    const catalog = backendNgcPeakWindowCatalog();
+    const rows = [];
+    backendNgcWindowKeys(candidate).forEach(function (key) {
+      (catalog[key] || []).forEach(function (row) {
+        const dMin = Number(row.d_min);
+        const dMax = Number(row.d_max);
+        if (Number.isFinite(dMin) && Number.isFinite(dMax)) {
+          rows.push([dMin, dMax, row.label || "Regra-fonte backend"]);
+        }
+      });
+    });
+    return rows;
+  }
+
   function ngcCandidatePeakWindows(candidate) {
+    const backendRows = backendNgcCandidatePeakWindows(candidate);
+    if (backendRows.length) return backendRows;
     const text = ngcCandidateDiagnosticText(candidate);
     if (/illite|ilita|mica/.test(text)) return [[9.7, 10.4, "Cap. 7 p.233 Fig. 7.3 · ilita/mica 001"]];
     if (/kaolin|caulin|halloy|halois/.test(text)) return [[6.9, 7.4, "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 001"], [3.5, 3.65, "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 002"]];
@@ -4890,6 +5090,8 @@
   }
 
   function ngcBehaviorSourceLabel(candidate) {
+    const backendRows = backendNgcCandidatePeakWindows(candidate);
+    if (backendRows.length && backendRows[0][2]) return backendRows[0][2].split(" · ")[0];
     const text = ngcCandidateDiagnosticText(candidate);
     if (/chlorite|clorit/.test(text) && /vermicul/.test(text)) return "Cap. 7 p.234 Fig. 7.4; p.240 Fig. 7.7; Cap. 8 regras mixed-layer";
     if (/illite|ilita|mica/.test(text)) return "Cap. 7 p.233 Fig. 7.3";
@@ -4930,6 +5132,53 @@
       || (/corrensite|mixed|interstrat/.test(candidateText) && /corrensite|mixed|interstrat/.test(mineral));
   }
 
+  function evidenceDSpacings(text) {
+    const values = [];
+    String(text || "").replace(/(\d+(?:[.,]\d+)?)\s*A\b/gi, function (_match, value) {
+      const number = Number(String(value).replace(",", "."));
+      if (Number.isFinite(number)) values.push(number);
+      return _match;
+    });
+    return values;
+  }
+
+  function behaviorEvidenceMatchesCandidate(candidate, value) {
+    const text = String(value || "").toLowerCase();
+    const candidateText = ngcCandidateDiagnosticText(candidate);
+    const values = evidenceDSpacings(text);
+    const windows = ngcCandidatePeakWindows(candidate);
+    const hasWindowMatch = values.some(function (d) {
+      return windows.some(function (range) {
+        return d >= range[0] && d <= range[1];
+      });
+    });
+    if (/corrensite|mixed|interstrat|interestrat/.test(candidateText)) {
+      return hasWindowMatch || /rational|ordered|chlorite_smectite|clorita\/esmectita|superestrutura/.test(text);
+    }
+    if (/chlorite|clorit/.test(candidateText) && /vermicul/.test(candidateText)) {
+      return hasWindowMatch && !/28\.\d|29\.\d|30\.\d|31\.\d|32\.\d/.test(text);
+    }
+    if (/chlorite|clorit/.test(candidateText)) {
+      return hasWindowMatch && !/28\.\d|29\.\d|30\.\d|31\.\d|32\.\d|23\.\d|24\.\d/.test(text);
+    }
+    if (/smectite|esmect|montmor|expans/.test(candidateText)) {
+      return hasWindowMatch && /expand|collaps|colap|glicol|glycol|partial/.test(text);
+    }
+    if (/illite|ilita|mica/.test(candidateText)) {
+      return hasWindowMatch && /stable|estavel|estável|persists|persist|unchanged|inalter/.test(text);
+    }
+    if (/kaolin|caulin|halloy|halois/.test(candidateText)) {
+      return hasWindowMatch && /disappear|desapare|reduced|reduz|heat|aquec|calc/.test(text);
+    }
+    if (/sepiolite|palygorskite|fibrous|channel/.test(candidateText)) {
+      return hasWindowMatch;
+    }
+    if (/quartz|quartzo/.test(candidateText)) {
+      return hasWindowMatch;
+    }
+    return hasWindowMatch;
+  }
+
   function ngcCandidateRulePeaks(group, candidate) {
     const rows = [];
     const diagnostics = []
@@ -4962,11 +5211,10 @@
     const diagnostic = group && group.diagnostic_interpretation || {};
     (diagnostic.behavior_candidates || []).forEach(function (behavior) {
       const values = (behavior && (behavior.values || behavior.relations)) || [];
-      const text = [behavior && behavior.behavior].concat(values).join(" ").toLowerCase();
-      const candidateText = ngcCandidateDiagnosticText(candidate);
-      if (!/mixed|interstrat|corrensite|smectite|esmect|chlorite|clorit/.test(candidateText + " " + text)) return;
       values.slice(0, 2).forEach(function (value) {
-        if (typeof value === "string") rows.push(value + " · " + ngcBehaviorSourceLabel(candidate));
+        if (typeof value === "string" && behaviorEvidenceMatchesCandidate(candidate, value)) {
+          rows.push(value + " · " + ngcBehaviorSourceLabel(candidate));
+        }
       });
     });
     const unique = [];
@@ -4976,15 +5224,37 @@
     return unique.slice(0, 4);
   }
 
+  function ngcCandidateVisualCategory(candidate) {
+    const text = ngcCandidateDiagnosticText(candidate);
+    const status = String(ngcCandidateStatus(candidate) || "").toLowerCase();
+    if (/corrensite|mixed|interstrat|interestrat|illite_smectite|chlorite_smectite|clorita\/esmectita|caulinita\/esmectita|chlorite.*vermicul|clorit.*vermicul/.test(text)
+      || /mixed_layer|interestrat|ambiguous/.test(status)) {
+      return "Interestratificados / mixed-layer";
+    }
+    if (/auxiliary|auxiliar|060|quartz|quartzo/.test(text) || /auxiliary_only/.test(status)) {
+      return "Evidências auxiliares";
+    }
+    if (/mistura|mixture|physical/.test(text)) {
+      return "Misturas físicas possíveis";
+    }
+    return "Minerais discretos";
+  }
+
   function renderNgcPrincipalRanking(group) {
     const ranked = rankedNgcCandidates(group).slice(0, 8);
     if (!ranked.length) return "";
-    const rows = ranked.map(function (candidate, index) {
+    const grouped = {
+      "Minerais discretos": [],
+      "Misturas físicas possíveis": [],
+      "Interestratificados / mixed-layer": [],
+      "Evidências auxiliares": [],
+    };
+    ranked.forEach(function (candidate, index) {
       const name = ngcCandidateDisplayName(candidate);
       const peaks = ngcCandidateRulePeaks(group, candidate).map(function (row) {
         return "<li>" + escapeHtml(row) + "</li>";
       }).join("");
-      return [
+      const row = [
         "<li>",
         index === 0 ? "<strong>" : "",
         mineralLink(name),
@@ -4992,12 +5262,28 @@
         peaks ? "<ul>" + peaks + "</ul>" : '<ul><li class="argilo-drx__mini-note">Picos diagnósticos não vinculados no payload; revisar faixas e evidências abaixo.</li></ul>',
         "</li>",
       ].join("");
-    }).join("");
+      const category = ngcCandidateVisualCategory(candidate);
+      grouped[category] = grouped[category] || [];
+      grouped[category].push(row);
+    });
+    const rows = ["Minerais discretos", "Misturas físicas possíveis", "Interestratificados / mixed-layer", "Evidências auxiliares"].map(function (category) {
+      const items = grouped[category] || [];
+      if (!items.length) return "";
+      return [
+        '<section class="argilo-drx__ngc-ranking-category">',
+        "<h5>", escapeHtml(category), "</h5>",
+        category === "Interestratificados / mixed-layer"
+          ? '<p class="argilo-drx__mini-note">Interestratificação é hipótese estrutural baseada em comportamento N/G/C; não equivale a fase discreta confirmada.</p>'
+          : "",
+        "<ol>", items.join(""), "</ol>",
+        "</section>",
+      ].join("");
+    }).filter(Boolean).join("");
     return [
       '<div class="argilo-drx__ngc-found">',
       "<strong>Ranking mineralógico N/G/C desta seleção</strong>",
       '<p class="argilo-drx__mini-note">Lista ordenada pelo resultado estruturado do workflow. Não representa fase única; use as evidências N/G/C e os picos abaixo para revisar coexistência, mistura ou interestratificação.</p>',
-      "<ol>", rows, "</ol>",
+      rows,
       "</div>",
     ].join("");
   }
@@ -5034,7 +5320,7 @@
     return names.length ? "Argilomineral: " + names.slice(0, 2).join(" / ") : "";
   }
 
-  function ngcPeakPopupForDSpacing(dValue, theta, item) {
+  function ngcPeakPopupForDSpacing(dValue, theta, item, peak) {
     const d = Number(dValue);
     const thetaValue = Number(theta);
     if (!Number.isFinite(d) || !backendNgcGroups().length) return "";
@@ -5061,6 +5347,7 @@
       "<strong>" + escapeHtml(header) + "</strong>",
       "d " + formatNumber(d, 2) + " Å" + (Number.isFinite(thetaValue) ? " / 2θ " + formatNumber(thetaValue, 2) + "°" : ""),
       evidence.map(function (row) { return escapeHtml(row); }).join("<br>"),
+      "<span class='argilo-drx__mini-note'>" + escapeHtml(dynamicDetectionText(peak || { d: d }, item, thetaValue)) + "</span>",
     ].join("<br>");
   }
 
@@ -6088,14 +6375,15 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderSelectedSummary() {
+    const workflowItems = sortItemsByNgcTreatment(Array.from(selected.values()));
     const items = selectedItemsInNgcOrder();
     if (!items.length) {
       selectedSummaryEl.innerHTML = "<p>A descrição dos registros aparecerá aqui junto com a seleção.</p>";
       return;
     }
-    refreshNgcWorkflow(items);
+    refreshNgcWorkflow(workflowItems);
     if (items.length && items.every(isExternalRawItem)) {
-      selectedSummaryEl.innerHTML = renderExternalRawMergedNgcPanel(items);
+      selectedSummaryEl.innerHTML = renderAxisDisplayControl(items) + renderExternalRawMergedNgcPanel(items);
       return;
     }
     const hasBackendNgc = hasBackendNgcCompleteGroup();
@@ -6159,7 +6447,7 @@
         "</article>",
       ].join("");
     }).join("");
-    selectedSummaryEl.innerHTML = (hasBackendNgc ? renderBackendNgcPrimarySummary() : renderNgcBackendWorkflowBlock()) + cards + (hasBackendNgc ? "" : renderSelectedNgcCompleteSummary(items));
+    selectedSummaryEl.innerHTML = renderAxisDisplayControl(items) + (hasBackendNgc ? renderBackendNgcPrimarySummary() : renderNgcBackendWorkflowBlock()) + cards + (hasBackendNgc ? "" : renderSelectedNgcCompleteSummary(items));
   }
 
   /**
@@ -7264,13 +7552,15 @@
       const relative = (current / maxValue) * 100;
       if (relative < settings.minRelativeIntensity) continue;
       if (current >= prev && current >= next && (current > prev || current > next)) {
+        const dSpacing = braggDSpacingForItem(theta, item);
         candidates.push({
           two_theta: theta,
-          d: braggDSpacingForItem(theta, item),
+          d: dSpacing,
           intensity: current,
           relative_intensity: relative,
           index: index,
           source: "peak-picking simples",
+          dynamic_detection: dynamicDetectionMetadataForD(dSpacing),
         });
       }
     }
@@ -7301,6 +7591,7 @@
         relative_intensity: Number(peak.relative_intensity || peak.intensity_relative),
         index: peak.index,
         source: peak.source || peak.detection_method || "picos detectados",
+        dynamic_detection: peak.dynamic_detection || peak.dynamicDetection,
       };
     }).filter(isDiagnosticPeak);
     /**
@@ -9667,6 +9958,13 @@
     });
   }
   selectedSummaryEl.addEventListener("click", function (event) {
+    const axisButton = event.target.closest("[data-axis-display-mode]");
+    if (axisButton) {
+      axisDisplayMode = axisButton.dataset.axisDisplayMode === "raw" ? "raw" : "aligned";
+      xDomain = null;
+      renderAll();
+      return;
+    }
     const similarButton = event.target.closest("[data-load-similar-raw]");
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.

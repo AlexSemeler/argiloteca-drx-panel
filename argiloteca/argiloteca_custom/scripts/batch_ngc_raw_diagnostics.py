@@ -95,6 +95,7 @@ from argiloteca_drx.diagnostics.diagnostic_behavior_rules import (
     PROBABLE_BY_RULES,
 )
 from argiloteca_drx_core.curves import CurveParseError, calculate_d_spacing, calculate_two_theta, parse_curve_bytes
+from argiloteca_drx_core.peak_detector import dynamic_detection_metadata
 
 
 warnings.filterwarnings("ignore", message=".*prominence of 0.*")
@@ -328,6 +329,7 @@ def targeted_basal_peak_scan(x, y_final, config):
                 "source": "targeted_basal_peak_scan",
                 "targeted_range_id": range_id,
                 "targeted_status": status,
+                "dynamic_detection": dynamic_detection_metadata(observed_d),
             }
         rows.append(
             {
@@ -379,6 +381,7 @@ def merge_targeted_peaks(peak_details, targeted_rows):
                 "source": "targeted_basal_peak_scan",
                 "targeted_range_id": row.get("range_id"),
                 "targeted_status": row.get("status"),
+                "dynamic_detection": observed.get("dynamic_detection") or dynamic_detection_metadata(observed_d),
             }
         )
     return sorted(merged, key=lambda peak: float(peak.get("two_theta") or 999.0))
@@ -530,6 +533,7 @@ def process_spectrum(path: Path, offset_two_theta, config):
             "fwhm": round(fwhm, 6),
             "area": round(area, 6),
             "tau_nm": round(float(tau), 6),
+            "dynamic_detection": dynamic_detection_metadata(d_spacing),
         })
 
     targeted_basal_peaks = targeted_basal_peak_scan(x, y_final, config)

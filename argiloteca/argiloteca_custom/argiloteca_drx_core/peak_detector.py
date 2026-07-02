@@ -36,6 +36,170 @@ PEAK_KEYS = [
 ]
 
 
+def calcular_largura_zona_morta(d_spacing: float) -> float:
+    """Retorna o raio da zona-morta do detector diretamente em Ångströms."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return 2.5
+    if d_value > 18.5:
+        return 2.0
+    if d_value > 15.0:
+        return 1.8
+    if d_value > 13.5:
+        return 1.5
+    if d_value > 11.0:
+        return 1.0
+    if d_value > 9.0:
+        return 0.8
+    if d_value > 7.5:
+        return 0.5
+    if d_value > 6.5:
+        return 0.4
+    if d_value > 4.5:
+        return 0.2
+    if d_value > 3.0:
+        return 0.1
+    return 0.05
+
+
+def obter_multiplicador_ruido(d_spacing: float) -> float:
+    """Retorna o multiplicador do ruído para sensibilidade dinâmica por faixa."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return 4.0
+    if d_value > 18.5:
+        return 3.0
+    if d_value > 16.0:
+        return 2.0
+    if d_value > 15.0:
+        return 2.0
+    if d_value > 13.5:
+        return 2.0
+    if d_value > 12.5:
+        return 3.0
+    if d_value > 11.0:
+        return 4.0
+    if d_value > 10.5:
+        return 3.0
+    if d_value > 9.6:
+        return 2.0
+    if d_value > 9.0:
+        return 3.0
+    if d_value > 8.0:
+        return 4.0
+    if d_value > 7.5:
+        return 3.0
+    if d_value > 6.9:
+        return 2.0
+    if d_value > 6.0:
+        return 4.0
+    if d_value > 5.5:
+        return 4.0
+    if d_value > 4.8:
+        return 2.5
+    if d_value > 4.5:
+        return 2.5
+    if d_value > 4.1:
+        return 2.0
+    if d_value > 3.5:
+        return 2.5
+    if d_value > 3.2:
+        return 2.0
+    if d_value > 3.0:
+        return 4.0
+    return 4.0
+
+
+def _dynamic_detection_context(d_spacing: float) -> str:
+    """Descreve a faixa cristalográfica usada apenas para explicar a detecção."""
+    d_value = float(d_spacing)
+    if d_value > 20.0:
+        return "ruídos longos / baixa angulação"
+    if d_value > 18.5:
+        return "cauda da esmectita glicolada"
+    if d_value > 16.0:
+        return "núcleo da esmectita glicolada"
+    if d_value > 13.5:
+        return "clorita basal / esmectita natural"
+    if d_value > 12.5:
+        return "minerais interestratificados"
+    if d_value > 11.0:
+        return "zona árida"
+    if d_value > 10.5:
+        return "ombro da ilita"
+    if d_value > 9.6:
+        return "núcleo da ilita basal"
+    if d_value > 9.0:
+        return "cauda da ilita / esmectita calcinada"
+    if d_value > 8.0:
+        return "zona árida"
+    if d_value > 7.5:
+        return "ombro da caulinita"
+    if d_value > 6.9:
+        return "núcleo da caulinita basal"
+    if d_value > 6.0:
+        return "zona árida"
+    if d_value > 4.8:
+        return "ordem 002 da ilita"
+    if d_value > 4.5:
+        return "ordem 003 da clorita"
+    if d_value > 4.1:
+        return "quartzo 100"
+    if d_value > 3.5:
+        return "ordem 002 da caulinita"
+    if d_value > 3.2:
+        return "quartzo 101 / ilita 003"
+    if d_value > 3.0:
+        return "zona árida"
+    return "fim do espectro / alto ruído instrumental"
+
+
+def dynamic_detection_metadata(d_spacing: float | None) -> dict[str, Any]:
+    """Monta metadado explicável sem confirmar mineral nem alterar classificação."""
+    try:
+        d_value = float(d_spacing) if d_spacing is not None else np.nan
+    except (TypeError, ValueError):
+        d_value = np.nan
+    if not np.isfinite(d_value) or d_value <= 0:
+        return {
+            "applied": False,
+            "reason": "d_spacing unavailable or wavelength not explicit",
+        }
+    return {
+        "applied": True,
+        "dead_zone_A": calcular_largura_zona_morta(d_value),
+        "noise_multiplier": obter_multiplicador_ruido(d_value),
+        "context": _dynamic_detection_context(d_value),
+    }
+
+
+def _explicit_wavelength_angstrom(params: dict[str, Any]) -> float | None:
+    """Extrai λ apenas quando informado numericamente nos parâmetros."""
+    for key in ("wavelength_angstrom", "lambda_angstrom", "lambda_A", "wavelength_A"):
+        value = params.get(key)
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            continue
+        if np.isfinite(number) and number > 0:
+            return number
+    return None
+
+
+def _bragg_d_spacing(two_theta_deg: float, wavelength_angstrom: float | None) -> float | None:
+    """Converte 2θ para d somente quando λ é explícito."""
+    if wavelength_angstrom is None:
+        return None
+    theta_rad = np.radians(float(two_theta_deg) / 2.0)
+    if not np.isfinite(theta_rad) or theta_rad <= 0:
+        return None
+    denominator = 2.0 * np.sin(theta_rad)
+    if denominator <= 0:
+        return None
+    d_value = float(wavelength_angstrom) / denominator
+    return d_value if np.isfinite(d_value) and d_value > 0 else None
+
+
 def _deep_merge(base: dict[str, Any], override: dict[str, Any] | None) -> dict[str, Any]:
     """Combina parâmetros aninhados sem modificar os dicionários originais."""
     result = deepcopy(base)
@@ -166,7 +330,7 @@ def _integrated_intensity(two_theta: np.ndarray, y: np.ndarray, peak_idx: int, w
     if end - start < 2:
         return 0.0
     local_y = np.clip(y[start:end], 0.0, None)
-    return float(np.trapz(local_y, two_theta[start:end]))
+    return float(np.trapezoid(local_y, two_theta[start:end]))
 
 
 def _refine_position_parabolic(two_theta: np.ndarray, y: np.ndarray, peak_idx: int) -> float:
@@ -185,6 +349,7 @@ def _refine_position_parabolic(two_theta: np.ndarray, y: np.ndarray, peak_idx: i
 def detect_peaks(filepath: str, params: dict) -> dict[str, Any]:
     """Detecta picos em espectro DRX e retorna contrato JSON serializável."""
     params_used = _deep_merge(DEFAULT_PARAMS, params or {})
+    wavelength_angstrom = _explicit_wavelength_angstrom(params_used)
     two_theta, intensity = _read_spectrum(filepath)
     step_deg = _mean_step(two_theta)
     y_baseline = _baseline(intensity, params_used)
@@ -201,14 +366,17 @@ def detect_peaks(filepath: str, params: dict) -> dict[str, Any]:
         if snr < 5.0:
             continue
         fwhm_deg = float(width * step_deg)
+        position_two_theta = _refine_position_parabolic(two_theta, smoothed, int(peak_idx))
+        d_spacing = _bragg_d_spacing(position_two_theta, wavelength_angstrom)
         peak = {
             "peak_id": len(peaks) + 1,
-            "position_two_theta_deg": round(_refine_position_parabolic(two_theta, smoothed, int(peak_idx)), 6),
+            "position_two_theta_deg": round(position_two_theta, 6),
             "fwhm_deg": round(fwhm_deg, 6),
             "integrated_intensity": round(_integrated_intensity(two_theta, corrected, int(peak_idx), float(width)), 6),
             "position_uncertainty_deg": round(step_deg / 2.0, 6),
             "snr": round(float(snr), 6),
             "attribution_method": PEAK_ATTRIBUTION_METHOD,
+            "dynamic_detection": dynamic_detection_metadata(d_spacing),
         }
         peaks.append(peak)
 
@@ -262,4 +430,3 @@ def export_explainability(spectrum_meta: dict, peaks: list[dict]) -> dict[str, A
         ],
         "params_used": params_used,
     }
-

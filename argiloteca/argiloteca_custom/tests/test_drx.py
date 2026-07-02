@@ -250,11 +250,11 @@ class DrxParserTest(unittest.TestCase):
         for center in [8.0, 9.2, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0]:
             for index, theta in enumerate(two_theta):
                 intensity[index] += 35.0 * math.exp(-((theta - center) ** 2) / (2 * 0.025 ** 2))
-        chlorite_theta = drx._d_spacing_to_two_theta(14.2)
+        chlorite_theta = drx._d_spacing_to_two_theta(14.2, wavelength=1.5406)
         for index, theta in enumerate(two_theta):
             intensity[index] += 1.4 * math.exp(-((theta - chlorite_theta) ** 2) / (2 * 0.035 ** 2))
 
-        rows = drx.targeted_basal_peak_scan(two_theta, intensity)
+        rows = drx.targeted_basal_peak_scan(two_theta, intensity, wavelength=1.5406)
         chlorite = next(row for row in rows if row["range_id"] == "chlorite_14a")
 
         self.assertIn(chlorite["status"], {"weak", "shoulder", "strong"})
@@ -274,11 +274,11 @@ class DrxParserTest(unittest.TestCase):
         """
         two_theta = [2.0 + index * 0.02 for index in range(1500)]
         intensity = [0.03 for _ in two_theta]
-        kaolinite_theta = drx._d_spacing_to_two_theta(3.57)
+        kaolinite_theta = drx._d_spacing_to_two_theta(3.57, wavelength=1.5406)
         for index, theta in enumerate(two_theta):
             intensity[index] += 0.9 * math.exp(-((theta - kaolinite_theta) ** 2) / (2 * 0.035 ** 2))
 
-        rows = drx.targeted_basal_peak_scan(two_theta, intensity)
+        rows = drx.targeted_basal_peak_scan(two_theta, intensity, wavelength=1.5406)
         kaolinite = next(row for row in rows if row["range_id"] == "kaolinite_3_57a")
         smectite = next(row for row in rows if row["range_id"] == "smectite_g_17a")
 
@@ -299,11 +299,17 @@ class DrxParserTest(unittest.TestCase):
         """
         two_theta = [2.0 + index * 0.02 for index in range(1500)]
         intensity = [1.0 for _ in two_theta]
-        chlorite_theta = drx._d_spacing_to_two_theta(14.2)
+        chlorite_theta = drx._d_spacing_to_two_theta(14.2, wavelength=1.5406)
         for index, theta in enumerate(two_theta):
             intensity[index] += 3.0 * math.exp(-((theta - chlorite_theta) ** 2) / (2 * 0.04 ** 2))
 
-        payload = drx.process_advanced_als_curve(two_theta, intensity, sample_id="CL-weak", filename="CL-weak.raw")
+        payload = drx.process_advanced_als_curve(
+            two_theta,
+            intensity,
+            sample_id="CL-weak",
+            filename="CL-weak.raw",
+            metadata={"wavelength_angstrom": 1.5406},
+        )
 
         self.assertIn("targeted_basal_peaks", payload)
         self.assertIn("targeted_basal_peak_scan", payload["peak_processing"])
@@ -3812,6 +3818,47 @@ class AnalyticalPackageTest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()["sample_code"], "AM-01-N")
+
+    def test_advanced_als_does_not_compute_d_without_explicit_wavelength(self):
+        two_theta = [5.0 + (index * 0.02) for index in range(600)]
+        intensity = [
+            10.0 + (120.0 * math.exp(-((theta - 8.8) ** 2) / (2 * 0.08 ** 2)))
+            for theta in two_theta
+        ]
+        payload = drx.process_advanced_als_curve(
+            two_theta,
+            intensity,
+            filename="sem_lambda.raw",
+            metadata={},
+            peak_prominence=0.01,
+            max_peaks=5,
+            wavelength_angstrom=None,
+        )
+        self.assertTrue(payload["success"])
+        self.assertIsNone(payload["xrd_method"]["wavelength_angstrom"])
+        self.assertEqual(payload["peak_processing"]["targeted_basal_peak_scan"], "disabled_missing_wavelength")
+        self.assertEqual(payload["targeted_basal_peaks"], [])
+        self.assertTrue(payload["peaks"])
+        self.assertTrue(all(peak.get("d_spacing_status") == "unavailable_missing_wavelength" for peak in payload["peaks"]))
+
+    def test_advanced_als_computes_d_with_explicit_wavelength(self):
+        two_theta = [5.0 + (index * 0.02) for index in range(600)]
+        intensity = [
+            10.0 + (120.0 * math.exp(-((theta - 8.8) ** 2) / (2 * 0.08 ** 2)))
+            for theta in two_theta
+        ]
+        payload = drx.process_advanced_als_curve(
+            two_theta,
+            intensity,
+            filename="com_lambda.raw",
+            metadata={"wavelength_angstrom": 1.5406},
+            peak_prominence=0.01,
+            max_peaks=5,
+        )
+        self.assertTrue(payload["success"])
+        self.assertEqual(payload["xrd_method"]["wavelength_source"], "user_param")
+        self.assertTrue(payload["peaks"])
+        self.assertTrue(any(peak.get("d_angstrom") for peak in payload["peaks"]))
 
 
 if __name__ == "__main__":

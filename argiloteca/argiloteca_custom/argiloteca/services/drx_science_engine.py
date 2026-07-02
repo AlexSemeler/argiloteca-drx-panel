@@ -227,7 +227,7 @@ def simulate_cif_pattern(content, filename=None, wavelength="CuKa"):
     return payload
 
 
-def detect_peaks_scipy(two_theta, normalized, *, start_two_theta=4.0, prominence=0.02, min_distance=0.18, max_peaks=40):
+def detect_peaks_scipy(two_theta, normalized, *, start_two_theta=4.0, prominence=0.02, min_distance=0.18, max_peaks=40, wavelength_angstrom=None):
     """Detect peaks with scipy.signal.find_peaks in the isolated engine."""
     detector = scipy_peak_detector_path()
     if not detector.exists():
@@ -244,6 +244,8 @@ def detect_peaks_scipy(two_theta, normalized, *, start_two_theta=4.0, prominence
         "min_distance": min_distance,
         "max_peaks": max_peaks,
     }
+    if wavelength_angstrom is not None:
+        payload["wavelength_angstrom"] = wavelength_angstrom
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=True) as fp:
         json.dump(payload, fp)
         fp.flush()

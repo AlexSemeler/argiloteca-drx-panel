@@ -49,7 +49,7 @@ import math
 import re
 from pathlib import Path
 
-from .drx import ADVANCED_ALS_WAVELENGTH_CU, RawParseError, safe_text
+from .drx import RawParseError, safe_d_spacing_from_two_theta, safe_text
 from .drx_science_engine import simulate_cif_pattern
 
 
@@ -75,7 +75,7 @@ def _finite_float(value):
     return number if math.isfinite(number) else None
 
 
-def two_theta_to_d(two_theta, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
+def two_theta_to_d(two_theta, wavelength=None):
     """
     Executa uma etapa coesa do fluxo do módulo, mantendo contratos de entrada e saída usados pelo painel Argiloteca.
     
@@ -88,15 +88,13 @@ def two_theta_to_d(two_theta, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
         Exception: Propaga erros das dependências quando a validação ou o processamento falha.
     """
     value = _finite_float(two_theta)
+    wavelength_value = _finite_float(wavelength)
     if value is None or value <= 0 or value >= 180:
         return None
-    theta = math.radians(value / 2.0)
-    if theta <= 0:
-        return None
-    return wavelength / (2.0 * math.sin(theta))
+    return safe_d_spacing_from_two_theta(value, wavelength_value)
 
 
-def d_to_two_theta(d_angstrom, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
+def d_to_two_theta(d_angstrom, wavelength=None):
     """
     Executa uma etapa coesa do fluxo do módulo, mantendo contratos de entrada e saída usados pelo painel Argiloteca.
     
@@ -109,15 +107,16 @@ def d_to_two_theta(d_angstrom, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
         Exception: Propaga erros das dependências quando a validação ou o processamento falha.
     """
     value = _finite_float(d_angstrom)
-    if value is None or value <= 0:
+    wavelength_value = _finite_float(wavelength)
+    if value is None or value <= 0 or wavelength_value is None or wavelength_value <= 0:
         return None
-    ratio = wavelength / (2.0 * value)
+    ratio = wavelength_value / (2.0 * value)
     if ratio <= 0 or ratio >= 1:
         return None
     return math.degrees(2.0 * math.asin(ratio))
 
 
-def _normalise_reference_peaks(peaks, wavelength=ADVANCED_ALS_WAVELENGTH_CU, limit=200):
+def _normalise_reference_peaks(peaks, wavelength=None, limit=200):
     """
     Processa picos DRX e grandezas cristalográficas, relacionando 2θ, d-spacing e intensidade para apoiar triagem mineralógica auxiliar.
     
@@ -156,15 +155,15 @@ def _normalise_reference_peaks(peaks, wavelength=ADVANCED_ALS_WAVELENGTH_CU, lim
             or peak.get("intensity")
             or peak.get("i")
         )
-        if two_theta is None or d_value is None:
+        if two_theta is None and d_value is None:
             continue
         intensity = intensity if intensity is not None else 1.0
         max_intensity = max(max_intensity, intensity)
         rows.append(
             {
                 "peak_index": peak.get("peak_index") or peak.get("index") or index + 1,
-                "two_theta": round(two_theta, 5),
-                "d_angstrom": round(d_value, 5),
+                "two_theta": round(two_theta, 5) if two_theta is not None else None,
+                "d_angstrom": round(d_value, 5) if d_value is not None else None,
                 "relative_intensity": intensity,
                 "hkl": peak.get("hkl"),
                 "source": peak.get("source"),
@@ -305,8 +304,9 @@ def _parse_cif_reference(content, filename):
     return metadata, []
 
 
-def parse_reference_pattern_bytes(content, filename=None, wavelength=ADVANCED_ALS_WAVELENGTH_CU):
+def parse_reference_pattern_bytes(content, filename=None, wavelength=None):
     """Parse a reference peak list from JSON/text, or metadata from CIF."""
+    wavelength_value = _finite_float(wavelength)
     suffix = Path(filename or "").suffix.lower()
     if suffix == ".json":
         metadata, peaks = _parse_json_reference(content, filename)
@@ -317,7 +317,7 @@ def parse_reference_pattern_bytes(content, filename=None, wavelength=ADVANCED_AL
     else:
         metadata, peaks = _parse_text_reference(content, filename)
         parser_format = "text_reference_pattern"
-    normalised = _normalise_reference_peaks(peaks, wavelength=wavelength)
+    normalised = _normalise_reference_peaks(peaks, wavelength=wavelength_value)
     warnings = []
     if suffix == ".cif" and not normalised:
         warnings.append("CIF lido apenas como metadado; padrao nao simulado sem motor cristalografico.")
@@ -327,7 +327,9 @@ def parse_reference_pattern_bytes(content, filename=None, wavelength=ADVANCED_AL
         "schema_version": DRX_REFERENCE_PATTERN_SCHEMA,
         "filename": Path(filename or "reference").name,
         "parser_format": parser_format,
-        "wavelength_angstrom": wavelength,
+        "wavelength_angstrom": wavelength_value,
+        "wavelength_source": "user_param" if wavelength_value is not None else "unavailable",
+        "d_spacing_policy": "preserve_provided_or_convert_only_with_explicit_wavelength",
         "metadata": metadata,
         "peaks": normalised,
         "peak_count": len(normalised),

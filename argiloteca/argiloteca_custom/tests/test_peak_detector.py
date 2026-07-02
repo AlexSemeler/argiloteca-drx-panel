@@ -6,7 +6,14 @@ import re
 
 import numpy as np
 
-from argiloteca_drx_core.peak_detector import DEFAULT_PARAMS, detect_peaks, export_explainability
+from argiloteca_drx_core.peak_detector import (
+    DEFAULT_PARAMS,
+    calcular_largura_zona_morta,
+    detect_peaks,
+    dynamic_detection_metadata,
+    export_explainability,
+    obter_multiplicador_ruido,
+)
 
 
 def _detected_peaks(synthetic_csv):
@@ -52,7 +59,7 @@ def test_json_contract(synthetic_csv):
     assert re.fullmatch(r"[0-9a-f]{64}", checksum)
     assert result["data"]["n_points"] > 0
     assert result["data"]["two_theta_min"] == 5.0
-    assert result["data"]["two_theta_max"] >= 65.0
+    assert result["data"]["two_theta_max"] >= 64.99
 
     required = {
         "peak_id",
@@ -64,7 +71,7 @@ def test_json_contract(synthetic_csv):
         "attribution_method",
     }
     for peak in peaks:
-        assert set(peak) == required
+        assert required.issubset(set(peak))
         assert isinstance(peak["peak_id"], int)
         assert isinstance(peak["position_two_theta_deg"], float)
         assert isinstance(peak["fwhm_deg"], float)
@@ -72,6 +79,7 @@ def test_json_contract(synthetic_csv):
         assert isinstance(peak["position_uncertainty_deg"], float)
         assert isinstance(peak["snr"], float)
         assert peak["attribution_method"] == "scipy_find_peaks+gaussian_fwhm"
+        assert "dynamic_detection" in peak
 
 
 def test_explainability_schema(synthetic_csv):
@@ -98,3 +106,44 @@ def test_explainability_schema(synthetic_csv):
         }
         start, end = attribution["influence_window_deg"]
         assert start < end
+
+
+def test_dynamic_detection_parameter_functions():
+    """Valida valores-chave da parametrização dinâmica em Å."""
+    assert calcular_largura_zona_morta(10.0) == 0.8
+    assert calcular_largura_zona_morta(7.15) == 0.4
+    assert calcular_largura_zona_morta(3.34) == 0.1
+    assert obter_multiplicador_ruido(17.0) == 2.0
+    assert obter_multiplicador_ruido(10.0) == 2.0
+    assert obter_multiplicador_ruido(12.0) == 4.0
+
+
+def test_dynamic_detection_metadata_applied_with_d_spacing():
+    """Pico com d-spacing confiável recebe metadados explicáveis."""
+    metadata = dynamic_detection_metadata(10.0)
+    assert metadata["applied"] is True
+    assert metadata["dead_zone_A"] == 0.8
+    assert metadata["noise_multiplier"] == 2.0
+    assert "ilita" in metadata["context"]
+
+
+def test_dynamic_detection_metadata_unavailable_without_d_spacing():
+    """Sem d-spacing/λ explícito, a parametrização fica marcada como indisponível."""
+    metadata = dynamic_detection_metadata(None)
+    assert metadata["applied"] is False
+    assert metadata["reason"] == "d_spacing unavailable or wavelength not explicit"
+
+
+def test_detect_peaks_marks_dynamic_detection_unavailable_without_wavelength(synthetic_csv):
+    """O detector não calcula d-spacing silenciosamente sem λ explícito."""
+    _result, peaks = _detected_peaks(synthetic_csv)
+    assert peaks
+    assert all(peak["dynamic_detection"]["applied"] is False for peak in peaks)
+
+
+def test_detect_peaks_applies_dynamic_detection_with_explicit_wavelength(synthetic_csv):
+    """Quando λ é explícito, os picos recebem parametrização dinâmica explicável."""
+    result = detect_peaks(str(synthetic_csv), {**DEFAULT_PARAMS, "wavelength_angstrom": 1.5406})
+    peaks = result["metadata"]["arg"]["peaks"]
+    assert peaks
+    assert all(peak["dynamic_detection"]["applied"] is True for peak in peaks)

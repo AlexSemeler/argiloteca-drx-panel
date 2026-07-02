@@ -73,6 +73,7 @@ from __future__ import annotations
 
 import math
 import json
+import re
 from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
@@ -105,6 +106,194 @@ TARGETED_BASAL_RANGES = targeted_basal_ranges()
 
 PREPARATION_ORDER = {"natural": 0, "glicolado": 1, "calcinado": 2, "indeterminado": 3}
 
+NGC_CANDIDATE_PEAK_WINDOWS = {
+    "illite_mica": [
+        {"d_min": 9.7, "d_max": 10.4, "label": "Cap. 7 p.233 Fig. 7.3 · ilita/mica 001", "source": {"chapter": 7, "page": 233, "figure": "7.3", "rule_id": "chapter7_illite_glauconite_mica"}},
+    ],
+    "kaolin_group": [
+        {"d_min": 6.9, "d_max": 7.4, "label": "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 001", "source": {"chapter": 7, "page": 234, "table": "7.6", "rule_id": "chapter7_kaolinite_chlorite_resolution"}},
+        {"d_min": 3.5, "d_max": 3.65, "label": "Cap. 7 p.234; Tab. 7.6 p.247 · caulinita 002", "source": {"chapter": 7, "page": 247, "table": "7.6", "rule_id": "chapter7_kaolinite_chlorite_resolution"}},
+    ],
+    "smectite_group": [
+        {"d_min": 13.0, "d_max": 15.5, "label": "Cap. 7 p.241 Fig. 7.8 · esmectita natural", "source": {"chapter": 7, "page": 241, "figure": "7.8", "rule_id": "chapter7_smectite_ngc"}},
+        {"d_min": 16.1, "d_max": 18.3, "label": "Cap. 7 p.241 Fig. 7.8 · esmectita glicolada", "source": {"chapter": 7, "page": 241, "figure": "7.8", "rule_id": "chapter7_smectite_ngc"}},
+        {"d_min": 9.7, "d_max": 10.4, "label": "Cap. 7 p.241 Fig. 7.8 · colapso térmico", "source": {"chapter": 7, "page": 241, "figure": "7.8", "rule_id": "chapter7_smectite_ngc"}},
+    ],
+    "chlorite_vermiculite": [
+        {"d_min": 13.5, "d_max": 14.9, "label": "Cap. 7 p.234 Fig. 7.4; p.240 Fig. 7.7 · clorita/vermiculita 14 Å", "source": {"chapter": 7, "page": 234, "figure": "7.4", "rule_id": "chapter7_chlorite_ool"}},
+        {"d_min": 9.7, "d_max": 10.5, "label": "Cap. 7 p.240 Fig. 7.7 · colapso para 10 Å", "source": {"chapter": 7, "page": 240, "figure": "7.7", "rule_id": "chapter7_vermiculite_operational"}},
+        {"d_min": 16.1, "d_max": 18.3, "label": "Cap. 8 regras mixed-layer · componente expansível", "source": {"chapter": 8, "rule_id": "chapter8_mixed_layer_expandable_component"}},
+    ],
+    "chlorite": [
+        {"d_min": 13.5, "d_max": 14.9, "label": "Cap. 7 p.234 Fig. 7.4 · clorita 001", "source": {"chapter": 7, "page": 234, "figure": "7.4", "rule_id": "chapter7_chlorite_ool"}},
+        {"d_min": 7.0, "d_max": 7.35, "label": "Cap. 7 p.234 Fig. 7.4 · clorita 002", "source": {"chapter": 7, "page": 234, "figure": "7.4", "rule_id": "chapter7_chlorite_ool"}},
+        {"d_min": 4.65, "d_max": 4.85, "label": "Cap. 7 p.234 Fig. 7.4 · clorita 003", "source": {"chapter": 7, "page": 234, "figure": "7.4", "rule_id": "chapter7_chlorite_ool"}},
+        {"d_min": 3.48, "d_max": 3.6, "label": "Cap. 7 p.234 Fig. 7.4 · clorita 004", "source": {"chapter": 7, "page": 234, "figure": "7.4", "rule_id": "chapter7_chlorite_ool"}},
+    ],
+    "mixed_layer": [
+        {"d_min": 24.0, "d_max": 31.5, "label": "Cap. 8 regras mixed-layer · superestrutura/00l*", "source": {"chapter": 8, "rule_id": "chapter8_superstructure_00l_star"}},
+        {"d_min": 13.5, "d_max": 17.5, "label": "Cap. 8 regras mixed-layer · componente expansível/clorítico", "source": {"chapter": 8, "rule_id": "chapter8_mixed_layer_component_behavior"}},
+        {"d_min": 9.7, "d_max": 10.5, "label": "Cap. 8 regras mixed-layer · colapso/desidratação", "source": {"chapter": 8, "rule_id": "chapter8_dehydration_collapse"}},
+    ],
+    "sepiolite": [
+        {"d_min": 11.8, "d_max": 12.6, "label": "Cap. 7 Tab. 7.3 p.244 · sepiolita/paligorsquita", "source": {"chapter": 7, "page": 244, "table": "7.3", "rule_id": "chapter7_fibrous_channel_minerals"}},
+    ],
+    "quartz": [
+        {"d_min": 4.2, "d_max": 4.35, "label": "Cap. 7 Tab. 7.8B p.251 · quartzo 100", "source": {"chapter": 7, "page": 251, "table": "7.8B", "rule_id": "chapter7_quartz_internal_standard"}},
+        {"d_min": 3.32, "d_max": 3.37, "label": "Cap. 7 Tab. 7.8B p.251 · quartzo 101", "source": {"chapter": 7, "page": 251, "table": "7.8B", "rule_id": "chapter7_quartz_internal_standard"}},
+    ],
+}
+
+RULES_CATALOG_PATH = Path(__file__).resolve().parents[2] / "argiloteca_drx" / "diagnostics" / "rules_catalog.yaml"
+_NGC_CANDIDATE_PEAK_WINDOWS_FALLBACK = NGC_CANDIDATE_PEAK_WINDOWS
+
+
+def _parse_inline_yaml_mapping(raw):
+    """Extrai pares simples `chave: valor` de mapas inline do catalogo YAML."""
+    data = {}
+    for part in re.split(r",\s*", str(raw or "").strip().strip("{}")):
+        if ":" not in part:
+            continue
+        key, value = part.split(":", 1)
+        value = value.strip().strip('"').strip("'")
+        if value in {"null", "None"}:
+            parsed = None
+        else:
+            try:
+                parsed = int(value)
+            except ValueError:
+                parsed = value
+        data[key.strip()] = parsed
+    return data
+
+
+def _format_yaml_window_label(source, range_name):
+    chapter = source.get("chapter")
+    page = source.get("page")
+    figure = source.get("figure")
+    table = source.get("table")
+    bits = []
+    if chapter:
+        bits.append(f"Cap. {chapter}")
+    if page:
+        bits.append(f"p.{page}")
+    if figure:
+        bits.append(f"Fig. {figure}")
+    if table:
+        bits.append(f"Tab. {table}")
+    prefix = " ".join(bits) if bits else "Catálogo N/G/C"
+    return f"{prefix} · {range_name.replace('_', ' ')}"
+
+
+@lru_cache(maxsize=1)
+def _ngc_candidate_peak_windows_from_rules_catalog():
+    """Carrega janelas N/G/C do `rules_catalog.yaml`, preservando fallback local.
+
+    O catalogo YAML e a fonte semantica auditavel das janelas e dos locadores
+    bibliograficos. Este parser e deliberadamente conservador e cobre apenas as
+    estruturas simples usadas no catalogo: `named_ranges`, `peak_sets` e mapas
+    inline de `source_locator`. Se o YAML estiver ausente ou incompleto, o
+    workflow continua usando o fallback historico deste modulo.
+    """
+    catalog = {key: [dict(row) for row in rows] for key, rows in _NGC_CANDIDATE_PEAK_WINDOWS_FALLBACK.items()}
+    try:
+        lines = RULES_CATALOG_PATH.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return catalog
+
+    named_ranges = {}
+    source_by_rule = {}
+    peak_sets = {}
+    in_named_ranges = False
+    in_peak_sets = False
+    current_peak_set = None
+    for line in lines:
+        if line.startswith("named_ranges:"):
+            in_named_ranges = True
+            in_peak_sets = False
+            current_peak_set = None
+            continue
+        if line.startswith("peak_sets:"):
+            in_named_ranges = False
+            in_peak_sets = True
+            current_peak_set = None
+            continue
+        if line and not line.startswith(" ") and not line.startswith("-"):
+            in_named_ranges = False
+            in_peak_sets = False
+            current_peak_set = None
+
+        inline_locator = re.search(r"\{([^{}]*source_rule:[^{}]*)\}", line)
+        if inline_locator:
+            locator = _parse_inline_yaml_mapping(inline_locator.group(1))
+            source_rule = locator.get("source_rule")
+            has_locator = any(locator.get(key) for key in ("chapter", "page", "figure", "table"))
+            existing = source_by_rule.get(source_rule)
+            existing_has_locator = existing and any(existing.get(key) for key in ("chapter", "page", "figure", "table"))
+            if source_rule and (source_rule not in source_by_rule or (has_locator and not existing_has_locator)):
+                source_by_rule[source_rule] = {
+                    "chapter": locator.get("chapter"),
+                    "page": locator.get("page"),
+                    "figure": locator.get("figure"),
+                    "table": locator.get("table"),
+                    "rule_id": source_rule,
+                }
+
+        if in_named_ranges:
+            match = re.match(r"\s{2}([A-Za-z0-9_]+):\s*\{(.+)\}\s*$", line)
+            if match:
+                range_name = match.group(1)
+                values = _parse_inline_yaml_mapping(match.group(2))
+                try:
+                    d_min = float(values.get("d_min"))
+                    d_max = float(values.get("d_max"))
+                except (TypeError, ValueError):
+                    d_min = None
+                    d_max = None
+                if d_min is not None and d_max is not None:
+                    named_ranges[range_name] = {
+                        "d_min": d_min,
+                        "d_max": d_max,
+                        "source_rule": values.get("source_rule"),
+                    }
+        elif in_peak_sets:
+            set_match = re.match(r"\s{2}([A-Za-z0-9_]+):\s*$", line)
+            if set_match:
+                current_peak_set = set_match.group(1)
+                peak_sets[current_peak_set] = []
+                continue
+            ranges_match = re.search(r"ranges:\s*\[([^\]]+)\]", line)
+            if current_peak_set and ranges_match:
+                peak_sets[current_peak_set] = [
+                    row.strip() for row in ranges_match.group(1).split(",") if row.strip()
+                ]
+
+    aliases = {
+        "chlorite_group": "chlorite",
+        "corrensite": "mixed_layer",
+    }
+    for candidate, range_names in peak_sets.items():
+        rows = []
+        for range_name in range_names:
+            range_row = named_ranges.get(range_name)
+            if not range_row:
+                continue
+            source = source_by_rule.get(range_row.get("source_rule"), {"rule_id": range_row.get("source_rule")})
+            rows.append({
+                "d_min": range_row["d_min"],
+                "d_max": range_row["d_max"],
+                "label": _format_yaml_window_label(source, range_name),
+                "source": source,
+            })
+        if rows:
+            catalog[candidate] = rows
+            if candidate in aliases:
+                catalog[aliases[candidate]] = rows
+    return catalog
+
+
+NGC_CANDIDATE_PEAK_WINDOWS = _ngc_candidate_peak_windows_from_rules_catalog()
+
 
 def _finite_float(value):
     """
@@ -124,7 +313,7 @@ def _finite_float(value):
     return number if math.isfinite(number) else None
 
 
-def _d_from_two_theta(two_theta_deg, wavelength_a=DEFAULT_WAVELENGTH_A):
+def _d_from_two_theta(two_theta_deg, wavelength_a=None):
     """
     Converte posição angular 2θ em espaçamento interplanar d pela Lei de Bragg.
 
@@ -142,8 +331,8 @@ def _d_from_two_theta(two_theta_deg, wavelength_a=DEFAULT_WAVELENGTH_A):
         Exception: Não levanta erro deliberadamente; entradas inválidas retornam None.
     """
     two_theta = _finite_float(two_theta_deg)
-    wavelength = _finite_float(wavelength_a) or DEFAULT_WAVELENGTH_A
-    if two_theta is None or two_theta <= 0:
+    wavelength = _finite_float(wavelength_a)
+    if two_theta is None or two_theta <= 0 or wavelength is None or wavelength <= 0:
         return None
     theta = math.radians(two_theta / 2.0)
     sine = math.sin(theta)
@@ -219,7 +408,7 @@ def _peak_d(peak):
         or (peak or {}).get("two_theta")
         or (peak or {}).get("2theta")
         or (peak or {}).get("center_2theta"),
-        (peak or {}).get("wavelength_A") or (peak or {}).get("wavelength_a") or DEFAULT_WAVELENGTH_A,
+        (peak or {}).get("wavelength_A") or (peak or {}).get("wavelength_a") or (peak or {}).get("wavelength_angstrom"),
     )
 
 
@@ -258,8 +447,16 @@ def _compact_peak(peak):
     if not peak:
         return None
     intensity = _peak_intensity(peak)
+    d_value = _peak_d(peak)
+    d_status = {}
+    if d_value is None and _finite_float(peak.get("two_theta") or peak.get("2theta") or peak.get("center_2theta")) is not None:
+        d_status = {
+            "d_spacing_status": "unavailable_missing_wavelength",
+            "d_spacing_label": "d indisponível — λ não informado",
+            "d_spacing_source": "unavailable_missing_wavelength",
+        }
     return {
-        "d_angstrom": round(_peak_d(peak), 5) if _peak_d(peak) is not None else None,
+        "d_angstrom": round(d_value, 5) if d_value is not None else None,
         "two_theta": _finite_float(peak.get("two_theta") or peak.get("2theta") or peak.get("center_2theta")),
         "intensity_abs": round(intensity, 4),
         "relative_intensity": round(_finite_float(peak.get("i_norm")) or intensity, 4),
@@ -267,6 +464,7 @@ def _compact_peak(peak):
         "area": _finite_float(peak.get("area")),
         "tau": _finite_float(peak.get("tau")),
         "peak_index": peak.get("peak_index") or peak.get("index") or peak.get("peak_id"),
+        **d_status,
     }
 
 
@@ -1431,7 +1629,7 @@ def _matched_peak(label, observation, preparation=None, rule_id=None):
     }
 
 
-def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DEFAULT_WAVELENGTH_A, metadata=None, vocabulary=None, diagnostic_rules=None, options=None):
+def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=None, metadata=None, vocabulary=None, diagnostic_rules=None, options=None):
     """
     Interpreta argilominerais a partir do comportamento entre N, G e C.
 
@@ -1773,7 +1971,8 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=DE
     candidates = sorted(candidates, key=lambda row: row.get("score") or 0.0, reverse=True)
     return {
         "sampleId": sample_id,
-        "wavelengthA": _finite_float(wavelength_a) or DEFAULT_WAVELENGTH_A,
+        "wavelengthA": _finite_float(wavelength_a),
+        "wavelength_source": "explicit" if _finite_float(wavelength_a) is not None else "unavailable",
         "candidates": candidates,
         "globalWarnings": global_warnings,
         "missingPreparations": missing,
@@ -2045,6 +2244,7 @@ def _interpret_group(sample_base, items):
         "companion_peaks": companion_peaks,
         "ngc_behavior": ngc_behavior,
         "mixed_layer_warnings": mixed_layer_warnings,
+        "ngc_candidate_peak_windows": NGC_CANDIDATE_PEAK_WINDOWS,
         "external_curve_preclassification": {
             "available": bool(external_items),
             "schema_version": "argiloteca.drx.external_curve_preclassification_group.v1",
@@ -2097,6 +2297,7 @@ def build_ngc_workflow(items):
         "groups": group_payloads,
         "diagnostic_ranges": DIAGNOSTIC_RANGES,
         "script_interval_ranges": SCRIPT_INTERVAL_RANGES,
+        "ngc_candidate_peak_windows": NGC_CANDIDATE_PEAK_WINDOWS,
         "interpretation_policy": POLICY,
         "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
         "diagnostic_labels": [CONFIRMED_BY_RULES, PROBABLE_BY_RULES, POSSIBLE_BY_RULES],
