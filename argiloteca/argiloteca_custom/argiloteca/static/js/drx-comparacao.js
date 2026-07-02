@@ -3685,6 +3685,24 @@
     return "d: indisponível — λ não informado";
   }
 
+  function conciseDSpacingText(twoTheta, item, explicitValue) {
+    const lambda = explicitWavelengthAngstrom(item);
+    const explicit = Number(explicitValue);
+    const dValue = Number.isFinite(explicit) && explicit > 0 ? explicit : braggDSpacing(twoTheta, lambda);
+    return Number.isFinite(dValue) ? formatNumber(dValue, 2) + " Å" : "pico";
+  }
+
+  function conciseMineralLabel(mineralLabel) {
+    return String(mineralLabel || "").replace(/^Argilomineral:\s*/i, "").trim();
+  }
+
+  function visiblePeakLabel(theta, item, peak, mineralLabel, separator) {
+    const rows = [conciseDSpacingText(theta, item, peak && peak.d)];
+    const mineral = conciseMineralLabel(mineralLabel);
+    if (mineral) rows.push(mineral);
+    return rows.join(separator || "<br>");
+  }
+
   function axisModeForItem(item) {
     const metadata = item && item.metadata || {};
     const visualization = metadata.visualization || {};
@@ -4308,10 +4326,13 @@
         const peakX = [];
         const peakY = [];
         const peakText = [];
-        observedPeaks(item).slice(0, 12).forEach(function (peak) {
+        const peakHoverText = [];
+        observedPeaks(item).slice().sort(function (left, right) {
+          return (Number(right.relative_intensity || right.intensity) || 0) - (Number(left.relative_intensity || left.intensity) || 0);
+        }).slice(0, 8).forEach(function (peak) {
           // Plotly recebe os picos como uma segunda trace de marcadores. O eixo
-          // X e sempre 2θ; o texto mostra d-spacing quando disponivel, porque a
-          // interpretacao mineralogica e feita em Å.
+          // X e sempre 2θ. O texto visivel fica curto para nao encobrir o
+          // difratograma; detalhes completos permanecem apenas no hover.
           const theta = Number(peak.two_theta);
           const point = nearestSeriesPoint(item, ySeries, theta);
           if (!point) return;
@@ -4322,6 +4343,9 @@
           const method = peak.method || peak.detection_method || peak.algorithm || "";
           const fwhm = Number(peak.fwhm || peak.fwhm_2theta || peak.width);
           peakText.push([
+            visiblePeakLabel(theta, item, peak, mineralLabel),
+          ].filter(Boolean).join("<br>"));
+          peakHoverText.push([
             "fonte: " + escapeHtml(source),
             "2θ " + formatNumber(theta, 3) + "°",
             dSpacingText(theta, item, peak.d),
@@ -4340,12 +4364,14 @@
             x: peakX,
             y: peakY,
             text: peakText,
+            customdata: peakHoverText,
             type: "scatter",
             mode: "markers+text",
             name: chartSeriesLabel(item) + " picos",
             marker: { color: palette[itemIndex % palette.length], size: 7, symbol: "x" },
+            textfont: { size: 10 },
             textposition: "top center",
-            hovertemplate: "%{text}<extra></extra>",
+            hovertemplate: "%{customdata}<extra></extra>",
             showlegend: false,
           });
         }
@@ -4440,9 +4466,7 @@
         const x = sx(theta);
         const y = sy(point.y);
         const labelY = Math.max(18, y - 10 - ((peakIndex % 3) * 11));
-        const label = Number.isFinite(Number(peak.d))
-          ? dSpacingText(theta, item, peak.d)
-          : "2θ " + formatNumber(theta, 2) + "°";
+        const label = visiblePeakLabel(theta, item, peak, peakMineralLabelForTheta(item, theta), " · ");
         nodes.push('<line class="argilo-drx__peak-line" x1="' + x + '" y1="' + y + '" x2="' + x + '" y2="' + (y - 22) + '" stroke="' + color + '"></line>');
         nodes.push('<circle class="argilo-drx__peak-dot" cx="' + x + '" cy="' + y + '" r="3.5" fill="' + color + '"></circle>');
         nodes.push('<text class="argilo-drx__peak-label" x="' + Math.min(900, x + 5) + '" y="' + labelY + '">' + escapeHtml(label) + '</text>');
