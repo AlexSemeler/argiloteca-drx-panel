@@ -536,6 +536,31 @@
     return labels[value] || value || "Indeterminado";
   }
 
+  function ngcTreatmentRank(value) {
+    const normalized = String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    if (["n", "natural", "air_dried", "air-dried", "air dried"].indexOf(normalized) >= 0) return 0;
+    if (["g", "glicolado", "glicolada", "glycolated", "ethylene_glycol_solvated", "eg"].indexOf(normalized) >= 0) return 1;
+    if (["c", "calcinado", "calcinada", "calcined", "heated", "heated_550c"].indexOf(normalized) >= 0) return 2;
+    return 99;
+  }
+
+  function sortItemsByNgcTreatment(items) {
+    return (items || []).map(function (item, index) {
+      return { item: item, index: index, rank: ngcTreatmentRank(item && (item.treatment || item.preparation)) };
+    }).sort(function (left, right) {
+      return (left.rank - right.rank) || (left.index - right.index);
+    }).map(function (entry) {
+      return entry.item;
+    });
+  }
+
+  function selectedItemsInNgcOrder() {
+    return sortItemsByNgcTreatment(Array.from(selected.values()));
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -743,6 +768,19 @@
   function sampleLabel(item) {
     const sample = item.sample || {};
     return item.sampleCode || item.sample_code || sample.sample_code || sample.sample_label || "Nao informado";
+  }
+
+  function ngcTreatmentPrefix(item) {
+    const rank = ngcTreatmentRank(item && (item.treatment || item.preparation));
+    if (rank === 0) return "N";
+    if (rank === 1) return "G";
+    if (rank === 2) return "C";
+    return "";
+  }
+
+  function chartSeriesLabel(item) {
+    const prefix = ngcTreatmentPrefix(item);
+    return (prefix ? prefix + " · " : "") + sampleLabel(item);
   }
 
   /**
@@ -2238,7 +2276,7 @@
     if (rruffOdrTargetSlug) {
       return { slug: rruffOdrTargetSlug, label: rruffOdrTargetLabel || rruffOdrTargetSlug, source: "rruff" };
     }
-    return activePanelArgilomineral(Array.from(selected.values()));
+    return activePanelArgilomineral(selectedItemsInNgcOrder());
   }
 
   /**
@@ -2722,7 +2760,7 @@
     if (target && target.slug) {
       setRruffOdrTargetMineral(target.slug, target.label);
     } else {
-      const activeTarget = activePanelArgilomineral(Array.from(selected.values()));
+      const activeTarget = activePanelArgilomineral(selectedItemsInNgcOrder());
       if (activeTarget && activeTarget.slug) setRruffOdrTargetMineral(activeTarget.slug, activeTarget.label);
       else setRruffOdrTargetMineral("", "");
     }
@@ -2741,7 +2779,7 @@
    */
   function syncRruffOdrWithActivePanelMineral() {
     if (!rruffOdrPanelEl || rruffOdrPanelEl.hidden || !rruffOdrLoaded) return;
-    const activeTarget = activePanelArgilomineral(Array.from(selected.values()));
+    const activeTarget = activePanelArgilomineral(selectedItemsInNgcOrder());
     if (activeTarget && activeTarget.slug) setRruffOdrTargetMineral(activeTarget.slug, activeTarget.label);
     else setRruffOdrTargetMineral("", "");
     syncRruffOdrTypeToTarget();
@@ -4113,7 +4151,7 @@
   function renderChart() {
     // Renderizacao principal: Plotly. O SVG abaixo permanece fallback tecnico
     // para ambientes sem Plotly ou para exportacao legada.
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     chartEl.innerHTML = "";
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -4187,7 +4225,7 @@
       svgLineSegments(pointSets[index].points, baseX, sx, sy).forEach(function (segment) {
         nodes.push('<polyline class="argilo-drx__curve" data-series="' + index + '" stroke="' + color + '" points="' + segment.join(" ") + '"></polyline>');
       });
-      nodes.push('<text x="' + (width - margin.right - 8) + '" y="' + (margin.top + 20 + index * 18) + '" text-anchor="end" fill="' + color + '">' + escapeHtml(sampleLabel(item)).slice(0, 42) + "</text>");
+      nodes.push('<text x="' + (width - margin.right - 8) + '" y="' + (margin.top + 20 + index * 18) + '" text-anchor="end" fill="' + color + '">' + escapeHtml(chartSeriesLabel(item)).slice(0, 42) + "</text>");
     });
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -4219,7 +4257,8 @@
       const text = pointSet.points.map(function (point) {
         const mineralLabel = Number.isFinite(point.x) ? peakMineralLabelForTheta(item, point.x) : "";
         const rows = [
-          "<strong>" + escapeHtml(sampleLabel(item)) + "</strong>",
+          "<strong>" + escapeHtml(chartSeriesLabel(item)) + "</strong>",
+          "preparo: " + escapeHtml(treatmentLabel(item.treatment || item.preparation)),
           "2θ " + (Number.isFinite(point.x) ? formatNumber(point.x, 3) + "°" : "indisponível"),
           dSpacingText(point.x, item),
           "I exibida " + (Number.isFinite(point.y) ? formatNumber(point.y, 3) : "indisponível"),
@@ -4244,7 +4283,7 @@
         text: text,
         type: "scatter",
         mode: "lines",
-        name: sampleLabel(item),
+        name: chartSeriesLabel(item),
         line: { color: palette[index % palette.length], width: 2 },
         connectgaps: false,
         hovertemplate: "%{text}<extra></extra>",
@@ -4295,7 +4334,7 @@
             text: peakText,
             type: "scatter",
             mode: "markers+text",
-            name: sampleLabel(item) + " picos",
+            name: chartSeriesLabel(item) + " picos",
             marker: { color: palette[itemIndex % palette.length], size: 7, symbol: "x" },
             textposition: "top center",
             hovertemplate: "%{text}<extra></extra>",
@@ -4465,7 +4504,7 @@
         }
       });
       if (!bestPoint) return [
-        "<div><strong>", escapeHtml(sampleLabel(item)), "</strong> ",
+        "<div><strong>", escapeHtml(chartSeriesLabel(item)), "</strong> ",
         "sem ponto válido próximo; lacunas/pontos inválidos: ", pointSet.invalidPoints,
         "</div>",
       ].join("");
@@ -4480,7 +4519,7 @@
         ].join("")
         : "";
       return [
-        "<div><strong>", escapeHtml(sampleLabel(item)), "</strong> ", treatmentBadge(item),
+        "<div><strong>", escapeHtml(chartSeriesLabel(item)), "</strong> ", treatmentBadge(item),
         ": 2θ ", formatNumber(bestPoint.x, 3), "°",
         ", ", dSpacingText(bestPoint.x, item),
         ", I exibida ", formatNumber(bestPoint.y, 3),
@@ -5962,7 +6001,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderSelectedSummary() {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) {
       selectedSummaryEl.innerHTML = "<p>A descrição dos registros aparecerá aqui junto com a seleção.</p>";
       return;
@@ -6177,7 +6216,7 @@
    */
   function renderMineralPanel() {
     if (!mineralPanelEl) return;
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) {
       mineralPanelEl.innerHTML = [
         "<p>Selecione difratogramas para ver minerais candidatos e evidências de picos.</p>",
@@ -6713,7 +6752,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function exportCsv() {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) return;
     const rows = ["diffractogram_id,record_id,sample_code,treatment,two_theta,intensity"];
     items.forEach(function (item) {
@@ -6736,7 +6775,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function exportJson() {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) return;
     const payload = {
       schema_version: "argiloteca.drx.panel_export.v1",
@@ -9474,7 +9513,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function exportPdfReport() {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) {
       statusEl.textContent = "Selecione ao menos um difratograma para gerar o PDF.";
       return;
@@ -9889,7 +9928,7 @@
     syncMineralPanelFullscreenButton();
   }
   chartEl.addEventListener("wheel", function (event) {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) return;
     event.preventDefault();
     const allX = items.flatMap(function (item) { return item.twoTheta; });
@@ -9903,7 +9942,7 @@
     renderChart();
   }, { passive: false });
   chartEl.addEventListener("mousedown", function (event) {
-    const items = Array.from(selected.values());
+    const items = selectedItemsInNgcOrder();
     if (!items.length) return;
     const allX = items.flatMap(function (item) { return item.twoTheta; });
     dragStart = { clientX: event.clientX, domain: (xDomain || extent(allX)).slice() };
