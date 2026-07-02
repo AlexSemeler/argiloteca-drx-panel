@@ -4490,11 +4490,14 @@
       }
     });
     if (!nearestPeak || bestThetaDelta > 0.28) return "";
+    const dValue = Number(nearestPeak.d) || braggDSpacingForItem(thetaValue, item);
+    if (backendNgcGroups().length) {
+      return ngcMineralLabelForDSpacing(dValue);
+    }
     const match = matchPeakToCandidate(nearestPeak, item);
     if (match && match.candidate && match.candidate.mineral) {
       return "Argilomineral: " + match.candidate.mineral;
     }
-    const dValue = Number(nearestPeak.d) || braggDSpacingForItem(thetaValue, item);
     const minerals = Array.from(new Set(mineralReflectionRules().filter(function (rule) {
       return Number.isFinite(dValue) && dValue >= rule.min && dValue <= rule.max;
     }).map(function (rule) {
@@ -5007,6 +5010,24 @@
     return rankingSummary
       ? "<p><strong>Ranking auxiliar N/G/C:</strong> " + rankingSummary + "</p>"
       : '<p class="argilo-drx__mini-note">Sem candidato N/G/C com evidência suficiente.</p>';
+  }
+
+  function ngcMineralLabelForDSpacing(dValue) {
+    const d = Number(dValue);
+    if (!Number.isFinite(d)) return "";
+    const names = [];
+    backendNgcGroups().forEach(function (group) {
+      rankedNgcCandidates(group).forEach(function (candidate) {
+        const name = ngcCandidateDisplayName(candidate);
+        if (!name || names.indexOf(name) >= 0) return;
+        const windows = ngcCandidatePeakWindows(candidate);
+        const supported = windows.some(function (range) {
+          return d >= range[0] && d <= range[1];
+        });
+        if (supported) names.push(name);
+      });
+    });
+    return names.length ? "Argilomineral: " + names.slice(0, 2).join(" / ") : "";
   }
 
   function renderDiagnosticV3Block(group, options) {
