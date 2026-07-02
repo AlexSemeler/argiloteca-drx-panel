@@ -4282,25 +4282,20 @@
       const pointSet = chartSeriesPoints(item, seriesInfo);
       const text = pointSet.points.map(function (point) {
         const mineralLabel = Number.isFinite(point.x) ? peakMineralLabelForTheta(item, point.x) : "";
+        const mineral = conciseMineralLabel(mineralLabel);
         const rows = [
           "<strong>" + escapeHtml(chartSeriesLabel(item)) + "</strong>",
           "preparo: " + escapeHtml(treatmentLabel(item.treatment || item.preparation)),
           "2θ " + (Number.isFinite(point.x) ? formatNumber(point.x, 3) + "°" : "indisponível"),
           dSpacingText(point.x, item),
           "I exibida " + (Number.isFinite(point.y) ? formatNumber(point.y, 3) : "indisponível"),
-          "modo: " + intensityAxisLabel(),
-          "axis_mode: " + escapeHtml(axisModeForItem(item)),
         ];
         if (modeEl.value === "stacked") {
-          rows.push("I antes do offset " + (Number.isFinite(point.beforeOffset) ? formatNumber(point.beforeOffset, 3) : "indisponível"));
-          rows.push("offset aplicado " + formatNumber(point.offset || 0, 3));
+          rows.push("I antes do deslocamento " + (Number.isFinite(point.beforeOffset) ? formatNumber(point.beforeOffset, 3) : "indisponível"));
         } else if (Number.isFinite(point.raw)) {
           rows.push("I bruta " + formatNumber(point.raw, 3));
         }
-        const offset = axisOffsetForItem(item);
-        if (offset !== null) rows.push("two_theta_offset_applied: " + escapeHtml(offset));
-        if (pointSet.invalidPoints) rows.push("pontos inválidos/lacunas na série: " + pointSet.invalidPoints);
-        if (mineralLabel) rows.push(escapeHtml(mineralLabel));
+        if (mineral) rows.push("argilomineral: " + escapeHtml(mineral));
         return rows.join("<br>");
       });
       return {
@@ -4339,20 +4334,15 @@
           peakX.push(theta);
           peakY.push(point.y);
           const mineralLabel = peakMineralLabelForTheta(item, theta);
-          const source = peak.source || peak.detection_method || peak.method || "não informada";
-          const method = peak.method || peak.detection_method || peak.algorithm || "";
-          const fwhm = Number(peak.fwhm || peak.fwhm_2theta || peak.width);
+          const dValue = Number(peak.d) || braggDSpacingForItem(theta, item);
           peakText.push([
             visiblePeakLabel(theta, item, peak, mineralLabel),
           ].filter(Boolean).join("<br>"));
-          peakHoverText.push([
-            "fonte: " + escapeHtml(source),
-            "2θ " + formatNumber(theta, 3) + "°",
+          peakHoverText.push(ngcPeakPopupForDSpacing(dValue, theta, item) || [
+            "<strong>Pico observado</strong>",
+            "2θ " + formatNumber(theta, 2) + "°",
             dSpacingText(theta, item, peak.d),
-            "intensidade " + (Number.isFinite(Number(peak.intensity)) ? formatNumber(Number(peak.intensity), 3) : "indisponível"),
-            Number.isFinite(fwhm) ? "FWHM " + formatNumber(fwhm, 3) + "°2θ" : "",
-            method ? "método: " + escapeHtml(method) : "",
-            mineralLabel || "",
+            conciseMineralLabel(mineralLabel) ? escapeHtml(conciseMineralLabel(mineralLabel)) : "",
           ].filter(Boolean).join("<br>"));
         });
         /**
@@ -5028,6 +5018,36 @@
       });
     });
     return names.length ? "Argilomineral: " + names.slice(0, 2).join(" / ") : "";
+  }
+
+  function ngcPeakPopupForDSpacing(dValue, theta, item) {
+    const d = Number(dValue);
+    const thetaValue = Number(theta);
+    if (!Number.isFinite(d) || !backendNgcGroups().length) return "";
+    let selected = null;
+    backendNgcGroups().some(function (group) {
+      return rankedNgcCandidates(group).some(function (candidate) {
+        const windows = ngcCandidatePeakWindows(candidate);
+        const supported = windows.some(function (range) {
+          return d >= range[0] && d <= range[1];
+        });
+        if (!supported) return false;
+        selected = {
+          name: ngcCandidateDisplayName(candidate),
+          evidence: ngcCandidateRulePeaks(group, candidate),
+        };
+        return true;
+      });
+    });
+    const header = selected && selected.name ? selected.name : "Pico observado";
+    const evidence = selected && selected.evidence && selected.evidence.length
+      ? selected.evidence.slice(0, 4)
+      : ["Pico dentro da faixa de evidência N/G/C; revisar no ranking mineralógico."];
+    return [
+      "<strong>" + escapeHtml(header) + "</strong>",
+      "d " + formatNumber(d, 2) + " Å" + (Number.isFinite(thetaValue) ? " / 2θ " + formatNumber(thetaValue, 2) + "°" : ""),
+      evidence.map(function (row) { return escapeHtml(row); }).join("<br>"),
+    ].join("<br>");
   }
 
   function renderDiagnosticV3Block(group, options) {
