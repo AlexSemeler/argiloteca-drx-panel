@@ -2267,6 +2267,145 @@ def build_ngc_evidence_summary_contract(workflow_group):
     }
 
 
+def _source_rule_summary_targets(candidate):
+    """Mapeia candidato diagnosticado para alvos do indice de regras."""
+
+    label = str((candidate or {}).get("label") or "").casefold()
+    family = str((candidate or {}).get("family") or "").casefold()
+    targets = [label, family]
+    if label == "smectite_group":
+        targets.append("smectite")
+    if label == "kaolin_group":
+        targets.extend(["kaolin_vs_chlorite", "kaolinite"])
+    if label == "chlorite":
+        targets.append("kaolin_vs_chlorite")
+    if label == "illite_mica":
+        targets.append("illite_mica")
+    if label == "vermiculite":
+        targets.append("vermiculite")
+    if family == "fibrous_channel":
+        targets.append("sepiolite_palygorskite_halloysite")
+    return [target for target in targets if target]
+
+
+def _normalize_source_table_id(value):
+    """Normaliza identificadores de tabela para casar 7.3, table_7_3 etc."""
+
+    raw = str(value or "").strip().casefold()
+    if not raw:
+        return ""
+    raw = re.sub(r"^table[_\s-]*", "", raw)
+    return re.sub(r"[\s_.-]+", "", raw)
+
+
+def _source_rule_summary_table_for_reference(tables, table_ref):
+    """Localiza tabela estruturada citada por uma regra ou perfil."""
+
+    wanted = _normalize_source_table_id(table_ref)
+    if not wanted:
+        return None, None
+    for table_id, table in (tables or {}).items():
+        reference = table.get("reference") if isinstance(table, dict) else {}
+        if wanted in _normalize_source_table_id(table_id) or _normalize_source_table_id(reference.get("table")) == wanted:
+            return table_id, table
+    return None, None
+
+
+def _source_rule_summary_compact_rule(rule):
+    """Preserva apenas campos necessarios para renderizar/auditar a regra."""
+
+    return {
+        "rule_id": rule.get("rule_id"),
+        "target": rule.get("target"),
+        "explanation": rule.get("explanation"),
+        "source": dict(rule.get("source") or {}),
+    }
+
+
+def _source_rule_summary_compact_table(table_id, table):
+    """Preserva dados de tabela ja estruturados pela base cientifica."""
+
+    if not isinstance(table, dict):
+        return None
+    return {
+        "table_id": table_id,
+        "title": table.get("title"),
+        "page": table.get("page"),
+        "units": table.get("units") or {},
+        "reference": dict(table.get("reference") or {}),
+        "rows": [dict(row) for row in (table.get("rows") or []) if isinstance(row, dict)],
+        "notes": list(table.get("notes") or []),
+    }
+
+
+def build_ngc_source_rule_summary_contract(workflow_group):
+    """
+    Monta contrato backend das linhas/tabelas da secao Regra-fonte.
+
+    A funcao reorganiza `source_rule_index`, `source_mineral_profiles` e
+    `source_reflection_tables` ja retornados pela engine V3. Nao executa regras,
+    nao altera candidatos e nao adiciona bibliografia nova.
+    """
+
+    group = workflow_group or {}
+    diagnostic = group.get("diagnostic_interpretation") or {}
+    candidates = diagnostic.get("combined_candidates") or []
+    index = diagnostic.get("source_rule_index") or {}
+    profiles = diagnostic.get("source_mineral_profiles") or {}
+    tables = diagnostic.get("source_reflection_tables") or {}
+    candidate_rows = []
+    for candidate in candidates[:5]:
+        if not isinstance(candidate, dict):
+            continue
+        label = candidate.get("label")
+        family = candidate.get("family")
+        profile = profiles.get(label) or profiles.get(family) or {}
+        targets = set(_source_rule_summary_targets(candidate))
+        rules = [
+            _source_rule_summary_compact_rule(rule)
+            for rule in index.values()
+            if isinstance(rule, dict) and str(rule.get("target") or "").casefold() in targets
+        ][:3]
+        profile_refs = [
+            dict(ref)
+            for ref in (profile.get("references") or [])[:2]
+            if isinstance(ref, dict)
+        ]
+        table_rows = []
+        seen_tables = set()
+        for table_ref in [
+            *((rule.get("source") or {}).get("table") for rule in rules),
+            *(ref.get("table") for ref in profile_refs),
+        ]:
+            table_id, table = _source_rule_summary_table_for_reference(tables, table_ref)
+            table_key = table_id or table_ref
+            if not table or table_key in seen_tables:
+                continue
+            seen_tables.add(table_key)
+            compact = _source_rule_summary_compact_table(table_id, table)
+            if compact:
+                table_rows.append(compact)
+        if not profile_refs and not rules and not table_rows:
+            continue
+        candidate_rows.append(
+            {
+                "label": label,
+                "family": family,
+                "profile_references": profile_refs,
+                "rules": rules,
+                "tables": table_rows,
+            }
+        )
+    return {
+        "version": "argiloteca.drx.ngc.source_rule_summary.v1",
+        "policy": POLICY,
+        "status": "available" if candidate_rows else "empty",
+        "sample_base": group.get("sample_base"),
+        "candidates": candidate_rows,
+        "warnings": [],
+    }
+
+
 interpretClayMineralsNGC = interpret_clay_minerals_ngc
 
 
@@ -2545,6 +2684,7 @@ def _interpret_group(sample_base, items):
         "warnings": warnings,
     }
     group_payload["ngc_evidence_summary"] = build_ngc_evidence_summary_contract(group_payload)
+    group_payload["ngc_source_rule_summary"] = build_ngc_source_rule_summary_contract(group_payload)
     return group_payload
 
 

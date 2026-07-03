@@ -162,6 +162,11 @@ class DrxV3EngineTest(unittest.TestCase):
         self.assertIn("source_reflection_tables", source)
         self.assertIn("Dados das tabelas", source)
         self.assertIn("renderSourceTablePreview", source)
+        self.assertIn("ngc_source_rule_summary", source)
+        self.assertIn("function backendSourceRuleSummaryCandidate", source)
+        self.assertIn("function renderSourceRulePanelFromBackend", source)
+        self.assertIn("const backendPanel = renderSourceRulePanelFromBackend(candidate)", source)
+        self.assertIn("if (backendPanel) return backendPanel", source)
         self.assertIn("d inicial Å", source)
 
     def test_external_curve_preclassification_group_preserves_d060(self):

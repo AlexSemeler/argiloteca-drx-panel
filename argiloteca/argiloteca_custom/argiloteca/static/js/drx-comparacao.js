@@ -5568,12 +5568,60 @@
         "</div>",
       ].join("");
     }
+    function backendSourceRuleSummaryCandidate(candidate) {
+      const summary = group && group.ngc_source_rule_summary;
+      if (!summary || summary.version !== "argiloteca.drx.ngc.source_rule_summary.v1" || summary.status !== "available") return null;
+      const label = String(candidate && candidate.label || "");
+      const family = String(candidate && candidate.family || "");
+      return (summary.candidates || []).find(function (row) {
+        return String(row && row.label || "") === label || String(row && row.family || "") === family;
+      }) || null;
+    }
+    function renderSourceRulePanelFromBackend(candidate) {
+      const row = backendSourceRuleSummaryCandidate(candidate);
+      if (!row) return "";
+      const profileRefs = (row.profile_references || []).slice(0, 2).map(function (ref) {
+        const parts = [
+          ref.page ? "p. " + ref.page : "",
+          ref.table ? "Tabela " + ref.table : "",
+          ref.figure ? "Figura " + ref.figure : "",
+        ].filter(Boolean).join(" · ");
+        return "<li>" + escapeHtml(parts || ref.source_id || "referência") + "</li>";
+      }).join("");
+      const ruleRows = (row.rules || []).slice(0, 3).map(function (rule) {
+        const source = rule.source || {};
+        const sourceBits = [
+          source.page ? "p. " + source.page : "",
+          source.table ? "Tabela " + source.table : "",
+          source.figure ? "Figura " + source.figure : "",
+        ].filter(Boolean).join(" · ");
+        return [
+          "<li>",
+          "<strong>", escapeHtml(rule.rule_id || "regra"), "</strong>",
+          sourceBits ? " <span>(" + escapeHtml(sourceBits) + ")</span>" : "",
+          rule.explanation ? "<br><span>" + escapeHtml(rule.explanation) + "</span>" : "",
+          "</li>",
+        ].join("");
+      }).join("");
+      const tablePreviews = (row.tables || []).slice(0, 3).map(renderSourceTablePreview).join("");
+      if (!profileRefs && !ruleRows && !tablePreviews) return "";
+      return [
+        "<details class='argilo-drx__source-rule'>",
+        "<summary>Regra-fonte</summary>",
+        profileRefs ? "<p><strong>Perfil mineralógico</strong></p><ul>" + profileRefs + "</ul>" : "",
+        ruleRows ? "<p><strong>Regras aplicadas</strong></p><ul>" + ruleRows + "</ul>" : "",
+        tablePreviews ? "<p><strong>Dados das tabelas</strong></p>" + tablePreviews : "",
+        "</details>",
+      ].join("");
+    }
     function renderSourceRulePanel(candidate) {
       // Renderiza a secao recolhivel "Regra-fonte". Ela usa os objetos
       // source_rule_index e source_mineral_profiles injetados pela engine
       // Python. O loop sobre Object.keys(index) e finito e apenas filtra regras
       // ja recebidas no JSON; nenhuma inferencia mineralogica e feita no
       // frontend.
+      const backendPanel = renderSourceRulePanelFromBackend(candidate);
+      if (backendPanel) return backendPanel;
       const index = diagnostic.source_rule_index || {};
       const profiles = diagnostic.source_mineral_profiles || {};
       const profile = profiles[candidate.label] || profiles[candidate.family] || null;
