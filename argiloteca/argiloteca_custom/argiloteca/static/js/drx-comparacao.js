@@ -9212,6 +9212,125 @@
     ].join("");
   }
 
+  function backendWorkflowGroupsForSelection(items) {
+    const rows = items || [];
+    if (ngcWorkflowSelectionKey(rows) !== ngcWorkflowKey) return null;
+    if (!ngcWorkflowPayload || ngcWorkflowPayload.loading || ngcWorkflowPayload.success === false) return null;
+    const groups = ngcWorkflowPayload.groups;
+    return Array.isArray(groups) && groups.length ? groups : null;
+  }
+
+  function backendInterpretationCandidateText(candidate) {
+    return String(
+      candidate && (
+        candidate.mineral_candidate
+        || candidate.mineral
+        || candidate.label
+        || candidate.target
+      )
+      || ""
+    ).trim();
+  }
+
+  function backendInterpretationEvidenceText(evidence) {
+    if (!evidence) return "";
+    if (typeof evidence === "string") return evidence.trim();
+    return String(
+      evidence.label
+      || evidence.message
+      || evidence.explanation
+      || evidence.range_key
+      || ""
+    ).trim();
+  }
+
+  function backendPreparationCountsFromWorkflowGroup(group, backendGroupingGroup) {
+    if (backendGroupingGroup) return backendSummaryPreparationCounts(backendGroupingGroup);
+    const counts = { natural: 0, glicolada: 0, calcinada: 0, indeterminado: 0 };
+    (group && group.available_preparations || []).forEach(function (preparation) {
+      const key = backendGroupingTreatmentKey(preparation);
+      if (key === "natural") counts.natural = Math.max(counts.natural, 1);
+      else if (key === "glicolada") counts.glicolada = Math.max(counts.glicolada, 1);
+      else if (key === "calcinada") counts.calcinada = Math.max(counts.calcinada, 1);
+      else counts.indeterminado += 1;
+    });
+    return counts;
+  }
+
+  function buildNgcInterpretationsFromBackend(items) {
+    const rows = items || [];
+    const workflowGroups = backendWorkflowGroupsForSelection(rows);
+    if (!workflowGroups) return null;
+
+    const backendGrouping = backendGroupingFromWorkflow();
+    const groupingBySample = new Map();
+    (backendGrouping && backendGrouping.groups || []).forEach(function (group) {
+      if (group && group.sample_base) groupingBySample.set(group.sample_base, group);
+    });
+    const localGroups = new Map();
+    buildNgcGroupsWithBackendFallback(rows).forEach(function (group) {
+      if (group && group.sampleBase) localGroups.set(group.sampleBase, group);
+    });
+
+    const interpreted = workflowGroups.map(function (group) {
+      if (!group || !group.sample_base) return null;
+      const backendGroupingGroup = groupingBySample.get(group.sample_base);
+      const counts = backendPreparationCountsFromWorkflowGroup(group, backendGroupingGroup);
+      const candidateRows = Array.isArray(group.candidates) ? group.candidates.slice() : [];
+      if (group.best_candidate) candidateRows.unshift(group.best_candidate);
+      const candidates = Array.from(new Set(candidateRows.map(backendInterpretationCandidateText).filter(Boolean)));
+      const warnings = Array.from(new Set([].concat(
+        group.warnings || [],
+        candidateRows.reduce(function (acc, candidate) {
+          return acc.concat(candidate && candidate.warnings || []);
+        }, [])
+      ).filter(Boolean)));
+      const evidences = [];
+      candidateRows.forEach(function (candidate) {
+        (candidate && candidate.evidence || []).forEach(function (evidence) {
+          const text = backendInterpretationEvidenceText(evidence);
+          if (text) evidences.push(text);
+        });
+      });
+      warnings.forEach(function (warning) {
+        evidences.push("limitação: " + warning);
+      });
+
+      const scoredCandidates = candidateRows
+        .map(function (candidate) { return Number(candidate && candidate.score); })
+        .filter(function (score) { return Number.isFinite(score); });
+      const ngcScore = scoredCandidates.length ? Math.max.apply(null, scoredCandidates) : undefined;
+      const bestCandidate = group.best_candidate || candidateRows[0] || {};
+      const localGroup = localGroups.get(group.sample_base);
+      const scoreDetails = localGroup ? buildNgcTrajectoryScore(localGroup) : {
+        score: Number.isFinite(ngcScore) ? ngcScore : 0,
+        components: {},
+        hypotheses: candidates.slice(),
+        evidences: evidences.slice(),
+        warnings: warnings.slice(),
+      };
+      const known = [counts.natural > 0, counts.glicolada > 0, counts.calcinada > 0].filter(Boolean).length;
+      let status = String(group.status || "").trim();
+      if (!status) status = known === 3 ? "trio completo" : (known > 0 ? "trio incompleto" : "indeterminado");
+
+      return {
+        sampleBase: group.sample_base,
+        status: status,
+        natural: counts.natural,
+        glicolada: counts.glicolada,
+        calcinada: counts.calcinada,
+        indeterminado: counts.indeterminado,
+        candidates: candidates,
+        confidence: bestCandidate.confidence || (Number.isFinite(ngcScore) && ngcScore >= 0.75 ? "alta" : (Number.isFinite(ngcScore) && ngcScore >= 0.45 ? "média" : "baixa")),
+        ngcScore: Number.isFinite(ngcScore) ? ngcScore : scoreDetails.score,
+        scoreDetails: scoreDetails,
+        evidences: Array.from(new Set(evidences)),
+        warnings: warnings,
+      };
+    });
+    return interpreted.length && interpreted.every(Boolean) ? interpreted : null;
+  }
+
   /**
    * Gera a leitura resumida N/G/C usada nos relatórios da seleção.
    *
@@ -9222,6 +9341,8 @@
    * @returns {Array<Object>} Linhas resumidas para relatório/interface.
    */
   function buildNgcInterpretations(items) {
+    const backendRows = buildNgcInterpretationsFromBackend(items);
+    if (backendRows) return backendRows;
     return buildNgcGroupsWithBackendFallback(items).map(function (group) {
       const ranges = SEM_TITULO_NGC_DIAGNOSTIC_RANGES;
       const scoreDetails = buildNgcTrajectoryScore(group);
