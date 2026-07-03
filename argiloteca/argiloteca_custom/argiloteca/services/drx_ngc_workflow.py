@@ -580,6 +580,93 @@ def _item_from_payload(item):
     }
 
 
+def _contract_treatment_label(preparation):
+    """Normaliza o preparo para o contrato estrutural backend N/G/C."""
+
+    if preparation == "natural":
+        return "natural"
+    if preparation == "glicolado":
+        return "glycolated"
+    if preparation == "calcinado":
+        return "calcined"
+    return "unknown"
+
+
+def _has_explicit_sample_base(item):
+    """Indica se o payload informou amostra-base de forma explicita."""
+
+    payload = item or {}
+    metadata = payload.get("metadata") if isinstance(payload.get("metadata"), dict) else {}
+    for source in (payload, metadata):
+        for key in ("sample_base", "sampleBase", "sample_id", "sample_code"):
+            if str((source or {}).get(key) or "").strip():
+                return True
+    return False
+
+
+def build_ngc_backend_grouping_contract(items):
+    """Monta contrato backend estrutural para futura substituicao do agrupamento JS.
+
+    A funcao agrupa os mesmos itens aceitos por ``build_ngc_workflow`` usando
+    apenas normalizacao estrutural ja existente. Ela nao aplica regras
+    mineralogicas, nao calcula d-spacing, nao detecta picos e nao altera os
+    itens de entrada.
+    """
+
+    normalised_rows = []
+    warnings = []
+    for index, item in enumerate(items or []):
+        if not isinstance(item, dict):
+            warnings.append(f"item {index} ignorado: payload nao e dicionario")
+            continue
+        row = _item_from_payload(item)
+        row_warnings = []
+        if not _has_explicit_sample_base(item):
+            row_warnings.append("sample_base ausente; agrupamento usa fallback conservador.")
+        normalised_rows.append((row, row_warnings))
+
+    groups = defaultdict(list)
+    group_warning_map = defaultdict(list)
+    for row, row_warnings in normalised_rows:
+        groups[row["sample_base"]].append(row)
+        group_warning_map[row["sample_base"]].extend(row_warnings)
+
+    group_payloads = []
+    treatment_order = {"natural": 0, "glycolated": 1, "calcined": 2, "unknown": 3}
+    for sample_base, rows in sorted(groups.items(), key=lambda pair: pair[0]):
+        available = sorted(
+            {_contract_treatment_label(row.get("preparation")) for row in rows},
+            key=lambda value: treatment_order.get(value, 99),
+        )
+        group_payloads.append(
+            {
+                "sample_base": sample_base,
+                "available_treatments": available,
+                "is_complete_ngc": all(label in available for label in ("natural", "glycolated", "calcined")),
+                "items": [
+                    {
+                        "id": row.get("id"),
+                        "filename": row.get("filename"),
+                        "preparation": _contract_treatment_label(row.get("preparation")),
+                        "sample_base": row.get("sample_base"),
+                        "peak_count": len(row.get("peaks") or []),
+                        "metadata_source": (row.get("metadata") or {}).get("source"),
+                    }
+                    for row in rows
+                ],
+                "warnings": list(dict.fromkeys(group_warning_map.get(sample_base) or [])),
+            }
+        )
+
+    return {
+        "version": "argiloteca.drx.ngc.backend_grouping.v1",
+        "policy": POLICY,
+        "status": "available" if group_payloads else "insufficient_data",
+        "groups": group_payloads,
+        "warnings": warnings,
+    }
+
+
 def _compact_targeted_rows(items):
     """
     Avalia evidências minerais em séries N/G/C usando d-spacing, comportamento entre tratamentos e ressalvas científicas para evitar identificação automática indevida.
@@ -2282,6 +2369,16 @@ def build_ngc_workflow(items):
         Exception: Propaga erros estruturais não tratados pelo chamador da API.
     """
     normalised_items = [_item_from_payload(item) for item in items or [] if isinstance(item, dict)]
+    try:
+        backend_grouping = build_ngc_backend_grouping_contract(items)
+    except Exception as exc:  # pragma: no cover - contrato defensivo para API
+        backend_grouping = {
+            "version": "argiloteca.drx.ngc.backend_grouping.v1",
+            "policy": POLICY,
+            "status": "insufficient_data",
+            "groups": [],
+            "warnings": [f"backend_grouping indisponivel: {exc}"],
+        }
     groups = defaultdict(list)
     for item in normalised_items:
         groups[item["sample_base"]].append(item)
@@ -2298,6 +2395,7 @@ def build_ngc_workflow(items):
         "diagnostic_ranges": DIAGNOSTIC_RANGES,
         "script_interval_ranges": SCRIPT_INTERVAL_RANGES,
         "ngc_candidate_peak_windows": NGC_CANDIDATE_PEAK_WINDOWS,
+        "backend_grouping": backend_grouping,
         "interpretation_policy": POLICY,
         "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
         "diagnostic_labels": [CONFIRMED_BY_RULES, PROBABLE_BY_RULES, POSSIBLE_BY_RULES],
