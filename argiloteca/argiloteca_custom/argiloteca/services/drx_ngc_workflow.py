@@ -2073,6 +2073,200 @@ def interpret_clay_minerals_ngc(sample_id, peaks_by_preparation, wavelength_a=No
     }
 
 
+def _evidence_summary_source_for_behavior(behavior):
+    """Retorna uma fonte ja registrada para o comportamento N/G/C informado."""
+
+    text = str(behavior or "").casefold()
+    if "quartz" in text:
+        rows = NGC_CANDIDATE_PEAK_WINDOWS.get("quartz") or []
+    elif "rational" in text or "ordered" in text or "partial" in text or "broad" in text:
+        rows = NGC_CANDIDATE_PEAK_WINDOWS.get("mixed_layer") or []
+    elif "collapse" in text or "expands" in text:
+        rows = NGC_CANDIDATE_PEAK_WINDOWS.get("smectite_group") or []
+    elif "stable" in text:
+        rows = NGC_CANDIDATE_PEAK_WINDOWS.get("illite_mica") or []
+    elif "heating" in text or "persists" in text:
+        rows = NGC_CANDIDATE_PEAK_WINDOWS.get("chlorite") or []
+    else:
+        rows = []
+    source = (rows[0] or {}).get("source") if rows else None
+    return dict(source) if isinstance(source, dict) else {}
+
+
+def _evidence_summary_group_key(behavior):
+    """Agrupa evidencias N/G/C nos mesmos blocos conceituais usados no painel."""
+
+    text = str(behavior or "")
+    if re.search(r"expands|collapses|partial_expansion|rational_sequence|ordered_chlorite", text, re.I):
+        return "trajectory", "Trajetória N→G→C"
+    if re.search(r"heating|appears|disappears|persists", text, re.I):
+        return "heating", "Resposta ao aquecimento"
+    if re.search(r"stable_after_glycol", text, re.I):
+        return "stable_peaks", "Picos estáveis"
+    return "quality_interference", "Qualidade e interferências"
+
+
+def _evidence_summary_item_key(item):
+    """Chave conservadora para remover apenas duplicatas exatamente iguais."""
+
+    source = item.get("source") if isinstance(item.get("source"), dict) else {}
+    source_key = tuple(sorted((str(key), str(value)) for key, value in source.items()))
+    return (str(item.get("label") or ""), str(item.get("detail") or ""), source_key)
+
+
+def _evidence_summary_append(sections, key, title, item):
+    """Inclui uma evidencia em uma secao preservando ordem e duplicatas nao exatas."""
+
+    if not item or not item.get("label"):
+        return
+    section = sections.get(key)
+    if section is None:
+        section = {"key": key, "title": title, "items": [], "_seen": set()}
+        sections[key] = section
+    item_key = _evidence_summary_item_key(item)
+    if item_key in section["_seen"]:
+        return
+    section["_seen"].add(item_key)
+    section["items"].append(item)
+
+
+def _evidence_summary_peak_from_value(value):
+    """Normaliza picos observados quando o payload ja os disponibiliza."""
+
+    if not isinstance(value, dict):
+        return None
+    peak = value.get("observed_peak") if isinstance(value.get("observed_peak"), dict) else value
+    return _compact_peak(peak) if isinstance(peak, dict) else None
+
+
+def build_ngc_evidence_summary_contract(workflow_group):
+    """
+    Monta contrato backend das evidencias N/G/C ja calculadas pelo workflow.
+
+    A funcao nao executa regras mineralogicas, nao recalcula scores e nao altera
+    candidatos. Ela apenas reorganiza `diagnostic_interpretation`,
+    `ngc_behavior`, diagnosticos de faixa e fontes ja presentes no grupo para que
+    o frontend possa renderizar evidencias estruturadas sem duplicar ciencia.
+    """
+
+    group = workflow_group or {}
+    sections = {}
+    warnings = [warning for warning in group.get("warnings") or [] if warning]
+    diagnostic = group.get("diagnostic_interpretation") or {}
+    for row in diagnostic.get("behavior_candidates") or []:
+        if not isinstance(row, dict):
+            continue
+        behavior = row.get("behavior") or row.get("label")
+        key, title = _evidence_summary_group_key(behavior)
+        values = row.get("values") or []
+        relations = row.get("relations") or []
+        if values:
+            detail = " | ".join(str(value) for value in values[:4] if value)
+        else:
+            detail = " | ".join(
+                "%s -> %s%s" % (
+                    relation.get("source") or "N/D",
+                    relation.get("target") or "N/D",
+                    " · Δd %.3f Å" % relation.get("delta_d")
+                    if relation.get("delta_d") is not None
+                    else "",
+                )
+                for relation in relations[:4]
+                if isinstance(relation, dict)
+            )
+        peaks = [
+            peak
+            for value in values
+            for peak in [_evidence_summary_peak_from_value(value)]
+            if peak
+        ]
+        _evidence_summary_append(
+            sections,
+            key,
+            title,
+            {
+                "label": str(behavior or "Evidência"),
+                "detail": detail,
+                "source": _evidence_summary_source_for_behavior(behavior),
+                "peaks": peaks,
+            },
+        )
+
+    diagnostics = ((group.get("script_report") or {}).get("diagnostics") or group.get("interval_diagnostics") or [])
+    for diagnostic_row in diagnostics[:8]:
+        if not isinstance(diagnostic_row, dict):
+            continue
+        observations = diagnostic_row.get("observations") or {}
+        values = []
+        peaks = []
+        for name, observation in observations.items():
+            if not isinstance(observation, dict):
+                continue
+            peak = observation.get("observed_peak") or {}
+            if not peak or peak.get("d_angstrom") is None:
+                continue
+            values.append(
+                "%s: d %.2f Å%s%s"
+                % (
+                    name,
+                    float(peak.get("d_angstrom")),
+                    " / 2θ %.2f°" % peak.get("two_theta") if peak.get("two_theta") is not None else "",
+                    " / int. %.0f" % peak.get("intensity_abs") if peak.get("intensity_abs") is not None else "",
+                )
+            )
+            compact = _compact_peak(peak)
+            if compact:
+                peaks.append(compact)
+        _evidence_summary_append(
+            sections,
+            "range_diagnostics",
+            "Faixas diagnósticas",
+            {
+                "label": str(diagnostic_row.get("mineral") or "Inconclusivo"),
+                "detail": " | ".join(values),
+                "source": {},
+                "peaks": peaks,
+            },
+        )
+
+    if sections:
+        candidate_windows = group.get("ngc_candidate_peak_windows") or NGC_CANDIDATE_PEAK_WINDOWS
+        for windows in (candidate_windows or {}).values():
+            for window in windows or []:
+                if not isinstance(window, dict):
+                    continue
+                source = window.get("source") if isinstance(window.get("source"), dict) else {}
+                if not source:
+                    continue
+                _evidence_summary_append(
+                    sections,
+                    "source_rules",
+                    "Regra-fonte",
+                    {
+                        "label": str(window.get("label") or source.get("rule_id") or "Regra-fonte"),
+                        "detail": "",
+                        "source": dict(source),
+                        "peaks": [],
+                    },
+                )
+
+    public_sections = []
+    for section in sections.values():
+        public_section = dict(section)
+        public_section.pop("_seen", None)
+        if public_section.get("items"):
+            public_sections.append(public_section)
+    status = "available" if public_sections else ("insufficient_data" if warnings else "empty")
+    return {
+        "version": "argiloteca.drx.ngc.evidence_summary.v1",
+        "policy": POLICY,
+        "status": status,
+        "sample_base": group.get("sample_base"),
+        "sections": public_sections,
+        "warnings": warnings,
+    }
+
+
 interpretClayMineralsNGC = interpret_clay_minerals_ngc
 
 
@@ -2313,7 +2507,7 @@ def _interpret_group(sample_base, items):
         for item in external_items
     ]
     candidates = sorted(candidates, key=lambda row: row.get("score") or 0.0, reverse=True)
-    return {
+    group_payload = {
         "sample_base": sample_base,
         "status": "trio completo" if complete_trio else "trio incompleto",
         "available_preparations": available,
@@ -2350,6 +2544,8 @@ def _interpret_group(sample_base, items):
         },
         "warnings": warnings,
     }
+    group_payload["ngc_evidence_summary"] = build_ngc_evidence_summary_contract(group_payload)
+    return group_payload
 
 
 def build_ngc_workflow(items):

@@ -5351,6 +5351,60 @@
     ].join("<br>");
   }
 
+  function backendNgcEvidenceSummaryForSelection(items) {
+    const rows = items || [];
+    if (ngcWorkflowSelectionKey(rows) !== ngcWorkflowKey) return [];
+    if (!ngcWorkflowPayload || ngcWorkflowPayload.loading || ngcWorkflowPayload.success === false) return [];
+    return (ngcWorkflowPayload.groups || []).map(function (group) {
+      return group && group.ngc_evidence_summary;
+    }).filter(function (summary) {
+      return summary && summary.version === "argiloteca.drx.ngc.evidence_summary.v1";
+    });
+  }
+
+  function renderNgcEvidenceSummaryFromBackend(summary) {
+    if (!summary || summary.version !== "argiloteca.drx.ngc.evidence_summary.v1") return "";
+    if (summary.status !== "available" || !Array.isArray(summary.sections)) return "";
+    const behaviorLabels = {
+      expands_with_glycol: "Expansão com glicolação",
+      collapses_after_heating: "Colapso após aquecimento",
+      appears_after_heating: "Pico aparece após aquecimento",
+      disappears_after_heating: "Pico desaparece após aquecimento",
+      persists_after_heating: "Persistência após aquecimento",
+      stable_after_glycol: "Estabilidade após glicolação",
+      broad_or_shoulder: "Pico largo ou ombro",
+      quartz_internal_standard_pattern: "Quartzo como padrão/interferência",
+      partial_expansion_with_glycol: "Expansão parcial com glicolação",
+      rational_sequence: "Sequência racional",
+      ordered_chlorite_smectite: "Clorita/esmectita ordenada",
+    };
+    return summary.sections.filter(function (section) {
+      return section && section.key !== "source_rules" && Array.isArray(section.items) && section.items.length;
+    }).map(function (section) {
+      const body = section.items.map(function (item) {
+        const label = item && item.label;
+        const detail = item && item.detail;
+        return [
+          '<div class="argilo-drx__ngc-evidence-row">',
+          "<strong>", escapeHtml(behaviorLabels[label] || label || "Evidência"), "</strong>",
+          detail ? "<span>" + escapeHtml(detail) + "</span>" : "",
+          "</div>",
+        ].join("");
+      }).join("");
+      return [
+        '<article class="argilo-drx__ngc-evidence-card">',
+        "<h6>", escapeHtml(section.title || "Evidências N/G/C"), "</h6>",
+        body,
+        "</article>",
+      ].join("");
+    }).filter(Boolean).join("");
+  }
+
+  function buildNgcEvidenceSummaryWithBackendFallback(group, fallbackHtml) {
+    const backendHtml = renderNgcEvidenceSummaryFromBackend(group && group.ngc_evidence_summary);
+    return backendHtml || fallbackHtml;
+  }
+
   function renderDiagnosticV3Block(group, options) {
     options = options || {};
     const diagnostic = group && group.diagnostic_interpretation || null;
@@ -5599,8 +5653,9 @@
         "</article>",
       ].join("");
     }).join("");
-    const behavior = renderBehaviorCards(diagnostic.behavior_candidates || [])
+    const behaviorFallback = renderBehaviorCards(diagnostic.behavior_candidates || [])
       + (options.showRangeDiagnostics === false ? "" : renderRangeDiagnosticCard());
+    const behavior = buildNgcEvidenceSummaryWithBackendFallback(group, behaviorFallback);
     const mixed = (diagnostic.mixed_layer_candidates || []).slice(0, 4).map(function (row) {
       return "<li>" + mineralLink(row.mixed_layer_candidate || "interestratificado") + " · " + escapeHtml(row.explanation || "") + "</li>";
     }).join("");
