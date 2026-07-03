@@ -358,6 +358,19 @@ class DrxV3EngineTest(unittest.TestCase):
         self.assertIn('"schema_version": "argiloteca.drx.reference_overlay.v1"', views)
         self.assertIn('"reference_overlay": reference_overlay', views)
 
+    def test_panel_prefers_backend_ngc_grouping_with_legacy_fallback(self):
+        source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
+
+        self.assertIn("function backendGroupingFromWorkflow", source)
+        self.assertIn("function ngcGroupsFromBackendGrouping", source)
+        self.assertIn("function buildNgcGroupsWithBackendFallback", source)
+        self.assertIn("function buildNgcGroups(items)", source)
+        self.assertIn("ngcWorkflowPayload && ngcWorkflowPayload.backend_grouping", source)
+        self.assertIn("ngcWorkflowSelectionKey(rows) === ngcWorkflowKey", source)
+        self.assertIn("return backendGroups || buildNgcGroups(rows)", source)
+        self.assertIn("function buildNgcInterpretations(items)", source)
+        self.assertIn("function buildNgcSummary(items)", source)
+
     def test_panel_keeps_fixed_peak_labels_short_and_details_in_tooltip(self):
         source = self.read_project_file("argiloteca/argiloteca_custom/argiloteca/static/js/drx-comparacao.js")
         self.assertIn("function compactFixedPeakLabel", source)

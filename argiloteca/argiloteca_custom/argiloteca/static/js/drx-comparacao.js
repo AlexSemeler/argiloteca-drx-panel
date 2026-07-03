@@ -763,7 +763,7 @@
       .map(function (result) { return result && result.selectedId ? selected.get(result.selectedId) : null; })
       .filter(Boolean);
     items.forEach(applyExternalSingleRawAxisFallback);
-    buildNgcGroups(items).forEach(function (group) {
+    buildNgcGroupsWithBackendFallback(items).forEach(function (group) {
       const natural = group.natural[0];
       if (!natural || !(natural.twoTheta || []).length) return;
       const targetStart = Number(natural.twoTheta[0]);
@@ -5802,7 +5802,7 @@
   function renderExternalNgcCandidateEvidenceLocal(items) {
     const assembly = buildMineralAssembly(items || []);
     const bestMineral = bestClayMineralFromAssembly(assembly);
-    const groups = buildNgcGroups(items || []);
+    const groups = buildNgcGroupsWithBackendFallback(items || []);
     const groupRows = groups.slice(0, 3).map(function (group) {
       const score = buildNgcTrajectoryScore(group);
       const evidences = (score.evidences || []).slice(0, 5).map(function (row) {
@@ -5865,7 +5865,7 @@
       return preps.indexOf("natural") >= 0 && preps.indexOf("glicolado") >= 0 && preps.indexOf("calcinado") >= 0;
     });
     const backendGroup = completeGroups[0] || groups[0] || null;
-    const localGroups = buildNgcGroups(items || []);
+    const localGroups = buildNgcGroupsWithBackendFallback(items || []);
     const localComplete = localGroups.some(function (group) {
       return group.natural.length && group.glicolada.length && group.calcinada.length;
     });
@@ -6066,7 +6066,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderSelectedNgcCompleteSummary(items) {
-    const completeGroups = buildNgcGroups(items).filter(function (group) {
+    const completeGroups = buildNgcGroupsWithBackendFallback(items).filter(function (group) {
       return group.natural.length && group.glicolada.length && group.calcinada.length;
     });
     if (!completeGroups.length) return "";
@@ -7927,7 +7927,7 @@
   function interpretationNgcEvidenceRows(items, selectedMineral) {
     const targetSlug = resolveMineralSlug(selectedMineral && selectedMineral.mineral) || mineralSlug(selectedMineral && selectedMineral.mineral);
     const rows = [];
-    const groups = buildNgcGroups(items || []);
+    const groups = buildNgcGroupsWithBackendFallback(items || []);
     const completeGroups = groups.filter(function (group) {
       return group.natural.length && group.glicolada.length && group.calcinada.length;
     });
@@ -8242,7 +8242,7 @@
   function renderExecutiveSummary(items, assembly, peakRows) {
     const classes = classifyAssemblyByClass(assembly);
     const treatments = Array.from(new Set(items.map(function (item) { return treatmentLabel(item.treatment); }))).join(", ") || "N/D";
-    const sampleGroups = Array.from(new Set(buildNgcGroups(items).map(function (group) {
+    const sampleGroups = Array.from(new Set(buildNgcGroupsWithBackendFallback(items).map(function (group) {
       return group.sampleBase;
     }))).join(", ") || Array.from(new Set(items.map(sampleLabel))).join(", ");
     const clayMinerals = clayMineralsFromAssembly(assembly).map(function (row) { return row.mineral; });
@@ -8319,6 +8319,77 @@
     return Array.from(groups.values());
   }
 
+  function backendGroupingFromWorkflow() {
+    const grouping = ngcWorkflowPayload && ngcWorkflowPayload.backend_grouping;
+    if (!grouping || grouping.status !== "available" || !Array.isArray(grouping.groups)) return null;
+    if (!grouping.version || grouping.version !== "argiloteca.drx.ngc.backend_grouping.v1") return null;
+    return grouping;
+  }
+
+  function backendGroupingTreatmentKey(value) {
+    const text = String(value || "").toLowerCase();
+    if (text === "natural") return "natural";
+    if (text === "glycolated" || text === "glicolado" || text === "glicolada") return "glicolada";
+    if (text === "calcined" || text === "calcinado" || text === "calcinada") return "calcinada";
+    return "indeterminado";
+  }
+
+  function backendGroupingItemFilename(item) {
+    return String(
+      item && (
+        item.filename
+        || item.id
+        || (item.metadata && (item.metadata.original_filename || item.metadata.filename))
+      )
+      || ""
+    );
+  }
+
+  function backendGroupingOriginalItem(summary, items, sampleBase) {
+    const rows = items || [];
+    const summaryId = String(summary && summary.id || "");
+    const summaryFilename = String(summary && summary.filename || "");
+    const summaryPreparation = backendGroupingTreatmentKey(summary && summary.preparation);
+    const exact = rows.find(function (item) {
+      if (summaryId && String(item && item.id || "") === summaryId) return true;
+      return summaryFilename && backendGroupingItemFilename(item) === summaryFilename;
+    });
+    if (exact) return exact;
+    return rows.find(function (item) {
+      return sampleBaseForNgc(item) === sampleBase && backendGroupingTreatmentKey(item && item.treatment) === summaryPreparation;
+    }) || null;
+  }
+
+  function ngcGroupsFromBackendGrouping(backendGrouping, items) {
+    if (!backendGrouping || !Array.isArray(backendGrouping.groups)) return null;
+    const groups = backendGrouping.groups.map(function (backendGroup) {
+      const sampleBase = backendGroup && backendGroup.sample_base;
+      const group = { sampleBase: sampleBase, natural: [], glicolada: [], calcinada: [], indeterminado: [] };
+      const summaries = backendGroup && Array.isArray(backendGroup.items) ? backendGroup.items : [];
+      if (!sampleBase || !summaries.length) return null;
+      for (let index = 0; index < summaries.length; index += 1) {
+        const summary = summaries[index];
+        const original = backendGroupingOriginalItem(summary, items, sampleBase);
+        if (!original) return null;
+        const prep = backendGroupingTreatmentKey(summary && summary.preparation);
+        if (prep === "natural") group.natural.push(original);
+        else if (prep === "glicolada") group.glicolada.push(original);
+        else if (prep === "calcinada") group.calcinada.push(original);
+        else group.indeterminado.push(original);
+      }
+      return group;
+    });
+    return groups.length && groups.every(Boolean) ? groups : null;
+  }
+
+  function buildNgcGroupsWithBackendFallback(items) {
+    const rows = items || [];
+    const backendGroups = ngcWorkflowSelectionKey(rows) === ngcWorkflowKey
+      ? ngcGroupsFromBackendGrouping(backendGroupingFromWorkflow(), rows)
+      : null;
+    return backendGroups || buildNgcGroups(rows);
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -8370,7 +8441,7 @@
    */
   function buildBasalTrajectoryRows(items) {
     const ranges = SEM_TITULO_NGC_DIAGNOSTIC_RANGES;
-    return buildNgcGroups(items).map(function (group) {
+    return buildNgcGroupsWithBackendFallback(items).map(function (group) {
       const natural = group.natural[0] || null;
       const glicolada = group.glicolada[0] || null;
       const calcinada = group.calcinada[0] || null;
@@ -8663,7 +8734,7 @@
       const key = String(row.sample || row.file || "").replace(/\.[^.]+$/, "");
       peakCountByBase.set(key, (peakCountByBase.get(key) || 0) + (Number.isFinite(row.twoTheta) ? 1 : 0));
     });
-    return buildNgcGroups(items).map(function (group) {
+    return buildNgcGroupsWithBackendFallback(items).map(function (group) {
       const allItems = [].concat(group.natural, group.glicolada, group.calcinada, group.indeterminado);
       const flags = [];
       allItems.forEach(function (item) {
@@ -8951,7 +9022,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function renderSemTituloNgcDiagnosticPanel(items) {
-    const groups = buildNgcGroups(items).filter(function (group) {
+    const groups = buildNgcGroupsWithBackendFallback(items).filter(function (group) {
       return group.natural.length || group.glicolada.length || group.calcinada.length || group.indeterminado.length;
     }).sort(function (left, right) {
       const leftComplete = [left.natural.length, left.glicolada.length, left.calcinada.length].filter(Boolean).length;
@@ -9151,7 +9222,7 @@
    * @returns {Array<Object>} Linhas resumidas para relatório/interface.
    */
   function buildNgcInterpretations(items) {
-    return buildNgcGroups(items).map(function (group) {
+    return buildNgcGroupsWithBackendFallback(items).map(function (group) {
       const ranges = SEM_TITULO_NGC_DIAGNOSTIC_RANGES;
       const scoreDetails = buildNgcTrajectoryScore(group);
       const natural = group.natural[0] || null;
@@ -9266,7 +9337,7 @@
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function buildNgcSummary(items) {
-    const groups = buildNgcGroups(items);
+    const groups = buildNgcGroupsWithBackendFallback(items);
     const interpretations = new Map();
     buildNgcInterpretations(items).forEach(function (row) {
       interpretations.set(row.sampleBase, row);
