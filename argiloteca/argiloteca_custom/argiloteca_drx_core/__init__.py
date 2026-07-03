@@ -60,7 +60,7 @@ from .curves import (
     normalize_max,
     parse_curve_bytes,
 )
-from .diffractogram import Diffractogram
+from .diffractogram import Diffractogram as LegacyDiffractogram
 from .geometry import (
     BraggCalculation,
     bragg_from_two_theta,
@@ -76,6 +76,20 @@ from .peaks import (
     group_peaks_for_ngc,
     normalize_peak,
     normalize_peaks,
+)
+from .models import (
+    Diffractogram,
+    Evidence,
+    MineralHypothesis,
+    NgcComparison,
+    Peak,
+    Sample,
+    Treatment,
+    XrdFile,
+    dataclass_to_dict,
+    list_dataclass_to_dict,
+    safe_float,
+    validate_axis_lengths,
 )
 
 _PEAK_DETECTOR_EXPORTS = {
@@ -107,6 +121,14 @@ __all__ = [
     "CurveData",
     "CurveParseError",
     "Diffractogram",
+    "Evidence",
+    "LegacyDiffractogram",
+    "MineralHypothesis",
+    "NgcComparison",
+    "Peak",
+    "Sample",
+    "Treatment",
+    "XrdFile",
     "BraggCalculation",
     "DRX_ANALYSIS_RUN_SCHEMA",
     "DRX_CORE_VERSION",
@@ -118,15 +140,19 @@ __all__ = [
     "bragg_from_two_theta",
     "calculate_d_spacing",
     "calculate_two_theta",
+    "dataclass_to_dict",
     "geometry_explanation",
     "get_rule_indexes",
     "get_scientific_knowledge",
     "group_peaks_for_ngc",
+    "list_dataclass_to_dict",
     "normalize_area",
     "normalize_max",
     "normalize_peak",
     "normalize_peaks",
     "parse_curve_bytes",
+    "safe_float",
     "scientific_source_summary",
     "two_theta_from_d_spacing",
+    "validate_axis_lengths",
 ]
