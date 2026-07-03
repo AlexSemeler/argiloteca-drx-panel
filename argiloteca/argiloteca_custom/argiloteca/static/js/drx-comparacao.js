@@ -9332,16 +9332,63 @@
     return '<div class="argilo-drx__mineral-grid">' + cards + "</div>";
   }
 
+  function backendSummaryPreparationCounts(group) {
+    const counts = { natural: 0, glicolada: 0, calcinada: 0, indeterminado: 0 };
+    (group && group.items || []).forEach(function (item) {
+      const prep = backendGroupingTreatmentKey(item && item.preparation);
+      if (prep === "natural") counts.natural += 1;
+      else if (prep === "glicolada") counts.glicolada += 1;
+      else if (prep === "calcinada") counts.calcinada += 1;
+      else counts.indeterminado += 1;
+    });
+    return counts;
+  }
+
+  function buildNgcSummaryFromBackendGrouping(items, interpretations) {
+    const rows = items || [];
+    const backendGrouping = ngcWorkflowSelectionKey(rows) === ngcWorkflowKey ? backendGroupingFromWorkflow() : null;
+    if (!backendGrouping || !Array.isArray(backendGrouping.groups) || !backendGrouping.groups.length) return null;
+    const summaryRows = backendGrouping.groups.map(function (group) {
+      if (!group || !group.sample_base || !Array.isArray(group.items)) return null;
+      const counts = backendSummaryPreparationCounts(group);
+      const known = [counts.natural > 0, counts.glicolada > 0, counts.calcinada > 0].filter(Boolean).length;
+      let status = "indeterminado";
+      if (group.is_complete_ngc || known === 3) status = "trio completo";
+      else if (known > 0) status = "trio incompleto";
+      const duplicates = []
+        .concat(counts.natural > 1 ? ["natural"] : [])
+        .concat(counts.glicolada > 1 ? ["glicolada"] : [])
+        .concat(counts.calcinada > 1 ? ["calcinada"] : []);
+      const interpreted = interpretations.get(group.sample_base) || {};
+      return {
+        sampleBase: group.sample_base,
+        status: status,
+        natural: counts.natural,
+        glicolada: counts.glicolada,
+        calcinada: counts.calcinada,
+        indeterminado: counts.indeterminado,
+        duplicates: duplicates,
+        interpretation: interpreted.candidates || [],
+        confidence: interpreted.confidence || "baixa",
+        ngcScore: interpreted.ngcScore,
+        evidences: interpreted.evidences || [],
+      };
+    });
+    return summaryRows.length && summaryRows.every(Boolean) ? summaryRows : null;
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
    */
   function buildNgcSummary(items) {
-    const groups = buildNgcGroupsWithBackendFallback(items);
     const interpretations = new Map();
     buildNgcInterpretations(items).forEach(function (row) {
       interpretations.set(row.sampleBase, row);
     });
+    const backendSummary = buildNgcSummaryFromBackendGrouping(items, interpretations);
+    if (backendSummary) return backendSummary;
+    const groups = buildNgcGroupsWithBackendFallback(items);
     return groups.map(function (group) {
       const hasN = group.natural.length > 0;
       const hasG = group.glicolada.length > 0;
