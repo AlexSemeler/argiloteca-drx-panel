@@ -55,5 +55,12 @@ def detect_superstructures(peaks: dict) -> list[dict]:
     for center, label in [(24.0, "corrensite_or_chlorite_smectite_long_period"), (29.0, "corrensite_low_charge"), (31.0, "corrensite_EG"), (12.0, "mica_vermiculite_or_hydrobioite")]:
         peak = find_peak(all_peaks, center, 1.2)
         if peak:
-            out.append({"label": label, "d_A": peak.get("d_A"), "evidence": "long-period or superstructure reflection"})
+            out.append({
+                "label": label,
+                "d_A": peak.get("d_A"),
+                "evidence": "long-period reflection; insufficient alone for phase or ordering assignment",
+                "maximum_automatic_status": "compatible",
+                "requires_complete_00l_series": True,
+                "requires_curatorial_confirmation": True,
+            })
     return out

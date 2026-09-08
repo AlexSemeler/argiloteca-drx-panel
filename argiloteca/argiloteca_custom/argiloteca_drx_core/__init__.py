@@ -91,6 +91,7 @@ from .models import (
     safe_float,
     validate_axis_lengths,
 )
+from .radiation import RadiationSpec, resolve_radiation
 
 _PEAK_DETECTOR_EXPORTS = {
     "DEFAULT_PEAK_DETECTOR_PARAMS": ("argiloteca_drx_core.peak_detector", "DEFAULT_PARAMS"),

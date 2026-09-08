@@ -30,7 +30,7 @@ def serialize_for_invenio(diagnostic_interpretation):
         "argiloteca:d_rx_diagnostic": {
             "policy": data.get("policy", POLICY),
             "policy_scope": data.get("policy_scope", "rule_based_confirmation_within_argiloteca_ngc_engine"),
-            "diagnostic_labels": data.get("diagnostic_labels", ["confirmed_by_rules", "probable_by_rules", "possible_by_rules"]),
+            "diagnostic_labels": data.get("diagnostic_labels", ["strong_candidate_by_rules", "probable_by_rules", "possible_by_rules", "requires_curatorial_confirmation"]),
             "engine_version": data.get("engine_version", "argiloteca.drx.ngc.v3"),
             "method": data.get("method", "literature_empirical_presalt_flow_meunier_ngc_behavior"),
             "literature_candidates": data.get("literature_candidates", []),

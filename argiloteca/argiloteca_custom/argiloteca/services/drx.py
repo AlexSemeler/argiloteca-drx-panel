@@ -50,10 +50,8 @@ import math
 import os
 import re
 import shutil
-import struct
 import uuid
 from collections import Counter
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -69,13 +67,16 @@ from .geoquimica import (
 )
 from .raw_snapshot_links import raw_snapshot_link_for_item
 from .drx_science_engine import detect_peaks_scipy, fit_peaks_lmfit
-from argiloteca.drx_core.curves import (
-    CurveParseError,
-    parse_curve_bytes as core_parse_curve_bytes,
-    parse_raw_bytes as core_parse_raw_bytes,
-    parse_text_curve_bytes as core_parse_text_curve_bytes,
+from .drx_parsing import (
+    DiffractogramData,
+    RawParseError,
+    parse_diffractogram_bytes,
+    parse_raw_bytes,
+    parse_raw_file,
+    parse_text_curve_bytes,
 )
 from argiloteca.drx_core.diffractogram import Diffractogram
+from argiloteca_drx_core.radiation import resolve_radiation
 from argiloteca_drx.diagnostics.diagnostic_peak_rules import (
     mapped_ranges,
     named_range,
@@ -397,9 +398,13 @@ RECORD_LEVEL_KEY = "__record__"
 MAX_MINERAL_CANDIDATES_PER_DIFRACTOGRAM = 6
 SNAPSHOT_ID_PREFIX = "snapshot:"
 ADVANCED_ALS_SCHEMA = "argiloteca.drx.advanced_als.v1"
-# Parametros fisicos usados em d-spacing e Scherrer; manter explicitos ajuda a
-# rastrear que o painel assume radiacao Cu Kalpha nos calculos auxiliares.
-ADVANCED_ALS_WAVELENGTH_CU = 1.5406
+# Constante legada preservada para importadores. O valor é resolvido pelo
+# modelo central e só é usado após metadado explícito identificar Cu Kα.
+ADVANCED_ALS_WAVELENGTH_CU = resolve_radiation(
+    "CuKa",
+    source="explicit_configuration",
+    provenance={"module": __name__, "purpose": "legacy_advanced_als_compatibility"},
+).wavelength_angstrom
 ADVANCED_ALS_SCHERRER_K = 0.9
 # Faixas diagnosticas em d-spacing (Angstrom) usadas pelo painel para orientar
 # argilominerais e calibracao por quartzo, nao para substituir curadoria.
@@ -437,104 +442,9 @@ ADVANCED_FIT_RESULT_KEYS = (
 )
 
 
-class RawParseError(ValueError):
-    """Raised when a RAW file cannot be converted into a 1D diffractogram."""
-
-
-@dataclass
-class DiffractogramData:
-    """In-memory 1D diffractogram parsed from RAW bytes.
-
-    `two_theta` and `intensity` have the same length; `metadata` carries the
-    parser format, axis limits, step and any later axis-alignment provenance.
-    """
-
-    two_theta: list[float]
-    intensity: list[float]
-    metadata: dict
-
-
 def utc_now_iso():
     """Return a compact UTC timestamp for manifests and import records."""
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-
-
-def _read_float32_series(content, offset, count):
-    """Read one little-endian float32 intensity vector from a RAW layout."""
-    required = offset + (count * 4)
-    if count < MIN_POINTS or required > len(content):
-        raise RawParseError("Arquivo .raw incompleto ou sem pontos suficientes.")
-    values = struct.unpack("<" + ("f" * count), content[offset:required])
-    if not all(math.isfinite(value) for value in values):
-        raise RawParseError("Intensidades contem valores nao finitos.")
-    return [round(float(value), 6) for value in values]
-
-
-def _build_axis(start, step, count):
-    """Build the 2theta axis from header start/step metadata."""
-    if not math.isfinite(start) or not math.isfinite(step) or step <= 0:
-        raise RawParseError("Metadados de 2theta invalidos no cabecalho .raw.")
-    return [round(float(start + (index * step)), 6) for index in range(count)]
-
-
-def parse_raw_bytes(content):
-    """Parse supported RAW byte layouts into 2theta/intensity arrays."""
-    try:
-        parsed = core_parse_raw_bytes(content)
-    except CurveParseError as exc:
-        raise RawParseError(str(exc)) from exc
-    return DiffractogramData(parsed.two_theta, parsed.intensity, parsed.metadata)
-
-
-def _parse_text_curve_number(value):
-    """Parse one numeric cell from CSV/TXT/XY text without locale side effects."""
-    text = safe_text(value).strip()
-    if not text:
-        return None
-    text = text.replace("\ufeff", "").strip().strip('"').strip("'")
-    if "," in text and "." not in text:
-        text = text.replace(",", ".")
-    text = re.sub(r"[^0-9eE+\-.]", "", text)
-    if not text or text in {"+", "-", ".", "+.", "-."}:
-        return None
-    try:
-        value = float(text)
-    except ValueError:
-        return None
-    return value if math.isfinite(value) else None
-
-
-def _text_curve_columns(line):
-    """Return candidate numeric tokens from one delimited or whitespace row."""
-    text = safe_text(line).strip()
-    if not text or text.startswith(("#", "//", ";")):
-        return []
-    tokens = re.split(r"[;\t, ]+", text)
-    return [_parse_text_curve_number(token) for token in tokens if safe_text(token).strip()]
-
-
-def parse_text_curve_bytes(content, filename=None):
-    """Parse a simple two-column 2theta/intensity text curve."""
-    try:
-        parsed = core_parse_text_curve_bytes(content, filename=filename)
-    except CurveParseError as exc:
-        raise RawParseError(str(exc)) from exc
-    return DiffractogramData(parsed.two_theta, parsed.intensity, parsed.metadata)
-
-
-def parse_diffractogram_bytes(content, filename=None):
-    """Parse an uploaded diffractogram by extension, with RAW/text fallbacks."""
-    try:
-        parsed = core_parse_curve_bytes(content, filename=filename)
-    except CurveParseError as exc:
-        raise RawParseError(str(exc)) from exc
-    return DiffractogramData(parsed.two_theta, parsed.intensity, parsed.metadata)
-
-
-def parse_raw_file(path):
-    """Parse a RAW file path into a diffractogram object."""
-    path = Path(path)
-    return parse_raw_bytes(path.read_bytes())
 
 
 def infer_diffractogram_sample_base(*values):

@@ -86,13 +86,13 @@ from argiloteca_drx.diagnostics.diagnostic_behavior_rules import (
     PROBABLE_BY_RULES,
 )
 from argiloteca_drx.diagnostics.diagnostic_peak_rules import mapped_ranges, targeted_basal_ranges
+from argiloteca_drx.diagnostics.rules_catalog_loader import candidate_peak_windows, load_rules_catalog
 
 try:
     from argiloteca_drx.diagnostics import interpret_ngc as interpret_ngc_v3
 except Exception:  # pragma: no cover - optional compatibility layer
     interpret_ngc_v3 = None
 
-DEFAULT_WAVELENGTH_A = 1.5406
 DIAGNOSTIC_RULES_PATH = Path(__file__).resolve().parents[1] / "data" / "diagnostic_rules_ngc.json"
 WEBMINERAL_MANIFEST_CANDIDATES = [
     Path(__file__).resolve().parents[4] / "data" / "drx" / "webmineral" / "webmineral_argilominerais_vocabulario_manifest.json",
@@ -136,7 +136,7 @@ NGC_CANDIDATE_PEAK_WINDOWS = {
         {"d_min": 9.7, "d_max": 10.5, "label": "Cap. 8 regras mixed-layer · colapso/desidratação", "source": {"chapter": 8, "rule_id": "chapter8_dehydration_collapse"}},
     ],
     "sepiolite": [
-        {"d_min": 11.8, "d_max": 12.6, "label": "Cap. 7 Tab. 7.3 p.244 · sepiolita/paligorsquita", "source": {"chapter": 7, "page": 244, "table": "7.3", "rule_id": "chapter7_fibrous_channel_minerals"}},
+        {"d_min": 12.3, "d_max": 13.3, "source_value_angstrom": 12.8, "operational_tolerance_angstrom": 0.5, "label": "Cap. 7 Tab. 7.3 p.244 · sepiolita 12.8 Å", "source": {"chapter": 7, "page": 244, "table": "7.3", "rule_id": "chapter7_fibrous_channel_minerals"}},
     ],
     "quartz": [
         {"d_min": 4.2, "d_max": 4.35, "label": "Cap. 7 Tab. 7.8B p.251 · quartzo 100", "source": {"chapter": 7, "page": 251, "table": "7.8B", "rule_id": "chapter7_quartz_internal_standard"}},
@@ -148,147 +148,17 @@ RULES_CATALOG_PATH = Path(__file__).resolve().parents[2] / "argiloteca_drx" / "d
 _NGC_CANDIDATE_PEAK_WINDOWS_FALLBACK = NGC_CANDIDATE_PEAK_WINDOWS
 
 
-def _parse_inline_yaml_mapping(raw):
-    """Extrai pares simples `chave: valor` de mapas inline do catalogo YAML."""
-    data = {}
-    for part in re.split(r",\s*", str(raw or "").strip().strip("{}")):
-        if ":" not in part:
-            continue
-        key, value = part.split(":", 1)
-        value = value.strip().strip('"').strip("'")
-        if value in {"null", "None"}:
-            parsed = None
-        else:
-            try:
-                parsed = int(value)
-            except ValueError:
-                parsed = value
-        data[key.strip()] = parsed
-    return data
-
-
-def _format_yaml_window_label(source, range_name):
-    chapter = source.get("chapter")
-    page = source.get("page")
-    figure = source.get("figure")
-    table = source.get("table")
-    bits = []
-    if chapter:
-        bits.append(f"Cap. {chapter}")
-    if page:
-        bits.append(f"p.{page}")
-    if figure:
-        bits.append(f"Fig. {figure}")
-    if table:
-        bits.append(f"Tab. {table}")
-    prefix = " ".join(bits) if bits else "Catálogo N/G/C"
-    return f"{prefix} · {range_name.replace('_', ' ')}"
-
-
 @lru_cache(maxsize=1)
 def _ngc_candidate_peak_windows_from_rules_catalog():
-    """Carrega janelas N/G/C do `rules_catalog.yaml`, preservando fallback local.
-
-    O catalogo YAML e a fonte semantica auditavel das janelas e dos locadores
-    bibliograficos. Este parser e deliberadamente conservador e cobre apenas as
-    estruturas simples usadas no catalogo: `named_ranges`, `peak_sets` e mapas
-    inline de `source_locator`. Se o YAML estiver ausente ou incompleto, o
-    workflow continua usando o fallback historico deste modulo.
-    """
-    catalog = {key: [dict(row) for row in rows] for key, rows in _NGC_CANDIDATE_PEAK_WINDOWS_FALLBACK.items()}
-    try:
-        lines = RULES_CATALOG_PATH.read_text(encoding="utf-8").splitlines()
-    except OSError:
-        return catalog
-
-    named_ranges = {}
-    source_by_rule = {}
-    peak_sets = {}
-    in_named_ranges = False
-    in_peak_sets = False
-    current_peak_set = None
-    for line in lines:
-        if line.startswith("named_ranges:"):
-            in_named_ranges = True
-            in_peak_sets = False
-            current_peak_set = None
-            continue
-        if line.startswith("peak_sets:"):
-            in_named_ranges = False
-            in_peak_sets = True
-            current_peak_set = None
-            continue
-        if line and not line.startswith(" ") and not line.startswith("-"):
-            in_named_ranges = False
-            in_peak_sets = False
-            current_peak_set = None
-
-        inline_locator = re.search(r"\{([^{}]*source_rule:[^{}]*)\}", line)
-        if inline_locator:
-            locator = _parse_inline_yaml_mapping(inline_locator.group(1))
-            source_rule = locator.get("source_rule")
-            has_locator = any(locator.get(key) for key in ("chapter", "page", "figure", "table"))
-            existing = source_by_rule.get(source_rule)
-            existing_has_locator = existing and any(existing.get(key) for key in ("chapter", "page", "figure", "table"))
-            if source_rule and (source_rule not in source_by_rule or (has_locator and not existing_has_locator)):
-                source_by_rule[source_rule] = {
-                    "chapter": locator.get("chapter"),
-                    "page": locator.get("page"),
-                    "figure": locator.get("figure"),
-                    "table": locator.get("table"),
-                    "rule_id": source_rule,
-                }
-
-        if in_named_ranges:
-            match = re.match(r"\s{2}([A-Za-z0-9_]+):\s*\{(.+)\}\s*$", line)
-            if match:
-                range_name = match.group(1)
-                values = _parse_inline_yaml_mapping(match.group(2))
-                try:
-                    d_min = float(values.get("d_min"))
-                    d_max = float(values.get("d_max"))
-                except (TypeError, ValueError):
-                    d_min = None
-                    d_max = None
-                if d_min is not None and d_max is not None:
-                    named_ranges[range_name] = {
-                        "d_min": d_min,
-                        "d_max": d_max,
-                        "source_rule": values.get("source_rule"),
-                    }
-        elif in_peak_sets:
-            set_match = re.match(r"\s{2}([A-Za-z0-9_]+):\s*$", line)
-            if set_match:
-                current_peak_set = set_match.group(1)
-                peak_sets[current_peak_set] = []
-                continue
-            ranges_match = re.search(r"ranges:\s*\[([^\]]+)\]", line)
-            if current_peak_set and ranges_match:
-                peak_sets[current_peak_set] = [
-                    row.strip() for row in ranges_match.group(1).split(",") if row.strip()
-                ]
-
+    """Load executable N/G/C windows from the validated canonical YAML."""
+    catalog = candidate_peak_windows(load_rules_catalog(RULES_CATALOG_PATH))
     aliases = {
         "chlorite_group": "chlorite",
         "corrensite": "mixed_layer",
     }
-    for candidate, range_names in peak_sets.items():
-        rows = []
-        for range_name in range_names:
-            range_row = named_ranges.get(range_name)
-            if not range_row:
-                continue
-            source = source_by_rule.get(range_row.get("source_rule"), {"rule_id": range_row.get("source_rule")})
-            rows.append({
-                "d_min": range_row["d_min"],
-                "d_max": range_row["d_max"],
-                "label": _format_yaml_window_label(source, range_name),
-                "source": source,
-            })
-        if rows:
-            catalog[candidate] = rows
-            if candidate in aliases:
-                catalog[aliases[candidate]] = rows
+    for candidate, alias in aliases.items():
+        if candidate in catalog:
+            catalog[alias] = [dict(row) for row in catalog[candidate]]
     return catalog
 
 

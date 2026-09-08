@@ -137,6 +137,8 @@
     statusProgressTimer = window.setInterval(render, 900);
   }
   const chartEl = root.querySelector('[data-role="chart"]');
+  const chartDescriptionEl = root.querySelector('[data-role="chart-description"]');
+  const chartTableEl = root.querySelector('[data-role="chart-table"]');
   const tooltipEl = root.querySelector('[data-role="tooltip"]');
   const modeEl = root.querySelector('[data-role="view-mode"]');
   const selectedSummaryEl = root.querySelector('[data-role="selected-summary"]');
@@ -183,6 +185,56 @@
   const rruffOdrNormalizeEl = root.querySelector('[data-role="rruff-odr-normalize"]');
   const rruffOdrPeaksEl = root.querySelector('[data-role="rruff-odr-peaks"]');
   const rruffOdrStatusEl = root.querySelector('[data-role="rruff-odr-status"]');
+  let activeDialogEl = null;
+  let dialogReturnFocusEl = null;
+
+  function focusableElements(container) {
+    return Array.from(container.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+  }
+
+  function openAccessibleDialog(dialog, trigger) {
+    if (!dialog) return;
+    activeDialogEl = dialog;
+    dialogReturnFocusEl = trigger || document.activeElement;
+    dialog.hidden = false;
+    const focusable = focusableElements(dialog);
+    if (focusable.length) focusable[0].focus();
+  }
+
+  function restoreDialogFocus() {
+    if (dialogReturnFocusEl && typeof dialogReturnFocusEl.focus === "function") {
+      dialogReturnFocusEl.focus();
+    }
+    dialogReturnFocusEl = null;
+  }
+
+  function closeAccessibleDialog(dialog) {
+    if (!dialog) return;
+    dialog.hidden = true;
+    if (activeDialogEl === dialog) activeDialogEl = null;
+    restoreDialogFocus();
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (!activeDialogEl || activeDialogEl.hidden) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeAccessibleDialog(activeDialogEl);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = focusableElements(activeDialogEl);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
   const rruffOdrChartEl = root.querySelector('[data-role="rruff-odr-chart"]');
   const rruffOdrMetaEl = root.querySelector('[data-role="rruff-odr-meta"]');
   const sampleOptionsEl = root.querySelector('[data-role="sample-options"]');
@@ -4326,6 +4378,36 @@
     return nodes.join("");
   }
 
+  function updateAccessibleChartSummary(items) {
+    if (chartDescriptionEl) {
+      chartDescriptionEl.textContent = items.length
+        ? items.length + " curva(s) selecionada(s). Eixo horizontal em 2θ graus. Modo de intensidade: " + modeEl.value + "."
+        : "Nenhuma curva selecionada.";
+    }
+    if (!chartTableEl) return;
+    if (!items.length) {
+      chartTableEl.innerHTML = "<p>Nenhum dado disponível para a alternativa tabular.</p>";
+      return;
+    }
+    const rows = [];
+    items.forEach(function (item) {
+      observedPeaks(item).slice(0, 7).forEach(function (peak) {
+        rows.push([
+          "<tr><td>", escapeHtml(chartSeriesLabel(item)), "</td><td>",
+          escapeHtml(treatmentLabel(item.treatment || item.preparation)), "</td><td>",
+          escapeHtml(formatNumber(Number(peak.two_theta), 3)), "</td><td>",
+          escapeHtml(formatNumber(Number(peak.intensity || peak.relative_intensity), 2)),
+          "</td></tr>",
+        ].join(""));
+      });
+    });
+    chartTableEl.innerHTML = [
+      '<table class="ui compact celled table"><caption>Principais picos das curvas exibidas</caption>',
+      "<thead><tr><th>Série</th><th>Preparação</th><th>2θ (°)</th><th>Intensidade</th></tr></thead>",
+      "<tbody>", rows.join(""), "</tbody></table>",
+    ].join("");
+  }
+
   /**
    * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
    * @returns {void} Resultado aplicado diretamente ao estado visual ou ao fluxo chamador.
@@ -4334,6 +4416,7 @@
     // Renderizacao principal: Plotly. O SVG abaixo permanece fallback tecnico
     // para ambientes sem Plotly ou para exportacao legada.
     const items = selectedItemsInNgcOrder();
+    updateAccessibleChartSummary(items);
     chartEl.innerHTML = "";
     /**
      * Executa etapa de interface do painel DRX, exibindo dados de difratogramas, evidências auxiliares ou controles de análise para o usuário.
@@ -10420,7 +10503,7 @@
    */
   if (openRawPickerEl && rawPickerEl) {
     openRawPickerEl.addEventListener("click", function () {
-      rawPickerEl.hidden = false;
+      openAccessibleDialog(rawPickerEl, openRawPickerEl);
       loadRawPickerItems();
     });
   }
@@ -10430,7 +10513,7 @@
    */
   if (closeRawPickerEl && rawPickerEl) {
     closeRawPickerEl.addEventListener("click", function () {
-      rawPickerEl.hidden = true;
+      closeAccessibleDialog(rawPickerEl);
     });
   }
   /**
@@ -10479,7 +10562,7 @@
    */
   if (openSuggestionsEl && suggestionsPanelEl) {
     openSuggestionsEl.addEventListener("click", function () {
-      suggestionsPanelEl.hidden = false;
+      openAccessibleDialog(suggestionsPanelEl, openSuggestionsEl);
       loadComparisonSuggestions();
     });
   }
@@ -10489,7 +10572,7 @@
    */
   if (openTriageQueueEl && suggestionsPanelEl) {
     openTriageQueueEl.addEventListener("click", function () {
-      suggestionsPanelEl.hidden = false;
+      openAccessibleDialog(suggestionsPanelEl, openTriageQueueEl);
       loadGeologistTriageQueue();
     });
   }
@@ -10610,7 +10693,7 @@
   if (openSuggestionsFromRawEl && suggestionsPanelEl) {
     openSuggestionsFromRawEl.addEventListener("click", function () {
       if (rawPickerEl) rawPickerEl.hidden = true;
-      suggestionsPanelEl.hidden = false;
+      openAccessibleDialog(suggestionsPanelEl, openSuggestionsFromRawEl);
       loadComparisonSuggestions();
     });
   }
@@ -10620,7 +10703,7 @@
    */
   if (closeSuggestionsEl && suggestionsPanelEl) {
     closeSuggestionsEl.addEventListener("click", function () {
-      suggestionsPanelEl.hidden = true;
+      closeAccessibleDialog(suggestionsPanelEl);
     });
   }
   /**
@@ -10668,6 +10751,27 @@
     xDomain = [center - nextWidth * ratio, center + nextWidth * (1 - ratio)];
     renderChart();
   }, { passive: false });
+  chartEl.addEventListener("keydown", function (event) {
+    const items = selectedItemsInNgcOrder();
+    if (!items.length) return;
+    const allX = items.flatMap(function (item) { return item.twoTheta; });
+    const domain = (xDomain || extent(allX)).slice();
+    const span = domain[1] - domain[0];
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      const direction = event.key === "ArrowLeft" ? -1 : 1;
+      const delta = span * 0.1 * direction;
+      xDomain = [domain[0] + delta, domain[1] + delta];
+      renderChart();
+    } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      event.preventDefault();
+      const factor = event.key === "ArrowUp" ? 0.8 : 1.25;
+      const center = (domain[0] + domain[1]) / 2;
+      const half = span * factor / 2;
+      xDomain = [center - half, center + half];
+      renderChart();
+    }
+  });
   chartEl.addEventListener("mousedown", function (event) {
     const items = selectedItemsInNgcOrder();
     if (!items.length) return;

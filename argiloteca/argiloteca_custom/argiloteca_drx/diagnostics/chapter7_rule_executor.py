@@ -160,7 +160,7 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             "chlorite",
             "chlorite_group",
             min(score, 0.98),
-            "confirmed_by_rules",
+            "strong_candidate_by_rules",
             [_relation_peak("N 14A", n14), _relation_peak("G 14A", g14), _relation_peak("C 14A", c14)],
             "Chapter 7 chlorite rule: persistent 14/7/4.74/3.55 A basal set without glycol expansion.",
             competitors=[
@@ -182,7 +182,7 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             "kaolin_group",
             "kaolin_group",
             min(score, 0.96),
-            "confirmed_by_rules",
+            "strong_candidate_by_rules",
             [_relation_peak("N 7A", n7), _relation_peak("G 7A", g7), _relation_peak("3.57A companion", p357_any) if p357_any else {"label": "C 7A loss", "d": None}],
             "Chapter 7 kaolin/chlorite resolution: 7 A remains after glycolation and is lost/reduced after heating.",
             competitors=[
@@ -202,7 +202,7 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             "smectite_group",
             "smectite_group",
             0.95,
-            "confirmed_by_rules",
+            "strong_candidate_by_rules",
             [_relation_peak("N 12-15A", n_sm), _relation_peak("G ~17A", g_sm), _relation_peak("C ~10A", c_sm)],
             "Chapter 7 smectite rule: expansion after glycolation and collapse toward 10 A after heating.",
             competitors=[
@@ -223,7 +223,7 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             "illite_mica",
             "illite_mica",
             min(score, 0.92),
-            "confirmed_by_rules" if p5_any else "probable_by_rules",
+            "strong_candidate_by_rules" if p5_any else "probable_by_rules",
             [_relation_peak("N 10A", n10), _relation_peak("G 10A", g10), _relation_peak("C 10A", c10)],
             "Chapter 7 illite/mica rule: 10 A reflection unchanged by glycolation and heating.",
             competitors=[
@@ -250,8 +250,10 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             ],
         ))
 
-    n_sep = _find_peak(n, 12.0, 12.6)
-    g_sep = _find_peak(g, 12.0, 12.6)
+    # Moore & Reynolds, Table 7.3: source value 12.8 A. The +/-0.5 A
+    # interval below is an operational matching tolerance, not a source range.
+    n_sep = _find_peak(n, 12.3, 13.3)
+    g_sep = _find_peak(g, 12.3, 13.3)
     if n_sep and g_sep and not g_sm:
         candidates.append(_candidate(
             "chapter7_fibrous_channel_minerals",
@@ -259,8 +261,8 @@ def execute_chapter7_rules(peaks, behavior=None, metadata=None):
             "fibrous_channel",
             0.68,
             "possible_by_rules",
-            [_relation_peak("N 12-12.5A", n_sep), _relation_peak("G 12-12.5A", g_sep)],
-            "Chapter 7 fibrous/channel rule: sepiolite-like low-angle peak unchanged by glycolation; morphology/hkl required.",
+            [_relation_peak("N 12.8A (+/-0.5 operational)", n_sep), _relation_peak("G 12.8A (+/-0.5 operational)", g_sep)],
+            "Chapter 7 Table 7.3: sepiolite source reflection at 12.8 A unchanged by glycolation; companion hkl and morphology are required.",
         ))
 
     n_pal = _find_peak(n, 10.3, 10.6)

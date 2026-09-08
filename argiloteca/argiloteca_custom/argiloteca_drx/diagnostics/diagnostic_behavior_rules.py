@@ -14,15 +14,17 @@ Autoria cientifica e curadoria:
     E-mail: alexandre.semler@ufrgs.br
 
 Politica de interpretacao:
-    Diagnosticos sao emitidos como confirmacao baseada nas regras da
-    Argiloteca quando os criterios convergentes sao atendidos. A confirmacao
-    e limitada ao escopo N/G/C, picos companheiros, d060, ambiguidades,
-    contexto e proveniencia; nao e confirmacao absoluta por todos os metodos.
+    Diagnosticos automaticos sao hipoteses compativeis ou candidatos fortes.
+    Confirmacao mineralogica e reservada a uma decisao curatorial humana
+    registrada, mesmo quando criterios N/G/C convergentes sao atendidos.
 """
 
 ENGINE_VERSION = "argiloteca.drx.ngc.v3"
 POLICY = "argiloteca_rule_based_diagnostic"
-CONFIRMED_BY_RULES = "confirmed_by_rules"
+STRONG_CANDIDATE_BY_RULES = "strong_candidate_by_rules"
+# Nome preservado somente para compatibilidade de importacao. O valor antigo
+# nao deve mais ser emitido como se representasse confirmacao cientifica.
+CONFIRMED_BY_RULES = STRONG_CANDIDATE_BY_RULES
 PROBABLE_BY_RULES = "probable_by_rules"
 POSSIBLE_BY_RULES = "possible_by_rules"
 

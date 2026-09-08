@@ -48,13 +48,8 @@ import hashlib
 import json
 import math
 
-from .drx import (
-    ADVANCED_ALS_SCHEMA,
-    advanced_als_summary,
-    compact_advanced_als_curve,
-    process_advanced_als_curve,
-    utc_now_iso,
-)
+from .drx import ADVANCED_ALS_SCHEMA, utc_now_iso
+from .drx_processing import advanced_als_summary, compact_advanced_als_curve, process_advanced_als_curve
 from argiloteca.drx_core.contracts import (
     DRX_ANALYSIS_RUN_SCHEMA,
     DRX_CORE_VERSION,

@@ -477,7 +477,7 @@ def _build_candidates(behavior, peak_sets, octahedral, metadata):
         ))
 
     # Meunier + fluxograma: sepiolita e mineral fibroso/canal, com janela
-    # ~12-12.5 A estavel. O fluxograma recomenda morfologia e reflexoes
+    # 12.8 A (Table 7.3; +/-0.5 A operacional) estavel. O fluxograma recomenda morfologia e reflexoes
     # adicionais; por isso a saida permanece auxiliar.
     if _find_named_peak(n, "sepiolite_12a") and _find_named_peak(g, "sepiolite_12a"):
         candidates.append(_candidate(
@@ -488,7 +488,7 @@ def _build_candidates(behavior, peak_sets, octahedral, metadata):
             0.2,
             0.5,
             0.6,
-            [evidence("sepiolite_flow", "behavior", "12-12.5 A peak does not expand with glycolation.", 0.6)],
+            [evidence("sepiolite_flow", "behavior", "Source reflection 12.8 A (+/-0.5 A operational) does not expand with glycolation.", 0.6)],
             "Sepiolita requer morfologia fibrosa/hkl; N/G/C sozinho e auxiliar.",
         ))
 
@@ -656,7 +656,7 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
         warnings.append("Moore & Reynolds: 3.33-3.34 A pode ser quartzo; ilita/mica requer 10 A e preferencialmente 5 A persistentes.")
     if any(row.get("window") == "14 A" for row in ambiguities):
         warnings.append("Moore & Reynolds: 14 A exige resposta a glicol/glicerol/K/aquecimento para separar clorita, vermiculita, esmectita e interestratificados.")
-    warnings.append("Diagnostico confirmado apenas no escopo das regras DRX N/G/C da Argiloteca; casos ambiguos ainda exigem verificacao mineralogica complementar.")
+    warnings.append("Resultados automaticos sao candidatos baseados em regras DRX N/G/C; confirmacao exige decisao curatorial humana registrada.")
     # Capitulo 7 aplicado como base de conhecimento executavel:
     # - get_chapter7_knowledge fornece contagens e metadados de proveniencia;
     # - chapter7_rule_index cria um dicionario rule_id -> regra para o painel
@@ -691,8 +691,14 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
     # exportadores JSON e serializador InvenioRDM.
     interpretation = {
         "policy": POLICY,
-        "policy_scope": "rule_based_confirmation_within_argiloteca_ngc_engine",
-        "diagnostic_labels": ["confirmed_by_rules", "probable_by_rules", "possible_by_rules"],
+        "policy_scope": "non_confirmatory_rule_based_screening_with_curatorial_confirmation",
+        "diagnostic_labels": ["strong_candidate_by_rules", "probable_by_rules", "possible_by_rules", "inconclusive", "conflicting_evidence", "requires_curatorial_confirmation"],
+        "curatorial_confirmation": {
+            "required": True,
+            "status": "requires_curatorial_confirmation",
+            "curator": None,
+            "reviewed_at": None,
+        },
         "engine_version": ENGINE_VERSION,
         "method": "literature_empirical_presalt_flow_meunier_chapter7_ngc_behavior",
         "input_summary": behavior["input_completeness"],
@@ -710,7 +716,7 @@ def interpret_ngc(peaks, metadata=None, empirical_ranges=None):
         "warnings": warnings,
         "recommended_next_tests": _recommended_tests(combined, ambiguities, octahedral),
         "provenance": {
-            "reference_files": ["textos/flow.pdf", "textos/Clays_Meunier.pdf", "textos/MooreandReynolds.pdf", "textos/Adobe Scan 14 de mai. de 2026.pdf", "/home/invenio/Downloads/analises.pdf"],
+            "reference_files": ["asset:usgs_flow", "asset:meunier_clays_2005", "asset:moore_reynolds", "asset:local_empirical_scan", "asset:moore_reynolds_chapter7_scan"],
             "references": REFERENCES,
             "presalt_reference_source": PRESALT_REFERENCE_DATASET["source"],
             "chapter7_source_id": CHAPTER7_SOURCE_ID,

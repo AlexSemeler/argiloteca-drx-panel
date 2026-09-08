@@ -71,7 +71,7 @@
     <header class="argilo-drx__header argilo-legacy-module-header">
       <div>
         <p class="argilo-drx__eyebrow">{{ _("Argiloteca") }}</p>
-        <h2>{{ _("Comparação DRX") }}</h2>
+        <h1>{{ _("Comparação DRX") }}</h1>
         <p class="argilo-drx__record-id">{{ _("Fonte") }}: {{ _("snapshot geral do módulo DRX") }}</p>
         <p class="argilo-drx__record-id argilo-drx__record-id--secondary">{{ _("Escopo") }}: {{ _("difratogramas RAW processados e arquivos temporários") }}</p>
         <p>
@@ -168,10 +168,10 @@
         <p class="argilo-drx__note">{{ _("Arquivos temporários RAW, CSV, TXT, XY ou DAT são usados apenas para comparação local nesta sessão e não são salvos como registros.") }}</p>
 
         {% if drx_show_raw_picker %}
-        <section class="argilo-drx__raw-picker" data-role="raw-picker" hidden>
+        <section class="argilo-drx__raw-picker" data-role="raw-picker" role="dialog" aria-modal="true" aria-labelledby="argilo-drx-raw-picker-title" hidden>
           <div class="argilo-drx__selected-header">
             <div>
-              <h2>{{ _("Adicionar amostras RAW") }}</h2>
+              <h2 id="argilo-drx-raw-picker-title">{{ _("Adicionar amostras RAW") }}</h2>
               <p>{{ _("Selecione outros arquivos do pacote analítico para incluir no gráfico de comparação.") }}</p>
             </div>
             <div class="argilo-drx__header-actions">
@@ -180,8 +180,10 @@
             </div>
           </div>
           <form class="argilo-drx__raw-picker-form" data-role="raw-picker-form">
-            <input type="search" name="q" placeholder="{{ _('Buscar por amostra, arquivo ou mineral') }}">
-            <select name="preparation">
+            <label for="argilo-drx-raw-search">{{ _("Buscar amostra ou arquivo") }}</label>
+            <input id="argilo-drx-raw-search" type="search" name="q" placeholder="{{ _('Buscar por amostra, arquivo ou mineral') }}">
+            <label for="argilo-drx-preparation">{{ _("Preparação") }}</label>
+            <select id="argilo-drx-preparation" name="preparation">
               <option value="">{{ _("Todas as preparações") }}</option>
               <option value="natural">{{ _("Natural") }}</option>
               <option value="glicolado">{{ _("Glicolado") }}</option>
@@ -190,15 +192,15 @@
             </select>
             <button class="ui primary button" type="submit">{{ _("Buscar") }}</button>
           </form>
-          <div class="argilo-drx__raw-picker-status" data-role="raw-picker-status"></div>
+          <div class="argilo-drx__raw-picker-status" data-role="raw-picker-status" role="status" aria-live="polite" aria-atomic="true"></div>
           <div class="argilo-drx__raw-picker-list" data-role="raw-picker-list"></div>
         </section>
         {% endif %}
 
-        <section class="argilo-drx__raw-picker" data-role="suggestions-panel" hidden>
+        <section class="argilo-drx__raw-picker" data-role="suggestions-panel" role="dialog" aria-modal="true" aria-labelledby="argilo-drx-suggestions-title" hidden>
           <div class="argilo-drx__selected-header">
             <div>
-              <h2>{{ _("Visualizar Argilominerais") }}</h2>
+              <h2 id="argilo-drx-suggestions-title">{{ _("Visualizar Argilominerais") }}</h2>
               <p>{{ _("Grupos calculados a partir dos nomes, preparações, minerais candidatos e repetição de amostras no pacote RAW.") }}</p>
             </div>
             <div class="argilo-drx__header-actions">
@@ -209,17 +211,20 @@
               <button class="ui button" type="button" data-role="close-suggestions">{{ _("Fechar") }}</button>
             </div>
           </div>
-          <div class="argilo-drx__raw-picker-status" data-role="suggestions-status"></div>
+          <div class="argilo-drx__raw-picker-status" data-role="suggestions-status" role="status" aria-live="polite" aria-atomic="true"></div>
           <div class="argilo-drx__suggestion-list" data-role="suggestions-list"></div>
         </section>
 
         <section class="argilo-drx__chart-wrap">
           <div class="argilo-drx__tooltip" data-role="tooltip" hidden></div>
           <div class="argilo-drx__plotly-chart" data-role="plotly-chart" hidden></div>
-          <svg class="argilo-drx__chart" data-role="chart" viewBox="0 0 960 520" role="img" aria-label="{{ _('Difratogramas comparados') }}"></svg>
-          <div class="argilo-drx__note" aria-live="polite">
+          <p id="argilo-drx-chart-instructions" class="argilo-drx__note">{{ _("Use as setas esquerda e direita para deslocar o eixo e as setas para cima e para baixo para alterar o zoom.") }}</p>
+          <div class="argilo-drx__sr-only" data-role="chart-description" id="argilo-drx-chart-description" aria-live="polite"></div>
+          <svg class="argilo-drx__chart" data-role="chart" viewBox="0 0 960 520" role="img" tabindex="0" aria-label="{{ _('Difratogramas comparados') }}" aria-describedby="argilo-drx-chart-description argilo-drx-chart-instructions"></svg>
+          <div class="argilo-drx__note" role="status" aria-live="polite">
             {{ _("Resumo textual: as curvas selecionadas, picos e candidatos mineralógicos aparecem nos painéis abaixo após a seleção.") }}
           </div>
+          <div class="argilo-drx__chart-table" data-role="chart-table" aria-label="{{ _('Alternativa tabular do gráfico DRX') }}"></div>
         </section>
 
         {% if drx_show_rruff_odr %}

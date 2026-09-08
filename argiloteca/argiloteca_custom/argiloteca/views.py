@@ -33,7 +33,6 @@ import os
 import re
 import sys
 import time
-import traceback
 from pathlib import Path
 
 from flask import Blueprint, abort, jsonify, redirect, render_template, request, url_for
@@ -99,8 +98,9 @@ from .services.drx_gsas2_bridge import (
     submit_gsas2_pattern_validation,
     submit_temporary_upload_gsas2_validation,
 )
+from .services.http_errors import log_public_exception
 from .services.drx_cif_simulation import build_cif_simulation_payload
-from .services.drx_ngc_workflow import build_ngc_workflow
+from .services.drx_ngc import build_ngc_workflow
 from .services.drx_selection_report import build_drx_selection_report, render_drx_selection_report_html
 from .services.drx_runs import get_drx_run, list_drx_runs, persist_drx_run
 
@@ -1944,8 +1944,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "points": [],
                 }
             ), 500
@@ -1977,8 +1977,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "feature_collection": {"type": "FeatureCollection", "features": []},
                 }
             ), 500
@@ -2084,8 +2084,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "items": [],
                 }
             ), 500
@@ -2113,8 +2113,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2141,8 +2141,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "records": [],
                 }
             ), 500
@@ -2173,8 +2173,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "items": [],
                 }
             ), 500
@@ -2204,8 +2204,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "suggestions": [],
                 }
             ), 500
@@ -2251,8 +2251,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2280,8 +2280,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2372,7 +2372,7 @@ def create_blueprint(app):
             result = submit_gsas2_pattern_validation(payload)
             return jsonify(result), 202 if result.get("success") else 400
         except Exception as e:
-            return jsonify({"success": False, "policy": "auxiliary_not_confirmatory", "error": str(e), "traceback": traceback.format_exc()}), 500
+            return jsonify({"success": False, "policy": "auxiliary_not_confirmatory", "error": "Não foi possível concluir a solicitação.", "error_details": log_public_exception(e)}), 500
 
     @blueprint.route(
         "/api/argiloteca/drx/gsas2/compare-job/<job_id>",
@@ -2407,7 +2407,7 @@ def create_blueprint(app):
             payload = build_cif_simulation_payload(
                 content,
                 filename=original_filename,
-                wavelength=request.form.get("wavelength") or request.args.get("wavelength") or "CuKa",
+                wavelength=request.form.get("wavelength") or request.args.get("wavelength"),
                 max_peaks=_bounded_int_arg("max_peaks", 200, minimum=1, maximum=500),
             )
             return jsonify(payload), 200 if payload.get("success") else 503
@@ -2415,8 +2415,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2473,8 +2473,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2531,8 +2531,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2601,7 +2601,7 @@ def create_blueprint(app):
             )
             return jsonify(payload), 201
         except Exception as e:
-            return jsonify({"success": False, "error": str(e), "traceback": traceback.format_exc()}), 500
+            return jsonify({"success": False, "error": "Não foi possível concluir a solicitação.", "error_details": log_public_exception(e)}), 500
 
     @blueprint.route("/api/argiloteca/drx/runs/<run_id>", endpoint="api_drx_run_detail")
     @blueprint.route("/argiloteca/drx/runs/<run_id>")
@@ -2628,8 +2628,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2738,8 +2738,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2808,8 +2808,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -2834,8 +2834,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -3032,8 +3032,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -3077,8 +3077,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 
@@ -3136,8 +3136,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "nodes": [],
                     "edges": [],
                     "clusters": [],
@@ -3183,8 +3183,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                     "records": [],
                 }
             ), 500
@@ -3205,8 +3205,8 @@ def create_blueprint(app):
             return jsonify(
                 {
                     "success": False,
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
+                    "error": "Não foi possível concluir a solicitação.",
+                    "error_details": log_public_exception(e),
                 }
             ), 500
 

@@ -75,25 +75,58 @@ def classify_octahedral(d060, tolerance=0.015, candidate=None):
             "contradicts": contradicts,
             "warnings": warnings,
         }
-    # Meunier: valores proximos de 1.49-1.50 A favorecem estruturas
-    # dioctaedricas, usados para montmorillonita/nontronita e caulinitas.
-    if 1.49 - tolerance <= value <= 1.50 + tolerance:
+    source_references = [
+        ("kaolinite", 1.490, "dioctahedral"),
+        ("illite_muscovite", 1.499, "dioctahedral"),
+        ("glauconite", 1.511, "mineral_specific"),
+        ("saponite", 1.520, "ambiguous_octahedral"),
+        ("nontronite", 1.521, "ambiguous_octahedral"),
+        ("hectorite", 1.530, "mineral_specific"),
+        ("biotite", 1.538, "trioctahedral"),
+        ("vermiculite", 1.541, "mineral_specific"),
+        ("berthierine", 1.555, "trioctahedral"),
+        ("palygorskite", 1.560, "fibrous_channel"),
+    ]
+    compatibilities = [
+        {
+            "mineral": mineral,
+            "source_value_angstrom": reference,
+            "distance_angstrom": round(abs(value - reference), 6),
+            "octahedral_type": source_type,
+            "within_operational_tolerance": abs(value - reference) <= tolerance,
+        }
+        for mineral, reference, source_type in source_references
+        if abs(value - reference) <= tolerance
+    ]
+    # Source ranges published by Table 7.4 are tested separately from the
+    # operational tolerance around point values.
+    for mineral, lower, upper, source_type in [
+        ("montmorillonite", 1.492, 1.504, "dioctahedral"),
+        ("serpentines", 1.531, 1.538, "trioctahedral"),
+        ("chlorites", 1.538, 1.549, "trioctahedral"),
+        ("sepiolite", 1.540, 1.550, "trioctahedral"),
+    ]:
+        if lower - tolerance <= value <= upper + tolerance:
+            compatibilities.append({
+                "mineral": mineral,
+                "source_range_angstrom": [lower, upper],
+                "distance_angstrom": 0.0 if lower <= value <= upper else round(min(abs(value - lower), abs(value - upper)), 6),
+                "octahedral_type": source_type,
+                "within_operational_tolerance": True,
+            })
+    # Structural class remains a broad auxiliary summary. Mineral matches are
+    # deliberately non-exclusive and remain available in ``compatibilities``.
+    if 1.485 <= value <= 1.505:
         kind = "dioctahedral"
-        evidence = "d060 near 1.49-1.50 A favors dioctahedral clay minerals."
-    # Meunier: ~1.52 A pode representar transicao/intermediario ou familias
-    # especificas; o codigo exige quimica/contexto antes de especializar.
-    elif 1.52 - tolerance <= value <= 1.52 + tolerance:
-        kind = "intermediate"
-        evidence = "d060 near 1.52 A is intermediate or mineral-specific and needs chemistry/context."
-    # Meunier: ~1.54 A favorece argilominerais trioctaedricos como saponita,
-    # estevensita, biotita, clorita trioctaedrica e serpentina.
-    elif 1.54 - tolerance <= value <= 1.54 + tolerance:
+    elif 1.515 <= value <= 1.525:
+        kind = "ambiguous"
+    elif 1.530 <= value <= 1.570:
         kind = "trioctahedral"
-        evidence = "d060 near 1.54 A favors trioctahedral clay minerals."
-        warnings.append("Moore & Reynolds: quartz near d=1.542 A can interfere with d060; check quartz companion peaks before using this as support.")
     else:
         kind = "unknown"
-        evidence = "d060 is outside the simple diagnostic windows used by this engine."
+    evidence = f"d060 has {len(compatibilities)} non-exclusive Table 7.4 compatibility match(es)."
+    if abs(value - 1.542) <= tolerance:
+        warnings.append("Moore & Reynolds: quartz at d=1.542 A can interfere; check the quartz companion reflection near 1.82 A.")
     expected = (candidate or {}).get("octahedral_type") if isinstance(candidate, dict) else None
     if expected and expected != "unknown":
         # Comparacao auxiliar com o candidato: registra suporte/contradicao,
@@ -105,6 +138,9 @@ def classify_octahedral(d060, tolerance=0.015, candidate=None):
     return {
         "octahedral_type": kind,
         "d060": value,
+        "operational_tolerance_angstrom": tolerance,
+        "tolerance_basis": "caller_or_pipeline; not a source range",
+        "compatibilities": sorted(compatibilities, key=lambda row: row["distance_angstrom"]),
         "evidence": evidence,
         "supports": supports,
         "contradicts": contradicts,

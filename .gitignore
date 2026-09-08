@@ -17,6 +17,7 @@ outputs/
 tmp/
 logs/
 var/
+instance/
 
 # Snapshots completos locais ficam fora do Git; mantemos apenas JSONs de apoio
 # usados como referencia/fallback pelo classificador mineralogico.

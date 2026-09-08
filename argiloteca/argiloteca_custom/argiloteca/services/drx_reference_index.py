@@ -50,12 +50,17 @@ import re
 from functools import lru_cache
 from pathlib import Path
 
-from .drx import ADVANCED_ALS_WAVELENGTH_CU
 from .drx_references import two_theta_to_d
+from argiloteca_drx_core.radiation import resolve_radiation
 
 
 DRX_REFERENCE_INDEX_SCHEMA = "argiloteca.drx.reference_index.v1"
 DRX_INDEXED_REFERENCE_PATTERN_SCHEMA = "argiloteca.drx.indexed_reference_pattern.v1"
+CURATED_RRUFF_RADIATION = resolve_radiation(
+    "CuKa",
+    source="curated_reference",
+    provenance={"dataset": "rruff_odr_argilominerais_20260619"},
+)
 DEFAULT_RRUFF_ODR_MANIFEST = (
     Path(__file__).resolve().parents[1]
     / "static"
@@ -112,7 +117,7 @@ def _compact_peak(peak, intensity_max=None):
         intensity = max(0.0, min(100.0, intensity * 100.0 / intensity_max))
     return {
         "two_theta": round(two_theta, 5) if two_theta is not None else None,
-        "d_angstrom": round(two_theta_to_d(two_theta, wavelength=ADVANCED_ALS_WAVELENGTH_CU), 5) if two_theta else None,
+        "d_angstrom": round(two_theta_to_d(two_theta, wavelength=CURATED_RRUFF_RADIATION.wavelength_angstrom), 5) if two_theta else None,
         "relative_intensity": round(float(intensity or 0.0), 4),
     }
 

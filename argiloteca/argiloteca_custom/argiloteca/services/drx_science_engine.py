@@ -209,8 +209,13 @@ def _run_engine(args, timeout=DEFAULT_ENGINE_TIMEOUT_SECONDS):
     return payload
 
 
-def simulate_cif_pattern(content, filename=None, wavelength="CuKa"):
+def simulate_cif_pattern(content, filename=None, wavelength=None):
     """Simulate powder XRD peaks for CIF bytes using the isolated engine."""
+    if not wavelength:
+        return {
+            "success": False,
+            "error": "Radiação ou comprimento de onda não informado para simulação CIF.",
+        }
     simulator = cif_simulator_path()
     if not simulator.exists():
         return {
@@ -254,7 +259,7 @@ def detect_peaks_scipy(two_theta, normalized, *, start_two_theta=4.0, prominence
     return result
 
 
-def fit_peaks_lmfit(two_theta, corrected, peak_indices, *, wavelength_angstrom=1.5406, window_two_theta=0.35):
+def fit_peaks_lmfit(two_theta, corrected, peak_indices, *, wavelength_angstrom=None, window_two_theta=0.35):
     """Fit selected peaks with lmfit PseudoVoigtModel in the isolated engine."""
     fitter = lmfit_peak_fitter_path()
     if not fitter.exists():
@@ -267,9 +272,10 @@ def fit_peaks_lmfit(two_theta, corrected, peak_indices, *, wavelength_angstrom=1
         "two_theta": list(two_theta or []),
         "corrected": list(corrected or []),
         "peak_indices": list(peak_indices or []),
-        "wavelength_angstrom": wavelength_angstrom,
         "window_two_theta": window_two_theta,
     }
+    if wavelength_angstrom is not None:
+        payload["wavelength_angstrom"] = wavelength_angstrom
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=True) as fp:
         json.dump(payload, fp)
         fp.flush()

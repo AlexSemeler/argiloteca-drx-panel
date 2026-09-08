@@ -1,12 +1,9 @@
 version: argiloteca.drx.ngc.v3
 policy: argiloteca_rule_based_diagnostic
-catalog_status: semantic_catalog_not_runtime_loader
+catalog_status: executable_canonical_catalog
 runtime_note: >
-  Este catalogo documenta e normaliza as regras usadas pelo painel DRX.
-  Na versao atual, a execucao principal ainda ocorre em Python
-  (diagnostic_decision_tree.py, diagnostic_peak_rules.py, peak_sets.py e
-  drx_ngc_workflow.py) e no JSON estatico diagnostic_peak_rules_catalog.json.
-  O proximo passo tecnico e transformar este YAML em fonte executavel unica.
+  Este catalogo e a fonte canonica executavel das janelas N/G/C. O carregador
+  seguro valida a estrutura e falha explicitamente; nao ha fallback silencioso.
 
 source_scope:
   source_book: X-Ray Diffraction and the Identification and Analysis of Clay Minerals
@@ -41,9 +38,8 @@ global_policy:
     - tratar d060 como evidencia auxiliar
     - preservar o difratograma bruto/curva lida
   confidence_scope: >
-    Confirmacao limitada ao escopo das regras DRX N/G/C da Argiloteca.
-    Nao substitui validacao mineralogica completa, quimica, FTIR, microscopia
-    ou modelagem estrutural.
+    Resultados automaticos sao hipoteses compativeis ou candidatos fortes.
+    Confirmacao exige decisao curatorial humana registrada.
 
 preparations:
   natural:
@@ -82,7 +78,7 @@ named_ranges:
   quartz_101: {d_min: 3.24, d_max: 3.44, target: 3.34, source_rule: chapter7_quartz_internal_standard}
   quartz_100: {d_min: 4.23, d_max: 4.35, source_rule: chapter7_quartz_internal_standard}
 
-  sepiolite_12a: {d_min: 12.00, d_max: 12.50, source_rule: chapter7_fibrous_channel_minerals}
+  sepiolite_12a: {d_min: 12.30, d_max: 13.30, source_value_angstrom: 12.8, operational_tolerance_angstrom: 0.5, tolerance_basis: pipeline_matching, source_rule: chapter7_fibrous_channel_minerals}
   palygorskite_10_5a: {d_min: 10.30, d_max: 10.50, source_rule: chapter7_fibrous_channel_minerals}
   kerolite_9_4a: {d_min: 9.35, d_max: 9.50, source_rule: presalt_magnesian_clays_reference}
 
@@ -111,7 +107,7 @@ peak_sets:
     context: Diagnostico exige trajetoria N-G-C, nao pico isolado.
     ranges: [smectite_n, smectite_g, smectite_c]
   sepiolite:
-    context: Pico 12-12.5 A estavel e auxiliar; morfologia/hkl sao requeridos.
+    context: Reflexao-fonte 12.8 A; a janela +/-0.5 A e tolerancia operacional. Reflexoes acompanhantes e morfologia/hkl sao requeridas.
     ranges: [sepiolite_12a]
   palygorskite:
     context: Pico 10.3-10.5 A compete com ilita/mica e halloysita 10 A.
@@ -333,9 +329,12 @@ rules:
     context:
       scientific_basis: Capitulo 7; minerais fibrosos/canais.
       dashboard_use: Candidato por conjunto de picos e ambiguidades 12 A.
-      interpretation: Pico 12-12.5 A nao expande com glicolacao.
-    natural_A: [12.00, 12.50]
-    glycolated_A: [12.00, 12.50]
+      interpretation: Reflexao-fonte 12.8 A nao e afetada por glicolacao; +/-0.5 A e tolerancia operacional.
+    source_value_angstrom: 12.8
+    operational_tolerance_angstrom: 0.5
+    tolerance_basis: pipeline_matching
+    natural_A: [12.30, 13.30]
+    glycolated_A: [12.30, 13.30]
     required_behavior: [stable_after_glycol]
     source_rules: [chapter7_fibrous_channel_minerals]
     source_locator:
@@ -535,8 +534,9 @@ chapter7_knowledge_mirror:
     source_full_title: X-Ray Diffraction and the Identification and Analysis of Clay Minerals
     source_book: X-Ray Diffraction and the Identification and Analysis of Clay Minerals
     chapter: Identification of Clay Minerals and Associated Minerals
-    local_pdf: /home/invenio/Downloads/analises.pdf
-    ocr_text: /tmp/analises_ocr_combined.txt
+    asset_id: moore_reynolds_chapter7_scan
+    asset_checksum: null
+    resolvable_uri: null
     pages_ocr: 33
     policy: argiloteca_rule_based_diagnostic
     copyright_note: Only short source locators are stored; consult local PDF/OCR for full text.
@@ -564,34 +564,77 @@ chapter7_knowledge_mirror:
       page: 244
       units: {d: angstrom, two_theta: degree CuKalpha}
       rows:
-        - {mineral: sepiolite, reflection: "110", d: 12.0, tolerance: 0.5, role: diagnostic_low_angle}
-        - {mineral: palygorskite, reflection: "110", d: 10.4, tolerance: 0.2, role: diagnostic_low_angle}
+        - {mineral: sepiolite, reflection: "110", source_value_angstrom: 12.8, relative_intensity: 100, two_theta_cu_kalpha: 6.9, operational_tolerance_angstrom: 0.5, tolerance_basis: pipeline_matching, role: strongest_diagnostic_low_angle}
+        - {mineral: sepiolite, source_value_angstrom: 7.6, relative_intensity: 4, two_theta_cu_kalpha: 11.6}
+        - {mineral: sepiolite, source_value_angstrom: 5.1, relative_intensity: 8, two_theta_cu_kalpha: 17.4}
+        - {mineral: sepiolite, source_value_angstrom: 4.4, relative_intensity: 35, two_theta_cu_kalpha: 20.2}
+        - {mineral: sepiolite, source_value_angstrom: 3.77, relative_intensity: 20, intensity_qualifier: broad, two_theta_cu_kalpha: 23.6}
+        - {mineral: sepiolite, source_value_angstrom: 3.35, relative_intensity: 30, intensity_qualifier: very_broad, two_theta_cu_kalpha: 26.6}
+        - {mineral: palygorskite, reflection: "110", source_value_angstrom: 10.4, relative_intensity: 100, two_theta_cu_kalpha: 8.5, operational_tolerance_angstrom: 0.2, tolerance_basis: pipeline_matching, role: strongest_diagnostic_low_angle}
+        - {mineral: palygorskite, source_value_angstrom: 6.4, relative_intensity: 16, two_theta_cu_kalpha: 13.8}
+        - {mineral: palygorskite, source_value_angstrom: 5.4, relative_intensity: 11, two_theta_cu_kalpha: 16.4}
+        - {mineral: palygorskite, source_value_angstrom: 4.46, relative_intensity: 17, two_theta_cu_kalpha: 19.9}
+        - {mineral: palygorskite, source_value_angstrom: 3.65, relative_intensity: 10, two_theta_cu_kalpha: 24.4}
+        - {mineral: palygorskite, source_value_angstrom: 3.18, relative_intensity: 16, two_theta_cu_kalpha: 28.1}
       notes:
         - Fibrous/channel minerals are not reliably oriented; use additional hkl and morphology.
     table_7_4_d060:
       title: 060 reflections
       page: 245
       units: {d060: angstrom, two_theta: degree CuKalpha}
+      operational_tolerance_angstrom: 0.015
+      tolerance_basis: legacy_pipeline_matching_not_source_table
       rows:
-        - {mineral: kaolinite, d060_min: 1.488, d060_max: 1.502, octahedral_type: dioctahedral}
-        - {mineral: montmorillonite, d060_min: 1.492, d060_max: 1.504, octahedral_type: dioctahedral}
-        - {mineral: illite_muscovite, d060_min: 1.495, d060_max: 1.505, octahedral_type: dioctahedral}
-        - {mineral: chlorite, d060_min: 1.538, d060_max: 1.549, octahedral_type: trioctahedral}
-        - {mineral: sepiolite, d060_min: 1.540, d060_max: 1.550, octahedral_type: trioctahedral}
-        - {mineral: vermiculite, d060_min: 1.535, d060_max: 1.545, octahedral_type: trioctahedral_or_unknown}
-        - {mineral: palygorskite, d060_min: 1.55, d060_max: 1.57, octahedral_type: fibrous_channel}
+        - {mineral: kaolinite, source_value_angstrom: 1.490, source_range_angstrom: null, octahedral_type: dioctahedral}
+        - {mineral: montmorillonite, source_value_angstrom: null, source_range_angstrom: [1.492, 1.504], octahedral_type: dioctahedral}
+        - {mineral: illite_muscovite, source_value_angstrom: 1.499, source_range_angstrom: null, octahedral_type: dioctahedral}
+        - {mineral: glauconite, source_value_angstrom: 1.511, source_range_angstrom: null}
+        - {mineral: saponite, source_value_angstrom: 1.520, source_range_angstrom: null}
+        - {mineral: nontronite, source_value_angstrom: 1.521, source_range_angstrom: null}
+        - {mineral: hectorite, source_value_angstrom: 1.530, source_range_angstrom: null}
+        - {mineral: serpentines, source_value_angstrom: null, source_range_angstrom: [1.531, 1.538]}
+        - {mineral: biotite, source_value_angstrom: 1.538, source_range_angstrom: null, octahedral_type: trioctahedral}
+        - {mineral: chlorites, source_value_angstrom: null, source_range_angstrom: [1.538, 1.549], octahedral_type: trioctahedral}
+        - {mineral: sepiolite, source_value_angstrom: null, source_range_angstrom: [1.540, 1.550], octahedral_type: trioctahedral}
+        - {mineral: vermiculite, source_value_angstrom: 1.541, source_range_angstrom: null}
+        - {mineral: berthierine, source_value_angstrom: 1.555, source_range_angstrom: null}
+        - {mineral: palygorskite, source_value_angstrom: 1.560, source_range_angstrom: null, octahedral_type: fibrous_channel}
       notes:
         - d060 is auxiliary; random powder mount and interference checks are required.
     table_7_6_kaolin_polytypes:
-      title: Diagnostic reflections for kaolin polytypes
+      title: Diagnostic reflections for the determination of kaolin polytypes by random powder methods
       page: 247
       units: {d: angstrom}
+      preparation: random_powder
       rows:
-        - {mineral: kaolinite, reflection: "001", d: 7.15, tolerance: 0.25}
-        - {mineral: kaolinite, reflection: "002", d: 3.57, tolerance: 0.05}
-        - {mineral: dickite_nacrite, reflection: "001", d: 7.15, tolerance: 0.25, requires: resolved_hkl}
+        - {mineral: kaolinite, source_value_angstrom: 3.84, relative_intensity: 45, two_theta_cu_kalpha: 23.15}
+        - {mineral: kaolinite, source_value_angstrom: 3.12, relative_intensity: 55, two_theta_cu_kalpha: 28.6}
+        - {mineral: kaolinite, source_value_angstrom: 2.75, relative_intensity: 35, two_theta_cu_kalpha: 32.56}
+        - {mineral: kaolinite, source_value_angstrom: 2.34, relative_intensity: 90, two_theta_cu_kalpha: 38.47}
+        - {mineral: kaolinite, source_value_angstrom: 2.29, relative_intensity: 80, two_theta_cu_kalpha: 39.34}
+        - {mineral: kaolinite, source_value_angstrom: 2.18, relative_intensity: 30, two_theta_cu_kalpha: 41.34}
+        - {mineral: kaolinite, source_value_angstrom: 1.99, relative_intensity: 50, two_theta_cu_kalpha: 45.6}
+        - {mineral: kaolinite, source_value_angstrom: 1.84, relative_intensity: 40, two_theta_cu_kalpha: 49.57}
+        - {mineral: dickite, source_value_angstrom: 3.26, relative_intensity: 10, two_theta_cu_kalpha: 27.34}
+        - {mineral: dickite, source_value_angstrom: 3.10, relative_intensity: 10, two_theta_cu_kalpha: 28.83}
+        - {mineral: dickite, source_value_angstrom: 2.94, relative_intensity: 10, two_theta_cu_kalpha: 30.43}
+        - {mineral: dickite, source_value_angstrom: 2.80, relative_intensity: 10, two_theta_cu_kalpha: 32.02}
+        - {mineral: dickite, source_value_angstrom: 2.32, relative_intensity: 95, two_theta_cu_kalpha: 38.75}
+        - {mineral: dickite, source_value_angstrom: 2.21, relative_intensity: 15, two_theta_cu_kalpha: 40.81}
+        - {mineral: dickite, source_value_angstrom: 1.97, relative_intensity: 40, two_theta_cu_kalpha: 45.97}
+        - {mineral: nacrite, source_value_angstrom: 3.44, relative_intensity: 40, two_theta_cu_kalpha: 25.9}
+        - {mineral: nacrite, source_value_angstrom: 3.09, relative_intensity: 30, two_theta_cu_kalpha: 28.9}
+        - {mineral: nacrite, source_value_angstrom: 2.93, relative_intensity: 10, two_theta_cu_kalpha: 30.54}
+        - {mineral: nacrite, source_value_angstrom: 2.41, relative_intensity: 100, two_theta_cu_kalpha: 37.3}
+        - {mineral: nacrite, source_value_angstrom: 2.26, relative_intensity: 10, two_theta_cu_kalpha: 39.9}
+        - {mineral: nacrite, source_value_angstrom: 2.09, relative_intensity: 20, two_theta_cu_kalpha: 43.3}
+        - {mineral: nacrite, source_value_angstrom: 1.92, relative_intensity: 45, two_theta_cu_kalpha: 47.4}
+        - {mineral: metahalloysite, source_value_angstrom: 4.45, relative_intensity: 100, two_theta_cu_kalpha: 20.0}
+        - {mineral: metahalloysite, source_value_angstrom: 2.57, relative_intensity: 40, two_theta_cu_kalpha: 34.9}
+        - {mineral: metahalloysite, source_value_angstrom: 2.22, relative_intensity: 5, two_theta_cu_kalpha: 40.6}
+        - {mineral: metahalloysite, source_value_angstrom: 1.69, relative_intensity: 20, two_theta_cu_kalpha: 54.45}
       notes:
-        - Do not separate kaolinite, dickite and nacrite by the 7 A basal peak alone.
+        - Non-basal diagnostic reflections from random powder; do not substitute the 7 A basal profile for this table.
     associated_mineral_tables:
       - {table: 7.8A, title: Diffraction data for the silica minerals, page: 251, use: associated_mineral_interference}
       - {table: 7.8B, title: Diffraction data for alpha low quartz, page: 251, use: quartz_internal_standard_and_interference}
